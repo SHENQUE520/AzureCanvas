@@ -6,15 +6,22 @@
     <title>Document</title>
 </head>
 <body>
+    <div>
+        <h1 class="hero">Creative Developer</h1>
+    </div>
     <div class="trees">
-        <img class="shallowleft" src="assets/trees/shallow/left.svg">
-        <img class="shallowright" src="assets/trees/shallow/right.svg">
-        <img class="darkleft" src="assets/trees/dark/left.svg">
-        <img class="darkright" src="assets/trees/dark/right.svg">
-        <img class="blackleft" src="assets/trees/black/right.svg">
-        <img class="blackright" src="assets/trees/black/left.svg">
+        <img class="shallowleft" src="assets/trees/shallow/left.svg"/>
+        <img class="shallowright" src="assets/trees/shallow/right.svg"/>
+        <img class="darkleft" src="assets/trees/dark/left.svg"/>
+        <img class="darkright" src="assets/trees/dark/right.svg"/>
+        <img class="blackleft" src="assets/trees/black/right.svg"/>
+        <img class="blackright" src="assets/trees/black/left.svg"/>
     </div>
     <div class="view"></div>
+
+    <div class="ripple-container">
+        <div class="ripple"></div>
+    </div>
     <style>
         html, body {
             height: 100%;
@@ -27,12 +34,27 @@
             animation-timeline: scroll();
         }
         @keyframes sky-change {
-            from { background-color: rgb(59, 226, 255); }
-            to { background-color: rgb(34, 32, 138); }
+            0% { background-color: rgb(113, 234, 255); }
+            7% { background-color: rgb(156, 139, 255); }
         }
+        
+        .hero {
+            text-align: center;
+            justify-content: center;
+            background: linear-gradient(90deg, red, orange, yellow, rgb(0, 202, 0), rgb(68, 186, 255), indigo, violet);;
+            color: transparent;
+            display: flex;
+            font-size: 8vw;
 
+            font-weight: bold;
+            background-size: cover;
+            -webkit-background-clip: text;
+            background-clip: text;
+            
+            animation: move_bg 0.7s linear infinite;
+        }
         .view {
-            height: 500vh;
+            height: 1500vh;
         }
         .trees {
             position: fixed;
@@ -41,6 +63,7 @@
             height: 100vh;
             pointer-events: none;
             z-index: 10;
+            transform: translateY(80px);
         }
         .trees img {
             position: absolute;
@@ -91,38 +114,63 @@
             right: -130px; 
         }
 
+        @keyframes move_bg {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
         /* 关键帧定义 - 模拟飞入和视差 */
         /* 浅色层 (远景) */
         @keyframes fly-in-shallow {
             0% { transform: translate(-50vw, 20px); opacity: 0; }
-            40%, 100% { transform: translate(0, 0); opacity: 1; }
+            5%, 12% { transform: translate(0, 0); opacity: 1; }
         }
         .shallowright { animation-name: fly-in-shallow-right; }
         @keyframes fly-in-shallow-right {
             0% { transform: translate(50vw, 20px); opacity: 0; }
-            40%, 100% { transform: translate(0, 0); opacity: 1; }
+            5%, 12% { transform: translate(0, 0); opacity: 1; }
         }
 
         /* 深色层 (中景) */
         @keyframes fly-in-dark {
             0% { transform: translate(-80vw, 40px); opacity: 0; }
-            60%, 100% { transform: translate(0, 0); opacity: 1; }
+            7%, 12% { transform: translate(0, 0); opacity: 1; }
         }
         .darkright { animation-name: fly-in-dark-right; }
         @keyframes fly-in-dark-right {
             0% { transform: translate(80vw, 40px); opacity: 0; }
-            60%, 100% { transform: translate(0, 0); opacity: 1; }
+            7%, 12% { transform: translate(0, 0); opacity: 1; }
         }
 
         /* 黑色层 (近景) */
         @keyframes fly-in-black {
             0% { transform: translate(-120vw, 60px); opacity: 0; }
-            70%, 100% { transform: translate(0, 0); opacity: 1; }
+            9%, 12% { transform: translate(0, 0); opacity: 1; }
         }
         .blackright { animation-name: fly-in-black-right; }
         @keyframes fly-in-black-right {
             0% { transform: translate(120vw, 60px); opacity: 0; }
-            70%, 100% { transform: translate(0, 0); opacity: 1; }
+            9%, 12% { transform: translate(0, 0); opacity: 1; }
+        }
+
+        .ripple-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            width: 5px;
+            height: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            opacity: 0;
+            transition: transform 0.6s, opacity 0.6s;
+        }
+
+        .ripple-container:hover .ripple {
+            opacity: 1;
         }
     </style>
 </body>
