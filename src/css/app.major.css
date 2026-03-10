@@ -57,44 +57,51 @@ body.dark-mode {
     display: block;
     z-index: 201;
 }
-/* 校徽进入框 */
+/* 校徽进入框 - Aero 风格 */
 .splash-logo {
     position: relative;
     z-index: 210;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 60px;
     padding: 30px 70px;
-    box-shadow: 0 20px 40px rgba(37,101,176,0.3);
-    border: 4px solid #4086d3;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    backdrop-filter: blur(12px);
-    transition: transform 0.2s;
+    backdrop-filter: blur(25px) saturate(180%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.splash-logo:hover {
-    border: 4px solid #74a6e8;
-    border-radius: 70px;
-    transform: scale(1.06);
-    box-shadow: 0 0px 40px rgb(86, 168, 255);
 
-    transition: all 0.3s ease;
+.splash-logo:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-radius: 70px;
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 20px 60px rgba(37, 101, 176, 0.4);
 }
+
 .splash-logo i {
     font-size: 5rem;
-    color: #2565b0;
-    filter: drop-shadow(0 5px 10px rgba(0,70,150,0.3));
+    background: linear-gradient(135deg, #FF0080, #7928CA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(255, 0, 128, 0.4));
 }
+
 .splash-logo .logo-text {
     font-size: 2.8rem;
-    font-weight: 700;
-    color: #0a2a44;
-    letter-spacing: 4px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
+
 .splash-logo .logo-sub {
     font-size: 1.2rem;
-    color: #2565b0;
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 300;
 }
 
@@ -109,21 +116,23 @@ body.dark-mode {
     display: none;  /* 由JS控制显示 */
     padding: 0;  /* 导航栏占顶部，内容区内部padding */
     flex-direction: column;
+    background: radial-gradient(circle at 50% 50%, rgba(30, 5, 42, 0.4) 0%, rgba(10, 2, 20, 0.6) 100%);
 }
 
-/* 顶部导航栏 (独立一整行) */
+/* 顶部导航栏 (独立一整行) - Aero 特效 */
 .top-nav {
     width: 100%;
     padding: 12px 32px;
-    background: var(--nav-bg);
-    backdrop-filter: blur(12px);
-    border-bottom: 2px solid var(--accent);
+    background: rgba(18, 0, 36, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 150;
-    box-shadow: 0 5px 20px var(--shadow-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
+
 .nav-left {
     display: flex;
     align-items: center;
@@ -136,13 +145,21 @@ body.dark-mode {
 }
 .nav-logo i {
     font-size: 2.2rem;
-    color: var(--accent);
+    background: linear-gradient(135deg, #FF0080, #7928CA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 .nav-logo span {
     font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 1px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #fff, #ccc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 .nav-right {
     display: flex;
@@ -153,69 +170,43 @@ body.dark-mode {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
-    border-radius: 40px;
-    color: var(--text-primary);
-    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
-    background: transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .nav-item i {
     color: var(--accent);
     font-size: 1.2rem;
 }
 .nav-item:hover {
-    background: rgba(var(--accent-rgb, 37, 101,176), 0.15);
-}
-.avatar-small {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-left: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* 下拉菜单 */
-.nav-dropdown {
-    position: relative;
-}
+/* 下拉菜单 - Aero 特效 */
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 50px;
+    top: 60px;
     right: 0;
-    background: var(--nav-bg);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    border-radius: 24px;
+    background: rgba(18, 0, 36, 0.8);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
     padding: 12px 0;
-    min-width: 200px;
-    box-shadow: 0 20px 40px var(--shadow-color);
+    min-width: 220px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     z-index: 200;
 }
-.nav-dropdown:hover .dropdown-content {
-    display: block;
-}
-.dropdown-item {
-    padding: 12px 24px;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: 0.2s;
-    cursor: pointer;
-}
-.dropdown-item:hover {
-    background: rgba(var(--accent-rgb), 0.1);
-}
 
-/* 内容区布局 (原来的左右分栏) */
+/* 内容区布局 - Aero 特效卡片 */
 .content-area {
     flex: 1;
     display: flex;
@@ -225,66 +216,111 @@ body.dark-mode {
     z-index: 120;
 }
 
-/* 粒子画布位于内容区下方 */
-#particle-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 90;
-    pointer-events: none;
+/* 卡片样式 - Aero 特效 */
+.left-half, .top-right, .bottom-right {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border-radius: 28px;
+    overflow: hidden;
+    color: #fff;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* 卡片样式 (继承之前) */
-.left-half, .top-right, .bottom-right {
-    background: var(--card-bg);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 20px 40px var(--shadow-color);
-    border-radius: 32px;
-    overflow: hidden;
-    color: var(--text-primary);
-    transition: 0.3s;
+.left-half:hover, .top-right:hover, .bottom-right:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
 }
-.left-half { flex: 1; }
-.right-half { flex: 1; display: flex; flex-direction: column; gap: 24px; }
-.top-right, .bottom-right { flex: 1; }
 
 .card-header {
-    padding: 20px 24px 12px;
-    font-weight: 600;
-    font-size: 1.8rem;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--card-border);
+    padding: 24px 28px 16px;
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.02);
 }
-.card-header i { color: var(--accent); font-size: 2rem; }
-.scroll-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px 20px;
-    color: var(--text-secondary);
+
+.card-header i { 
+    color: var(--accent); 
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 8px var(--accent));
 }
 
 .post-item {
-    background: rgba(255,255,240,0.05);
-    border-radius: 24px;
-    padding: 16px 20px;
-    margin-bottom: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
     border-left: 4px solid var(--accent);
-    transition: 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--accent);
+    transition: 0.3s ease;
 }
-.post-item:hover {
-    background: rgba(var(--accent-rgb), 0.1);
-    transform: translateX(6px);
-    /* 为树洞帖子添加悬停发光 */
-    box-shadow: 0 0 20px var(--accent);
-    transform:translateX(6px);
 
+.post-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.15);
 }
+
+/* 漩涡动画样式 */
+.turbine-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.turbine-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.turbine-blade {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    transform-origin: center;
+    box-shadow: 0 0 25px rgba(121, 40, 202, 0.6);
+    filter: blur(1px);
+}
+
+.outer-ring {
+    width: 450px;
+    height: 450px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--accent);
+    border-right: 3px solid #FF0080;
+    border-radius: 50%;
+    position: absolute;
+    animation: reverse-spin 20s linear infinite;
+    opacity: 0.4;
+}
+
+@keyframes reverse-spin {
+    0% { transform: translate(-50%, -50%) rotate(360deg); }
+    100% { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
 .post-meta { display: flex; gap: 12px; color: var(--accent); margin-bottom: 8px; }
 .post-title { font-weight: 600; font-size: 1.3rem; color: var(--text-primary); }
 .post-excerpt { color: var(--text-secondary); display: flex; justify-content: space-between; }

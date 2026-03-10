@@ -5,6 +5,9 @@ const card = document.querySelector('.splash-logo');
 // 点击启动页 (校徽) 进入主界面
 card.addEventListener('click', function() {
     splashScreen.style.opacity = '0';
+    // 停止漩涡动画节省资源
+    if (window.stopVortex) window.stopVortex();
+    
     setTimeout(() => {
         splashScreen.style.display = 'none';
         mainInterface.style.display = 'flex';  // 主界面为flex
