@@ -1,0 +1,14 @@
+/* 主题变量 - 白天模式 (默认) */
+body {
+    --card-bg: rgba(255, 255, 255, 0.75);
+    --card-border: #4a7db5;
+    --card-border-hover: #2565b0;
+    --text-primary: #0a2a44;
+    --text-secondary: #1e3a5f;
+    --accent: #2565b0;
+    --accent-dark: #0e4b8f;
+    --shadow-color: rgba(0, 40, 80, 0.15);
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --particle-color: rgba(37, 101, 176, 0.5);
+    --particle-color2: rgba(100, 150, 255, 0.4);
+}

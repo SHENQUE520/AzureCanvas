@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MUST · 星河论坛</title>
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="css/color_scheme/colors.dark.mode.css">
+        <link rel="stylesheet" href="css/color_scheme/colors.primary.css">
+        <link rel="stylesheet" href="css/app.major.css">
+    </head>
+    <body class="light-mode">
+        <!-- 启动页 (校徽) -->
+        <div id="splash-screen">
+            <canvas id="splash-canvas"></canvas>
+            <div class="splash-logo">
+                <i class="fas fa-university"></i>
+                <div class="logo-text">MUST</div>
+                <div class="logo-sub">澳门科技大学</div>
+                <div style="font-size:1rem; margin-top:10px; color: #2565b0; ">点击进入 · 星河社区</div>
+            </div>
+        </div>
+
+        <!-- 主界面 -->
+        <div id="main-interface">
+            <canvas id="particle-canvas"></canvas>
+
+            <!-- 顶部导航栏 (独立一整行) -->
+<!--            <div class="top-nav">-->
+<!--                <div class="nav-left">-->
+<!--                    <div class="nav-logo">-->
+<!--                        <i class="fas fa-university"></i>-->
+<!--                        <span>MUST</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="nav-right">-->
+<!--                    <div class="nav-item"><i class="fas fa-user"></i> 登录</div>-->
+<!--                    <div class="nav-item"><i class="fas fa-edit"></i> 修改信息</div>-->
+<!--                    <div class="nav-dropdown">-->
+<!--                        <div class="nav-item"><i class="fas fa-envelope"></i> 私信 <span style="background:red; color:white; border-radius:12px; padding:2px 8px; margin-left:6px;">3</span></div>-->
+<!--                        <div class="dropdown-content">-->
+<!--                            <div class="dropdown-item"><i class="fas fa-circle"></i> 树洞管理员</div>-->
+<!--                            <div class="dropdown-item"><i class="fas fa-circle"></i> 二手交易提醒</div>-->
+<!--                            <div class="dropdown-item"><i class="fas fa-circle"></i> 系统通知</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; 日夜切换按钮 &ndash;&gt;-->
+<!--                    <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>-->
+<!--                    <div class="nav-item"><i class="fas fa-sign-out-alt"></i> 退出</div>-->
+<!--                    <div class="avatar-small">M</div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; 内容区 (左右分栏) &ndash;&gt;-->
+<!--            <div class="content-area">-->
+<!--                &lt;!&ndash; 左侧：树洞 &ndash;&gt;-->
+<!--                <div class="left-half">-->
+<!--                    <div class="card-header">-->
+<!--                        <i class="fas fa-tree"></i> 校园树洞-->
+<!--                        <span style="font-size:0.9rem; background:var(&#45;&#45;accent); color:white; padding:4px 12px; border-radius:40px; margin-left:auto;">匿名心声</span>-->
+<!--                    </div>-->
+<!--                    <div class="scroll-content">-->
+<!--                        <div class="post-item">-->
+<!--                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 匿名 · 1小时前</div>-->
+<!--                            <div class="post-title">图书馆P座的自习光太暗了🌌</div>-->
+<!--                            <div class="post-excerpt">希望学校改善一下，每天晚上都觉得眼睛累... <span>💬 12回复</span></div>-->
+<!--                        </div>-->
+<!--                        <div class="post-item">-->
+<!--                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 银河渡口 · 昨天</div>-->
+<!--                            <div class="post-title">北门1的巴士站临时改道提醒</div>-->
+<!--                            <div class="post-excerpt">坐51A的注意啦，这周不停靠永利皇宫那边<span>💬 7回复</span></div>-->
+<!--                        </div>-->
+<!--                        <div class="post-item">-->
+<!--                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 科大星人 · 3天前</div>-->
+<!--                            <div class="post-title">D运动场约夜跑！</div>-->
+<!--                            <div class="post-excerpt">晚上9点，有人一起吗？足球场人工草坪<span>💬 24回复</span></div>-->
+<!--                        </div>-->
+<!--                        <div class="post-item">-->
+<!--                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 中药国重室 · 5天前</div>-->
+<!--                            <div class="post-title">N座新到液质联用仪培训</div>-->
+<!--                            <div class="post-excerpt">下周开放使用，需要提前预约登记... <span>💬 6回复</span></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; 右侧上下 &ndash;&gt;-->
+<!--                <div class="right-half">-->
+<!--                    &lt;!&ndash; 右上：二手交易 &ndash;&gt;-->
+<!--                    <div class="top-right">-->
+<!--                        <div class="card-header" style="font-size:1.5rem;">-->
+<!--                            <i class="fas fa-exchange-alt"></i> 二手交易-->
+<!--                            <span style="font-size:0.8rem; margin-left:auto; background:var(&#45;&#45;accent); color:white; padding:4px 10px; border-radius:20px;">闲置流转</span>-->
+<!--                        </div>-->
+<!--                        <div class="scroll-content">-->
+<!--                            <div class="market-grid">-->
+<!--                                <div class="product-card"><div class="product-img">📚</div><div class="product-price">微观经济学  💰45MOP</div></div>-->
+<!--                                <div class="product-card"><div class="product-img">🪑</div><div class="product-price">人体工学椅  💰180</div></div>-->
+<!--                                <div class="product-card"><div class="product-img">🔌</div><div class="product-price">转换插头  💰20</div></div>-->
+<!--                                <div class="product-card"><div class="product-img">🎧</div><div class="product-price">Sony耳机  💰350</div></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; 右下：校园地图 &ndash;&gt;-->
+<!--                    <div class="bottom-right">-->
+<!--                        <div class="card-header" style="font-size:1.5rem;">-->
+<!--                            <i class="fas fa-map"></i> 校园地图-->
+<!--                            <span style="font-size:0.8rem; margin-left:auto; background:var(&#45;&#45;accent); color:white; padding:4px 10px; border-radius:20px;">campus-map</span>-->
+<!--                        </div>-->
+<!--                        <div class="map-preview">-->
+<!--                            <span class="map-label"><i class="fas fa-map-pin" style="color:var(&#45;&#45;accent);"></i> 图书馆P · 行政楼 · 北门</span>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <span>🏛️ 行政大楼</span> <span>📚 图书馆P/Q</span> <span>⚽ D运动场</span> <span>🏥 C大学医院</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+        <script src="js/effects/starfields.js"></script>
+        <script src="js/app/app.js"></script>
+    </body>
+</html>
