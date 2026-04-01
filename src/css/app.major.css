@@ -205,7 +205,7 @@ body.dark-mode {
     background: linear-gradient(
         to right,
         transparent,
-        rgba(255, 255, 255, 0.8),
+        rgba(255, 255, 255, 0.6),
         transparent
     );
     transform: rotate(30deg);
@@ -359,7 +359,7 @@ body.dark-mode {
 .social-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 .btn-github { background: #333; color: white; }
 .btn-bilibili { background: #fb7299; color: white; }
-.btn-redbook { background: #ff2442; color: white; }
+.btn-rednote { background: #ff2442; color: white; }
 
 /* 写文章按钮 */
 .write-btn {
