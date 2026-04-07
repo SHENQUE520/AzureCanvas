@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - MUST星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="../css/app.major.css">
+    <link rel="stylesheet" href="../css/attributes.texts.css">
+    <style>
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .auth-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-logo {
+            margin-bottom: 30px;
+        }
+
+        .auth-logo i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .auth-logo h1 {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 1.5rem;
+        }
+
+        .auth-logo p {
+            margin: 5px 0 0 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-actions {
+            margin-top: 30px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .auth-footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="auth-container">
+        <div class="auth-logo">
+            <i class="fas fa-university"></i>
+            <h1>星河论坛</h1>
+            <p>创建新账号</p>
+        </div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="form-label" for="username">用户名</label>
+                <input type="text" class="form-input" id="username" placeholder="请输入用户名" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">邮箱</label>
+                <input type="email" class="form-input" id="email" placeholder="请输入邮箱" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">密码</label>
+                <input type="password" class="form-input" id="password" placeholder="请输入密码" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">确认密码</label>
+                <input type="password" class="form-input" id="confirmPassword" placeholder="请确认密码" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">注册</button>
+                <a href="login.html" class="btn btn-secondary">登录</a>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p>已有账号？ <a href="login.html">立即登录</a></p>
+        </div>
+    </div>
+
+    <script>
+        // 注册表单提交
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // 验证密码是否一致
+            if (password !== confirmPassword) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = '两次输入的密码不一致';
+                document.querySelector('.auth-container').insertBefore(errorDiv, document.getElementById('registerForm'));
+                return;
+            }
+            
+            try {
+                // 调用注册API
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // 注册成功，显示成功信息并跳转到登录页
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'success-message';
+                    successDiv.textContent = '注册成功，请登录';
+                    document.querySelector('.auth-container').insertBefore(successDiv, document.getElementById('registerForm'));
+                    
+                    // 3秒后跳转到登录页
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                } else {
+                    // 注册失败，显示错误信息
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.textContent = data;
+                    document.querySelector('.auth-container').insertBefore(errorDiv, document.getElementById('registerForm'));
+                }
+            } catch (error) {
+                console.error('注册失败:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = '注册失败，请稍后重试';
+                document.querySelector('.auth-container').insertBefore(errorDiv, document.getElementById('registerForm'));
+            }
+        });
+    </script>
+</body>
+</html>

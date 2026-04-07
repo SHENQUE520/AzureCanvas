@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUST · 星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="../css/app.major.css">
+    <link rel="stylesheet" href="../css/attributes.texts.css">
+    <style>
+        .forum-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .section-list {
+            margin-top: 20px;
+        }
+
+        .section-item {
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-item:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .section-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .post-list {
+            margin-top: 20px;
+        }
+
+        .post-item {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .post-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .post-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .post-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .create-post-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .create-post-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="forum-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="nav-logo" style="margin-bottom: 30px;">
+                <i class="fas fa-university"></i>
+                <span class="azurecanvas">AzureCanvas</span>
+            </div>
+
+            <div class="section-list">
+                <h3 style="margin-bottom: 15px; color: var(--text-color);">论坛板块</h3>
+                <div class="section-item active" data-section="all">
+                    <span><i class="fas fa-th-large"></i> 全部帖子</span>
+                </div>
+                <div class="section-item" data-section="1">
+                    <span><i class="fas fa-school"></i> 校园生活</span>
+                </div>
+                <div class="section-item" data-section="2">
+                    <span><i class="fas fa-book"></i> 学习交流</span>
+                </div>
+                <div class="section-item" data-section="3">
+                    <span><i class="fas fa-hobby"></i> 兴趣爱好</span>
+                </div>
+                <div class="section-item" data-section="4">
+                    <span><i class="fas fa-exchange-alt"></i> 二手交易</span>
+                </div>
+                <div class="section-item" data-section="5">
+                    <span><i class="fas fa-question-circle"></i> 求助问答</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <div class="top-nav" style="margin-bottom: 20px;">
+                <div class="nav-left">
+                    <h2 style="margin: 0; color: var(--text-color);">星河论坛</h2>
+                </div>
+                <div class="nav-right">
+                    <div class="nav-item"><i class="fas fa-search"></i> 搜索</div>
+                    <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>
+                    <div class="nav-item"><i class="fas fa-bell"></i> 消息</div>
+                    <div class="avatar-small">M</div>
+                </div>
+            </div>
+
+            <!-- 帖子列表 -->
+            <div class="post-list" id="postList">
+                <!-- 帖子将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 发布帖子按钮 -->
+    <div class="create-post-btn" id="createPostBtn">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // 加载保存的主题
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+            }
+        }
+
+        // 保存主题
+        function saveTheme(theme) {
+            localStorage.setItem('theme', theme);
+        }
+
+        // 主题切换事件
+        themeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            if (isDark) {
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+                saveTheme('dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+                saveTheme('light');
+            }
+        });
+
+        // 页面加载时加载主题
+        loadTheme();
+
+        // 加载帖子列表
+        async function loadPosts(sectionId = 'all') {
+            const postList = document.getElementById('postList');
+            postList.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i></div>';
+
+            try {
+                let url = '/api/posts';
+                if (sectionId !== 'all') {
+                    url = `/api/posts/section/${sectionId}`;
+                }
+
+                const response = await fetch(url);
+                if (response.ok) {
+                    const posts = await response.json();
+                    postList.innerHTML = '';
+
+                    if (posts.length === 0) {
+                        postList.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">暂无帖子</div>';
+                        return;
+                    }
+
+                    posts.forEach(post => {
+                        const postItem = document.createElement('div');
+                        postItem.className = 'post-item';
+                        postItem.innerHTML = `
+                            <div class="post-header">
+                                <div class="post-title">${post.title}</div>
+                                <div class="post-meta">
+                                    <span><i class="fas fa-user"></i> ${post.user.username}</span>
+                                    <span><i class="fas fa-folder"></i> ${post.section.name}</span>
+                                    <span><i class="fas fa-clock"></i> ${new Date(post.createdAt).toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div class="post-excerpt">${post.content.substring(0, 100)}${post.content.length > 100 ? '...' : ''}</div>
+                            <div class="post-stats">
+                                <span><i class="fas fa-eye"></i> ${post.viewCount}</span>
+                                <span><i class="fas fa-comment"></i> 0</span>
+                                <span><i class="fas fa-heart"></i> ${post.likeCount}</span>
+                            </div>
+                        `;
+
+                        // 添加点击事件，跳转到帖子详情页
+                        postItem.addEventListener('click', () => {
+                            window.location.href = `post.html?id=${post.id}`;
+                        });
+
+                        postList.appendChild(postItem);
+                    });
+                } else {
+                    postList.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">加载失败，请稍后重试</div>';
+                }
+            } catch (error) {
+                console.error('加载帖子失败:', error);
+                postList.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">加载失败，请稍后重试</div>';
+            }
+        }
+
+        // 板块切换功能
+        const sectionItems = document.querySelectorAll('.section-item');
+        sectionItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // 移除所有活跃状态
+                sectionItems.forEach(i => i.classList.remove('active'));
+                // 添加当前活跃状态
+                item.classList.add('active');
+
+                // 根据板块ID加载对应帖子
+                const sectionId = item.dataset.section;
+                loadPosts(sectionId);
+            });
+        });
+
+        // 发布帖子按钮点击事件
+        document.getElementById('createPostBtn').addEventListener('click', () => {
+            window.location.href = 'create.html';
+        });
+
+        // 页面加载时加载帖子
+        window.onload = loadPosts;
+    </script>
+</body>
+
+</html>

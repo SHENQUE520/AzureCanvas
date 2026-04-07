@@ -1,0 +1,9 @@
+/* iOS 式滑动效果 */
+.scroll-content {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; /* iOS 惯性滚动 */
+  scrollbar-width: none; /* 隐藏滚动条 (Firefox) */
+}
+.scroll-content::-webkit-scrollbar {
+  display: none; /* 隐藏滚动条 (Chrome/Safari) */
+}

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机器人管理 - MUST星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="../css/app.major.css">
+    <link rel="stylesheet" href="../css/attributes.texts.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .add-robot-btn {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-robot-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .robot-list {
+            margin-top: 20px;
+        }
+
+        .robot-item {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .robot-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .robot-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .robot-details h3 {
+            margin: 0 0 5px 0;
+            color: var(--text-color);
+        }
+
+        .robot-details p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .robot-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #2565b0;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0e4b8f;
+            box-shadow: 0 2px 8px rgba(37, 101, 176, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2980b9;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .status-inactive {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #4a7db5;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #0a2a44;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2565b0;
+            box-shadow: 0 0 0 3px rgba(37, 101, 176, 0.2);
+            background-color: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .message-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="admin-container">
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> 机器人管理</h1>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> 退出登录
+            </button>
+        </div>
+
+        <button class="add-robot-btn" id="addRobotBtn">
+            <i class="fas fa-plus"></i> 添加机器人
+        </button>
+
+        <div class="message message-success" id="successMessage"></div>
+        <div class="message message-error" id="errorMessage"></div>
+
+        <div class="robot-list" id="robotList">
+            <!-- 机器人列表将通过JavaScript动态加载 -->
+        </div>
+    </div>
+
+    <!-- 添加/编辑机器人模态框 -->
+    <div class="modal" id="robotModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">添加机器人</h2>
+            <form id="robotForm">
+                <input type="hidden" id="robotId">
+
+                <div class="form-group">
+                    <label class="form-label" for="robotName">机器人名称</label>
+                    <input type="text" class="form-input" id="robotName" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="robotAvatar">头像URL</label>
+                    <input type="text" class="form-input" id="robotAvatar">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="activeTimeStart">活跃开始时间</label>
+                    <input type="time" class="form-input" id="activeTimeStart">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="activeTimeEnd">活跃结束时间</label>
+                    <input type="time" class="form-input" id="activeTimeEnd">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="postFrequency">发帖频率（分钟）</label>
+                    <input type="number" class="form-input" id="postFrequency" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="replyFrequency">回复频率（分钟）</label>
+                    <input type="number" class="form-input" id="replyFrequency" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="interests">感兴趣的话题（逗号分隔）</label>
+                    <input type="text" class="form-input" id="interests">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" id="enabled"> 启用机器人
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 检查登录状态（简化版，允许直接访问）
+        function checkLogin() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // 即使没有token也允许访问
+                console.log('No token found, but allowing access for testing');
+            }
+        }
+
+        // 模拟机器人数据
+        let robots = [
+            { id: 1, name: '机器人1', avatar: '', activeTimeStart: '08:00', activeTimeEnd: '22:00', postFrequency: 60, replyFrequency: 30, interests: '校园生活,学习交流', enabled: true },
+            { id: 2, name: '机器人2', avatar: '', activeTimeStart: '09:00', activeTimeEnd: '21:00', postFrequency: 120, replyFrequency: 60, interests: '兴趣爱好,二手交易', enabled: false }
+        ];
+
+        // 加载机器人列表
+        function loadRobots() {
+            const robotList = document.getElementById('robotList');
+            robotList.innerHTML = '';
+
+            if (robots.length === 0) {
+                robotList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">暂无机器人</p>';
+                return;
+            }
+
+            robots.forEach(robot => {
+                const robotItem = document.createElement('div');
+                robotItem.className = 'robot-item';
+                robotItem.innerHTML = `
+                    <div class="robot-info">
+                        <div class="robot-avatar">
+                            ${robot.name.charAt(0)}
+                        </div>
+                        <div class="robot-details">
+                            <h3>${robot.name}</h3>
+                            <p>活跃时间: ${robot.activeTimeStart} - ${robot.activeTimeEnd}</p>
+                            <p>发帖频率: ${robot.postFrequency}分钟 | 回复频率: ${robot.replyFrequency}分钟</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="status-badge ${robot.enabled ? 'status-active' : 'status-inactive'}">
+                            ${robot.enabled ? '活跃' : '禁用'}
+                        </span>
+                        <div class="robot-actions">
+                            <button class="btn btn-secondary" onclick="editRobot(${robot.id})">
+                                <i class="fas fa-edit"></i> 编辑
+                            </button>
+                            <button class="btn ${robot.enabled ? 'btn-danger' : 'btn-primary'}" onclick="toggleRobot(${robot.id})">
+                                ${robot.enabled ? '<i class="fas fa-ban"></i> 禁用' : '<i class="fas fa-play"></i> 启用'}
+                            </button>
+                            <button class="btn btn-secondary" onclick="generatePost(${robot.id})">
+                                <i class="fas fa-pen"></i> 发帖
+                            </button>
+                            <button class="btn btn-secondary" onclick="generateReply(${robot.id})">
+                                <i class="fas fa-reply"></i> 回复
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteRobot(${robot.id})">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                `;
+                robotList.appendChild(robotItem);
+            });
+        }
+
+        // 显示成功消息
+        function showSuccess(message) {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // 显示错误消息
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // 添加机器人
+        document.getElementById('addRobotBtn').addEventListener('click', () => {
+            document.getElementById('modalTitle').textContent = '添加机器人';
+            document.getElementById('robotId').value = '';
+            document.getElementById('robotName').value = '';
+            document.getElementById('robotAvatar').value = '';
+            document.getElementById('activeTimeStart').value = '08:00';
+            document.getElementById('activeTimeEnd').value = '22:00';
+            document.getElementById('postFrequency').value = '60';
+            document.getElementById('replyFrequency').value = '30';
+            document.getElementById('interests').value = '校园生活,学习交流,兴趣爱好';
+            document.getElementById('enabled').checked = true;
+            document.getElementById('robotModal').style.display = 'flex';
+        });
+
+        // 编辑机器人
+        function editRobot(id) {
+            const robot = robots.find(r => r.id === id);
+            if (robot) {
+                document.getElementById('modalTitle').textContent = '编辑机器人';
+                document.getElementById('robotId').value = robot.id;
+                document.getElementById('robotName').value = robot.name;
+                document.getElementById('robotAvatar').value = robot.avatar || '';
+                document.getElementById('activeTimeStart').value = robot.activeTimeStart;
+                document.getElementById('activeTimeEnd').value = robot.activeTimeEnd;
+                document.getElementById('postFrequency').value = robot.postFrequency;
+                document.getElementById('replyFrequency').value = robot.replyFrequency;
+                document.getElementById('interests').value = robot.interests;
+                document.getElementById('enabled').checked = robot.enabled;
+                document.getElementById('robotModal').style.display = 'flex';
+            } else {
+                showError('机器人不存在');
+            }
+        }
+
+        // 保存机器人
+        document.getElementById('robotForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('robotId').value;
+            const robot = {
+                name: document.getElementById('robotName').value,
+                avatar: document.getElementById('robotAvatar').value,
+                activeTimeStart: document.getElementById('activeTimeStart').value,
+                activeTimeEnd: document.getElementById('activeTimeEnd').value,
+                postFrequency: parseInt(document.getElementById('postFrequency').value),
+                replyFrequency: parseInt(document.getElementById('replyFrequency').value),
+                interests: document.getElementById('interests').value,
+                enabled: document.getElementById('enabled').checked
+            };
+
+            try {
+                if (id) {
+                    // 更新现有机器人
+                    const index = robots.findIndex(r => r.id === parseInt(id));
+                    if (index !== -1) {
+                        robots[index] = { ...robot, id: parseInt(id) };
+                        showSuccess('机器人更新成功');
+                    } else {
+                        showError('机器人不存在');
+                        return;
+                    }
+                } else {
+                    // 添加新机器人
+                    const newId = Math.max(...robots.map(r => r.id), 0) + 1;
+                    robots.push({ ...robot, id: newId });
+                    showSuccess('机器人添加成功');
+                }
+                document.getElementById('robotModal').style.display = 'none';
+                loadRobots();
+            } catch (error) {
+                console.error('保存机器人失败:', error);
+                showError('保存失败，请稍后重试');
+            }
+        });
+
+        // 取消按钮
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.getElementById('robotModal').style.display = 'none';
+        });
+
+        // 切换机器人状态
+        function toggleRobot(id) {
+            try {
+                const robot = robots.find(r => r.id === id);
+                if (robot) {
+                    robot.enabled = !robot.enabled;
+                    loadRobots();
+                    showSuccess('状态更新成功');
+                } else {
+                    showError('机器人不存在');
+                }
+            } catch (error) {
+                console.error('切换状态失败:', error);
+                showError('操作失败，请稍后重试');
+            }
+        }
+
+        // 生成帖子
+        function generatePost(id) {
+            try {
+                const robot = robots.find(r => r.id === id);
+                if (robot) {
+                    showSuccess('帖子生成成功');
+                } else {
+                    showError('机器人不存在');
+                }
+            } catch (error) {
+                console.error('生成帖子失败:', error);
+                showError('生成失败，请稍后重试');
+            }
+        }
+
+        // 生成回复
+        function generateReply(id) {
+            try {
+                const robot = robots.find(r => r.id === id);
+                if (robot) {
+                    showSuccess('回复生成成功');
+                } else {
+                    showError('机器人不存在');
+                }
+            } catch (error) {
+                console.error('生成回复失败:', error);
+                showError('生成失败，请稍后重试');
+            }
+        }
+
+        // 删除机器人
+        function deleteRobot(id) {
+            if (confirm('确定要删除这个机器人吗？')) {
+                try {
+                    const index = robots.findIndex(r => r.id === id);
+                    if (index !== -1) {
+                        robots.splice(index, 1);
+                        loadRobots();
+                        showSuccess('机器人删除成功');
+                    } else {
+                        showError('机器人不存在');
+                    }
+                } catch (error) {
+                    console.error('删除机器人失败:', error);
+                    showError('删除失败，请稍后重试');
+                }
+            }
+        }
+
+        // 退出登录
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        });
+
+        // 页面加载时检查登录状态并加载机器人列表
+        window.onload = function () {
+            checkLogin();
+            loadRobots();
+        };
+    </script>
+</body>
+
+</html>

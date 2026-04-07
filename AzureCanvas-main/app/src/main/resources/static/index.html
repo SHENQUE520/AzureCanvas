@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MUST · 星河论坛</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="css/color_scheme/colors.dark_mode.css">
+        <link rel="stylesheet" href="css/color_scheme/colors.primary.css">
+        <link rel="stylesheet" href="css/app.major.css">
+        <link rel="stylesheet" href="css/attributes.texts.css">
+    </head>
+
+    <body class="light-mode">
+
+        <div id="splash-screen">
+            <div class="turbine-container">
+                <div class="outer-ring"></div>
+                <div class="turbine-wrapper"></div>
+            </div>
+            <canvas id="splash-canvas"></canvas>
+            <div class="splash-logo">
+                <i class="fas fa-university"></i>
+                <div class="logo-text">MUST</div>
+                <div class="logo-sub">澳门科技大学</div>
+                <div style="font-size:1rem; margin-top:10px; color: rgba(255,255,255,0.6); ">点击进入 · 星河社区</div>
+            </div>
+        </div>
+
+        <div id="main-interface">
+            <canvas id="particle-canvas"></canvas>
+
+            <div class="top-nav">
+                <div class="nav-left">
+                    <div class="nav-logo">
+                        <i class="fas fa-university"></i>
+                        <span class="azurecanvas">AzureCanvas</span>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <div class="nav-item"><i class="fas fa-search"></i> 搜索</div>
+                    <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>
+                    <a href="cube/index.html" class="nav-item" style="text-decoration: none; color: inherit;"><i class="fas fa-cube"></i> 立方体页面</a>
+                    <div class="nav-item"><i class="fas fa-bell"></i> 消息</div>
+                    <div class="avatar-small">M</div>
+                </div>
+            </div>
+
+            <!-- 仪表盘布局 -->
+            <div class="dashboard-container">
+
+                <!-- 1. 个人资料卡片 (左侧高卡片) -->
+                <div class="card-item card-tall profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <!--TODO: Add image api src-->
+                            <img src="api/" alt="avatar" style="width:100%; height:100%; border-radius:inherit;">
+                        </div>
+                        <div class="profile-info">
+                            <h3>Lotiyu</h3>
+                            <span>开发中</span>
+                        </div>
+                    </div>
+                    <div class="menu-list">
+                        <div class="menu-item active"><i class="fas fa-file-alt"></i> 近期文章</div>
+                        <div class="menu-item"><i class="fas fa-th-large"></i> 我的项目</div>
+                        <div class="menu-item"><i class="fas fa-info-circle"></i> 关于网站</div>
+                        <div class="menu-item"><i class="fas fa-star"></i> 推荐分享</div>
+                        <div class="menu-item"><i class="fas fa-globe"></i> 优秀博客</div>
+                    </div>
+                </div>
+
+                <!-- 2. 写文章/工具栏 (顶部小卡片) -->
+                <div class="card-item card-small action-card" style="justify-content: flex-start; align-items: center;">
+                    <div class="write-btn"><i class="fas fa-pen-nib"></i> 写文章</div>
+                    <div style="margin-left: auto; color: #ccc;"><i class="fas fa-th"></i></div>
+                </div>
+
+                <!-- 3. 时钟卡片 (小卡片) -->
+                <div class="card-item card-small clock-card" id="digital-clock">
+
+                </div>
+
+                <!-- 4. 树洞卡片 (中心大卡片) -->
+                <div class="card-item card-large">
+                    <div class="card-header">
+                        <i class="fas fa-tree"></i> 校园树洞
+                        <span
+                            style="font-size:0.8rem; margin-left:auto; background:#e8f8f5; color:#1abc9c; padding:4px 12px; border-radius:20px;">匿名心声</span>
+                    </div>
+                    <div class="scroll-content">
+                        <div class="post-item">
+                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 匿名 · 1小时前</div>
+                            <div class="post-title">图书馆P座的自习光太暗了🌌</div>
+                            <div class="post-excerpt">希望学校改善一下... <span>💬 12回复</span></div>
+                        </div>
+                        <div class="post-item">
+                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 银河渡口 · 昨天</div>
+                            <div class="post-title">北门1的巴士站临时改道提醒</div>
+                            <div class="post-excerpt">坐51A的注意啦... <span>💬 7回复</span></div>
+                        </div>
+                        <div class="post-item">
+                            <div class="post-meta"><i class="fas fa-feather-alt"></i> 科大星人 · 3天前</div>
+                            <div class="post-title">D运动场约夜跑！</div>
+                            <div class="post-excerpt">晚上9点，有人一起吗？<span>💬 24回复</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 二手交易 (右侧中卡片) -->
+                <div class="card-item card-medium">
+                    <div class="card-header">
+                        <i class="fas fa-exchange-alt"></i> 二手交易
+                    </div>
+                    <div class="scroll-content">
+                        <div class="market-grid" style="grid-template-columns: 1fr;">
+                            <div class="product-card" style="display: flex; gap: 15px; align-items: center;">
+                                <div class="product-img" style="width: 50px; height: 50px; flex-shrink: 0;">📚</div>
+                                <div class="product-price">微观经济学 💰45</div>
+                            </div>
+                            <div class="product-card"
+                                style="display: flex; gap: 15px; align-items: center; margin-top: 10px;">
+                                <div class="product-img" style="width: 50px; height: 50px; flex-shrink: 0;">🪑</div>
+                                <div class="product-price">人体工学椅 💰180</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 日历卡片 (中卡片) -->
+                <div class="card-item card-medium calendar-card">
+                    <div style="font-weight: 800; margin-bottom: 10px; color: #333;">2026/3/14 周六</div>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;">
+                        <span style="font-size: 0.7rem; opacity: 0.5;">一</span>
+                        <span style="font-size: 0.7rem; opacity: 0.5;">二</span>
+                        <span style="font-size: 0.7rem; opacity: 0.5;">三</span>
+                        <span style="font-size: 0.7rem; opacity: 0.5;">四</span>
+                        <span style="font-size: 0.7rem; opacity: 0.5;">五</span>
+                        <span style="font-size: 0.7rem; color: #3498db;">六</span>
+                        <span style="font-size: 0.7rem; color: #3498db;">日</span>
+                        <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span
+                            style="background: #e1f5fe; border-radius: 5px;">7</span><span>8</span>
+                        <span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span
+                            style="background: #3498db; color: white; border-radius: 5px;">14</span><span>15</span>
+                    </div>
+                </div>
+
+                <!-- 7. 社交链接 (底部宽卡片) -->
+                <div class="card-item card-wide action-card">
+                    <a href="#" class="social-btn btn-github"><i class="fab fa-github"></i>Github</a>
+                    <a href="#" class="social-btn btn-bilibili"><i class="fab fa-bilibili"></i>Bilibili</a>
+                    <a href="#" class="social-btn btn-rednote"><i class="fas fa-book-open"></i>小红书</a>
+                    <div class="social-btn" style="background: #e1f5fe; color: #3498db;"><i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+
+                <!-- 8. 校园地图 (右下小卡片) -->
+                <div class="card-item card-small" style="padding: 15px;">
+                    <div class="map-preview" style="height: 100%; margin: 0; width: 100%;">
+                        <span class="map-label" style="font-size: 0.7rem; padding: 4px 8px;">Campus Map</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script src="js/effects/starfields.js"></script>
+        <script src="js/effects/vortex_stairs.js"></script>
+        <script src="js/app/app.js"></script>
+        <script src="js/effects/cube.interactions.js"></script>
+
+    </body>
+
+</html>

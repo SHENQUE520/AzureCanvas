@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布帖子 - MUST星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="../css/app.major.css">
+    <link rel="stylesheet" href="../css/attributes.texts.css">
+    <style>
+        .forum-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .create-post-form {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+        }
+
+        .btn-cancel:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="forum-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="nav-logo" style="margin-bottom: 30px;">
+                <i class="fas fa-university"></i>
+                <span class="azurecanvas">AzureCanvas</span>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <a href="index.html"
+                    style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; transition: all 0.3s ease;">
+                    <i class="fas fa-arrow-left"></i> 返回论坛
+                </a>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <div class="top-nav" style="margin-bottom: 20px;">
+                <div class="nav-left">
+                    <h2 style="margin: 0; color: var(--text-color);">发布帖子</h2>
+                </div>
+                <div class="nav-right">
+                    <div class="nav-item"><i class="fas fa-search"></i> 搜索</div>
+                    <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>
+                    <div class="nav-item"><i class="fas fa-bell"></i> 消息</div>
+                    <div class="avatar-small">M</div>
+                </div>
+            </div>
+
+            <!-- 发布帖子表单 -->
+            <div class="create-post-form">
+                <form id="createPostForm">
+                    <div class="form-group">
+                        <label class="form-label" for="section">选择板块</label>
+                        <select class="form-select" id="section" required>
+                            <option value="">请选择板块</option>
+                            <option value="1">校园生活</option>
+                            <option value="2">学习交流</option>
+                            <option value="3">兴趣爱好</option>
+                            <option value="4">二手交易</option>
+                            <option value="5">求助问答</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="title">帖子标题</label>
+                        <input type="text" class="form-input" id="title" placeholder="请输入帖子标题" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="content">帖子内容</label>
+                        <textarea class="form-textarea" id="content" placeholder="请输入帖子内容" required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelBtn">取消</button>
+                        <button type="submit" class="btn btn-submit">发布帖子</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // 加载保存的主题
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+            }
+        }
+
+        // 保存主题
+        function saveTheme(theme) {
+            localStorage.setItem('theme', theme);
+        }
+
+        // 主题切换事件
+        themeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            if (isDark) {
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+                saveTheme('dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+                saveTheme('light');
+            }
+        });
+
+        // 页面加载时加载主题
+        loadTheme();
+
+        // 取消按钮点击事件
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        // 表单提交事件
+        document.getElementById('createPostForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const section = document.getElementById('section').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            if (!section || !title || !content) {
+                alert('请填写所有必填项');
+                return;
+            }
+
+            try {
+                // 获取token
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('请先登录');
+                    window.location.href = '../auth/login.html';
+                    return;
+                }
+
+                // 调用API发布帖子
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        content: content,
+                        section: {
+                            id: parseInt(section)
+                        },
+                        user: JSON.parse(localStorage.getItem('user'))
+                    })
+                });
+
+                if (response.ok) {
+                    alert('帖子发布成功！');
+                    window.location.href = 'index.html';
+                } else {
+                    const error = await response.text();
+                    alert('发布失败：' + error);
+                }
+            } catch (error) {
+                console.error('发布帖子失败:', error);
+                alert('发布失败，请稍后重试');
+            }
+        });
+    </script>
+</body>
+
+</html>

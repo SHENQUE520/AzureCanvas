@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帖子详情 - MUST星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="../css/app.major.css">
+    <link rel="stylesheet" href="../css/attributes.texts.css">
+    <style>
+        .forum-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .post-detail {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .post-content {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: var(--hover-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .replies-section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .replies-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .reply-form {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: var(--hover-bg);
+            border-radius: 8px;
+        }
+
+        .reply-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            resize: vertical;
+        }
+
+        .reply-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .submit-btn {
+            padding: 8px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .reply-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .reply-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reply-author {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .reply-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .reply-content {
+            color: var(--text-color);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .reply-actions {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .reply-action {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .reply-action:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="forum-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="nav-logo" style="margin-bottom: 30px;">
+                <i class="fas fa-university"></i>
+                <span class="azurecanvas">AzureCanvas</span>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <a href="index.html"
+                    style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; transition: all 0.3s ease;">
+                    <i class="fas fa-arrow-left"></i> 返回论坛
+                </a>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <div class="top-nav" style="margin-bottom: 20px;">
+                <div class="nav-left">
+                    <h2 style="margin: 0; color: var(--text-color);">帖子详情</h2>
+                </div>
+                <div class="nav-right">
+                    <div class="nav-item"><i class="fas fa-search"></i> 搜索</div>
+                    <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>
+                    <div class="nav-item"><i class="fas fa-bell"></i> 消息</div>
+                    <div class="avatar-small">M</div>
+                </div>
+            </div>
+
+            <!-- 帖子详情 -->
+            <div class="post-detail">
+                <div class="post-header">
+                    <h1 class="post-title">欢迎来到星河论坛</h1>
+                    <div class="post-meta">
+                        <span><i class="fas fa-user"></i> admin</span>
+                        <span><i class="fas fa-folder"></i> 校园生活</span>
+                        <span><i class="fas fa-clock"></i> 2026-04-07 10:00</span>
+                        <span><i class="fas fa-eye"></i> 123</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>这是论坛的第一篇帖子，欢迎大家加入讨论！</p>
+                    <p>星河论坛是澳门科技大学的官方论坛，旨在为学生提供一个交流和分享的平台。在这里，你可以：</p>
+                    <ul>
+                        <li>分享校园生活的点点滴滴</li>
+                        <li>交流学习经验和心得</li>
+                        <li>讨论兴趣爱好和特长</li>
+                        <li>发布和求购二手物品</li>
+                        <li>提出问题，寻求帮助</li>
+                    </ul>
+                    <p>希望大家能够遵守论坛规则，文明发言，共同营造一个积极健康的社区环境。</p>
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn"><i class="fas fa-heart"></i> 点赞 (20)</div>
+                    <div class="action-btn"><i class="fas fa-bookmark"></i> 收藏</div>
+                    <div class="action-btn"><i class="fas fa-share-alt"></i> 分享</div>
+                </div>
+            </div>
+
+            <!-- 回复区 -->
+            <div class="replies-section">
+                <div class="replies-header">
+                    <h3 style="margin: 0; color: var(--text-color);">回复 (5)</h3>
+                </div>
+
+                <!-- 回复表单 -->
+                <div class="reply-form">
+                    <textarea class="reply-textarea" placeholder="写下你的回复..."></textarea>
+                    <div class="reply-actions">
+                        <button class="submit-btn">发布回复</button>
+                    </div>
+                </div>
+
+                <!-- 回复列表 -->
+                <div class="reply-list">
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <span class="reply-author">用户1</span>
+                            <span class="reply-time">2026-04-07 10:30</span>
+                        </div>
+                        <div class="reply-content">
+                            欢迎欢迎！期待在论坛里和大家交流。
+                        </div>
+                        <div class="reply-actions">
+                            <span class="reply-action"><i class="fas fa-heart"></i> 点赞</span>
+                            <span class="reply-action"><i class="fas fa-reply"></i> 回复</span>
+                        </div>
+                    </div>
+
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <span class="reply-author">用户2</span>
+                            <span class="reply-time">2026-04-07 11:00</span>
+                        </div>
+                        <div class="reply-content">
+                            论坛界面很美观，功能也很齐全，赞一个！
+                        </div>
+                        <div class="reply-actions">
+                            <span class="reply-action"><i class="fas fa-heart"></i> 点赞</span>
+                            <span class="reply-action"><i class="fas fa-reply"></i> 回复</span>
+                        </div>
+                    </div>
+
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <span class="reply-author">用户3</span>
+                            <span class="reply-time">2026-04-07 11:30</span>
+                        </div>
+                        <div class="reply-content">
+                            希望论坛能够成为大家交流的好地方。
+                        </div>
+                        <div class="reply-actions">
+                            <span class="reply-action"><i class="fas fa-heart"></i> 点赞</span>
+                            <span class="reply-action"><i class="fas fa-reply"></i> 回复</span>
+                        </div>
+                    </div>
+
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <span class="reply-author">用户4</span>
+                            <span class="reply-time">2026-04-07 12:00</span>
+                        </div>
+                        <div class="reply-content">
+                            支持！期待论坛的发展。
+                        </div>
+                        <div class="reply-actions">
+                            <span class="reply-action"><i class="fas fa-heart"></i> 点赞</span>
+                            <span class="reply-action"><i class="fas fa-reply"></i> 回复</span>
+                        </div>
+                    </div>
+
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <span class="reply-author">用户5</span>
+                            <span class="reply-time">2026-04-07 12:30</span>
+                        </div>
+                        <div class="reply-content">
+                            请问如何修改个人资料？
+                        </div>
+                        <div class="reply-actions">
+                            <span class="reply-action"><i class="fas fa-heart"></i> 点赞</span>
+                            <span class="reply-action"><i class="fas fa-reply"></i> 回复</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // 加载保存的主题
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+            }
+        }
+
+        // 保存主题
+        function saveTheme(theme) {
+            localStorage.setItem('theme', theme);
+        }
+
+        // 主题切换事件
+        themeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            if (isDark) {
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+                saveTheme('dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+                saveTheme('light');
+            }
+        });
+
+        // 页面加载时加载主题
+        loadTheme();
+
+        // 发布回复功能
+        document.querySelector('.submit-btn').addEventListener('click', async () => {
+            const textarea = document.querySelector('.reply-textarea');
+            const content = textarea.value.trim();
+
+            if (!content) {
+                alert('请输入回复内容');
+                return;
+            }
+
+            try {
+                // 获取token
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('请先登录');
+                    window.location.href = '../auth/login.html';
+                    return;
+                }
+
+                // 获取帖子ID（从URL中获取）
+                const urlParams = new URLSearchParams(window.location.search);
+                const postId = urlParams.get('id');
+
+                if (!postId) {
+                    alert('帖子ID不存在');
+                    return;
+                }
+
+                // 调用API发布回复
+                const response = await fetch('/api/replies', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        content: content,
+                        post: {
+                            id: parseInt(postId)
+                        },
+                        user: JSON.parse(localStorage.getItem('user'))
+                    })
+                });
+
+                if (response.ok) {
+                    alert('回复已发布！');
+                    textarea.value = '';
+                    // 刷新回复列表
+                    loadReplies();
+                } else {
+                    const error = await response.text();
+                    alert('发布失败：' + error);
+                }
+            } catch (error) {
+                console.error('发布回复失败:', error);
+                alert('发布失败，请稍后重试');
+            }
+        });
+
+        // 加载回复列表
+        function loadReplies() {
+            // 这里可以调用API加载回复列表
+            console.log('加载回复列表');
+        }
+
+        // 点赞功能
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                if (this.querySelector('i').classList.contains('fa-heart')) {
+                    // 获取token
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        alert('请先登录');
+                        window.location.href = '../auth/login.html';
+                        return;
+                    }
+
+                    // 获取帖子ID
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const postId = urlParams.get('id');
+
+                    try {
+                        // 调用API切换点赞状态
+                        const response = await fetch('/api/likes/toggle', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                targetId: parseInt(postId),
+                                targetType: 'post'
+                            })
+                        });
+
+                        if (response.ok) {
+                            // 切换图标
+                            this.querySelector('i').classList.toggle('fas');
+                            this.querySelector('i').classList.toggle('far');
+                            // 更新点赞数
+                            const likeCountText = this.textContent;
+                            const likeCount = parseInt(likeCountText.match(/\d+/)[0]);
+                            if (this.querySelector('i').classList.contains('fas')) {
+                                this.textContent = `❤️ 点赞 (${likeCount + 1})`;
+                            } else {
+                                this.textContent = `🤍 点赞 (${likeCount - 1})`;
+                            }
+                        } else {
+                            const error = await response.text();
+                            alert('操作失败：' + error);
+                        }
+                    } catch (error) {
+                        console.error('点赞失败:', error);
+                        alert('操作失败，请稍后重试');
+                    }
+                } else if (this.querySelector('i').classList.contains('fa-bookmark')) {
+                    // 收藏功能
+                    alert('收藏功能开发中');
+                } else if (this.querySelector('i').classList.contains('fa-share-alt')) {
+                    // 分享功能
+                    alert('分享功能开发中');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

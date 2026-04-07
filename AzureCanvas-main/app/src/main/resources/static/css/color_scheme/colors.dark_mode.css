@@ -1,0 +1,14 @@
+/* 深色模式变量 */
+body.dark-mode {
+    --card-bg: rgba(10, 15, 30, 0.7);
+    --card-border: rgba(255, 215, 0, 0.4);
+    --card-border-hover: #ffd966;
+    --text-primary: white;
+    --text-secondary: #f0f0f0;
+    --accent: #ffd966;
+    --accent-dark: #b8860b;
+    --shadow-color: rgba(0,0,0,0.6);
+    --nav-bg: rgba(0, 0, 0, 0.6);
+    --particle-color: rgba(255, 215, 0, 0.7);
+    --particle-color2: rgba(255, 255, 240, 0.5);
+}
