@@ -1,24 +1,26 @@
 @echo off
 chcp 65001 >nul
-echo ==============================================
-echo          一键上传项目到 GitHub
-echo          双击运行，无需任何操作
-echo ==============================================
+cls
+title AzureCanvas 精准上传脚本
+echo ====================================================
+echo          🔥  正在上传核心代码：app + demo
+echo ====================================================
 echo.
 
-:: 拉取远程最新代码（自动处理冲突）
+:: 拉取远程最新代码（不弹Vim）
 git pull origin main --no-edit --allow-unrelated-histories
 
-:: 添加所有文件
-git add .
+:: 只添加实际存在的核心文件/文件夹
+git add app demo pom.xml README.md LICENSE Github.bat
 
-:: 提交
-git commit -m "自动更新：%date% %time%"
+:: 提交（包含脚本文件的修改）
+git commit -m "Auto-Update: 上传app/demo及配置文件 %date% %time%"
 
-:: 推送到 GitHub
+:: 推送到GitHub
 git push origin main
 
 echo.
-echo ✅ 上传完成！刷新 GitHub 页面即可看到
-echo.
+echo ====================================================
+echo ✅ 上传成功！去GitHub查看最新状态！
+echo ====================================================
 pause
