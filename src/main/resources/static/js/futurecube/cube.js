@@ -11,6 +11,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { MeshTransmissionMaterial } from './MeshTransmissionMaterial.js';
+import './cube.interactions.js'
 
 import { initScrollEffect } from './cube.scroll.js';
 
@@ -41,7 +43,7 @@ function initCube() {
     // 创建场景
     scene = new THREE.Scene();
     // 背景
-    scene.background = new THREE.Color('#2f163d');
+    scene.background = new THREE.Color('rgba(217,155,255,0.63)');
     
     // 注入 CSS 渐变背景 (实现梦幻淡蓝中心)
     cubeContainer.style.background = 'radial-gradient(circle at center, #ffffff 0%, #eef6ff 100%)';
@@ -86,7 +88,7 @@ function initCube() {
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
 
-    rgbeLoader.load('../textures/hdr/dancing_hall_1k.hdr', (texture) => {
+    rgbeLoader.load('../textures/hdr/spruit_sunrise_1k.hdr', (texture) => {
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         scene.environment = envMap;
         texture.dispose();
@@ -110,17 +112,16 @@ function initCube() {
         metalness: 0,
         roughness: 0,
         iridescenceIOR: 1.9,
-        iridescence: 0.7,
+        iridescence: 0.8,
         transmission: 1.0,
-        ior: 1.9,               // 回归标准玻璃折射率，防止侧面全反射
-        thickness: 3,         // 减小厚度，增加折射清晰度
+        ior: 2.2,               // 回归标准玻璃折射率，防止侧面全反射
+        thickness: -1,         // 减小厚度，增加折射清晰度
         specularIntensity: 1.0,
         clearcoat: 1.0,         
         clearcoatRoughness: 0.02,
         attenuationDistance: 1.5,
         attenuationColor: new THREE.Color('#e6deff'),
         transparent: true,
-
         side: THREE.DoubleSide,
     });
 
@@ -134,7 +135,7 @@ function initCube() {
     //     }
     // )
 
-    glassMaterial.renderOrder = 1;
+    glassMaterial.renderOrder = 0;
 
     // 注入高级着色器逻辑
     glassMaterial.onBeforeCompile = (shader) => {
@@ -165,7 +166,29 @@ function initCube() {
         glassMaterial.userData.shader = shader;
     };
 
+    const transmissionMaterial = Object.assign(new MeshTransmissionMaterial(10), {
+        clearcoat: 1,
+        clearcoatRoughness: 0,
+        transmission: 1,
+        iridescenceIOR: 0.7,
+        chromaticAberration: 0.03,
+        anisotrophicBlur: 0.1,
+        // Set to > 0 for diffuse roughness
+        roughness: 0,
+        thickness: -1,
+        ior: 1.5,
+        // Set to > 0 for animation
+        distortion: 0.1,
+        distortionScale: 0.2,
+        temporalDistortion: 0.2,
+        anisotropicBlur: 0.2,
+
+        side: THREE.DoubleSide
+    });
+
     cube = new THREE.Mesh(cubeGeometry, glassMaterial);
+    cube.material = transmissionMaterial;
+
     scene.add(cube);
 
     // --- 地球自发光/丁达尔氛围层 ---

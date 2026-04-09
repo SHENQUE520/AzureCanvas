@@ -45,9 +45,10 @@
     
     // ========== 等待画布生成，绑定鼠标事件 ==========
     function bindToCanvas() {
-        const canvas = document.querySelector('canvas');
+        const canvas = document.getElementById('cube-container');//document.querySelector('canvas');
         if (!canvas) {
             setTimeout(bindToCanvas, 100);
+            console.error("when an error")
             return;
         }
         
@@ -62,9 +63,9 @@
             targetRotateY = 0;
         });
         
-        console.log('鼠标交互模块已绑定到立方体');
+        /// console.log('鼠标交互模块已绑定到立方体');
     }
-    
+
     // ========== 动画循环（平滑过渡） ==========
     function animateSmoothRotation() {
         currentRotateX += (targetRotateX - currentRotateX) * SMOOTHING;
