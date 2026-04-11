@@ -11,51 +11,134 @@
     <link rel="stylesheet" href="../css/app.major.css">
     <link rel="stylesheet" href="../css/attributes.texts.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(74, 125, 181, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 125, 181, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
         .admin-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #4a7db5;
+        }
+
+        .breadcrumb .separator {
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            position: relative;
         }
 
         .header h1 {
-            color: var(--text-color);
+            color: #ffffff;
             margin: 0;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .logout-btn {
-            padding: 8px 16px;
-            background-color: #e74c3c;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
         }
 
         .logout-btn:hover {
-            background-color: #c0392b;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
         }
 
         .add-robot-btn {
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: var(--primary-color);
+            margin-bottom: 30px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 700;
+            font-size: 1.05rem;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .add-robot-btn:hover {
-            background-color: var(--primary-hover);
+            transform: scale(1.08);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .add-robot-btn:active {
+            transform: scale(0.98) translateY(2px);
         }
 
         .robot-list {
@@ -63,104 +146,126 @@
         }
 
         .robot-item {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .robot-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.3);
         }
 
         .robot-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .robot-avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .robot-details h3 {
-            margin: 0 0 5px 0;
-            color: var(--text-color);
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            font-size: 1.3rem;
         }
 
         .robot-details p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            margin: 4px 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
         }
 
         .robot-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn-primary {
-            background-color: #2565b0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-primary:hover {
-            background-color: #0e4b8f;
-            box-shadow: 0 2px 8px rgba(37, 101, 176, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
         .btn-secondary {
-            background-color: #3498db;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
 
         .btn-secondary:hover {
-            background-color: #2980b9;
-            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
         }
 
         .btn-danger {
-            background-color: #e74c3c;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
         }
 
         .btn-danger:hover {
-            background-color: #c0392b;
-            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
         }
 
         .status-badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .status-active {
-            background-color: rgba(46, 204, 113, 0.1);
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.2) 0%, rgba(46, 204, 113, 0.1) 100%);
             color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.3);
         }
 
         .status-inactive {
-            background-color: rgba(231, 76, 60, 0.1);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.1) 100%);
             color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
         }
 
         .modal {
@@ -170,76 +275,302 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-content {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 30px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
             width: 90%;
-            max-width: 500px;
+            max-width: 550px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
         }
 
         .form-input {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #4a7db5;
-            border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #0a2a44;
+            padding: 14px 18px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
             transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #2565b0;
-            box-shadow: 0 0 0 3px rgba(37, 101, 176, 0.2);
-            background-color: white;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .modal-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .message {
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
             display: none;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
         }
 
         .message-success {
-            background-color: rgba(46, 204, 113, 0.1);
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.2) 0%, rgba(46, 204, 113, 0.1) 100%);
             color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.3);
         }
 
         .message-error {
-            background-color: rgba(231, 76, 60, 0.1);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.1) 100%);
             color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-radius: 24px;
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .empty-state:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .empty-state h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .empty-state-secondary-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-outline {
+            padding: 12px 24px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-outline:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .loading-spinner {
+            font-size: 4rem;
+            color: #667eea;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-state p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+            border-radius: 24px;
+            border: 2px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .error-state-icon {
+            font-size: 4rem;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .error-state h2 {
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .error-state p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+        }
+
+        .floating-add-btn {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            font-size: 1.8rem;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-add-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .logout-btn {
+                position: static;
+                transform: none;
+            }
+
+            .logout-btn:hover {
+                transform: scale(1.05);
+            }
+
+            .robot-item {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .robot-actions {
+                justify-content: center;
+            }
+
+            .add-robot-btn {
+                display: none;
+            }
+
+            .floating-add-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .breadcrumb {
+                justify-content: center;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 
 <body class="light-mode">
     <div class="admin-container">
+        <nav class="breadcrumb">
+            <a href="../index.html">首页</a>
+            <span class="separator">></span>
+            <span>机器人管理</span>
+        </nav>
+
         <div class="header">
             <h1><i class="fas fa-robot"></i> 机器人管理</h1>
             <button class="logout-btn" id="logoutBtn">
@@ -251,29 +582,31 @@
             <i class="fas fa-plus"></i> 添加机器人
         </button>
 
+        <button class="floating-add-btn" id="floatingAddRobotBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+
         <div class="message message-success" id="successMessage"></div>
         <div class="message message-error" id="errorMessage"></div>
 
         <div class="robot-list" id="robotList">
-            <!-- 机器人列表将通过JavaScript动态加载 -->
         </div>
     </div>
 
-    <!-- 添加/编辑机器人模态框 -->
     <div class="modal" id="robotModal">
         <div class="modal-content">
-            <h2 id="modalTitle">添加机器人</h2>
+            <h2 id="modalTitle"><i class="fas fa-robot"></i> 添加机器人</h2>
             <form id="robotForm">
                 <input type="hidden" id="robotId">
 
                 <div class="form-group">
                     <label class="form-label" for="robotName">机器人名称</label>
-                    <input type="text" class="form-input" id="robotName" required>
+                    <input type="text" class="form-input" id="robotName" placeholder="输入机器人名称" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="robotAvatar">头像URL</label>
-                    <input type="text" class="form-input" id="robotAvatar">
+                    <input type="text" class="form-input" id="robotAvatar" placeholder="输入头像URL（可选）">
                 </div>
 
                 <div class="form-group">
@@ -288,17 +621,17 @@
 
                 <div class="form-group">
                     <label class="form-label" for="postFrequency">发帖频率（分钟）</label>
-                    <input type="number" class="form-input" id="postFrequency" min="1">
+                    <input type="number" class="form-input" id="postFrequency" min="1" placeholder="60">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="replyFrequency">回复频率（分钟）</label>
-                    <input type="number" class="form-input" id="replyFrequency" min="1">
+                    <input type="number" class="form-input" id="replyFrequency" min="1" placeholder="30">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="interests">感兴趣的话题（逗号分隔）</label>
-                    <input type="text" class="form-input" id="interests">
+                    <input type="text" class="form-input" id="interests" placeholder="校园生活,学习交流,兴趣爱好">
                 </div>
 
                 <div class="form-group">
@@ -308,7 +641,7 @@
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" id="cancelBtn">取消</button>
+                    <button type="button" class="btn btn-outline" id="cancelBtn">取消</button>
                     <button type="submit" class="btn btn-primary">保存</button>
                 </div>
             </form>
@@ -316,73 +649,144 @@
     </div>
 
     <script>
-        // 检查登录状态（简化版，允许直接访问）
+        const API_BASE_URL = '/api/robots';
+        let token = localStorage.getItem('token');
+
         function checkLogin() {
-            const token = localStorage.getItem('token');
+            token = localStorage.getItem('token');
             if (!token) {
-                // 即使没有token也允许访问
-                console.log('No token found, but allowing access for testing');
+                window.location.href = 'login.html';
+                return false;
             }
+            return true;
         }
 
-        // 模拟机器人数据
-        let robots = [
-            { id: 1, name: '机器人1', avatar: '', activeTimeStart: '08:00', activeTimeEnd: '22:00', postFrequency: 60, replyFrequency: 30, interests: '校园生活,学习交流', enabled: true },
-            { id: 2, name: '机器人2', avatar: '', activeTimeStart: '09:00', activeTimeEnd: '21:00', postFrequency: 120, replyFrequency: 60, interests: '兴趣爱好,二手交易', enabled: false }
-        ];
+        async function apiRequest(url, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+            const mergedOptions = { ...defaultOptions, ...options };
+            const response = await fetch(url, mergedOptions);
+            if (response.status === 401) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return response;
+        }
 
-        // 加载机器人列表
-        function loadRobots() {
+        function showLoadingState() {
             const robotList = document.getElementById('robotList');
-            robotList.innerHTML = '';
-
-            if (robots.length === 0) {
-                robotList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">暂无机器人</p>';
-                return;
-            }
-
-            robots.forEach(robot => {
-                const robotItem = document.createElement('div');
-                robotItem.className = 'robot-item';
-                robotItem.innerHTML = `
-                    <div class="robot-info">
-                        <div class="robot-avatar">
-                            ${robot.name.charAt(0)}
-                        </div>
-                        <div class="robot-details">
-                            <h3>${robot.name}</h3>
-                            <p>活跃时间: ${robot.activeTimeStart} - ${robot.activeTimeEnd}</p>
-                            <p>发帖频率: ${robot.postFrequency}分钟 | 回复频率: ${robot.replyFrequency}分钟</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="status-badge ${robot.enabled ? 'status-active' : 'status-inactive'}">
-                            ${robot.enabled ? '活跃' : '禁用'}
-                        </span>
-                        <div class="robot-actions">
-                            <button class="btn btn-secondary" onclick="editRobot(${robot.id})">
-                                <i class="fas fa-edit"></i> 编辑
-                            </button>
-                            <button class="btn ${robot.enabled ? 'btn-danger' : 'btn-primary'}" onclick="toggleRobot(${robot.id})">
-                                ${robot.enabled ? '<i class="fas fa-ban"></i> 禁用' : '<i class="fas fa-play"></i> 启用'}
-                            </button>
-                            <button class="btn btn-secondary" onclick="generatePost(${robot.id})">
-                                <i class="fas fa-pen"></i> 发帖
-                            </button>
-                            <button class="btn btn-secondary" onclick="generateReply(${robot.id})">
-                                <i class="fas fa-reply"></i> 回复
-                            </button>
-                            <button class="btn btn-danger" onclick="deleteRobot(${robot.id})">
-                                <i class="fas fa-trash"></i> 删除
-                            </button>
-                        </div>
-                    </div>
-                `;
-                robotList.appendChild(robotItem);
-            });
+            robotList.innerHTML = `
+                <div class="loading-state">
+                    <i class="fas fa-spinner loading-spinner"></i>
+                    <p>正在加载机器人数据...</p>
+                </div>
+            `;
         }
 
-        // 显示成功消息
+        function showErrorState() {
+            const robotList = document.getElementById('robotList');
+            robotList.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle error-state-icon"></i>
+                    <h2>加载失败</h2>
+                    <p>无法获取机器人数据，请检查网络连接</p>
+                    <button class="btn btn-primary" onclick="loadRobots()">
+                        <i class="fas fa-redo"></i> 点击重试
+                    </button>
+                </div>
+            `;
+        }
+
+        function showEmptyState() {
+            const robotList = document.getElementById('robotList');
+            robotList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-robot empty-state-icon"></i>
+                    <h2>还没有添加任何机器人</h2>
+                    <p>机器人可自动发布内容、回复评论，支持自定义配置运行规则。<br>点击「添加机器人」开始创建吧～</p>
+                    <button class="add-robot-btn" onclick="document.getElementById('addRobotBtn').click()">
+                        <i class="fas fa-plus"></i> 添加机器人
+                    </button>
+                    <div class="empty-state-secondary-actions">
+                        <button class="btn-outline" onclick="showInfoTooltip()">
+                            <i class="fas fa-info-circle"></i> 了解更多
+                        </button>
+                        <button class="btn-outline">
+                            <i class="fas fa-file-import"></i> 导入模板
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showInfoTooltip() {
+            alert('机器人功能说明：\n\n• 自动发帖：按照设定的频率发布话题\n• 自动回复：对新帖子进行智能回复\n• 定时运行：在指定时间段内活跃\n• 兴趣匹配：根据设定的话题进行内容创作');
+        }
+
+        async function loadRobots() {
+            showLoadingState();
+            try {
+                const response = await apiRequest(API_BASE_URL);
+                if (!response) return;
+                
+                const robots = await response.json();
+                const robotList = document.getElementById('robotList');
+                robotList.innerHTML = '';
+
+                if (robots.length === 0) {
+                    showEmptyState();
+                    return;
+                }
+
+                robots.forEach(robot => {
+                    const robotItem = document.createElement('div');
+                    robotItem.className = 'robot-item';
+                    robotItem.innerHTML = `
+                        <div class="robot-info">
+                            <div class="robot-avatar">
+                                ${robot.name.charAt(0)}
+                            </div>
+                            <div class="robot-details">
+                                <h3>${robot.name}</h3>
+                                <p>活跃时间: ${robot.activeTimeStart || '未设置'} - ${robot.activeTimeEnd || '未设置'}</p>
+                                <p>发帖频率: ${robot.postFrequency || 0}分钟 | 回复频率: ${robot.replyFrequency || 0}分钟</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                            <span class="status-badge ${robot.enabled ? 'status-active' : 'status-inactive'}">
+                                ${robot.enabled ? '活跃' : '禁用'}
+                            </span>
+                            <div class="robot-actions">
+                                <button class="btn btn-secondary" onclick="editRobot(${robot.id})">
+                                    <i class="fas fa-edit"></i> 编辑
+                                </button>
+                                <button class="btn ${robot.enabled ? 'btn-danger' : 'btn-primary'}" onclick="toggleRobot(${robot.id})">
+                                    ${robot.enabled ? '<i class="fas fa-ban"></i> 禁用' : '<i class="fas fa-play"></i> 启用'}
+                                </button>
+                                <button class="btn btn-secondary" onclick="generatePost(${robot.id})">
+                                    <i class="fas fa-pen"></i> 发帖
+                                </button>
+                                <button class="btn btn-secondary" onclick="generateReply(${robot.id})">
+                                    <i class="fas fa-reply"></i> 回复
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteRobot(${robot.id})">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    robotList.appendChild(robotItem);
+                });
+            } catch (error) {
+                console.error('加载机器人列表失败:', error);
+                showErrorState();
+            }
+        }
+
         function showSuccess(message) {
             const successMessage = document.getElementById('successMessage');
             successMessage.textContent = message;
@@ -392,7 +796,6 @@
             }, 3000);
         }
 
-        // 显示错误消息
         function showError(message) {
             const errorMessage = document.getElementById('errorMessage');
             errorMessage.textContent = message;
@@ -402,9 +805,8 @@
             }, 3000);
         }
 
-        // 添加机器人
-        document.getElementById('addRobotBtn').addEventListener('click', () => {
-            document.getElementById('modalTitle').textContent = '添加机器人';
+        function openModal() {
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-robot"></i> 添加机器人';
             document.getElementById('robotId').value = '';
             document.getElementById('robotName').value = '';
             document.getElementById('robotAvatar').value = '';
@@ -415,30 +817,39 @@
             document.getElementById('interests').value = '校园生活,学习交流,兴趣爱好';
             document.getElementById('enabled').checked = true;
             document.getElementById('robotModal').style.display = 'flex';
-        });
+        }
 
-        // 编辑机器人
-        function editRobot(id) {
-            const robot = robots.find(r => r.id === id);
-            if (robot) {
-                document.getElementById('modalTitle').textContent = '编辑机器人';
-                document.getElementById('robotId').value = robot.id;
-                document.getElementById('robotName').value = robot.name;
-                document.getElementById('robotAvatar').value = robot.avatar || '';
-                document.getElementById('activeTimeStart').value = robot.activeTimeStart;
-                document.getElementById('activeTimeEnd').value = robot.activeTimeEnd;
-                document.getElementById('postFrequency').value = robot.postFrequency;
-                document.getElementById('replyFrequency').value = robot.replyFrequency;
-                document.getElementById('interests').value = robot.interests;
-                document.getElementById('enabled').checked = robot.enabled;
-                document.getElementById('robotModal').style.display = 'flex';
-            } else {
-                showError('机器人不存在');
+        document.getElementById('addRobotBtn').addEventListener('click', openModal);
+        document.getElementById('floatingAddRobotBtn').addEventListener('click', openModal);
+
+        async function editRobot(id) {
+            try {
+                const response = await apiRequest(`${API_BASE_URL}/${id}`);
+                if (!response) return;
+                
+                const robot = await response.json();
+                if (robot) {
+                    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> 编辑机器人';
+                    document.getElementById('robotId').value = robot.id;
+                    document.getElementById('robotName').value = robot.name;
+                    document.getElementById('robotAvatar').value = robot.avatar || '';
+                    document.getElementById('activeTimeStart').value = robot.activeTimeStart || '08:00';
+                    document.getElementById('activeTimeEnd').value = robot.activeTimeEnd || '22:00';
+                    document.getElementById('postFrequency').value = robot.postFrequency || 60;
+                    document.getElementById('replyFrequency').value = robot.replyFrequency || 30;
+                    document.getElementById('interests').value = robot.interests || '';
+                    document.getElementById('enabled').checked = robot.enabled;
+                    document.getElementById('robotModal').style.display = 'flex';
+                } else {
+                    showError('机器人不存在');
+                }
+            } catch (error) {
+                console.error('获取机器人信息失败:', error);
+                showError('获取失败，请稍后重试');
             }
         }
 
-        // 保存机器人
-        document.getElementById('robotForm').addEventListener('submit', (e) => {
+        document.getElementById('robotForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('robotId').value;
             const robot = {
@@ -453,45 +864,46 @@
             };
 
             try {
+                let response;
                 if (id) {
-                    // 更新现有机器人
-                    const index = robots.findIndex(r => r.id === parseInt(id));
-                    if (index !== -1) {
-                        robots[index] = { ...robot, id: parseInt(id) };
-                        showSuccess('机器人更新成功');
-                    } else {
-                        showError('机器人不存在');
-                        return;
-                    }
+                    response = await apiRequest(`${API_BASE_URL}/${id}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(robot)
+                    });
                 } else {
-                    // 添加新机器人
-                    const newId = Math.max(...robots.map(r => r.id), 0) + 1;
-                    robots.push({ ...robot, id: newId });
-                    showSuccess('机器人添加成功');
+                    response = await apiRequest(API_BASE_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(robot)
+                    });
                 }
-                document.getElementById('robotModal').style.display = 'none';
-                loadRobots();
+
+                if (response && response.ok) {
+                    document.getElementById('robotModal').style.display = 'none';
+                    loadRobots();
+                    showSuccess(id ? '机器人更新成功' : '机器人添加成功');
+                } else {
+                    showError('保存失败，请稍后重试');
+                }
             } catch (error) {
                 console.error('保存机器人失败:', error);
                 showError('保存失败，请稍后重试');
             }
         });
 
-        // 取消按钮
         document.getElementById('cancelBtn').addEventListener('click', () => {
             document.getElementById('robotModal').style.display = 'none';
         });
 
-        // 切换机器人状态
-        function toggleRobot(id) {
+        async function toggleRobot(id) {
             try {
-                const robot = robots.find(r => r.id === id);
-                if (robot) {
-                    robot.enabled = !robot.enabled;
+                const response = await apiRequest(`${API_BASE_URL}/${id}/toggle`, {
+                    method: 'PUT'
+                });
+                if (response && response.ok) {
                     loadRobots();
                     showSuccess('状态更新成功');
                 } else {
-                    showError('机器人不存在');
+                    showError('操作失败，请稍后重试');
                 }
             } catch (error) {
                 console.error('切换状态失败:', error);
@@ -499,14 +911,15 @@
             }
         }
 
-        // 生成帖子
-        function generatePost(id) {
+        async function generatePost(id) {
             try {
-                const robot = robots.find(r => r.id === id);
-                if (robot) {
+                const response = await apiRequest(`${API_BASE_URL}/${id}/generate-post`, {
+                    method: 'POST'
+                });
+                if (response && response.ok) {
                     showSuccess('帖子生成成功');
                 } else {
-                    showError('机器人不存在');
+                    showError('生成失败，请稍后重试');
                 }
             } catch (error) {
                 console.error('生成帖子失败:', error);
@@ -514,14 +927,15 @@
             }
         }
 
-        // 生成回复
-        function generateReply(id) {
+        async function generateReply(id) {
             try {
-                const robot = robots.find(r => r.id === id);
-                if (robot) {
+                const response = await apiRequest(`${API_BASE_URL}/${id}/generate-reply`, {
+                    method: 'POST'
+                });
+                if (response && response.ok) {
                     showSuccess('回复生成成功');
                 } else {
-                    showError('机器人不存在');
+                    showError('生成失败，请稍后重试');
                 }
             } catch (error) {
                 console.error('生成回复失败:', error);
@@ -529,17 +943,17 @@
             }
         }
 
-        // 删除机器人
-        function deleteRobot(id) {
+        async function deleteRobot(id) {
             if (confirm('确定要删除这个机器人吗？')) {
                 try {
-                    const index = robots.findIndex(r => r.id === id);
-                    if (index !== -1) {
-                        robots.splice(index, 1);
+                    const response = await apiRequest(`${API_BASE_URL}/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response && response.ok) {
                         loadRobots();
                         showSuccess('机器人删除成功');
                     } else {
-                        showError('机器人不存在');
+                        showError('删除失败，请稍后重试');
                     }
                 } catch (error) {
                     console.error('删除机器人失败:', error);
@@ -548,16 +962,15 @@
             }
         }
 
-        // 退出登录
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('token');
             window.location.href = 'login.html';
         });
 
-        // 页面加载时检查登录状态并加载机器人列表
         window.onload = function () {
-            checkLogin();
-            loadRobots();
+            if (checkLogin()) {
+                loadRobots();
+            }
         };
     </script>
 </body>

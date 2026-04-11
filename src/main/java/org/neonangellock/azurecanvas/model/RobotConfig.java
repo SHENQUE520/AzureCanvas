@@ -1,11 +1,9 @@
 package org.neonangellock.azurecanvas.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.Date;
 
-@Data
 @Entity
 @Table(name = "robot_configs")
 public class RobotConfig {
@@ -33,4 +31,101 @@ public class RobotConfig {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private Date updatedAt = new Date();
+
+    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getActiveTimeStart() {
+        return activeTimeStart;
+    }
+
+    public void setActiveTimeStart(String activeTimeStart) {
+        this.activeTimeStart = activeTimeStart;
+    }
+
+    public String getActiveTimeEnd() {
+        return activeTimeEnd;
+    }
+
+    public void setActiveTimeEnd(String activeTimeEnd) {
+        this.activeTimeEnd = activeTimeEnd;
+    }
+
+    public Integer getPostFrequency() {
+        return postFrequency;
+    }
+
+    public void setPostFrequency(Integer postFrequency) {
+        this.postFrequency = postFrequency;
+    }
+
+    public Integer getReplyFrequency() {
+        return replyFrequency;
+    }
+
+    public void setReplyFrequency(Integer replyFrequency) {
+        this.replyFrequency = replyFrequency;
+    }
+
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

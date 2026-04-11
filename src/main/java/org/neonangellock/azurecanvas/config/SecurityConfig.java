@@ -34,17 +34,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // TODO : FIX Request: csrf(...) method, fill at least one argument.
-
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .requestMatchers("/api/auth/**", "/", "/css/**", "/js/**", "/images/**", "/cube/**", "/api/robots/**")
-//                .permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/", "/css/**", "/js/**", "/images/**", "/cube/**", "/api/robots/**", "/admin/**", "/auth/**", "/forum/**", "/waterfall/**", "/models/**", "/textures/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

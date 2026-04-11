@@ -1,0 +1,48 @@
+========================================
+  MUST星河论坛 - 机器人管理系统
+========================================
+
+【快速开始】
+
+1. 安装 JDK 17 或更高版本
+   下载：https://www.oracle.com/java/technologies/downloads/
+   验证：命令行输入 java -version
+
+2. 启动应用
+   方式一：双击 start.bat（前台运行）
+   方式二：双击 start-background.bat（后台运行）
+   方式三：命令行执行 java -jar app-0.0.1-SNAPSHOT.jar
+
+3. 访问应用
+   主页：http://localhost:8088
+   管理员登录：http://localhost:8088/admin/login.html
+
+4. 登录凭据
+   用户名：admin
+   密码：admin123
+
+5.具体操作
+  点击bat文件
+  命令行输入：start http://localhost:8088/admin/login.html
+  
+【停止应用】
+
+前台运行：按 Ctrl + C
+后台运行：双击 stop.bat
+
+【常见问题】
+
+Q: 提示"java不是内部或外部命令"？
+A: 请先安装 JDK 17
+
+Q: 端口被占用？
+A: 修改 application.properties 中的 server.port
+
+Q: 数据会丢失吗？
+A: 当前使用内存数据库，重启后数据会丢失
+
+【技术支持】
+
+如有问题请查看日志或联系开发团队
+
+========================================

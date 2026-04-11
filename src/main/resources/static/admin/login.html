@@ -139,17 +139,15 @@
         <form class="login-form" id="loginForm">
             <div class="form-group">
                 <label class="form-label" for="username">用户名</label>
-                <input type="text" class="form-input" id="username" name="username" value="xinghe" required>
+                <input type="text" class="form-input" id="username" name="username" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="password">密码</label>
-                <input type="password" class="form-input" id="password" name="password" value="123456" required>
+                <input type="password" class="form-input" id="password" name="password" required>
             </div>
 
             <button type="submit" class="login-btn">登录</button>
-            <button type="button" class="login-btn" style="background-color: #27ae60; margin-top: 10px;"
-                onclick="directAccess()">直接进入</button>
 
             <div class="error-message" id="errorMessage"></div>
             <div class="success-message" id="successMessage"></div>
@@ -161,14 +159,6 @@
     </div>
 
     <script>
-        // 直接进入机器人管理页面
-        function directAccess() {
-            // 存储一个假的token
-            localStorage.setItem('token', 'fake-token');
-            // 直接跳转到机器人管理页面
-            window.location.href = 'robots.html';
-        }
-
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
