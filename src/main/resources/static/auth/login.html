@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
     <link rel="stylesheet" href="../css/attributes.texts.css">
     <style>
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-color, #160228);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,13 +21,14 @@
         }
 
         .auth-container {
-            background-color: var(--card-bg);
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             padding: 40px;
             width: 100%;
             max-width: 400px;
             text-align: center;
+            border: 1px solid #4a7db5;
         }
 
         .auth-logo {
@@ -35,19 +37,20 @@
 
         .auth-logo i {
             font-size: 3rem;
-            color: var(--primary-color);
+            color: #2565b0;
             margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(37, 101, 176, 0.5));
         }
 
         .auth-logo h1 {
             margin: 0;
-            color: var(--text-color);
+            color: #0a2a44;
             font-size: 1.5rem;
         }
 
         .auth-logo p {
             margin: 5px 0 0 0;
-            color: var(--text-secondary);
+            color: #1e3a5f;
             font-size: 0.9rem;
         }
 
@@ -60,28 +63,32 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--text-color);
+            color: #0a2a44;
         }
 
         .form-input {
             width: 100%;
             padding: 12px;
-            border: 1px solid var(--border-color);
+            border: 2px solid #4a7db5;
             border-radius: 8px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: white;
+            color: #0a2a44;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #2565b0;
+            box-shadow: 0 0 0 3px rgba(37, 101, 176, 0.2);
+            background-color: white;
         }
 
         .form-actions {
             margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .btn {
@@ -96,35 +103,27 @@
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background-color: #2565b0;
             color: white;
-            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(37, 101, 176, 0.3);
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-hover);
+            background-color: #0e4b8f;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: var(--hover-bg);
-            color: var(--text-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--border-color);
+            box-shadow: 0 6px 16px rgba(37, 101, 176, 0.4);
         }
 
         .auth-footer {
             margin-top: 20px;
             font-size: 0.9rem;
-            color: var(--text-secondary);
+            color: #1e3a5f;
         }
 
         .auth-footer a {
-            color: var(--primary-color);
+            color: #2565b0;
             text-decoration: none;
+            font-weight: 600;
         }
 
         .auth-footer a:hover {
@@ -138,6 +137,7 @@
             border-radius: 4px;
             margin-bottom: 20px;
             font-size: 0.9rem;
+            border-left: 4px solid #e74c3c;
         }
 
         .success-message {
@@ -147,21 +147,23 @@
             border-radius: 4px;
             margin-bottom: 20px;
             font-size: 0.9rem;
+            border-left: 4px solid #2ecc71;
         }
     </style>
 </head>
+
 <body class="light-mode">
     <div class="auth-container">
         <div class="auth-logo">
             <i class="fas fa-university"></i>
             <h1>星河论坛</h1>
-            <p>欢迎回来</p>
+            <p>登录</p>
         </div>
 
         <form id="loginForm">
             <div class="form-group">
-                <label class="form-label" for="username">用户名</label>
-                <input type="text" class="form-input" id="username" placeholder="请输入用户名" required>
+                <label class="form-label" for="username">用户名 / 邮箱 / 手机号</label>
+                <input type="text" class="form-input" id="username" placeholder="请输入用户名、邮箱或手机号" required>
             </div>
 
             <div class="form-group">
@@ -171,42 +173,54 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">登录</button>
-                <a href="register.html" class="btn btn-secondary">注册</a>
+                <a href="register.html" class="btn btn-primary">注册</a>
             </div>
         </form>
 
         <div class="auth-footer">
             <p>忘记密码？ <a href="#">点击找回</a></p>
-            <p>还没有账号？ <a href="register.html">立即注册</a></p>
         </div>
     </div>
 
     <script>
+        // 自动检测 API 基础地址
+        const API_BASE = window.location.origin === 'http://127.0.0.1:5500' ? 'http://localhost:8088' : '';
+
         // 登录表单提交
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
+
             try {
                 // 调用登录API
-                const response = await fetch('/api/auth/login', {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ username, password })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     // 登录成功，存储token
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    // 跳转到论坛首页
-                    window.location.href = '../forum/index.html';
+
+                    // 根据用户角色跳转到不同页面
+                    if (data.user.role === 'admin') {
+                        // 管理员跳转到机器人管理页面
+                        window.location.href = '../admin/robots.html';
+                    } else if (data.user.role === 'moderator') {
+                        // 版主跳转到个人中心
+                        window.location.href = '../user/user.html';
+                    } else {
+                        // 普通用户跳转到论坛首页
+                        window.location.href = '../forum/index.html';
+                    }
                 } else {
                     // 登录失败，显示错误信息
                     const errorDiv = document.createElement('div');
@@ -224,4 +238,5 @@
         });
     </script>
 </body>
+
 </html>

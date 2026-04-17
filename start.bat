@@ -11,6 +11,12 @@ echo.
 
 cd /d "%~dp0"
 
-java -jar target\app-0.0.1-SNAPSHOT.jar
+if "%1" neq "" (
+    echo 使用指定端口: %1
+    java -jar target\app-0.0.1-SNAPSHOT.jar --server.port=%1
+) else (
+    echo 使用默认端口: 8088
+    java -jar target\app-0.0.1-SNAPSHOT.jar
+)
 
 pause

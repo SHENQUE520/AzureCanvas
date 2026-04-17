@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - MUST星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="../css/app.major.css">
+    <link rel="stylesheet" href="../css/attributes.texts.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .profile-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .avatar-section {
+            margin-bottom: 30px;
+        }
+
+        .avatar-display {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 4px solid var(--primary-hover);
+        }
+
+        .avatar-display img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-display i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .username-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .role-badge.admin {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .role-badge.moderator {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .role-badge.user {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .profile-info {
+            text-align: left;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 40px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .info-label {
+            width: 80px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .info-value {
+            flex: 1;
+            color: var(--text-color);
+        }
+
+        .info-value.editable {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .info-value.editable:hover {
+            color: var(--primary-color);
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+
+        .edit-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            background-color: white;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-hover);
+            box-shadow: 0 0 0 3px rgba(37, 101, 176, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 101, 176, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .back-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1><i class="fas fa-user-circle"></i> 个人中心</h1>
+        </div>
+
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i>
+            <p>加载中...</p>
+        </div>
+
+        <div class="profile-content" id="profileContent" style="display: none;">
+            <div class="avatar-section">
+                <div class="avatar-display" id="avatarDisplay">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="username-display" id="usernameDisplay"></div>
+                <span class="role-badge" id="roleBadge"></span>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="info-label">邮箱</div>
+                    <div class="info-value editable" id="emailDisplay" onclick="enableEdit('email')"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
+                    <div class="info-label">注册时间</div>
+                    <div class="info-value" id="createdAtDisplay"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-robot"></i></div>
+                    <div class="info-label">类型</div>
+                    <div class="info-value" id="typeDisplay"></div>
+                </div>
+            </div>
+
+            <div class="edit-form" id="editForm">
+                <div class="form-group">
+                    <label class="form-label" for="emailInput">邮箱地址</label>
+                    <input type="email" class="form-input" id="emailInput" placeholder="请输入邮箱地址">
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">保存</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelEdit()">取消</button>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="success-message" id="successMessage"></div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> 退出登录
+            </button>
+
+            <div class="back-link">
+                <a href="../index.html"><i class="fas fa-arrow-left"></i> 返回首页</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 自动检测 API 基础地址
+        const API_BASE = window.location.origin === 'http://127.0.0.1:5500' ? 'http://localhost:8088' : '';
+
+        let currentUser = null;
+
+        async function loadUserProfile() {
+            const loading = document.getElementById('loading');
+            const profileContent = document.getElementById('profileContent');
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                alert('请先登录');
+                window.location.href = '../admin/login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/user/me`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    currentUser = await response.json();
+                    displayProfile(currentUser);
+                    loading.style.display = 'none';
+                    profileContent.style.display = 'block';
+                } else if (response.status === 401) {
+                    alert('登录已过期，请重新登录');
+                    localStorage.removeItem('token');
+                    window.location.href = '../admin/login.html';
+                } else {
+                    throw new Error('Failed to load profile');
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                alert('加载用户信息失败，请重试');
+                loading.innerHTML = '<p>加载失败，请<a href="javascript:location.reload()">刷新页面</a></p>';
+            }
+        }
+
+        function displayProfile(user) {
+            document.getElementById('usernameDisplay').textContent = user.username;
+            document.getElementById('emailDisplay').textContent = user.email || '未设置';
+            document.getElementById('createdAtDisplay').textContent = formatDate(user.createdAt);
+            document.getElementById('typeDisplay').textContent = user.isRobot ? '机器人用户' : '普通用户';
+
+            const roleBadge = document.getElementById('roleBadge');
+            roleBadge.textContent = getRoleText(user.role);
+            roleBadge.className = 'role-badge ' + user.role;
+
+            if (user.avatar) {
+                document.getElementById('avatarDisplay').innerHTML = `<img src="${user.avatar}" alt="Avatar">`;
+            }
+        }
+
+        function getRoleText(role) {
+            switch (role) {
+                case 'admin': return '管理员';
+                case 'moderator': return '版主';
+                case 'user': return '用户';
+                default: return '用户';
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '未知';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function enableEdit(field) {
+            const editForm = document.getElementById('editForm');
+            const emailInput = document.getElementById('emailInput');
+
+            if (field === 'email') {
+                emailInput.value = currentUser.email || '';
+            }
+
+            editForm.classList.add('active');
+        }
+
+        function cancelEdit() {
+            document.getElementById('editForm').classList.remove('active');
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        async function saveProfile() {
+            const token = localStorage.getItem('token');
+            const emailInput = document.getElementById('emailInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            const updates = {
+                email: emailInput.value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/user/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(updates)
+                });
+
+                if (response.ok) {
+                    const updatedUser = await response.json();
+                    currentUser = { ...currentUser, ...updatedUser };
+                    displayProfile(currentUser);
+                    cancelEdit();
+                    successMessage.textContent = '保存成功';
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to save profile');
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                errorMessage.textContent = '保存失败，请重试';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('token');
+                window.location.href = '../index.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
+    </script>
+</body>
+
+</html>
