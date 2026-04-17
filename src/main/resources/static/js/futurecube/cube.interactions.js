@@ -2,8 +2,10 @@
 // 鼠标交互模块 - 3D立方体导航栏
 // 负责人：@glow
 // ============================================
+import {isCloseToCube} from '../cube.event.util.js';
 
 (function() {
+    let isBound = false;
     // 当前目标旋转角度
     let targetRotateX = 0;
     let targetRotateY = 0;
@@ -42,30 +44,41 @@
         targetRotateX = newRotateX;
         targetRotateY = newRotateY;
     }
+
     
     // ========== 等待画布生成，绑定鼠标事件 ==========
     function bindToCanvas() {
-        // 修改点：使用 querySelector 获取单个 canvas 元素，并明确容器
         const container = document.getElementById('cube-container');
-        const canvas = container ? container.querySelector('canvas') : document.querySelector('canvas');
-        
-        if (!canvas) {
-            setTimeout(bindToCanvas, 100);
+        const canvas = container ? container.querySelector('canvas') : null;
+        if (!container || !canvas) {
+            setTimeout(bindToCanvas, 200);
             return;
         }
+        // if (isBound) return;
+        isBound = true;
         
         // 鼠标在立方体上移动 → 旋转
         canvas.addEventListener('mousemove', function(e) {
-            updateTargetRotation(e.clientX, e.clientY);
-        });
+            if (isCloseToCube(e.clientX, e.clientY)){
+                updateTargetRotation(e.clientX, e.clientY);
+
+            }
+            else {
+                targetRotateX = 0;
+                targetRotateY = 0;
+            }
+
+        }, { passive: true });
         
         // 鼠标离开立方体 → 慢慢回正
         canvas.addEventListener('mouseleave', function() {
             targetRotateX = 0;
             targetRotateY = 0;
         });
-        
-        /// console.log('鼠标交互模块已绑定到立方体');
+        canvas.addEventListener('mouseup', function() {
+
+        });
+        console.log('鼠标交互模块已绑定到立方体');
     }
 
     // ========== 动画循环（平滑过渡） ==========

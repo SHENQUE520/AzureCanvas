@@ -322,15 +322,15 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
                 duration: 0.8,
                 ease: "power2.in",
                 onUpdate: () => camera.lookAt(target.position)
+            })
+            .to(camera.position, {
+                x: targetCamPos.x,
+                y: targetCamPos.y,
+                z: targetCamPos.z,
+                duration: 1.0,
+                ease: "power2.out",
+                onUpdate: () => camera.lookAt(target.position)
             });
-            // .to(camera.position, {
-            //     x: targetCamPos.x,
-            //     y: targetCamPos.y,
-            //     z: targetCamPos.z,
-            //     duration: 1.0,
-            //     ease: "power2.out",
-            //     onUpdate: () => camera.lookAt(target.position)
-            // });
             
         } else {
             camera.position.copy(targetCamPos);

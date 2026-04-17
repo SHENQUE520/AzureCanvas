@@ -68,7 +68,82 @@ body.dark-mode {
     gap: 20px;
     cursor: pointer;
     backdrop-filter: saturate(180%) blur(15px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0, 0.53, 0.42, 0.98)
+}
+
+/* 预加载页面样式 */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #001086 0%, #237bff 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease, visibility 1s;
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#preloader-canvas-container {
+    width: 200px;
+    height: 200px;
+}
+
+.loading-text-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: #78eaff;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 800;
+}
+
+.loading-label {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#loading-percentage {
+    font-size: 1.2rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+#progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: #78eaff;
+    box-shadow: 0 0 15px #78eaff;
+    transition: width 0.3s ease;
+}
+
+#loading-status {
+    color: rgba(120, 234, 255, 0.6);
+    font-size: 0.8rem;
+    text-align: center;
 }
 
 .splash-logo:hover {
@@ -78,6 +153,62 @@ body.dark-mode {
     backdrop-filter: blur(60px) saturate(180%) ;
     transform: scale(1.05) translateY(-5px) translateZ(0);
     box-shadow: 0 20px 60px rgba(37, 101, 176, 0.4);
+}
+
+/* Splash 退出动画：3D 斜角旋转飞入屏幕 */
+.splash-logo.splash-exit {
+    animation: splash-fly-in 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+}
+
+@keyframes splash-fly-in {
+    0% {
+        transform: perspective(1000px) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+        opacity: 1;
+        filter: blur(0);
+    }
+    20% {
+        transform: perspective(1000px) translateZ(100px) rotateX(-10deg) rotateY(15deg) rotateZ(5deg) scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        /* 绕平面内直线旋转至少3圈，同时飞向屏幕并放大覆盖 */
+        transform: perspective(1000px) translateZ(1500px) rotateX(-45deg) rotateY(1080deg) rotateZ(20deg) scale(5);
+        opacity: 0;
+        filter: blur(10px);
+    }
+}
+
+/* 背景颜色平滑渐变动画 */
+body.transitioning-bg {
+    animation: bg-color-fade 5s ease-in-out forwards;
+}
+
+@keyframes bg-color-fade {
+    0% {
+        background: linear-gradient(135deg, #160228, #300a4d) center;
+    }
+    100% {
+        background: rgb(159, 163, 196); /* 立方体界面的背景颜色 */
+    }
+}
+
+/* Splash Screen 模糊过渡 */
+#splash-screen.splash-blur {
+    backdrop-filter: blur(40px) saturate(150%);
+    opacity: 0;
+    transition: backdrop-filter 3s ease, opacity 1s ease 1s;
+}
+
+/* 立方体容器 */
+#cube-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 150;
+    pointer-events: none;
 }
 
 .splash-logo i {
@@ -141,10 +272,10 @@ body.dark-mode {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
-    z-index: 150;
+    z-index: 202;
     margin-bottom: 20px;
 }
 

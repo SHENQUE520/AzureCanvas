@@ -34,14 +34,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/auth/**", "/", "/css/**", "/js/**", "/images/**", "/cube/**", "/api/robots/**", "/admin/**", "/auth/**", "/forum/**", "/waterfall/**", "/models/**", "/textures/**")
-//                        .permitAll()
-//                        .anyRequest().authenticated())
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/", "/css/**", "/js/**", "/images/**", "/cube/**", "/api/robots/**", "/admin/**", "/auth/**", "/forum/**", "/waterfall/**", "/models/**", "/textures/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
