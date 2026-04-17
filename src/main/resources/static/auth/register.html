@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/attributes.texts.css">
     <style>
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-color, #160228);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,13 +20,14 @@
         }
 
         .auth-container {
-            background-color: var(--card-bg);
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             padding: 40px;
             width: 100%;
             max-width: 400px;
             text-align: center;
+            border: 1px solid #4a7db5;
         }
 
         .auth-logo {
@@ -35,19 +36,20 @@
 
         .auth-logo i {
             font-size: 3rem;
-            color: var(--primary-color);
+            color: #2565b0;
             margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(37, 101, 176, 0.5));
         }
 
         .auth-logo h1 {
             margin: 0;
-            color: var(--text-color);
+            color: #0a2a44;
             font-size: 1.5rem;
         }
 
         .auth-logo p {
             margin: 5px 0 0 0;
-            color: var(--text-secondary);
+            color: #1e3a5f;
             font-size: 0.9rem;
         }
 
@@ -60,28 +62,32 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--text-color);
+            color: #0a2a44;
         }
 
         .form-input {
             width: 100%;
             padding: 12px;
-            border: 1px solid var(--border-color);
+            border: 2px solid #4a7db5;
             border-radius: 8px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: white;
+            color: #0a2a44;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #2565b0;
+            box-shadow: 0 0 0 3px rgba(37, 101, 176, 0.2);
+            background-color: white;
         }
 
         .form-actions {
             margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .btn {
@@ -96,35 +102,27 @@
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background-color: #2565b0;
             color: white;
-            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(37, 101, 176, 0.3);
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-hover);
+            background-color: #0e4b8f;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: var(--hover-bg);
-            color: var(--text-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--border-color);
+            box-shadow: 0 6px 16px rgba(37, 101, 176, 0.4);
         }
 
         .auth-footer {
             margin-top: 20px;
             font-size: 0.9rem;
-            color: var(--text-secondary);
+            color: #1e3a5f;
         }
 
         .auth-footer a {
-            color: var(--primary-color);
+            color: #2565b0;
             text-decoration: none;
+            font-weight: 600;
         }
 
         .auth-footer a:hover {
@@ -138,6 +136,7 @@
             border-radius: 4px;
             margin-bottom: 20px;
             font-size: 0.9rem;
+            border-left: 4px solid #e74c3c;
         }
 
         .success-message {
@@ -147,6 +146,7 @@
             border-radius: 4px;
             margin-bottom: 20px;
             font-size: 0.9rem;
+            border-left: 4px solid #2ecc71;
         }
     </style>
 </head>
@@ -166,7 +166,12 @@
 
             <div class="form-group">
                 <label class="form-label" for="email">邮箱</label>
-                <input type="email" class="form-input" id="email" placeholder="请输入邮箱" required>
+                <input type="email" class="form-input" id="email" placeholder="请输入邮箱（选填）">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="phone">手机号</label>
+                <input type="tel" class="form-input" id="phone" placeholder="请输入手机号（选填）">
             </div>
 
             <div class="form-group">
@@ -181,7 +186,7 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">注册</button>
-                <a href="login.html" class="btn btn-secondary">登录</a>
+                <a href="login.html" class="btn btn-primary">登录</a>
             </div>
         </form>
 
@@ -191,12 +196,16 @@
     </div>
 
     <script>
+        // 自动检测 API 基础地址
+        const API_BASE = window.location.origin === 'http://127.0.0.1:5500' ? 'http://localhost:8088' : '';
+
         // 注册表单提交
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
@@ -208,15 +217,24 @@
                 document.querySelector('.auth-container').insertBefore(errorDiv, document.getElementById('registerForm'));
                 return;
             }
+
+            // 验证用户名、邮箱、手机号至少填写一个
+            if (!username || (!email && !phone)) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = '请填写用户名，并至少填写邮箱或手机号之一';
+                document.querySelector('.auth-container').insertBefore(errorDiv, document.getElementById('registerForm'));
+                return;
+            }
             
             try {
                 // 调用注册API
-                const response = await fetch('/api/auth/register', {
+                const response = await fetch(`${API_BASE}/api/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({ username, email, phone, password })
                 });
                 
                 const data = await response.json();

@@ -106,3 +106,52 @@ CREATE TABLE IF NOT EXISTS robot_configs (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- 创建树洞帖子表
+CREATE TABLE IF NOT EXISTS treehole_posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT NOT NULL,
+    author_name VARCHAR(100),
+    author_avatar VARCHAR(255),
+    images TEXT,
+    like_count INT DEFAULT 0,
+    comment_count INT DEFAULT 0,
+    is_robot_post BOOLEAN DEFAULT FALSE,
+    robot_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (robot_id) REFERENCES robot_configs(id) ON DELETE SET NULL
+);
+
+-- 创建树洞评论表
+CREATE TABLE IF NOT EXISTS treehole_comments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT NOT NULL,
+    author_name VARCHAR(100),
+    author_avatar VARCHAR(255),
+    is_robot_comment BOOLEAN DEFAULT FALSE,
+    post_id INT NOT NULL,
+    robot_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES treehole_posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (robot_id) REFERENCES robot_configs(id) ON DELETE SET NULL
+);
+
+-- 插入测试机器人
+INSERT INTO users (username, password, email, role, is_robot) VALUES
+('robot_helper', 'robot_password', 'robot_helper@example.com', 'user', TRUE);
+
+INSERT INTO robot_configs (user_id, name, avatar, active_time_start, active_time_end, post_frequency, reply_frequency, interests, enabled) VALUES
+((SELECT id FROM users WHERE username = 'robot_helper'), '树洞小助手', '🤖', '08:00:00', '22:00:00', 2, 5, '校园生活,学习交流', TRUE);
+
+-- 插入测试树洞帖子
+INSERT INTO treehole_posts (content, author_name, author_avatar, like_count, comment_count) VALUES
+('有人知道图书馆三楼靠窗的座位现在需要预约吗？📚', '匿名小树', '🌳', 12, 2),
+('今天拍毕业照，把四年的记忆留在这里🎓 谢谢树洞。', '毕业倒计时', '🎓', 45, 1),
+('二食堂新出的麻辣香锅绝了！🌶️ 但是排队有点长。', '食堂观察员', '🍜', 28, 0);
+
+-- 插入测试树洞评论
+INSERT INTO treehole_comments (content, author_name, post_id) VALUES
+('需要预约，上周就开始啦', '热心同学', 1),
+('是的，用校园卡app', '图书管理员', 1),
+('学长学姐前程似锦！', '学妹', 2);

@@ -31,7 +31,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(74, 125, 181, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(74, 125, 181, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -287,6 +287,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -308,6 +309,7 @@
                 transform: translateY(30px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -462,6 +464,7 @@
             from {
                 transform: rotate(0deg);
             }
+
             to {
                 transform: rotate(360deg);
             }
@@ -649,11 +652,17 @@
     </div>
 
     <script>
-        const API_BASE_URL = '/api/robots';
-        let token = localStorage.getItem('token');
+        // API 基础地址配置
+        // 开发环境指向后端服务器
+        const API_BASE_URL = 'http://localhost:8088/api/robots';
+        let token = null;
 
         function checkLogin() {
-            token = localStorage.getItem('token');
+            try {
+                token = localStorage.getItem('token');
+            } catch (e) {
+                console.warn('localStorage 不可用:', e);
+            }
             if (!token) {
                 window.location.href = 'login.html';
                 return false;
@@ -663,11 +672,15 @@
 
         async function apiRequest(url, options = {}) {
             const defaultOptions = {
+                method: 'GET', // 默认使用 GET 方法
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 }
             };
+            // 只有当 token 存在时才添加认证头
+            if (token) {
+                defaultOptions.headers['Authorization'] = `Bearer ${token}`;
+            }
             const mergedOptions = { ...defaultOptions, ...options };
             const response = await fetch(url, mergedOptions);
             if (response.status === 401) {
@@ -732,7 +745,7 @@
             try {
                 const response = await apiRequest(API_BASE_URL);
                 if (!response) return;
-                
+
                 const robots = await response.json();
                 const robotList = document.getElementById('robotList');
                 robotList.innerHTML = '';
@@ -826,7 +839,7 @@
             try {
                 const response = await apiRequest(`${API_BASE_URL}/${id}`);
                 if (!response) return;
-                
+
                 const robot = await response.json();
                 if (robot) {
                     document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> 编辑机器人';
