@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - AzureTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#7c3aed'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- ===== 顶部导航 ===== -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+            <div class="flex items-center space-x-1 shrink-0">
+                <div class="bg-purple-600 text-white text-2xl font-black px-3 py-1 rounded-lg">闲置</div>
+                <span class="text-purple-700 text-xl font-bold tracking-wide">AzureTrade</span>
+            </div>
+            <div class="flex-1 max-w-xl mx-8">
+                <div class="flex">
+                    <input type="text" placeholder="搜索校园闲置好物..."
+                           class="flex-1 border-2 border-purple-400 rounded-l-full px-5 py-2 text-sm focus:outline-none focus:border-purple-600">
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-r-full text-sm font-semibold transition">
+                        🔍 搜索
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 shrink-0">
+                <a href="trade.html" class="text-sm text-gray-500 hover:text-purple-600">返回交易</a>
+                <span class="text-gray-300">|</span>
+                <a href="../index.html" class="text-sm text-gray-500 hover:text-purple-600">返回主页</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== 卖家信息横幅 ===== -->
+    <div class="bg-gradient-to-r from-purple-500 to-violet-500">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between text-sm">
+<!-- APPEND_HERE -->
+            <div class="flex items-center space-x-3">
+                <span class="flex items-center space-x-1 font-bold text-white">🛡️ 下单先看简介</span>
+                <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">验货担保</span>
+                <span class="bg-green-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">家家保障精选</span>
+            </div>
+            <div class="flex items-center space-x-4 text-white/90 text-xs">
+                <span>📍 北京</span>
+                <span>3小时前来过</span>
+                <span>卖出184件宝贝</span>
+                <span>好评率100%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 主体内容 ===== -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <div class="flex gap-6">
+
+            <!-- 左侧：商品大图 -->
+            <div class="w-[480px] shrink-0">
+                <div id="product-image" class="bg-gradient-to-br from-green-300 via-emerald-200 to-teal-300 rounded-2xl h-[480px] flex items-center justify-center text-[120px] shadow-sm">🎨</div>
+                <div class="flex space-x-2 mt-3">
+                    <div class="w-16 h-16 rounded-lg bg-gradient-to-br from-green-300 to-teal-300 flex items-center justify-center text-2xl border-2 border-purple-500 cursor-pointer">🎨</div>
+                    <div class="w-16 h-16 rounded-lg bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center text-2xl border-2 border-transparent hover:border-purple-300 cursor-pointer">🎫</div>
+                    <div class="w-16 h-16 rounded-lg bg-gradient-to-br from-amber-200 to-yellow-300 flex items-center justify-center text-2xl border-2 border-transparent hover:border-purple-300 cursor-pointer">📋</div>
+                </div>
+            </div>
+
+            <!-- 右侧：商品信息 -->
+            <div class="flex-1">
+                <div class="flex items-end space-x-4">
+                    <span id="product-price" class="text-orange-500 text-4xl font-black">¥361</span>
+                    <div class="flex items-center space-x-3 text-sm text-gray-400 pb-1">
+                        <span id="product-wants">5人想要</span><span>·</span><span id="product-views">183浏览</span>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h1 id="product-title" class="text-lg font-bold text-gray-800 leading-relaxed">
+                        原价出 山花地 孙睿扬 王宁 内场svip全票<br>序号前100<br>进场确认
+                    </h1>
+                </div>
+                <div id="product-tags" class="flex items-center space-x-2 mt-4">
+                    <span class="text-[11px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded">演出票务</span>
+                    <span class="text-[11px] bg-purple-100 text-purple-600 px-2 py-0.5 rounded">内场票</span>
+                    <span class="text-[11px] bg-green-100 text-green-600 px-2 py-0.5 rounded">可验票</span>
+                </div>
+                <!-- 卖家信息卡片 -->
+                <div class="flex items-center space-x-3 mt-6 p-3 bg-gray-50 rounded-xl">
+                    <div id="seller-avatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold">L</div>
+                    <div>
+                        <p id="seller-name" class="text-sm font-semibold text-gray-800">票务小铺</p>
+                        <p id="seller-stats" class="text-xs text-gray-400">信用良好 · 卖出184件 · 北京</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3 mt-8">
+                    <button id="chat-btn" class="flex-1 flex items-center justify-center space-x-1.5 border-2 border-purple-400 text-purple-600 font-bold py-3 rounded-full hover:bg-purple-50 transition">
+                        <span>💬</span><span>聊一聊</span>
+                    </button>
+                    
+                    <button class="flex-[2] bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 rounded-full transition shadow-md">
+                        立即购买
+                    </button>
+
+                    <button id="fav-btn" class="flex-1 flex items-center justify-center space-x-1.5 border-2 border-gray-200 text-gray-400 font-bold py-3 rounded-full hover:text-purple-600 hover:border-purple-400 transition" onclick="toggleFav()">
+                        <span id="fav-icon" class="text-xl leading-none pb-0.5">☆</span>
+                        <span>收藏</span>
+                    </button>
+                </div>
+
+                <!-- 保障信息 -->
+                <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+                    <div class="bg-white rounded-xl p-3 shadow-sm">
+                        <span class="text-xl">🛡️</span>
+                        <p class="text-[11px] text-gray-500 mt-1">担保交易</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 shadow-sm">
+                        <span class="text-xl">✅</span>
+                        <p class="text-[11px] text-gray-500 mt-1">验货保真</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 shadow-sm">
+                        <span class="text-xl">🔄</span>
+                        <p class="text-[11px] text-gray-500 mt-1">7天可退</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/app/product.js"></script>
+    <script>
+    // 收藏功能 — localStorage 联动 favorites.html
+    function getFavs() {
+        try { return JSON.parse(localStorage.getItem('azureFavs') || '[]'); } catch(e) { return []; }
+    }
+    function saveFavs(list) { localStorage.setItem('azureFavs', JSON.stringify(list)); }
+
+    var params = new URLSearchParams(window.location.search);
+    var pid = params.get('id') || '';
+
+    function updateFavUI() {
+        var favs = getFavs();
+        var isFav = favs.some(function(f) { return f.id === pid; });
+        var btn = document.getElementById('fav-btn');
+        var icon = document.getElementById('fav-icon');
+        if (isFav) {
+            icon.textContent = '★';
+            // 移除默认色，添加深紫色（border-purple-400，和聊一聊完全同频）
+            btn.classList.remove('text-gray-400', 'border-gray-200', 'text-red-500', 'border-red-300', 'border-purple-300');
+            btn.classList.add('text-purple-600', 'border-purple-400');
+        } else {
+            icon.textContent = '☆';
+            // 取消时移除深紫色
+            btn.classList.remove('text-purple-600', 'border-purple-400', 'text-red-500', 'border-red-300', 'border-purple-300');
+            btn.classList.add('text-gray-400', 'border-gray-200');
+        }
+    }
+
+    function toggleFav() {
+        var favs = getFavs();
+        var idx = -1;
+        for (var i = 0; i < favs.length; i++) { if (favs[i].id === pid) { idx = i; break; } }
+        if (idx >= 0) {
+            favs.splice(idx, 1);
+            saveFavs(favs);
+            updateFavUI();
+            return;
+        }
+        // 从页面读取当前商品信息
+        var titleEl = document.getElementById('product-title');
+        var priceEl = document.getElementById('product-price');
+        var item = {
+            id: pid,
+            title: titleEl ? titleEl.textContent : '未知商品',
+            price: priceEl ? parseInt(priceEl.textContent.replace(/[^\d]/g, '')) || 0 : 0,
+            emoji: '📦',
+            time: Date.now()
+        };
+        favs.push(item);
+        saveFavs(favs);
+        updateFavUI();
+    }
+
+    updateFavUI();
+
+    // 聊一聊 → 跳转消息页 + 想要人数+1
+    document.getElementById('chat-btn').addEventListener('click', function() {
+        var wantsEl = document.getElementById('product-wants');
+        if (wantsEl) {
+            var num = parseInt(wantsEl.textContent) || 0;
+            wantsEl.textContent = (num + 1) + '人想要';
+        }
+        var sellerName = document.getElementById('seller-name').textContent || '卖家';
+        setTimeout(function() {
+            window.location.href = 'messages.html?seller=' + encodeURIComponent(sellerName);
+        }, 300);
+    });
+    </script>
+</body>
+</html>

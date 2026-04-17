@@ -28,6 +28,8 @@ function initSplashParticles() {
 }
 
 // TODO Keep the direction of moving stars the same
+let splashAnimationId = null;
+
 function drawSplash() {
     if (!width || !height) return;
     ctxSplash.clearRect(0, 0, width, height);
@@ -47,8 +49,15 @@ function drawSplash() {
         ctxSplash.fill();
         ctxSplash.shadowBlur = 0;
     });
-    requestAnimationFrame(drawSplash);
+    splashAnimationId = requestAnimationFrame(drawSplash);
 }
+
+window.stopSplashParticles = () => {
+    if (splashAnimationId) {
+        cancelAnimationFrame(splashAnimationId);
+        splashAnimationId = null;
+    }
+};
 
 function resizeSplash() {
     width = window.innerWidth;
@@ -69,10 +78,10 @@ splashScreen.addEventListener('mousemove', (e) =>{
 })
 
 // 主界面粒子 (图书馆模型 + 鼠标跟随)
-const mainCanvas = document.getElementById('particle-canvas');
-const ctxMain = mainCanvas.getContext('2d');
-let mainParticles = [];
-let mouseX = 5, mouseY = 5;
+// const mainCanvas = document.getElementById('particle-canvas');
+// const ctxMain = mainCanvas.getContext('2d');
+// let mainParticles = [];
+// let mouseX = 5, mouseY = 5;
 
 function generateLibraryPoints() {
     let points = [];
@@ -103,64 +112,64 @@ function initMainParticles() {
     }));
 }
 
-function resizeMain() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    mainCanvas.width = width;
-    mainCanvas.height = height;
-    initMainParticles();
-}
-window.addEventListener('resize', resizeMain);
+// function resizeMain() {
+//     width = window.innerWidth;
+//     height = window.innerHeight;
+//     mainCanvas.width = width;
+//     mainCanvas.height = height;
+//     initMainParticles();
+// }
+// window.addEventListener('resize', resizeMain);
 
-mainCanvas.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX / width;
-    mouseY = e.clientY / height;
-});
-mainCanvas.addEventListener('mouseleave', () => {
-    mouseX = 0.5; mouseY = 0.5;
-});
+// mainCanvas.addEventListener('mousemove', (e) => {
+//     mouseX = e.clientX / width;
+//     mouseY = e.clientY / height;
+// });
+// mainCanvas.addEventListener('mouseleave', () => {
+//     mouseX = 0.5; mouseY = 0.5;
+// });
 
-function drawMainParticles() {
-    if (!width || !height) return;
-    ctxMain.clearRect(0, 0, width, height);
-    let infX = (mouseX||0.5)-0.5;
-    let infY = (mouseY||0.5)-0.5;
-
-    const isDark = document.body.classList.contains('dark-mode');
-    const particleColor = isDark ? 'rgba(255,215,0,0.7)' : 'rgba(37,101,176,0.5)';
-    const particleColor2 = isDark ? 'rgba(255,255,240,0.5)' : 'rgba(100,150,255,0.4)';
-
-    mainParticles.forEach(p => {
-        p.rad += p.speed * 0.5;
-        let waveX = Math.sin(p.rad)*3;
-        let waveY = Math.cos(p.rad*1.2)*3;
-        let dx = infX * 45 * (p.baseX/width-0.5)*0.6;
-        let dy = infY * 45 * (p.baseY/height-0.5)*0.6;
-        let targetX = p.baseX + p.offsetX + dx + waveX;
-        let targetY = p.baseY + p.offsetY + dy + waveY;
-        p.x += (targetX - p.x)*0.07;
-        p.y += (targetY - p.y)*0.07;
-
-        ctxMain.fillStyle = (p.size>2.2) ? particleColor : particleColor2;
-        ctxMain.shadowColor = isDark ? 'gold' : '#2565b0';
-        ctxMain.shadowBlur = 12;
-        ctxMain.beginPath();
-        ctxMain.arc(p.x, p.y, p.size*(0.9+0.2*Math.sin(p.rad)), 0, 2*Math.PI);
-        ctxMain.fill();
-    });
-    requestAnimationFrame(drawMainParticles);
-}
-
-function startMainParticles() {
-    resizeMain();
-    drawMainParticles();
-}
-
-// 主题切换 (默认白天)
-
-
-// 初始化宽高 (保证画布有值)
-width = window.innerWidth;
-height = window.innerHeight;
-mainCanvas.width = width;
-mainCanvas.height = height;
+// function drawMainParticles() {
+//     if (!width || !height) return;
+//     ctxMain.clearRect(0, 0, width, height);
+//     let infX = (mouseX||0.5)-0.5;
+//     let infY = (mouseY||0.5)-0.5;
+//
+//     const isDark = document.body.classList.contains('dark-mode');
+//     const particleColor = isDark ? 'rgba(255,215,0,0.7)' : 'rgba(37,101,176,0.5)';
+//     const particleColor2 = isDark ? 'rgba(255,255,240,0.5)' : 'rgba(100,150,255,0.4)';
+//
+//     mainParticles.forEach(p => {
+//         p.rad += p.speed * 0.5;
+//         let waveX = Math.sin(p.rad)*3;
+//         let waveY = Math.cos(p.rad*1.2)*3;
+//         let dx = infX * 45 * (p.baseX/width-0.5)*0.6;
+//         let dy = infY * 45 * (p.baseY/height-0.5)*0.6;
+//         let targetX = p.baseX + p.offsetX + dx + waveX;
+//         let targetY = p.baseY + p.offsetY + dy + waveY;
+//         p.x += (targetX - p.x)*0.07;
+//         p.y += (targetY - p.y)*0.07;
+//
+//         ctxMain.fillStyle = (p.size>2.2) ? particleColor : particleColor2;
+//         ctxMain.shadowColor = isDark ? 'gold' : '#2565b0';
+//         ctxMain.shadowBlur = 12;
+//         ctxMain.beginPath();
+//         ctxMain.arc(p.x, p.y, p.size*(0.9+0.2*Math.sin(p.rad)), 0, 2*Math.PI);
+//         ctxMain.fill();
+//     });
+//     requestAnimationFrame(drawMainParticles);
+// }
+//
+// function startMainParticles() {
+//     resizeMain();
+//     drawMainParticles();
+// }
+//
+// // 主题切换 (默认白天)
+//
+//
+// // 初始化宽高 (保证画布有值)
+// width = window.innerWidth;
+// height = window.innerHeight;
+// mainCanvas.width = width;
+// mainCanvas.height = height;

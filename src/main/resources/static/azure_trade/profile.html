@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的空间 - AzureTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+    <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
+        <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
+            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 pt-6 px-4 pb-10">
+
+        <aside class="w-full md:w-56 flex-shrink-0">
+            <div class="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
+                <nav class="space-y-0.5 text-sm">
+                    <a href="profile.html" class="flex items-center space-x-3 px-4 py-2.5 bg-purple-50 text-purple-600 font-bold rounded-lg">
+                        <span>🏠</span><span>我的空间</span>
+                    </a>
+
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="trade-toggle">
+                            <div class="flex items-center space-x-3"><span>📋</span><span>我的交易</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="trade-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="trade-sub" class="ml-6 space-y-0.5">
+                            <a href="mypublish.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我发布的</a>
+                            <a href="sales.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我卖出的</a>
+                            <a href="purchases.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我买到的</a>
+                        </div>
+                    </div>
+                    
+                    <a href="favorites.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>⭐</span><span>我的收藏</span>
+                    </a>
+                </nav>
+                <div class="mt-6 pt-4 border-t border-gray-100">
+                    <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
+                        <span>&larr;</span>
+                        <span>返回大厅</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden min-h-[80vh]">
+                
+                <div class="h-48 bg-gradient-to-r from-purple-400 via-pink-300 to-yellow-300 relative">
+                    <button class="absolute top-4 right-4 bg-black/20 text-white px-4 py-1.5 rounded-full text-sm backdrop-blur-sm hover:bg-black/30 transition">
+                        编辑主页
+                    </button>
+                </div>
+
+                <div class="px-6 pb-4 relative mt-[-40px]">
+                    <div class="flex justify-between items-end mb-3">
+                        <div class="w-20 h-20 rounded-full border-4 border-white bg-gradient-to-br from-purple-400 to-pink-400 shadow-md flex items-center justify-center text-white font-bold text-3xl z-10 relative">
+                            A
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                            <h2 class="text-xl font-black text-gray-900">Azure同学</h2>
+                            <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">买家信用极好</span>
+                            <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">卖家信用极好</span>
+                        </div>
+                        <p class="text-xs text-gray-400">安徽省 · 合肥 · 1月7日加入</p>
+                    </div>
+
+                    <div class="flex items-center gap-6 text-sm mt-4 mb-2">
+                        <a href="#" class="flex items-baseline gap-1"><span class="font-black text-gray-900 text-lg">8</span> <span class="text-gray-500">粉丝</span></a>
+                        <a href="#" class="flex items-baseline gap-1"><span class="font-black text-gray-900 text-lg">1</span> <span class="text-gray-500">关注</span></a>
+                        <a href="#" class="flex items-baseline gap-1"><span class="font-black text-gray-900 text-lg">0</span> <span class="text-gray-500">获赞</span></a>
+                    </div>
+                </div>
+
+               
+                
+
+                <div class="flex items-center gap-8 px-6 h-12 border-t border-b border-gray-100 sticky top-14 bg-white z-40">
+                    <div class="profile-tab relative h-full flex items-center cursor-pointer text-sm font-bold text-purple-600 transition-all" data-tab="items">
+                        <span>宝贝 <span class="text-gray-400 font-normal ml-0.5" id="items-count">6</span></span>
+                        <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-100 scale-100"></div>
+                    </div>
+                    <div class="profile-tab relative h-full flex items-center cursor-pointer text-sm text-gray-500 hover:text-purple-600 transition-all" data-tab="reviews">
+                        <span>信用及评价 <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">4</span></span>
+                        <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-0 scale-0"></div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-gray-50/50 min-h-[50vh]">
+                    
+                    <div id="profile-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                    
+                    <div id="reviews-panel" class="hidden">
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="review_filter" value="all" class="peer hidden" checked>
+                                <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
+                                    全部 <span id="count-all" class="ml-0.5 opacity-80"></span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="review_filter" value="good" class="peer hidden">
+                                <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
+                                    好评 <span id="count-good" class="ml-0.5 opacity-80"></span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="review_filter" value="buyer" class="peer hidden">
+                                <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
+                                    来自买家 <span id="count-buyer" class="ml-0.5 opacity-80"></span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="review_filter" value="seller" class="peer hidden">
+                                <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
+                                    来自卖家 <span id="count-seller" class="ml-0.5 opacity-80"></span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div id="reviews-list" class="space-y-3"></div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+var myItems = [
+    { title: '包邮【全部包出】纸飞机折纸套装十款精选', price: 280, wants: 11, emoji: '✈️', bg: 'from-sky-200 to-blue-300' },
+    { title: '包邮【出闪器】可甜蜜 全新未拆', price: 1100, wants: 3, emoji: '📷', bg: 'from-amber-200 to-orange-300' },
+    { title: '包邮【闪】在马来西亚的铁路旅行时间60分钟/路径', price: 200, wants: 1, emoji: '🚂', bg: 'from-green-200 to-emerald-300' },
+    { title: '【出】出几瓶xvvip 时间60甜蜜/路径', price: 358, wants: 0, emoji: '🧴', bg: 'from-pink-200 to-rose-300' },
+    { title: '【出】耳机苹果原装门口129的5折 手机壳出', price: 230, wants: 0, emoji: '🎧', bg: 'from-violet-200 to-purple-300' },
+    { title: '机械键盘 Cherry红轴 九成新 带灯', price: 180, wants: 5, emoji: '⌨️', bg: 'from-red-200 to-rose-300' }
+];
+
+var reviews = [
+    { name: '快乐同学', avatar: 'K', text: '发货很快，东西和描述一致，沟通非常愉快！而且卖家非常细心包装得很严实，下次还会再来的！', time: '2026-04-08 14:30', rating: 5, role: 'buyer' },
+    { name: '学霸小铺', avatar: 'X', text: '包装很好，没有损坏，非常满意。', time: '2026-04-06 09:15', rating: 4, role: 'buyer' },
+    { name: '佛系卖家', avatar: 'F', text: '同学人很好，面交很准时。', time: '2026-04-04 18:45', rating: 5, role: 'seller' },
+    { name: '挑剔的鱼', avatar: 'T', text: '有点小瑕疵，但考虑到是二手价格整体还行吧。', time: '2026-03-28 11:20', rating: 3, role: 'buyer' }
+];
+
+var grid = document.getElementById('profile-grid');
+var reviewsPanel = document.getElementById('reviews-panel');
+var reviewsList = document.getElementById('reviews-list');
+var tabs = document.querySelectorAll('.profile-tab');
+
+function renderItems() {
+    grid.innerHTML = '';
+    myItems.forEach(function(item) {
+        var card = document.createElement('div');
+        card.className = 'bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer';
+        card.innerHTML =
+            '<div class="h-40 bg-gradient-to-br ' + item.bg + ' flex items-center justify-center text-5xl relative">' + item.emoji + '</div>' +
+            '<div class="p-3">' +
+                '<p class="text-sm text-gray-800 leading-snug line-clamp-2">' + item.title + '</p>' +
+                '<div class="flex items-center justify-between mt-2">' +
+                    '<span class="text-purple-600 font-black">¥' + item.price + '</span>' +
+                    '<span class="text-xs text-gray-400">' + item.wants + '人想要</span>' +
+                '</div>' +
+            '</div>';
+            
+        // 👇 新增：添加点击跳转事件
+        card.addEventListener('click', function() {
+            // 跳转到商品详情页（如果有具体的 id 也可以用 product.html?id=xxx）
+            window.location.href = 'product.html';
+        });
+
+        grid.appendChild(card);
+    });
+}
+
+function updateFilterCounts() {
+    var countGood = reviews.filter(r => r.rating >= 4).length;
+    var countBuyer = reviews.filter(r => r.role === 'buyer').length;
+    var countSeller = reviews.filter(r => r.role === 'seller').length;
+
+    document.getElementById('count-all').textContent = reviews.length;
+    document.getElementById('count-good').textContent = countGood;
+    document.getElementById('count-buyer').textContent = countBuyer;
+    document.getElementById('count-seller').textContent = countSeller;
+    document.getElementById('reviews-count-tab').textContent = reviews.length;
+}
+
+function renderReviews(dataToRender) {
+    reviewsList.innerHTML = '';
+    
+    if (dataToRender.length === 0) {
+        reviewsList.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">暂无符合条件的评价</div>';
+        return;
+    }
+
+    dataToRender.forEach(function(r) {
+        var stars = '';
+        for (var i = 0; i < 5; i++) stars += i < r.rating ? '⭐' : '☆';
+        
+        // 角色标签
+        var roleTag = r.role === 'buyer' 
+            ? '<span class="bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">来自买家</span>'
+            : '<span class="bg-green-50 text-green-600 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">来自卖家</span>';
+        
+        // 🌟 核心修改 1：将好评标签变成了 inline-block，这样它就能像一个“字”一样完美融入文本行内
+        var ratingTag = r.rating >= 4 
+            ? '<span class="inline-block bg-orange-50 text-orange-500 px-1.5 py-[2px] rounded text-[10px] mr-1.5 align-text-bottom">好评</span>'
+            : '';
+
+        var div = document.createElement('div');
+        div.className = 'bg-white rounded-xl p-4 shadow-sm border border-gray-100';
+        
+        div.innerHTML =
+            '<div class="flex items-start justify-between mb-2">' +
+                '<div class="flex items-center gap-3">' +
+                    '<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm text-purple-600 font-bold flex-shrink-0">' + r.avatar + '</div>' +
+                    '<div class="flex flex-col">' +
+                        '<div class="flex items-center gap-2">' +
+                            '<span class="text-sm font-bold text-gray-800">' + r.name + '</span>' +
+                            roleTag +
+                        '</div>' +
+                        // 🌟 核心修改 2：把原本在这里的时间删掉了
+                    '</div>' +
+                '</div>' +
+                '<span class="text-xs flex-shrink-0 mt-1">' + stars + '</span>' +
+            '</div>' +
+            // 🌟 核心修改 3：标签和文本被合并到了同一个 <p> 标签里，保证同行折行；并在下方新增了时间
+            '<div class="pl-[52px]">' + 
+                '<p class="text-sm text-gray-600 leading-relaxed">' + ratingTag + r.text + '</p>' +
+                '<div class="text-[11px] text-gray-400 mt-2">' + r.time + '</div>' +
+            '</div>';
+            
+        reviewsList.appendChild(div);
+    });
+}
+
+// 筛选逻辑
+var filterRadios = document.querySelectorAll('input[name="review_filter"]');
+filterRadios.forEach(function(radio) {
+    radio.addEventListener('change', function(e) {
+        var filterValue = e.target.value;
+        var filteredData = reviews;
+
+        if (filterValue === 'good') {
+            filteredData = reviews.filter(r => r.rating >= 4);
+        } else if (filterValue === 'buyer') {
+            filteredData = reviews.filter(r => r.role === 'buyer');
+        } else if (filterValue === 'seller') {
+            filteredData = reviews.filter(r => r.role === 'seller');
+        }
+
+        renderReviews(filteredData);
+    });
+});
+
+// Tab 切换逻辑
+tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        tabs.forEach(function(t) {
+            t.classList.remove('font-bold', 'text-purple-600');
+            t.classList.add('text-gray-500');
+            var bar = t.querySelector('.tab-bar');
+            if (bar) {
+                bar.classList.remove('opacity-100', 'scale-100');
+                bar.classList.add('opacity-0', 'scale-0');
+            }
+        });
+        
+        tab.classList.remove('text-gray-500');
+        tab.classList.add('font-bold', 'text-purple-600');
+        var activeBar = tab.querySelector('.tab-bar');
+        if (activeBar) {
+            activeBar.classList.remove('opacity-0', 'scale-0');
+            activeBar.classList.add('opacity-100', 'scale-100');
+        }
+
+        if (tab.dataset.tab === 'items') {
+            grid.classList.remove('hidden');
+            reviewsPanel.classList.add('hidden');
+        } else {
+            grid.classList.add('hidden');
+            reviewsPanel.classList.remove('hidden');
+        }
+    });
+});
+
+// 左侧菜单折叠逻辑
+var toggle = document.getElementById('trade-toggle');
+var sub = document.getElementById('trade-sub');
+var arrow = document.getElementById('trade-arrow');
+if(toggle && sub && arrow) {
+    toggle.addEventListener('click', function() {
+        var hidden = sub.style.display === 'none';
+        sub.style.display = hidden ? '' : 'none';
+        arrow.classList.toggle('rotate-180', hidden);
+    });
+}
+
+// 初始化执行
+renderItems();
+updateFilterCounts();
+renderReviews(reviews);
+</script>
+
+</body>
+</html>

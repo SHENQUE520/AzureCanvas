@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我发布的 - AzureTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+    <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
+        <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
+            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 pt-6 px-4 pb-10">
+
+        <aside class="w-full md:w-56 flex-shrink-0">
+            <div class="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
+                <nav class="space-y-0.5 text-sm">
+                    <a href="profile.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>🏠</span><span>我的空间</span>
+                    </a>
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="trade-toggle">
+                            <div class="flex items-center space-x-3"><span>📋</span><span>我的交易</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="trade-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="trade-sub" class="ml-6 space-y-0.5">
+                            <a href="mypublish.html" class="block px-4 py-2 bg-purple-50 text-purple-600 font-bold rounded-lg transition">我发布的</a>
+                            <a href="sales.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我卖出的</a>
+                            <a href="purchases.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我买到的</a>
+                        </div>
+                    </div>
+                    <a href="favorites.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>⭐</span><span>我的收藏</span>
+                    </a>
+                </nav>
+                <div class="mt-6 pt-4 border-t border-gray-100">
+                    <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
+                        <span>&larr;</span>
+                        <span>返回大厅</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 max-w-3xl">
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-4">
+                <div class="flex overflow-x-auto hide-scrollbar border-b border-gray-100 bg-white">
+                    <a href="#" class="pub-tab flex-none px-5 py-3.5 text-sm font-bold text-purple-600 relative" data-filter="all">
+                        全部
+                        <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-purple-600 rounded-full"></div>
+                    </a>
+                    <a href="#" class="pub-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-purple-600 transition" data-filter="selling">在售中</a>
+                    <a href="#" class="pub-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-purple-600 transition" data-filter="sold">已卖出</a>
+                    <a href="#" class="pub-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-purple-600 transition" data-filter="off">已下架</a>
+                </div>
+            </div>
+            <p id="pub-count" class="text-xs text-gray-400 mb-3 px-1"></p>
+            <div id="pub-list" class="space-y-4"></div>
+        </main>
+    </div>
+
+<script>
+var pubItems = [
+    { id:'p1', title:'出一套写代码用的机械键盘+鼠标套装', price:150, emoji:'⌨️', bg:'from-indigo-100 to-purple-200', wants:12, views:89, status:'selling', time:'2小时前' },
+    { id:'p2', title:'高等数学同济第七版 上下册 几乎全新', price:15, emoji:'📘', bg:'from-blue-100 to-sky-200', wants:8, views:156, status:'selling', time:'5小时前' },
+    { id:'p3', title:'iPad Air5 64G WiFi 蓝色 带笔和壳', price:2800, emoji:'📱', bg:'from-cyan-100 to-teal-200', wants:25, views:342, status:'selling', time:'1天前' },
+    { id:'p4', title:'C语言程序设计 谭浩强 第五版 九成新', price:5, emoji:'📓', bg:'from-green-100 to-emerald-200', wants:3, views:67, status:'sold', time:'3天前' },
+    { id:'p5', title:'小米迷你冰箱 45L 单门 白色 宿舍用', price:250, emoji:'🧊', bg:'from-amber-100 to-yellow-200', wants:6, views:201, status:'sold', time:'5天前' },
+    { id:'p6', title:'小米台式风扇 静音款 三挡风速 搬走带不了', price:20, emoji:'🌀', bg:'from-rose-100 to-pink-200', wants:2, views:45, status:'off', time:'1周前' }
+];
+
+var statusMap = {
+    selling: { text:'在售中', cls:'bg-green-100 text-green-600' },
+    sold:    { text:'已卖出', cls:'bg-gray-100 text-gray-500' },
+    off:     { text:'已下架', cls:'bg-red-50 text-red-400' }
+};
+
+function renderPublished(filter) {
+    var list = document.getElementById('pub-list');
+    list.innerHTML = '';
+    var items = filter === 'all' ? pubItems : pubItems.filter(function(i){ return i.status === filter; });
+    document.getElementById('pub-count').textContent = '共 ' + items.length + ' 件宝贝';
+    items.forEach(function(item) {
+        var s = statusMap[item.status];
+        var btns = '';
+        if (item.status === 'selling') {
+            btns = '<button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">下架</button>' +
+                   '<button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">编辑</button>' +
+                   '<button class="px-4 py-1.5 bg-purple-600 text-white rounded-full text-sm font-bold hover:bg-purple-700 shadow-sm transition">擦亮</button>';
+        } else if (item.status === 'sold') {
+            btns = '<button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">查看详情</button>';
+        } else {
+            btns = '<button class="px-4 py-1.5 border border-purple-300 text-purple-600 rounded-full text-sm hover:bg-purple-50 transition">重新上架</button>' +
+                   '<button class="px-4 py-1.5 border border-red-200 text-red-400 rounded-full text-sm hover:bg-red-50 transition">删除</button>';
+        }
+        var card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition';
+        card.innerHTML =
+            '<div class="flex gap-4 mb-4">' +
+                '<div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">' +
+                    '<div class="w-full h-full bg-gradient-to-br ' + item.bg + ' flex items-center justify-center text-3xl">' + item.emoji + '</div>' +
+                '</div>' +
+                '<div class="flex-1 flex flex-col justify-between min-w-0 py-1">' +
+                    '<div class="flex justify-between items-start gap-4">' +
+                        '<h3 class="text-sm md:text-base text-gray-800 leading-snug line-clamp-2">' + item.title + '</h3>' +
+                        '<span class="text-[11px] px-2 py-0.5 rounded flex-shrink-0 ' + s.cls + '">' + s.text + '</span>' +
+                    '</div>' +
+                    '<div class="flex items-center justify-between mt-2">' +
+                        '<span class="text-orange-500 font-black text-lg">¥' + item.price + '</span>' +
+                        '<div class="flex items-center space-x-3 text-xs text-gray-400">' +
+                            '<span>' + item.wants + '人想要</span>' +
+                            '<span>' + item.views + '次浏览</span>' +
+                            '<span>' + item.time + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+            '<div class="flex justify-end gap-3 pt-3 border-t border-gray-50">' + btns + '</div>';
+        list.appendChild(card);
+    });
+}
+
+renderPublished('all');
+
+// Tab switching
+document.querySelectorAll('.pub-tab').forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('.pub-tab').forEach(function(t) {
+            t.classList.remove('text-purple-600', 'font-bold');
+            t.classList.add('text-gray-600');
+            var bar = t.querySelector('.tab-bar');
+            if (bar) bar.remove();
+        });
+        tab.classList.remove('text-gray-600');
+        tab.classList.add('text-purple-600', 'font-bold');
+        var bar = document.createElement('div');
+        bar.className = 'tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-purple-600 rounded-full';
+        tab.style.position = 'relative';
+        tab.appendChild(bar);
+        renderPublished(tab.getAttribute('data-filter'));
+    });
+});
+
+// Sidebar toggle
+var toggle = document.getElementById('trade-toggle');
+var sub = document.getElementById('trade-sub');
+var arrow = document.getElementById('trade-arrow');
+toggle.addEventListener('click', function() {
+    var hidden = sub.style.display === 'none';
+    sub.style.display = hidden ? '' : 'none';
+    arrow.classList.toggle('rotate-180', hidden);
+});
+</script>
+</body>
+</html>

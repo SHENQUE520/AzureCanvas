@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消息 - AzureTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .chat-item.active { background: #f3f0ff; border-left: 3px solid #7c3aed; }
+        .chat-item { border-left: 3px solid transparent; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+    <div class="h-screen flex flex-col">
+        <!-- 顶部栏 -->
+        <nav class="bg-white shadow-sm h-14 flex items-center justify-between px-6 flex-shrink-0">
+            <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
+                <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+            </div>
+            <div class="flex items-center gap-4 text-sm">
+                <a href="trade.html" class="text-gray-500 hover:text-purple-600 transition">返回交易大厅</a>
+            </div>
+        </nav>
+
+        <div class="flex flex-1 overflow-hidden">
+            <!-- 左侧：会话列表 -->
+            <div class="w-80 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
+                <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                    <h2 class="font-black text-lg">消息</h2>
+                </div>
+<!-- CHAT_LIST_PLACEHOLDER -->
+                <div id="chat-list" class="flex-1 overflow-y-auto hide-scrollbar">
+                </div>
+            </div>
+
+            <!-- 右侧：聊天区域 -->
+            <div class="flex-1 flex flex-col bg-gray-50" id="chat-area">
+                <!-- 聊天头部 -->
+                <div class="bg-white px-6 py-3 border-b border-gray-200 flex items-center justify-between flex-shrink-0" id="chat-header">
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-gray-800" id="chat-name">选择一个会话</span>
+                    </div>
+                    <span class="text-xs text-gray-400 cursor-pointer hover:text-purple-600">···</span>
+                </div>
+<!-- CHAT_BODY_PLACEHOLDER -->
+                <!-- 聊天消息区 -->
+                <div class="flex-1 overflow-y-auto p-6 hide-scrollbar" id="chat-messages">
+                    <div class="flex flex-col items-center justify-center h-full text-gray-300">
+                        <span class="text-5xl mb-3">💬</span>
+                        <p class="text-sm">选择左侧会话开始聊天</p>
+                    </div>
+                </div>
+
+                <!-- 输入框 -->
+                <div class="bg-white border-t border-gray-200 px-4 py-3 flex-shrink-0">
+                    <div class="flex items-center gap-2 mb-2 text-gray-400 text-xs">
+                        <span class="cursor-pointer hover:text-purple-600">📷 图片</span>
+                        <span class="cursor-pointer hover:text-purple-600">📎 文件</span>
+                        <span class="cursor-pointer hover:text-purple-600">😊 表情</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="msg-input" placeholder="输入消息..." class="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-purple-400">
+                        <button id="send-btn" class="bg-purple-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-purple-700 transition">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+var conversations = [
+    { id: 'c1', name: '玻璃璃璃璃', avatar: '🧡', lastMsg: '好的，已经发货了', time: '14:30', unread: 1 },
+    { id: 'c2', name: '通知消息', avatar: '🔔', lastMsg: '您的商品已被收藏', time: '12:00', unread: 0 },
+    { id: 'c3', name: '兰城API三号店', avatar: '🏪', lastMsg: '你好好学习升级就下来付款', time: '昨天', unread: 0 },
+    { id: 'c4', name: '音乐分享会', avatar: '🎵', lastMsg: '周末活动取消了', time: '周三', unread: 0 },
+    { id: 'c5', name: '今天超级棒', avatar: '☀️', lastMsg: 'hao https://pan-park...', time: '周二', unread: 0 },
+    { id: 'c6', name: '小猫猫的素材库', avatar: '🐱', lastMsg: '已经发了哦', time: '4/5', unread: 0 }
+];
+
+var chatHistory = {
+    'c1': [
+        { from: 'them', text: '', product: { title: '玻璃杯套装 全新未拆', price: 1, emoji: '🥛' } },
+        { from: 'me', text: '我已拍下，请付款' },
+        { from: 'them', text: '好的，已经发货了' }
+    ],
+    'c3': [
+        { from: 'them', text: '', product: { title: 'Claude全模型 无限 满血 自动发货', price: 100, emoji: '💻' } },
+        { from: 'me', text: '我已拍下，请付款', tag: '去付款' },
+        { from: 'them', text: '你好好学习升级就下来付款' }
+    ]
+};
+
+var chatList = document.getElementById('chat-list');
+var chatMessages = document.getElementById('chat-messages');
+var chatName = document.getElementById('chat-name');
+var msgInput = document.getElementById('msg-input');
+var sendBtn = document.getElementById('send-btn');
+var activeChatId = null;
+
+var urlParams = new URLSearchParams(window.location.search);
+var sellerFromProduct = urlParams.get('seller');
+if (sellerFromProduct) {
+    var exists = conversations.find(function(c) { return c.name === sellerFromProduct; });
+    if (!exists) {
+        conversations.unshift({ id: 'new_' + Date.now(), name: sellerFromProduct, avatar: '👤', lastMsg: '', time: '刚刚', unread: 0 });
+    }
+}
+
+function renderChatList() {
+    chatList.innerHTML = '';
+    conversations.forEach(function(conv) {
+        var div = document.createElement('div');
+        div.className = 'chat-item flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 transition';
+        if (conv.id === activeChatId) div.classList.add('active');
+        div.innerHTML =
+            '<div class="w-11 h-11 rounded-full bg-gradient-to-br from-yellow-300 to-orange-400 flex items-center justify-center text-xl flex-shrink-0">' + conv.avatar + '</div>' +
+            '<div class="flex-1 min-w-0">' +
+                '<div class="flex items-center justify-between"><span class="text-sm font-bold text-gray-800 truncate">' + conv.name + '</span><span class="text-[11px] text-gray-400 flex-shrink-0 ml-2">' + conv.time + '</span></div>' +
+                '<p class="text-xs text-gray-500 truncate mt-0.5">' + conv.lastMsg + '</p>' +
+            '</div>' +
+            (conv.unread > 0 ? '<span class="w-5 h-5 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center flex-shrink-0">' + conv.unread + '</span>' : '');
+        div.addEventListener('click', function() { openChat(conv); });
+        chatList.appendChild(div);
+    });
+}
+
+function openChat(conv) {
+    activeChatId = conv.id;
+    chatName.textContent = conv.name;
+    conv.unread = 0;
+    renderChatList();
+    var history = chatHistory[conv.id] || [];
+    chatMessages.innerHTML = '';
+    if (history.length === 0) {
+        chatMessages.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-gray-300"><span class="text-4xl mb-2">💬</span><p class="text-sm">暂无消息，发送第一条吧</p></div>';
+        return;
+    }
+    history.forEach(function(msg) { appendMessage(msg); });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function appendMessage(msg) {
+    var div = document.createElement('div');
+    if (msg.from === 'me') {
+        div.className = 'flex justify-end mb-4';
+        var c = '';
+        if (msg.tag) c += '<div class="mb-1 text-right"><span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded">' + msg.tag + '</span></div>';
+        c += '<div class="bg-yellow-400 text-gray-900 px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-xs text-sm">' + msg.text + '</div>';
+        div.innerHTML = '<div class="text-right">' + c + '</div>';
+    } else {
+        div.className = 'flex justify-start mb-4 gap-2';
+        var inner = '';
+        if (msg.product) {
+            inner = '<div class="bg-white border border-gray-200 rounded-xl p-3 max-w-xs shadow-sm"><div class="flex gap-2"><div class="w-14 h-14 bg-gradient-to-br from-yellow-200 to-orange-300 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">' + msg.product.emoji + '</div><div class="flex-1 min-w-0"><p class="text-sm text-gray-800 line-clamp-2">' + msg.product.title + '</p><p class="text-orange-500 font-black text-sm mt-1">¥' + msg.product.price.toFixed(2) + '</p></div></div></div>';
+        } else {
+            inner = '<div class="bg-white px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-xs text-sm shadow-sm border border-gray-100">' + msg.text + '</div>';
+        }
+        div.innerHTML = '<div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-300 to-orange-400 flex items-center justify-center text-sm flex-shrink-0 mt-1">👤</div><div>' + inner + '</div>';
+    }
+    chatMessages.appendChild(div);
+}
+
+sendBtn.addEventListener('click', sendMessage);
+msgInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendMessage(); });
+function sendMessage() {
+    var text = msgInput.value.trim();
+    if (!text || !activeChatId) return;
+    var msg = { from: 'me', text: text };
+    if (!chatHistory[activeChatId]) chatHistory[activeChatId] = [];
+    chatHistory[activeChatId].push(msg);
+    appendMessage(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    msgInput.value = '';
+    var conv = conversations.find(function(c) { return c.id === activeChatId; });
+    if (conv) { conv.lastMsg = text; conv.time = '刚刚'; }
+    renderChatList();
+}
+
+renderChatList();
+if (sellerFromProduct) {
+    var t = conversations.find(function(c) { return c.name === sellerFromProduct; });
+    if (t) openChat(t);
+}
+</script>
+
+</body>
+</html>

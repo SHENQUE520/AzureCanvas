@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure空岛传送门</title>
+    <link rel="stylesheet" href="../css/skyland/skyland.major.css">
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div id="overlay"></div>
+
+    <!-- 引入库文件 -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- 引入自定义逻辑 -->
+    <script type="module" src="../js/effects/islands.js"></script>
+</body>
+</html>

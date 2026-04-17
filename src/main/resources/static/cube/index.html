@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AzureCanvas · 导航栏</title>
+    <title>Azure导航</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
     <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
     <link rel="stylesheet" href="../css/app.major.css">
     
     <style>
-        body { margin: 0; overflow: hidden; background: #0a0a0f; }
+        body { margin: 0; overflow: hidden; background: #a0a0ff; }
         .back-btn {
             position: fixed;
             top: 30px;
@@ -39,7 +39,8 @@
     {
         "imports": {
             "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+            "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"
         }
     }
     </script>
@@ -49,12 +50,12 @@
 <body class="dark-mode">
 
     <a href="../index.html" class="back-btn">
-        <i class="fas fa-arrow-left"></i> 返回主界面
+        <i class="fas fa-arrow-left"></i> 返回 splashscreen
     </a>
 
     <div id="cube-container"></div>
 
     <script type="module" src="../js/futurecube/cube.js"></script>
-<!--    <script type="module" src="../js/futurecube/cube.interactions.js"></script>-->
+    <script type="module" src="../js/futurecube/cube.interactions.js"></script>
 </body>
 </html>

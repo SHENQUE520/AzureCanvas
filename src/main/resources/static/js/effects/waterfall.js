@@ -7,6 +7,7 @@
 (function() {
     let scene, camera, renderer, clock;
     let waterfallMaterial, splashMaterial, caveMaterial;
+
     const container = document.getElementById('canvas-container');
 
     // 颜色调色板 (8种蓝色)
@@ -38,7 +39,7 @@
         );
         camera.position.z = 10;
 
-        renderer = new THREE.WebGLRenderer({ antialias: false }); // 像素风不需要抗锯齿
+        renderer = new THREE.WebGLRenderer({ antialias: true }); // 像素风不需要抗锯齿
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
@@ -52,6 +53,23 @@
         window.addEventListener('resize', onWindowResize);
         animate();
     }
+
+// [任务 2] 添加进入瀑布的交互
+window.addEventListener('mousedown', () => {
+    // 1. 视觉反馈：利用 GSAP 让相机向瀑布中心缩进
+
+    gsap.to(camera, {
+        zoom: 5, // [可调参数] 缩放倍数
+        duration: 1.5,
+        ease: "power2.in",
+        onUpdate: () => camera.updateProjectionMatrix(),
+        onComplete: () => {
+            // 2. 跳转到瀑布内页面
+            window.location.href = 'inner-portal.html';
+        }
+    });
+});
+
 
     // 创建山洞背景
     function createCave() {

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>树洞 · 校园</title>
+  <!-- Font Awesome 图标库 (纯黑白简约) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: #fafafa;
+      color: #111;
+      line-height: 1.5;
+    }
+
+    /* 纯黑白基调 */
+    :root {
+      --bg-white: #ffffff;
+      --bg-light: #f5f5f5;
+      --border-light: #d0d0d0;
+      --border-dark: #222;
+      --text-primary: #111;
+      --text-secondary: #444;
+      --hover-bg: #eaeaea;
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-hover: 0 8px 20px rgba(0,0,0,0.08);
+      --transition: all 0.2s ease;
+    }
+
+    /* 布局容器两栏 */
+    .app {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    /* 头部 — 发帖入口 */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 1.8rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 350;
+      letter-spacing: -0.5px;
+      color: #000;
+    }
+
+    .badge {
+      background: #111;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn {
+      background: transparent;
+      border: 1px solid var(--border-dark);
+      color: #111;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 450;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn i {
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      background: #111;
+      color: white;
+      border-color: #111;
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn-dark {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .btn-dark:hover {
+      background: #333;
+      border-color: #333;
+    }
+
+    /* 主内容两栏布局 */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 28px;
+    }
+
+    /* 左侧 feed 流 */
+    .feed-column {
+      min-width: 0;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #000;
+      border-left: 4px solid #000;
+      padding-left: 12px;
+    }
+
+    /* 帖子卡片 — 靠近实时帖子放大效果 (hover) */
+    .post-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 1.4rem 1.2rem;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      cursor: pointer;
+      transform: scale(1);
+    }
+
+    /* 放大效果：靠近 (hover) 放大 */
+    .post-card:hover {
+      transform: scale(1.01);
+      box-shadow: var(--shadow-hover);
+      border-color: #aaa;
+      background: #fdfdfd;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .avatar-placeholder {
+      width: 36px;
+      height: 36px;
+      background: #ddd;
+      border-radius: 50%;
+      border: 1px solid #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .post-author {
+      font-weight: 600;
+      color: #000;
+    }
+
+    .post-time {
+      font-size: 0.8rem;
+      color: #555;
+      margin-left: 4px;
+    }
+
+    .post-content {
+      margin: 12px 0 12px 0;
+      word-break: break-word;
+      white-space: pre-wrap;
+      font-size: 1rem;
+    }
+
+    .post-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .post-images img {
+      max-width: 140px;
+      max-height: 140px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .post-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 12px;
+      color: #444;
+      font-size: 0.9rem;
+    }
+
+    .post-stats span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 右侧边栏 — 更新卡片 */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .update-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 1.5rem 1.2rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .update-title {
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .changelog-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .changelog-item:last-child {
+      border-bottom: none;
+    }
+
+    .changelog-meta {
+      font-size: 0.75rem;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .changelog-title {
+      font-weight: 500;
+    }
+
+    .tag {
+      background: #111;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 16px;
+      font-size: 0.7rem;
+      margin-left: 8px;
+    }
+
+    /* 详情视图 (原帖界面) */
+    .detail-view {
+      background: var(--bg-white);
+      border-radius: 20px;
+      border: 1px solid var(--border-light);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #111;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+    }
+
+    .back-link:hover {
+      border-bottom: 1px solid #111;
+    }
+
+    .detail-post {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 28px;
+      margin: 20px 0 10px;
+    }
+
+    .action-btn {
+      background: none;
+      border: 1px solid #aaa;
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      color: #111;
+    }
+
+    .action-btn.active {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .action-btn i {
+      font-size: 1.1rem;
+    }
+
+    /* 评论区 */
+    .comment-section {
+      margin-top: 20px;
+    }
+
+    .comment-input-area {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #bbb;
+      border-radius: 30px;
+      background: white;
+      font-size: 0.95rem;
+    }
+
+    .comment-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #ececec;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    /* 模态框 — 发布帖子 (纯黑白) */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: white;
+      width: 560px;
+      max-width: 94%;
+      border-radius: 24px;
+      border: 1px solid #222;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      padding: 1.8rem;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .modal-header h3 {
+      font-weight: 500;
+      font-size: 1.4rem;
+    }
+
+    .close-btn {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #111;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #aaa;
+      border-radius: 18px;
+      font-size: 1rem;
+      resize: vertical;
+      background: #fefefe;
+      margin-bottom: 16px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tool-btn {
+      background: #eee;
+      border: 1px solid #aaa;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-btn:hover {
+      background: #ddd;
+    }
+
+    .image-preview-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 16px;
+    }
+
+    .preview-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #888;
+    }
+
+    .emoji-picker {
+      display: none;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+      background: #f4f4f4;
+      padding: 12px;
+      border-radius: 20px;
+      border: 1px solid #bbb;
+      margin: 12px 0;
+    }
+
+    .emoji-picker span {
+      font-size: 1.6rem;
+      cursor: pointer;
+      text-align: center;
+      padding: 2px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    /* 占位与状态 */
+    .empty-tip {
+      color: #666;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    i {
+      color: #222;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 700px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        order: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- 头部区域 -->
+  <header class="header">
+    <div class="logo-area">
+      <span class="logo">🌳 树洞 · 黑白</span>
+      <span class="badge">校园版</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="newPostBtn"><i class="far fa-plus-square"></i> 发布</button>
+    </div>
+  </header>
+
+  <!-- 主视图容器：主页 / 详情页切换 -->
+  <div id="homeView">
+    <div class="main-grid">
+      <!-- 左侧 feed 实时帖子 -->
+      <div class="feed-column">
+        <div class="section-title">
+          <i class="fas fa-clock"></i> 实时涌动
+        </div>
+        <div id="postsFeedContainer">
+          <!-- 动态渲染帖子卡片 -->
+        </div>
+        <div id="emptyFeedMsg" class="empty-tip" style="display: none;">
+          <i class="far fa-comment-dots"></i> 还没有树洞，发布第一条吧
+        </div>
+      </div>
+
+      <!-- 右侧栏 —项目更新 -->
+      <aside class="sidebar">
+        <div class="update-card">
+          <div class="update-title">
+            <i class="fas fa-code-branch"></i> 最新动态 · 更新日志
+          </div>
+          <div class="changelog-list">
+            <div class="changelog-item">
+              <div class="changelog-meta">3 weeks ago · Release 1.4.2</div>
+              <div class="changelog-title">数据库更新 & Bug修复 <span class="tag">修复</span></div>
+              <div style="font-size:0.85rem; color:#444;">修复 Android Termux 运行问题 #10，终端阅读器初始化。</div>
+            </div>
+            <div class="changelog-item">
+              <div class="changelog-meta">13 hours ago</div>
+              <div class="changelog-title">新增「低质量评论隐藏」选项</div>
+            </div>
+            <div class="changelog-item">
+              <div class="changelog-meta">3 weeks ago · DolphinBot</div>
+              <div class="changelog-title">仓库成员角色标签现已上线</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="update-card">
+          <div class="update-title">
+            <i class="far fa-star"></i> 热门收藏
+          </div>
+          <div style="color:#333;">
+            <p style="margin-bottom:12px;">📌 期末复习资料共享</p>
+            <p style="margin-bottom:12px;">📌 图书馆占座观察</p>
+            <p>📌 今天吃什么 (食堂版)</p>
+          </div>
+        </div>
+        <div style="font-size:0.8rem; color:#666; padding:8px;"># 黑白 · 简言</div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- 详情视图 (默认隐藏) -->
+  <div id="detailView" class="detail-view hidden">
+    <div class="back-link" id="backToFeedBtn">
+      <i class="fas fa-arrow-left"></i> 返回树洞广场
+    </div>
+    <div id="detailContent">
+      <!-- 动态渲染帖子详情 + 评论 -->
+    </div>
+  </div>
+</div>
+
+<!-- 发布帖子模态框 -->
+<div class="modal" id="publishModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="far fa-edit"></i> 写树洞</h3>
+      <span class="close-btn" id="closeModalBtn">&times;</span>
+    </div>
+    <textarea id="postTextInput" placeholder="说点什么… 匿名分享" rows="4"></textarea>
+    
+    <!-- 图片预览区 -->
+    <div class="image-preview-area" id="imagePreviewContainer"></div>
+
+    <div class="toolbar">
+      <label class="tool-btn" for="imageUploadInput">
+        <i class="far fa-image"></i> 图片
+      </label>
+      <input type="file" id="imageUploadInput" accept="image/*" multiple style="display:none;">
+      
+      <button class="tool-btn" id="emojiToggleBtn" type="button">
+        <i class="far fa-smile"></i> 表情
+      </button>
+    </div>
+
+    <!-- 简易表情选择器 -->
+    <div class="emoji-picker" id="emojiPicker">
+      <!-- 常用表情符号 -->
+      <span>😊</span><span>😂</span><span>🥺</span><span>😎</span><span>😍</span><span>😭</span><span>🤔</span><span>👍</span>
+      <span>❤️</span><span>🔥</span><span>🎓</span><span>📚</span><span>🍜</span><span>🌧️</span><span>☕</span><span>✨</span>
+    </div>
+
+    <div class="flex-row">
+      <button class="btn" id="cancelPublishBtn">取消</button>
+      <button class="btn btn-dark" id="submitPostBtn">发布树洞</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    "use strict";
+
+    // ---------- 数据存储 ----------
+    let posts = [];
+    let currentPostId = null;        // 详情页id
+    let selectedImages = [];          // 发布时暂存图片(base64)
+
+    // DOM 元素
+    const homeView = document.getElementById('homeView');
+    const detailView = document.getElementById('detailView');
+    const feedContainer = document.getElementById('postsFeedContainer');
+    const emptyFeedMsg = document.getElementById('emptyFeedMsg');
+    const detailContent = document.getElementById('detailContent');
+    const backBtn = document.getElementById('backToFeedBtn');
+    const newPostBtn = document.getElementById('newPostBtn');
+    
+    // 模态框相关
+    const modal = document.getElementById('publishModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelPublishBtn = document.getElementById('cancelPublishBtn');
+    const submitPostBtn = document.getElementById('submitPostBtn');
+    const postTextInput = document.getElementById('postTextInput');
+    const imageUploadInput = document.getElementById('imageUploadInput');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const emojiToggleBtn = document.getElementById('emojiToggleBtn');
+    const emojiPicker = document.getElementById('emojiPicker');
+
+    // ---------- 初始化 Mock 数据 ----------
+    function initMockPosts() {
+      const saved = localStorage.getItem('campus_treehole_posts');
+      if (saved) {
+        try {
+          posts = JSON.parse(saved);
+          return;
+        } catch(e) {}
+      }
+      
+      // 默认帖子 (包含图片示例)
+      posts = [
+        {
+          id: 'p1',
+          author: '匿名小树',
+          avatarLetter: '匿',
+          timestamp: Date.now() - 3600000 * 5,
+          content: '有人知道图书馆三楼靠窗的座位现在需要预约吗？📚',
+          images: [],
+          likes: 12,
+          liked: false,
+          collected: false,
+          comments: [
+            { id: 'c1', author: '热心同学', text: '需要预约，上周就开始啦', timestamp: Date.now() - 800000 },
+            { id: 'c2', author: '图书管理员', text: '是的，用校园卡app', timestamp: Date.now() - 400000 }
+          ]
+        },
+        {
+          id: 'p2',
+          author: '毕业倒计时',
+          avatarLetter: '毕',
+          timestamp: Date.now() - 86400000,
+          content: '今天拍毕业照，把四年的记忆留在这里🎓 谢谢树洞。',
+          images: ['data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'140\' viewBox=\'0 0 200 140\'%3E%3Crect width=\'200\' height=\'140\' fill=\'%23e0e0e0\'/%3E%3Ctext x=\'20\' y=\'80\' font-family=\'monospace\' fill=\'%23333\'%3E🎓 毕业照%3C/text%3E%3C/svg%3E'],
+          likes: 45,
+          liked: false,
+          collected: true,
+          comments: [
+            { id: 'c3', author: '学妹', text: '学长学姐前程似锦！', timestamp: Date.now() - 4000000 }
+          ]
+        },
+        {
+          id: 'p3',
+          author: '食堂观察员',
+          avatarLetter: '食',
+          timestamp: Date.now() - 7200000,
+          content: '二食堂新出的麻辣香锅绝了！🌶️ 但是排队有点长。',
+          images: [],
+          likes: 28,
+          liked: true,
+          collected: false,
+          comments: []
+        }
+      ];
+      localStorage.setItem('campus_treehole_posts', JSON.stringify(posts));
+    }
+
+    // 保存至 localStorage
+    function savePosts() {
+      localStorage.setItem('campus_treehole_posts', JSON.stringify(posts));
+    }
+
+    // 格式化时间
+    function formatTime(ts) {
+      const date = new Date(ts);
+      const now = Date.now();
+      const diff = now - ts;
+      if (diff < 3600000) return Math.floor(diff/60000) + '分钟前';
+      if (diff < 86400000) return Math.floor(diff/3600000) + '小时前';
+      return `${date.getMonth()+1}/${date.getDate()}`;
+    }
+
+    // 渲染帖子卡片 (主页)
+    function renderFeed() {
+      if (!feedContainer) return;
+      if (posts.length === 0) {
+        feedContainer.innerHTML = '';
+        emptyFeedMsg.style.display = 'block';
+        return;
+      }
+      emptyFeedMsg.style.display = 'none';
+      
+      let html = '';
+      // 按时间倒序 (最新的在前)
+      const sorted = [...posts].sort((a,b) => b.timestamp - a.timestamp);
+      sorted.forEach(post => {
+        const commentCount = post.comments ? post.comments.length : 0;
+        const imageTags = post.images && post.images.length 
+          ? `<div class="post-images">${post.images.map(url => `<img src="${url}" alt="post image">`).join('')}</div>` 
+          : '';
+        
+        html += `
+          <div class="post-card" data-post-id="${post.id}">
+            <div class="post-header">
+              <div class="avatar-placeholder">${post.avatarLetter || '匿'}</div>
+              <div>
+                <span class="post-author">${post.author}</span>
+                <span class="post-time">· ${formatTime(post.timestamp)}</span>
+              </div>
+            </div>
+            <div class="post-content">${escapeHtml(post.content)}</div>
+            ${imageTags}
+            <div class="post-stats">
+              <span><i class="far fa-heart"></i> ${post.likes || 0}</span>
+              <span><i class="far fa-comment"></i> ${commentCount}</span>
+              ${post.collected ? '<span><i class="fas fa-bookmark"></i> 已收藏</span>' : ''}
+            </div>
+          </div>
+        `;
+      });
+      feedContainer.innerHTML = html;
+      
+      // 绑定卡片点击事件 (进入详情)
+      document.querySelectorAll('.post-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          const id = card.dataset.postId;
+          if (id) {
+            currentPostId = id;
+            renderDetailView();
+            showDetailView();
+          }
+        });
+      });
+    }
+
+    // 简单转义
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 显示主页，隐藏详情
+    function showHomeView() {
+      homeView.classList.remove('hidden');
+      detailView.classList.add('hidden');
+      renderFeed(); // 刷新数据
+    }
+
+    function showDetailView() {
+      homeView.classList.add('hidden');
+      detailView.classList.remove('hidden');
+    }
+
+    // 根据 currentPostId 渲染详情
+    function renderDetailView() {
+      const post = posts.find(p => p.id === currentPostId);
+      if (!post) {
+        detailContent.innerHTML = '<p>帖子不见了</p>';
+        return;
+      }
+      
+      const commentItems = post.comments ? post.comments.map(c => `
+        <div class="comment-item">
+          <span class="comment-author">${c.author}</span>
+          <span style="color:#555; font-size:0.85rem;">${formatTime(c.timestamp)}</span>
+          <div style="margin-top:5px;">${escapeHtml(c.text)}</div>
+        </div>
+      `).join('') : '';
+      
+      const imageSection = post.images && post.images.length 
+        ? `<div class="post-images">${post.images.map(u => `<img src="${u}" style="max-width:200px;">`).join('')}</div>` 
+        : '';
+      
+      const likedClass = post.liked ? 'active' : '';
+      const collectedClass = post.collected ? 'active' : '';
+      
+      const html = `
+        <div class="detail-post">
+          <div class="post-header">
+            <div class="avatar-placeholder">${post.avatarLetter || '匿'}</div>
+            <div>
+              <span class="post-author">${post.author}</span>
+              <span class="post-time">${formatTime(post.timestamp)}</span>
+            </div>
+          </div>
+          <div class="post-content">${escapeHtml(post.content)}</div>
+          ${imageSection}
+          
+          <div class="action-bar">
+            <button class="action-btn ${post.liked ? 'active' : ''}" id="detailLikeBtn" data-id="${post.id}">
+              <i class="${post.liked ? 'fas' : 'far'} fa-heart"></i> 点赞 ${post.likes}
+            </button>
+            <button class="action-btn ${post.collected ? 'active' : ''}" id="detailCollectBtn" data-id="${post.id}">
+              <i class="${post.collected ? 'fas' : 'far'} fa-bookmark"></i> 收藏
+            </button>
+          </div>
+        </div>
+        
+        <div class="comment-section">
+          <h4 style="font-weight:500; margin-bottom:12px;"><i class="far fa-comments"></i> 评论 (${post.comments ? post.comments.length : 0})</h4>
+          <div id="commentsList">
+            ${commentItems || '<div style="color:#777; padding:10px 0;">暂无评论，抢沙发</div>'}
+          </div>
+          
+          <div class="comment-input-area">
+            <input type="text" class="comment-input" id="newCommentInput" placeholder="写下你的评论…" autocomplete="off">
+            <button class="btn btn-dark" id="submitCommentBtn" style="padding:8px 22px;">发送</button>
+          </div>
+        </div>
+      `;
+      
+      detailContent.innerHTML = html;
+      
+      // 绑定详情页按钮事件
+      const likeBtn = document.getElementById('detailLikeBtn');
+      const collectBtn = document.getElementById('detailCollectBtn');
+      if (likeBtn) {
+        likeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleLike(post.id);
+        });
+      }
+      if (collectBtn) {
+        collectBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleCollect(post.id);
+        });
+      }
+      
+      const submitComment = document.getElementById('submitCommentBtn');
+      const commentInput = document.getElementById('newCommentInput');
+      if (submitComment) {
+        submitComment.addEventListener('click', () => {
+          const text = commentInput.value.trim();
+          if (!text) return;
+          addComment(post.id, text);
+          commentInput.value = '';
+        });
+      }
+    }
+
+    // 点赞切换
+    function toggleLike(postId) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+      post.liked = !post.liked;
+      post.likes = (post.likes || 0) + (post.liked ? 1 : -1);
+      savePosts();
+      // 如果在详情页且是当前帖子，重新渲染详情；同时更新feed
+      if (currentPostId === postId && !homeView.classList.contains('hidden') === false) {
+        renderDetailView();
+      }
+      renderFeed(); 
+    }
+
+    function toggleCollect(postId) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+      post.collected = !post.collected;
+      savePosts();
+      if (currentPostId === postId && detailView.classList.contains('hidden') === false) {
+        renderDetailView();
+      }
+      renderFeed();
+    }
+
+    function addComment(postId, text) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+      if (!post.comments) post.comments = [];
+      post.comments.push({
+        id: 'cmt_' + Date.now() + Math.random(),
+        author: '匿名用户',
+        text: text,
+        timestamp: Date.now()
+      });
+      savePosts();
+      renderDetailView();
+      renderFeed(); // 评论数变化
+    }
+
+    // 发布新帖
+    function publishNewPost(content, images) {
+      const newPost = {
+        id: 'post_' + Date.now() + Math.random(),
+        author: '树洞小枝',
+        avatarLetter: '新',
+        timestamp: Date.now(),
+        content: content,
+        images: images || [],
+        likes: 0,
+        liked: false,
+        collected: false,
+        comments: []
+      };
+      posts.unshift(newPost);
+      savePosts();
+      renderFeed();
+      closeModal();
+      
+      // 清空暂存
+      selectedImages = [];
+      imagePreviewContainer.innerHTML = '';
+      postTextInput.value = '';
+    }
+
+    // 模态框控制
+    function openModal() {
+      modal.style.display = 'flex';
+      postTextInput.focus();
+    }
+    function closeModal() {
+      modal.style.display = 'none';
+      emojiPicker.style.display = 'none';
+    }
+
+    // 图片预览处理
+    function handleImageUpload(files) {
+      selectedImages = [];
+      imagePreviewContainer.innerHTML = '';
+      if (!files.length) return;
+      
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          selectedImages.push(e.target.result);
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'preview-img';
+          imagePreviewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // 表情插入
+    function insertEmoji(emoji) {
+      const textarea = postTextInput;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      textarea.value = text.slice(0, start) + emoji + text.slice(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+    }
+
+    // ---------- 事件绑定 ----------
+    initMockPosts();
+    renderFeed();
+
+    // 返回主页
+    backBtn.addEventListener('click', () => {
+      showHomeView();
+    });
+
+    newPostBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelPublishBtn.addEventListener('click', closeModal);
+    
+    // 点击模态背景关闭（简单处理）
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // 图片上传
+    imageUploadInput.addEventListener('change', (e) => {
+      handleImageUpload(e.target.files);
+      imageUploadInput.value = ''; // 允许再次选相同文件
+    });
+
+    // 表情切换
+    emojiToggleBtn.addEventListener('click', () => {
+      emojiPicker.style.display = emojiPicker.style.display === 'grid' ? 'none' : 'grid';
+    });
+
+    // 点击表情插入
+    emojiPicker.querySelectorAll('span').forEach(span => {
+      span.addEventListener('click', () => {
+        insertEmoji(span.textContent);
+        emojiPicker.style.display = 'none';
+      });
+    });
+
+    // 发布提交
+    submitPostBtn.addEventListener('click', () => {
+      const content = postTextInput.value.trim();
+      if (!content) {
+        alert('内容不能为空');
+        return;
+      }
+      publishNewPost(content, [...selectedImages]);
+    });
+
+    // 如果点击详情页返回，也要更新
+    window.addEventListener('click', (e) => {
+      // 不影响其他
+    });
+
+    // 初始显示主页
+    showHomeView();
+    
+    // 处理空状态
+    if (posts.length === 0) emptyFeedMsg.style.display = 'block';
+  })();
+</script>
+</body>
+</html>

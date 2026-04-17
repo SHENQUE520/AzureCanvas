@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我买到的 - AzureTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+    <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
+        <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
+            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 pt-6 px-4 pb-10">
+
+        <aside class="w-full md:w-56 flex-shrink-0">
+            <div class="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
+                <nav class="space-y-0.5 text-sm">
+                    <a href="profile.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>🏠</span><span>我的空间</span>
+                    </a>
+
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="trade-toggle">
+                            <div class="flex items-center space-x-3"><span>📋</span><span>我的交易</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="trade-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="trade-sub" class="ml-6 space-y-0.5">
+                            <a href="mypublish.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我发布的</a>
+                            <a href="sales.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我卖出的</a>
+                            <a href="purchases.html" class="block px-4 py-2 bg-purple-50 text-purple-600 font-bold rounded-lg transition">我买到的</a>
+                        </div>
+                    </div>
+                    
+                    <a href="favorites.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>⭐</span><span>我的收藏</span>
+                    </a>
+                </nav>
+                <div class="mt-6 pt-4 border-t border-gray-100">
+                    <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
+                        <span>&larr;</span>
+                        <span>返回大厅</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 max-w-3xl">
+            
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-4">
+                <div class="flex items-center px-4 py-3 gap-3 border-b border-gray-50">
+                    <div class="flex-1 bg-gray-100 rounded-full flex items-center px-4 py-2">
+                        <span class="text-gray-400 mr-2">🔍</span>
+                        <input type="text" placeholder="搜索订单商品" class="bg-transparent border-none outline-none w-full text-sm text-gray-700 placeholder-gray-400">
+                    </div>
+                    <button class="text-gray-600 font-bold text-sm px-2 hover:text-orange-500 transition">搜索</button>
+                </div>
+
+                <div class="flex overflow-x-auto hide-scrollbar border-b border-gray-100 bg-white" id="order-tabs">
+                    <a href="javascript:;" data-target="all" class="order-tab flex-none px-5 py-3.5 text-sm font-bold text-orange-500 relative">
+                        全部
+                        <div class="tab-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-orange-500 rounded-full"></div>
+                    </a>
+                    <a href="javascript:;" data-target="unpaid" class="order-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">待付款</a>
+                    <a href="javascript:;" data-target="unshipped" class="order-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">待发货</a>
+                    <a href="javascript:;" data-target="unreceived" class="order-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">待收货</a>
+                    <a href="javascript:;" data-target="unreviewed" class="order-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">待评价</a>
+                    <a href="javascript:;" data-target="refund" class="order-tab flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">退款/售后</a>
+                </div>
+            </div>
+
+            <div class="space-y-4" id="order-list">
+
+                <div class="order-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-orange-200" data-status="unpaid">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2 text-sm font-bold text-gray-800 hover:text-orange-500 cursor-pointer">
+                            <span class="text-gray-400 text-lg">🏠</span>
+                            <span>樱花数码铺</span>
+                            <span class="text-gray-400 font-normal">›</span>
+                        </div>
+                        <span class="text-orange-500 text-sm font-bold">等待买家付款</span>
+                    </div>
+                    <div class="flex gap-4 mb-4">
+                        <div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">
+                            <div class="w-full h-full bg-gradient-to-br from-pink-100 to-rose-200 flex items-center justify-center text-3xl">🎧</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between min-w-0 py-1">
+                            <div class="flex justify-between items-start gap-4">
+                                <h3 class="text-sm md:text-base text-gray-800 leading-snug line-clamp-2 hover:text-orange-500 cursor-pointer transition">索尼 WH-1000XM4 降噪耳机 银色 九成新 带原包装</h3>
+                                <div class="text-right flex-shrink-0">
+                                    <p class="text-sm font-bold text-gray-800">¥850.00</p>
+                                    <p class="text-xs text-gray-400 mt-1">x1</p>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-2 py-1 rounded truncate">银色; 顺丰包邮</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-50 mb-4">
+                        <div class="text-[13px] text-orange-500 font-medium">
+                            支付剩余 23小时55分
+                        </div>
+                        <div class="text-sm text-gray-800 font-medium">
+                            需付款 <span class="text-lg font-black text-gray-900 ml-1">¥850.00</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">联系卖家</button>
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">取消订单</button>
+                        <button class="px-6 py-1.5 bg-orange-500 text-white rounded-full text-sm font-bold hover:bg-orange-600 transition shadow-sm">付款</button>
+                    </div>
+                </div>
+
+                <div class="order-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition" data-status="unshipped">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2 text-sm font-bold text-gray-800 hover:text-orange-500 cursor-pointer">
+                            <span class="text-gray-400 text-lg">🏠</span>
+                            <span>科大二手数码极客</span>
+                            <span class="text-gray-400 font-normal">›</span>
+                        </div>
+                        <span class="text-orange-500 text-sm font-bold">买家已付款</span>
+                    </div>
+                    <div class="flex gap-4 mb-4">
+                        <div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">
+                            <div class="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-3xl">🖱️</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between min-w-0 py-1">
+                            <div class="flex justify-between items-start gap-4">
+                                <h3 class="text-sm md:text-base text-gray-800 leading-snug line-clamp-2 hover:text-orange-500 cursor-pointer transition">罗技 G304 无线鼠标 九成新 带接收器</h3>
+                                <div class="text-right flex-shrink-0">
+                                    <p class="text-sm font-bold text-gray-800">¥120.00</p>
+                                    <p class="text-xs text-gray-400 mt-1">x1</p>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-2 py-1 rounded truncate">黑色; 顺丰包邮</span>
+                            </div>
+                            <div class="mt-2 flex items-center gap-1.5">
+                                <span class="text-[10px] text-orange-500 border border-orange-200 bg-orange-50 px-1 py-0.5 rounded">极速退款</span>
+                                <span class="text-[10px] text-gray-500 border border-gray-200 px-1 py-0.5 rounded">七天无理由退换</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-800 font-medium mb-4 pt-3 border-t border-gray-50">
+                        实付款 <span class="text-lg font-black text-gray-900 ml-1">¥120.00</span>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">修改地址</button>
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">联系卖家</button>
+                        <button class="px-5 py-1.5 bg-orange-500 text-white rounded-full text-sm font-bold hover:bg-orange-600 transition shadow-sm" onclick="alert('已向卖家发送发货提醒！')">提醒发货</button>
+                    </div>
+                </div>
+
+                <div class="order-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition" data-status="unreviewed">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2 text-sm font-bold text-gray-800 hover:text-orange-500 cursor-pointer">
+                            <span class="text-gray-400 text-lg">🏠</span>
+                            <span>小布布的小店</span>
+                        </div>
+                        <span class="text-gray-500 text-sm font-bold">交易成功</span>
+                    </div>
+                    <div class="flex gap-4 mb-4">
+                        <div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">
+                            <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-3xl">👕</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between min-w-0 py-1">
+                            <h3 class="text-sm md:text-base text-gray-800 leading-snug line-clamp-2">纯白长袖t恤女春秋冬内搭打底衫百搭修身</h3>
+                            <div class="mt-2">
+                                <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-2 py-1 rounded">白色; M</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-800 font-medium mb-4 pt-3 border-t border-gray-50">
+                        实付款 <span class="text-lg font-black text-gray-900 ml-1">¥22.62</span>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">删除订单</button>
+                        <button class="px-5 py-1.5 border border-orange-500 text-orange-500 rounded-full text-sm font-medium hover:bg-orange-50 transition">去评价</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+<script>
+    // 🌟 1. 顶部 Tab 切换与订单过滤逻辑
+    var tabs = document.querySelectorAll('.order-tab');
+    var cards = document.querySelectorAll('.order-card');
+
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            // 步骤1：清除所有Tab的选中状态
+            tabs.forEach(function(t) {
+                t.classList.remove('font-bold', 'text-orange-500');
+                t.classList.add('text-gray-600');
+                var indicator = t.querySelector('.tab-indicator');
+                if (indicator) indicator.remove();
+            });
+
+            // 步骤2：激活当前点击的Tab
+            tab.classList.remove('text-gray-600');
+            tab.classList.add('font-bold', 'text-orange-500');
+            var indicator = document.createElement('div');
+            indicator.className = 'tab-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-orange-500 rounded-full';
+            tab.appendChild(indicator);
+
+            // 步骤3：核心过滤逻辑
+            var targetStatus = tab.getAttribute('data-target');
+            
+            cards.forEach(function(card) {
+                var cardStatus = card.getAttribute('data-status');
+                if (targetStatus === 'all' || targetStatus === cardStatus) {
+                    card.style.display = 'block'; 
+                } else {
+                    card.style.display = 'none';  
+                }
+            });
+        });
+    });
+
+    // 2. 左侧菜单折叠逻辑
+    var toggle = document.getElementById('trade-toggle');
+    var sub = document.getElementById('trade-sub');
+    var arrow = document.getElementById('trade-arrow');
+    if(toggle && sub && arrow) {
+        toggle.addEventListener('click', function() {
+            var hidden = sub.style.display === 'none';
+            sub.style.display = hidden ? '' : 'none';
+            arrow.classList.toggle('rotate-180', hidden);
+        });
+    }
+</script>
+
+</body>
+</html>

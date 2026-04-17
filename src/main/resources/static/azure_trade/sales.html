@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我卖出的 - 个人中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+    <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
+        <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
+            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 pt-6 px-4 pb-10">
+
+        <aside class="w-full md:w-56 flex-shrink-0">
+            <div class="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
+                <nav class="space-y-0.5 text-sm">
+                    <a href="profile.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>🏠</span><span>我的空间</span>
+                    </a>
+
+                    <!-- 我的交易（可展开） -->
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="trade-toggle">
+                            <div class="flex items-center space-x-3"><span>📋</span><span>我的交易</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="trade-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="trade-sub" class="ml-6 space-y-0.5">
+                            <a href="mypublish.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我发布的</a>
+                            <a href="sales.html" class="block px-4 py-2 bg-purple-50 text-purple-600 font-bold rounded-lg transition">我卖出的</a>
+                            <a href="purchases.html" class="block px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">我买到的</a>
+                        </div>
+                    </div>
+
+                    <a href="favorites.html" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
+                        <span>⭐</span><span>我的收藏</span>
+                    </a>
+                </nav>
+                <div class="mt-6 pt-4 border-t border-gray-100">
+                    <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
+                        <span>&larr;</span>
+                        <span>返回大厅</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 max-w-3xl">
+            
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-4">
+                <div class="flex items-center px-4 py-3 gap-3 border-b border-gray-50">
+                    <div class="flex-1 bg-gray-100 rounded-full flex items-center px-4 py-2">
+                        <span class="text-gray-400 mr-2">🔍</span>
+                        <input type="text" placeholder="搜索买家昵称或商品" class="bg-transparent border-none outline-none w-full text-sm text-gray-700 placeholder-gray-400">
+                    </div>
+                    <button class="text-gray-600 font-bold text-sm px-2 hover:text-orange-500 transition">搜索</button>
+                </div>
+
+                <div class="flex overflow-x-auto hide-scrollbar border-b border-gray-100 bg-white">
+                    <a href="#" class="flex-none px-5 py-3.5 text-sm font-bold text-orange-500 relative">
+                        全部
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-orange-500 rounded-full"></div>
+                    </a>
+                    <a href="#" class="flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">待买家付款</a>
+                    <a href="#" class="flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">待发货 <span class="text-red-500 text-xs font-bold">1</span></a>
+                    <a href="#" class="flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">已发货</a>
+                    <a href="#" class="flex-none px-5 py-3.5 text-sm text-gray-600 hover:text-orange-500 transition">退款/售后</a>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-orange-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2 text-sm font-bold text-gray-800">
+                            <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs">买</span>
+                            <span>买家：林北的测试账号</span>
+                            <span class="bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded text-[10px]">刚刚拍下</span>
+                        </div>
+                        <span class="text-red-500 text-sm font-bold animate-pulse">买家已付款，待发货</span>
+                    </div>
+                    <div class="flex gap-4 mb-4">
+                        <div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">
+                            <div class="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-200 flex items-center justify-center text-3xl">💻</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between min-w-0 py-1">
+                            <div class="flex justify-between items-start gap-4">
+                                <h3 class="text-sm md:text-base text-gray-800 leading-snug line-clamp-2">出一套写代码用的机械键盘+鼠标套装</h3>
+                                <div class="text-right flex-shrink-0">
+                                    <p class="text-sm font-bold text-gray-800">¥150.00</p>
+                                    <p class="text-xs text-gray-400 mt-1">x1</p>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-2 py-1 rounded truncate">买家留言: 学长，可以今天下午在图书馆面交吗？</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-800 font-medium mb-4 pt-3 border-t border-gray-50">
+                        实际收入 <span class="text-lg font-black text-red-500 ml-1">¥150.00</span>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">联系买家</button>
+                        <button class="px-5 py-1.5 bg-orange-500 text-white rounded-full text-sm font-bold hover:bg-orange-600 shadow-sm transition" onclick="alert('跳转到填写快递单号或确认面交页面')">去发货 / 确认面交</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2 text-sm font-bold text-gray-800">
+                            <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs">买</span>
+                            <span>买家：计算机系大一萌新</span>
+                        </div>
+                        <span class="text-gray-500 text-sm font-bold">交易成功</span>
+                    </div>
+                    <div class="flex gap-4 mb-4">
+                        <div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">
+                            <div class="w-full h-full bg-gradient-to-br from-green-100 to-teal-200 flex items-center justify-center text-3xl">📚</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between min-w-0 py-1">
+                            <div class="flex justify-between items-start gap-4">
+                                <h3 class="text-sm md:text-base text-gray-800 leading-snug line-clamp-2">【已出】C语言程序设计(第四版) 谭浩强</h3>
+                                <div class="text-right flex-shrink-0">
+                                    <p class="text-sm font-bold text-gray-800">¥5.00</p>
+                                    <p class="text-xs text-gray-400 mt-1">x1</p>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-2 py-1 rounded truncate">买家留言: 谢谢学长！</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-800 font-medium mb-4 pt-3 border-t border-gray-50">
+                        实际收入 <span class="text-lg font-black text-red-500 ml-1">¥5.00</span>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">联系买家</button>
+                        <button class="px-5 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition">查看详情</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+<script>
+// 我的交易 展开/收起
+var toggle = document.getElementById('trade-toggle');
+var sub = document.getElementById('trade-sub');
+var arrow = document.getElementById('trade-arrow');
+toggle.addEventListener('click', function() {
+    var hidden = sub.style.display === 'none';
+    sub.style.display = hidden ? '' : 'none';
+    arrow.classList.toggle('rotate-180', hidden);
+});
+</script>
+
+</body>
+</html>
