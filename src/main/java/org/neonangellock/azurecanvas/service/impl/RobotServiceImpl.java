@@ -1,8 +1,11 @@
 package org.neonangellock.azurecanvas.service.impl;
 
 import org.neonangellock.azurecanvas.model.RobotConfig;
+import org.neonangellock.azurecanvas.model.TreeholeComment;
+import org.neonangellock.azurecanvas.model.TreeholePost;
 import org.neonangellock.azurecanvas.model.User;
 import org.neonangellock.azurecanvas.service.RobotService;
+import org.neonangellock.azurecanvas.service.TreeholeService;
 import org.neonangellock.azurecanvas.service.UserService;
 import org.neonangellock.azurecanvas.util.ContentGenerator;
 import org.springframework.stereotype.Service;
@@ -16,10 +19,12 @@ public class RobotServiceImpl implements RobotService {
 
     private final EntityManager entityManager;
     private final UserService userService;
+    private final TreeholeService treeholeService;
 
-    public RobotServiceImpl(EntityManager entityManager, UserService userService) {
+    public RobotServiceImpl(EntityManager entityManager, UserService userService, TreeholeService treeholeService) {
         this.entityManager = entityManager;
         this.userService = userService;
+        this.treeholeService = treeholeService;
     }
 
     @Override
@@ -36,10 +41,9 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public RobotConfig save(RobotConfig robotConfig) {
         if (robotConfig.getId() == null) {
-            // 创建新的机器人用户
             User user = new User();
             user.setUsername("robot_" + System.currentTimeMillis());
-            user.setPassword("robot_password"); // 实际应用中应该加密
+            user.setPassword("robot_password");
             user.setEmail("robot_" + System.currentTimeMillis() + "@example.com");
             user.setRole(User.Role.user);
             user.setRobot(true);
@@ -56,7 +60,6 @@ public class RobotServiceImpl implements RobotService {
     public void deleteById(Integer id) {
         RobotConfig robotConfig = entityManager.find(RobotConfig.class, id);
         if (robotConfig != null) {
-            // 删除关联的用户
             User user = robotConfig.getUser();
             if (user != null) {
                 entityManager.remove(user);
@@ -76,42 +79,40 @@ public class RobotServiceImpl implements RobotService {
 
     @Override
     public void generatePost(Integer robotId) {
-        // 实现机器人发帖逻辑
-        // 1. 获取机器人配置
         RobotConfig robotConfig = entityManager.find(RobotConfig.class, robotId);
         if (robotConfig == null) {
             return;
         }
 
-        // 2. 生成帖子内容
         String topic = robotConfig.getInterests();
         String title = ContentGenerator.generatePostTitle(topic);
         String content = ContentGenerator.generatePostContent(topic, title);
 
-        // 3. 保存帖子
-        // 这里需要注入PostService来保存帖子
-        // 暂时只打印日志
-        System.out.println("机器人 " + robotConfig.getName() + " 生成帖子: " + title);
+        TreeholePost post = treeholeService.createRobotPost(robotId, content);
+        if (post != null) {
+            System.out.println("机器人 " + robotConfig.getName() + " 在树洞发布帖子: " + content.substring(0, Math.min(50, content.length())) + "...");
+        }
     }
 
     @Override
     public void generateReply(Integer robotId) {
-        // 实现机器人回复逻辑
-        // 1. 获取机器人配置
         RobotConfig robotConfig = entityManager.find(RobotConfig.class, robotId);
         if (robotConfig == null) {
             return;
         }
 
-        // 2. 查找可回复的帖子
-        // 这里需要注入PostService来查询帖子
+        List<TreeholePost> recentPosts = treeholeService.findRecentPosts(10);
+        if (recentPosts.isEmpty()) {
+            return;
+        }
 
-        // 3. 生成回复内容
+        TreeholePost targetPost = recentPosts.get((int) (Math.random() * recentPosts.size()));
+        
         String replyContent = ContentGenerator.generateReply();
 
-        // 4. 保存回复
-        // 这里需要注入ReplyService来保存回复
-        // 暂时只打印日志
-        System.out.println("机器人 " + robotConfig.getName() + " 生成回复: " + replyContent);
+        TreeholeComment comment = treeholeService.createRobotComment(robotId, targetPost.getId(), replyContent);
+        if (comment != null) {
+            System.out.println("机器人 " + robotConfig.getName() + " 在树洞回复帖子: " + replyContent);
+        }
     }
 }
