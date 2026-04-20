@@ -89,7 +89,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
         window.addEventListener('resize', onWindowResize);
         window.addEventListener('mousedown', onMouseDown);
         window.addEventListener('wheel', onWheel);
-
+        onWindowResize();
         animate();
     }
 
