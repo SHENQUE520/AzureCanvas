@@ -2,6 +2,7 @@ package org.neonangellock.azurecanvas.service.impl;
 
 import org.neonangellock.azurecanvas.model.Like;
 import org.neonangellock.azurecanvas.model.Post;
+import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.LikeService;
 import org.neonangellock.azurecanvas.service.PostService;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,10 @@ import jakarta.persistence.Query;
 import org.neonangellock.azurecanvas.model.User;
 
 @Service
-public class LikeServiceImpl implements LikeService {
-
-    private final EntityManager entityManager;
+public class LikeServiceImpl extends AbstractQueryService implements LikeService {
     private final PostService postService;
-
     public LikeServiceImpl(EntityManager entityManager, PostService postService) {
-        this.entityManager = entityManager;
+        super(entityManager);
         this.postService = postService;
     }
 

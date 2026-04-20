@@ -11,7 +11,7 @@ public class WebMvcConfigurer implements org.springframework.web.servlet.config.
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "DELETE", "PUT","OPTION")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTION")
                 .allowedHeaders("*")
                 .exposedHeaders("*");
     }

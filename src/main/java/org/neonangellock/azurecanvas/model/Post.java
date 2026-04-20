@@ -41,7 +41,7 @@ public class Post {
     private Date updatedAt = new Date();
 
     public enum Status {
-        normal, pinned, 精华, locked
+        normal, pinned, locked
     }
 
     // Getters and Setters

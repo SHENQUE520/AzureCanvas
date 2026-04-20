@@ -5,6 +5,7 @@ import jakarta.persistence.Query;
 import org.neonangellock.azurecanvas.model.RobotConfig;
 import org.neonangellock.azurecanvas.model.TreeholeComment;
 import org.neonangellock.azurecanvas.model.TreeholePost;
+import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.TreeholeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class TreeholeServiceImpl implements TreeholeService {
+public class TreeholeServiceImpl extends AbstractQueryService implements TreeholeService {
 
-    private final EntityManager entityManager;
-
-    public TreeholeServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    protected TreeholeServiceImpl(EntityManager entityManager) {
+        super(entityManager);
     }
 
     @Override

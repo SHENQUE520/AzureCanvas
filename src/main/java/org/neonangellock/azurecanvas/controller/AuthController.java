@@ -74,7 +74,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials, HttpServletResponse httpResponse) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        System.out.println("ls");
         String username = credentials.get("username");
         String password = credentials.get("password");
 

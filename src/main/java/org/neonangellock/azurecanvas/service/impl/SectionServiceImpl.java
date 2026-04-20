@@ -1,6 +1,8 @@
 package org.neonangellock.azurecanvas.service.impl;
 
 import org.neonangellock.azurecanvas.model.Section;
+import org.neonangellock.azurecanvas.model.User;
+import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.SectionService;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +11,10 @@ import jakarta.persistence.Query;
 import java.util.List;
 
 @Service
-public class SectionServiceImpl implements SectionService {
+public class SectionServiceImpl extends AbstractQueryService implements SectionService {
 
-    private final EntityManager entityManager;
-
-    public SectionServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    protected SectionServiceImpl(EntityManager entityManager) {
+        super(entityManager);
     }
 
     @Override
@@ -44,5 +44,12 @@ public class SectionServiceImpl implements SectionService {
         if (section != null) {
             entityManager.remove(section);
         }
+    }
+
+    @Override
+    public List<Section> findSectionsByUser(User user) {
+        Query query = entityManager.createQuery("SELECT s FROM Section s, Post p where p.section.id = s.id and p.user.id = :user_id");
+        query.setParameter("user_id", user.getId());
+        return query.getResultList();
     }
 }
