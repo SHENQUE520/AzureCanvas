@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0, user-scalable=yes">
+    <title>Azure Trade - 校园闲置交易</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#7c3aed'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/trade.module.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- ===== 顶部导航 ===== -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+            <!-- 左：品牌 Logo -->
+            <div class="flex items-center space-x-1 shrink-0">
+                <div class="bg-purple-600 text-white text-2xl font-black px-3 py-1 rounded-lg">闲置</div>
+                <span class="text-purple-700 text-xl font-bold tracking-wide">AzureTrade</span>
+            </div>
+
+            <!-- 中：搜索栏 -->
+            <div class="flex-1 max-w-xl mx-8">
+                <div class="flex">
+                    <input type="text" placeholder="搜索校园闲置好物..."
+                           class="flex-1 border-2 border-purple-400 rounded-l-full px-5 py-2 text-sm focus:outline-none focus:border-purple-600">
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-r-full text-sm font-semibold transition">
+                        🔍 搜索
+                    </button>
+                </div>
+                <div class="hot-tags flex space-x-4 mt-1.5 text-xs text-gray-400 pl-2">
+                    <a href="#" class="hover:text-purple-500">教材转让</a>
+                    <a href="#" class="hover:text-purple-500">数码设备</a>
+                    <a href="#" class="hover:text-purple-500">考研资料</a>
+                    <a href="#" class="hover:text-purple-500">宿舍好物</a>
+                </div>
+            </div>
+
+            <!-- 右：用户操作 -->
+            <div class="flex items-center space-x-4 shrink-0">
+                
+                <a href="../index.html" class="text-sm text-gray-500 hover:text-purple-600">返回主页</a>
+
+                <button onclick="openPublish()" class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-1.5 px-4 rounded-full shadow-md transition transform hover:scale-105 flex items-center space-x-1 mr-4">
+                    <span class="text-lg leading-none">+</span>
+                    <span class="text-sm">商品上架</span>
+                </button>
+                <!-- 用户头像 + 下拉面板 -->
+                <div class="relative" id="user-menu-wrapper">
+                    <button id="user-avatar-btn" class="flex items-center space-x-2 hover:opacity-80 transition">
+                        <div id="header-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-sm font-bold shadow">A</div>
+                        <span id="header-username" class="text-sm text-gray-700 font-medium hidden sm:inline">Azure同学</span>
+                        <svg class="w-3.5 h-3.5 text-gray-400 transition-transform" id="avatar-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <!-- 下拉面板 -->
+                    <div id="user-dropdown" class="hidden absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+                        <!-- 用户信息区 -->
+                        <a href="profile.html" class="block px-5 pt-5 pb-4 border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer">
+                            <div class="flex items-center space-x-3">
+                                <div id="dropdown-avatar" class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold shadow-md">A</div>
+                                <div>
+                                    <p id="dropdown-username" class="text-base font-bold text-gray-800">Azure同学</p>
+                                    <p class="text-xs text-gray-400 mt-0.5"><span id="dropdown-followers">0</span> 粉丝 &nbsp;|&nbsp; <span id="dropdown-following">0</span> 关注</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- 菜单项 -->
+                        <div class="py-2">
+                            <a href="mypublish.html" class="flex items-center justify-between px-5 py-3 hover:bg-purple-50 transition">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-lg">🏷️</span>
+                                    <span class="text-sm text-gray-700">我发布的</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dropdown-posts" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                            </a>
+
+                            <a href="purchases.html" class="flex items-center justify-between px-5 py-3 hover:bg-purple-50 transition">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-lg">📦</span>
+                                    <span class="text-sm text-gray-700">我买到的</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dropdown-buy" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                            </a>
+
+                            <a href="sales.html" class="flex items-center justify-between px-5 py-3 hover:bg-purple-50 transition">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-lg">💰</span>
+                                    <span class="text-sm text-gray-700">我卖出的</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dropdown-sell" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                            </a>
+                            <a href="favorites.html" class="flex items-center justify-between px-5 py-3 hover:bg-purple-50 transition">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-lg">⭐</span>
+                                    <span class="text-sm text-gray-700">我的收藏</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dropdown-fav" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                            </a>
+                        </div>
+                        <!-- 底部操作栏 -->
+                        <div class="border-t border-gray-100 px-5 py-3 flex items-center justify-between">
+                            <button id="logout-btn" class="text-sm text-gray-400 hover:text-red-500 transition">退出登录</button>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <span class="text-xs text-gray-400">保存登录信息</span>
+                                <div class="relative">
+                                    <input type="checkbox" id="save-login-toggle" class="sr-only peer" checked>
+                                    <div class="w-9 h-5 bg-gray-200 rounded-full peer-checked:bg-purple-500 transition"></div>
+                                    <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== 通知横幅 ===== -->
+    <div class="bg-purple-50 border-b border-purple-100">
+        <div class="max-w-7xl mx-auto px-4 py-1.5 text-xs text-purple-700 flex items-center space-x-2">
+            <span class="bg-purple-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">公告</span>
+            <span>校园闲置交易功能全新升级！支持担保交易，买卖更放心～</span>
+        </div>
+    </div>
+
+    <!-- ===== 主体内容 ===== -->
+    <main class="max-w-7xl mx-auto px-4 py-5">
+        <div class="flex gap-5">
+            
+
+            
+
+            
+
+            <!-- ===== 左侧分类栏 ===== -->
+            <aside class="w-44 shrink-0 bg-white rounded-xl p-4 shadow-sm self-start relative z-40">
+                <ul class="category-list text-sm text-gray-700 space-y-1">
+                    <!-- 1. 手机/数码/电脑 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2 font-medium" data-cat="手机/数码/电脑">
+                        <span>📱</span><span>手机</span><span class="text-gray-300">/</span><span>数码</span><span class="text-gray-300">/</span><span>电脑</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600 font-normal">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">手机</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=苹果手机" class="hover:text-purple-600">苹果手机</a><a href="search.html?keyword=三星手机" class="hover:text-purple-600">三星手机</a><a href="search.html?keyword=华为手机" class="hover:text-purple-600">华为手机</a><a href="search.html?keyword=小米手机" class="hover:text-purple-600">小米手机</a><a href="search.html?keyword=一加" class="hover:text-purple-600">一加</a><a href="search.html?keyword=荣耀手机" class="hover:text-purple-600">荣耀手机</a><a href="search.html?keyword=OPPO手机" class="hover:text-purple-600">OPPO手机</a><a href="search.html?keyword=vivo手机" class="hover:text-purple-600">vivo手机</a><a href="search.html?keyword=iQOO" class="hover:text-purple-600">iQOO</a><a href="search.html?keyword=realme" class="hover:text-purple-600">realme</a><a href="search.html?keyword=红米手机" class="hover:text-purple-600">红米手机</a><a href="search.html?keyword=魅族" class="hover:text-purple-600">魅族</a><a href="search.html?keyword=中兴" class="hover:text-purple-600">中兴</a><a href="search.html?keyword=努比亚" class="hover:text-purple-600">努比亚</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">电脑</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=笔记本电脑" class="hover:text-purple-600">笔记本电脑</a><a href="search.html?keyword=平板电脑" class="hover:text-purple-600">平板电脑</a><a href="search.html?keyword=游戏本" class="hover:text-purple-600">游戏本</a><a href="search.html?keyword=台式机" class="hover:text-purple-600">台式机</a><a href="search.html?keyword=一体机" class="hover:text-purple-600">一体机</a><a href="search.html?keyword=商用笔记本" class="hover:text-purple-600">商用笔记本</a><a href="search.html?keyword=三合一笔记本" class="hover:text-purple-600">三合一笔记本</a><a href="search.html?keyword=迷你主机" class="hover:text-purple-600">迷你主机</a><a href="search.html?keyword=工作站" class="hover:text-purple-600">工作站</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">影音数码</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=蓝牙耳机" class="hover:text-purple-600">蓝牙耳机</a><a href="search.html?keyword=有线耳机" class="hover:text-purple-600">有线耳机</a><a href="search.html?keyword=音箱" class="hover:text-purple-600">音箱</a><a href="search.html?keyword=麦克风" class="hover:text-purple-600">麦克风</a><a href="search.html?keyword=投影仪" class="hover:text-purple-600">投影仪</a><a href="search.html?keyword=充电宝" class="hover:text-purple-600">充电宝</a><a href="search.html?keyword=移动硬盘" class="hover:text-purple-600">移动硬盘</a><a href="search.html?keyword=数据线" class="hover:text-purple-600">数据线</a><a href="search.html?keyword=U盘" class="hover:text-purple-600">U盘</a><a href="search.html?keyword=录音笔" class="hover:text-purple-600">录音笔</a><a href="search.html?keyword=MP3/MP4" class="hover:text-purple-600">MP3/MP4</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">智能设备</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=智能手表" class="hover:text-purple-600">智能手表</a><a href="search.html?keyword=智能手环" class="hover:text-purple-600">智能手环</a><a href="search.html?keyword=VR/AR设备" class="hover:text-purple-600">VR/AR设备</a><a href="search.html?keyword=无人机" class="hover:text-purple-600">无人机</a><a href="search.html?keyword=电子阅读器" class="hover:text-purple-600">电子阅读器</a><a href="search.html?keyword=智能音箱" class="hover:text-purple-600">智能音箱</a><a href="search.html?keyword=路由器" class="hover:text-purple-600">路由器</a><a href="search.html?keyword=智能门锁" class="hover:text-purple-600">智能门锁</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">摄影摄像</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=微单相机" class="hover:text-purple-600">微单相机</a><a href="search.html?keyword=单反相机" class="hover:text-purple-600">单反相机</a><a href="search.html?keyword=镜头" class="hover:text-purple-600">镜头</a><a href="search.html?keyword=运动相机" class="hover:text-purple-600">运动相机</a><a href="search.html?keyword=CCD" class="hover:text-purple-600">CCD</a><a href="search.html?keyword=拍立得" class="hover:text-purple-600">拍立得</a><a href="search.html?keyword=三脚架" class="hover:text-purple-600">三脚架</a><a href="search.html?keyword=补光灯" class="hover:text-purple-600">补光灯</a><a href="search.html?keyword=稳定器" class="hover:text-purple-600">稳定器</a><a href="search.html?keyword=存储卡" class="hover:text-purple-600">存储卡</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">电脑配件</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=机械键盘" class="hover:text-purple-600">机械键盘</a><a href="search.html?keyword=鼠标" class="hover:text-purple-600">鼠标</a><a href="search.html?keyword=显示器" class="hover:text-purple-600">显示器</a><a href="search.html?keyword=显卡" class="hover:text-purple-600">显卡</a><a href="search.html?keyword=内存条" class="hover:text-purple-600">内存条</a><a href="search.html?keyword=固态硬盘" class="hover:text-purple-600">固态硬盘</a><a href="search.html?keyword=散热器" class="hover:text-purple-600">散热器</a><a href="search.html?keyword=电脑包" class="hover:text-purple-600">电脑包</a><a href="search.html?keyword=扩展坞" class="hover:text-purple-600">扩展坞</a><a href="search.html?keyword=鼠标垫" class="hover:text-purple-600">鼠标垫</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 2. 服饰/箱包/运动 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="服饰/箱包/运动">
+                        <span>👗</span><span>服饰</span><span class="text-gray-300">/</span><span>箱包</span><span class="text-gray-300">/</span><span>运动</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">女装</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=连衣裙" class="hover:text-purple-600">连衣裙</a><a href="search.html?keyword=T恤" class="hover:text-purple-600">T恤</a><a href="search.html?keyword=卫衣" class="hover:text-purple-600">卫衣</a><a href="search.html?keyword=外套" class="hover:text-purple-600">外套</a><a href="search.html?keyword=牛仔裤" class="hover:text-purple-600">牛仔裤</a><a href="search.html?keyword=半身裙" class="hover:text-purple-600">半身裙</a><a href="search.html?keyword=针织衫" class="hover:text-purple-600">针织衫</a><a href="search.html?keyword=羽绒服" class="hover:text-purple-600">羽绒服</a><a href="search.html?keyword=大衣" class="hover:text-purple-600">大衣</a><a href="search.html?keyword=西装" class="hover:text-purple-600">西装</a><a href="search.html?keyword=吊带" class="hover:text-purple-600">吊带</a><a href="search.html?keyword=衬衫" class="hover:text-purple-600">衬衫</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">男装</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=T恤" class="hover:text-purple-600">T恤</a><a href="search.html?keyword=衬衫" class="hover:text-purple-600">衬衫</a><a href="search.html?keyword=夹克" class="hover:text-purple-600">夹克</a><a href="search.html?keyword=卫衣" class="hover:text-purple-600">卫衣</a><a href="search.html?keyword=休闲裤" class="hover:text-purple-600">休闲裤</a><a href="search.html?keyword=运动裤" class="hover:text-purple-600">运动裤</a><a href="search.html?keyword=羽绒服" class="hover:text-purple-600">羽绒服</a><a href="search.html?keyword=风衣" class="hover:text-purple-600">风衣</a><a href="search.html?keyword=西装" class="hover:text-purple-600">西装</a><a href="search.html?keyword=牛仔裤" class="hover:text-purple-600">牛仔裤</a><a href="search.html?keyword=短裤" class="hover:text-purple-600">短裤</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">鞋靴</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=运动鞋" class="hover:text-purple-600">运动鞋</a><a href="search.html?keyword=帆布鞋" class="hover:text-purple-600">帆布鞋</a><a href="search.html?keyword=板鞋" class="hover:text-purple-600">板鞋</a><a href="search.html?keyword=高跟鞋" class="hover:text-purple-600">高跟鞋</a><a href="search.html?keyword=凉鞋" class="hover:text-purple-600">凉鞋</a><a href="search.html?keyword=靴子" class="hover:text-purple-600">靴子</a><a href="search.html?keyword=拖鞋" class="hover:text-purple-600">拖鞋</a><a href="search.html?keyword=皮鞋" class="hover:text-purple-600">皮鞋</a><a href="search.html?keyword=马丁靴" class="hover:text-purple-600">马丁靴</a><a href="search.html?keyword=雪地靴" class="hover:text-purple-600">雪地靴</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">箱包</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=双肩包" class="hover:text-purple-600">双肩包</a><a href="search.html?keyword=手提包" class="hover:text-purple-600">手提包</a><a href="search.html?keyword=行李箱" class="hover:text-purple-600">行李箱</a><a href="search.html?keyword=钱包" class="hover:text-purple-600">钱包</a><a href="search.html?keyword=斜挎包" class="hover:text-purple-600">斜挎包</a><a href="search.html?keyword=腰包" class="hover:text-purple-600">腰包</a><a href="search.html?keyword=公文包" class="hover:text-purple-600">公文包</a><a href="search.html?keyword=化妆包" class="hover:text-purple-600">化妆包</a><a href="search.html?keyword=收纳袋" class="hover:text-purple-600">收纳袋</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">配饰</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=手表" class="hover:text-purple-600">手表</a><a href="search.html?keyword=项链" class="hover:text-purple-600">项链</a><a href="search.html?keyword=耳环" class="hover:text-purple-600">耳环</a><a href="search.html?keyword=戒指" class="hover:text-purple-600">戒指</a><a href="search.html?keyword=手链" class="hover:text-purple-600">手链</a><a href="search.html?keyword=墨镜" class="hover:text-purple-600">墨镜</a><a href="search.html?keyword=帽子" class="hover:text-purple-600">帽子</a><a href="search.html?keyword=围巾" class="hover:text-purple-600">围巾</a><a href="search.html?keyword=腰带" class="hover:text-purple-600">腰带</a><a href="search.html?keyword=发饰" class="hover:text-purple-600">发饰</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">运动装备</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=跑鞋" class="hover:text-purple-600">跑鞋</a><a href="search.html?keyword=篮球鞋" class="hover:text-purple-600">篮球鞋</a><a href="search.html?keyword=运动套装" class="hover:text-purple-600">运动套装</a><a href="search.html?keyword=瑜伽服" class="hover:text-purple-600">瑜伽服</a><a href="search.html?keyword=泳衣" class="hover:text-purple-600">泳衣</a><a href="search.html?keyword=速干衣" class="hover:text-purple-600">速干衣</a><a href="search.html?keyword=冲锋衣" class="hover:text-purple-600">冲锋衣</a><a href="search.html?keyword=登山鞋" class="hover:text-purple-600">登山鞋</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+<!-- ASIDE_CHUNK_2 -->
+                    <!-- 3. 游戏/卡券/潮玩 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="游戏/卡券/潮玩">
+                        <span>🎮</span><span>游戏</span><span class="text-gray-300">/</span><span>卡券</span><span class="text-gray-300">/</span><span>潮玩</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">游戏主机/掌机</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=Switch" class="hover:text-purple-600">Switch</a><a href="search.html?keyword=PS5" class="hover:text-purple-600">PS5</a><a href="search.html?keyword=PS4" class="hover:text-purple-600">PS4</a><a href="search.html?keyword=Xbox" class="hover:text-purple-600">Xbox</a><a href="search.html?keyword=Steam Deck" class="hover:text-purple-600">Steam Deck</a><a href="search.html?keyword=PSP/PSV" class="hover:text-purple-600">PSP/PSV</a><a href="search.html?keyword=3DS" class="hover:text-purple-600">3DS</a><a href="search.html?keyword=复古游戏机" class="hover:text-purple-600">复古游戏机</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">游戏软件/账号</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=Switch卡带" class="hover:text-purple-600">Switch卡带</a><a href="search.html?keyword=PS5光盘" class="hover:text-purple-600">PS5光盘</a><a href="search.html?keyword=Steam账号" class="hover:text-purple-600">Steam账号</a><a href="search.html?keyword=游戏手柄" class="hover:text-purple-600">游戏手柄</a><a href="search.html?keyword=游戏耳机" class="hover:text-purple-600">游戏耳机</a><a href="search.html?keyword=游戏椅" class="hover:text-purple-600">游戏椅</a><a href="search.html?keyword=游戏鼠标" class="hover:text-purple-600">游戏鼠标</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">卡券/会员</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=咖啡券" class="hover:text-purple-600">咖啡券</a><a href="search.html?keyword=外卖红包" class="hover:text-purple-600">外卖红包</a><a href="search.html?keyword=电影票" class="hover:text-purple-600">电影票</a><a href="search.html?keyword=会员卡" class="hover:text-purple-600">会员卡</a><a href="search.html?keyword=代金券" class="hover:text-purple-600">代金券</a><a href="search.html?keyword=视频会员" class="hover:text-purple-600">视频会员</a><a href="search.html?keyword=音乐会员" class="hover:text-purple-600">音乐会员</a><a href="search.html?keyword=网盘会员" class="hover:text-purple-600">网盘会员</a><a href="search.html?keyword=健身卡" class="hover:text-purple-600">健身卡</a><a href="search.html?keyword=超市购物卡" class="hover:text-purple-600">超市购物卡</a><a href="search.html?keyword=加油卡" class="hover:text-purple-600">加油卡</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">潮玩手办</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=泡泡玛特" class="hover:text-purple-600">泡泡玛特</a><a href="search.html?keyword=乐高" class="hover:text-purple-600">乐高</a><a href="search.html?keyword=GK手办" class="hover:text-purple-600">GK手办</a><a href="search.html?keyword=毛绒玩具" class="hover:text-purple-600">毛绒玩具</a><a href="search.html?keyword=盲盒" class="hover:text-purple-600">盲盒</a><a href="search.html?keyword=拼装模型" class="hover:text-purple-600">拼装模型</a><a href="search.html?keyword=高达" class="hover:text-purple-600">高达</a><a href="search.html?keyword=变形金刚" class="hover:text-purple-600">变形金刚</a><a href="search.html?keyword=迪士尼周边" class="hover:text-purple-600">迪士尼周边</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">桌游/动漫</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=三国杀" class="hover:text-purple-600">三国杀</a><a href="search.html?keyword=狼人杀" class="hover:text-purple-600">狼人杀</a><a href="search.html?keyword=UNO" class="hover:text-purple-600">UNO</a><a href="search.html?keyword=拼图" class="hover:text-purple-600">拼图</a><a href="search.html?keyword=象棋围棋" class="hover:text-purple-600">象棋围棋</a><a href="search.html?keyword=漫画书" class="hover:text-purple-600">漫画书</a><a href="search.html?keyword=动漫周边" class="hover:text-purple-600">动漫周边</a><a href="search.html?keyword=cosplay服装" class="hover:text-purple-600">cosplay服装</a><a href="search.html?keyword=谷子" class="hover:text-purple-600">谷子</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 4. 教材/考研/资料 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="教材/考研/资料">
+                        <span>📚</span><span>教材</span><span class="text-gray-300">/</span><span>考研</span><span class="text-gray-300">/</span><span>资料</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">理工教材</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=高等数学" class="hover:text-purple-600">高等数学</a><a href="search.html?keyword=大学物理" class="hover:text-purple-600">大学物理</a><a href="search.html?keyword=线性代数" class="hover:text-purple-600">线性代数</a><a href="search.html?keyword=概率论" class="hover:text-purple-600">概率论</a><a href="search.html?keyword=C语言" class="hover:text-purple-600">C语言</a><a href="search.html?keyword=数据结构" class="hover:text-purple-600">数据结构</a><a href="search.html?keyword=离散数学" class="hover:text-purple-600">离散数学</a><a href="search.html?keyword=电路原理" class="hover:text-purple-600">电路原理</a><a href="search.html?keyword=模拟电子" class="hover:text-purple-600">模拟电子</a><a href="search.html?keyword=数字电子" class="hover:text-purple-600">数字电子</a><a href="search.html?keyword=操作系统" class="hover:text-purple-600">操作系统</a><a href="search.html?keyword=计算机网络" class="hover:text-purple-600">计算机网络</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">文商教材</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=微观经济学" class="hover:text-purple-600">微观经济学</a><a href="search.html?keyword=宏观经济学" class="hover:text-purple-600">宏观经济学</a><a href="search.html?keyword=管理学" class="hover:text-purple-600">管理学</a><a href="search.html?keyword=会计学" class="hover:text-purple-600">会计学</a><a href="search.html?keyword=市场营销" class="hover:text-purple-600">市场营销</a><a href="search.html?keyword=毛概" class="hover:text-purple-600">毛概</a><a href="search.html?keyword=思修" class="hover:text-purple-600">思修</a><a href="search.html?keyword=马原" class="hover:text-purple-600">马原</a><a href="search.html?keyword=法学导论" class="hover:text-purple-600">法学导论</a><a href="search.html?keyword=心理学" class="hover:text-purple-600">心理学</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">考研资料</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=张宇高数" class="hover:text-purple-600">张宇高数</a><a href="search.html?keyword=汤家凤线代" class="hover:text-purple-600">汤家凤线代</a><a href="search.html?keyword=李永乐复习全书" class="hover:text-purple-600">李永乐复习全书</a><a href="search.html?keyword=考研英语真题" class="hover:text-purple-600">考研英语真题</a><a href="search.html?keyword=王江涛作文" class="hover:text-purple-600">王江涛作文</a><a href="search.html?keyword=考研政治" class="hover:text-purple-600">考研政治</a><a href="search.html?keyword=肖秀荣" class="hover:text-purple-600">肖秀荣</a><a href="search.html?keyword=徐涛核心考案" class="hover:text-purple-600">徐涛核心考案</a><a href="search.html?keyword=专业课资料" class="hover:text-purple-600">专业课资料</a><a href="search.html?keyword=复试资料" class="hover:text-purple-600">复试资料</a><a href="search.html?keyword=学长学姐笔记" class="hover:text-purple-600">学长学姐笔记</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">考证/语言</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=四六级" class="hover:text-purple-600">四六级</a><a href="search.html?keyword=雅思" class="hover:text-purple-600">雅思</a><a href="search.html?keyword=托福" class="hover:text-purple-600">托福</a><a href="search.html?keyword=GRE/GMAT" class="hover:text-purple-600">GRE/GMAT</a><a href="search.html?keyword=日语N1/N2" class="hover:text-purple-600">日语N1/N2</a><a href="search.html?keyword=计算机等级" class="hover:text-purple-600">计算机等级</a><a href="search.html?keyword=教资" class="hover:text-purple-600">教资</a><a href="search.html?keyword=法考" class="hover:text-purple-600">法考</a><a href="search.html?keyword=CPA" class="hover:text-purple-600">CPA</a><a href="search.html?keyword=初级会计" class="hover:text-purple-600">初级会计</a><a href="search.html?keyword=普通话" class="hover:text-purple-600">普通话</a><a href="search.html?keyword=驾考" class="hover:text-purple-600">驾考</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">课外读物</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=文学小说" class="hover:text-purple-600">文学小说</a><a href="search.html?keyword=历史传记" class="hover:text-purple-600">历史传记</a><a href="search.html?keyword=科普读物" class="hover:text-purple-600">科普读物</a><a href="search.html?keyword=哲学思想" class="hover:text-purple-600">哲学思想</a><a href="search.html?keyword=工具书/词典" class="hover:text-purple-600">工具书/词典</a><a href="search.html?keyword=编程书籍" class="hover:text-purple-600">编程书籍</a><a href="search.html?keyword=经管畅销" class="hover:text-purple-600">经管畅销</a><a href="search.html?keyword=绘本漫画" class="hover:text-purple-600">绘本漫画</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 5. 家具/家电/日用 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="家具/家电/日用">
+                        <span>🏠</span><span>家具</span><span class="text-gray-300">/</span><span>家电</span><span class="text-gray-300">/</span><span>日用</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">家具</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=书桌" class="hover:text-purple-600">书桌</a><a href="search.html?keyword=椅子" class="hover:text-purple-600">椅子</a><a href="search.html?keyword=收纳柜" class="hover:text-purple-600">收纳柜</a><a href="search.html?keyword=床上用品" class="hover:text-purple-600">床上用品</a><a href="search.html?keyword=懒人沙发" class="hover:text-purple-600">懒人沙发</a><a href="search.html?keyword=折叠桌" class="hover:text-purple-600">折叠桌</a><a href="search.html?keyword=衣柜" class="hover:text-purple-600">衣柜</a><a href="search.html?keyword=鞋架" class="hover:text-purple-600">鞋架</a><a href="search.html?keyword=床垫" class="hover:text-purple-600">床垫</a><a href="search.html?keyword=窗帘" class="hover:text-purple-600">窗帘</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">大家电</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=小冰箱" class="hover:text-purple-600">小冰箱</a><a href="search.html?keyword=洗衣机" class="hover:text-purple-600">洗衣机</a><a href="search.html?keyword=空调" class="hover:text-purple-600">空调</a><a href="search.html?keyword=电视" class="hover:text-purple-600">电视</a><a href="search.html?keyword=微波炉" class="hover:text-purple-600">微波炉</a><a href="search.html?keyword=烤箱" class="hover:text-purple-600">烤箱</a><a href="search.html?keyword=空气净化器" class="hover:text-purple-600">空气净化器</a><a href="search.html?keyword=扫地机器人" class="hover:text-purple-600">扫地机器人</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">小家电</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=台灯" class="hover:text-purple-600">台灯</a><a href="search.html?keyword=风扇" class="hover:text-purple-600">风扇</a><a href="search.html?keyword=加湿器" class="hover:text-purple-600">加湿器</a><a href="search.html?keyword=吹风机" class="hover:text-purple-600">吹风机</a><a href="search.html?keyword=电热水壶" class="hover:text-purple-600">电热水壶</a><a href="search.html?keyword=电饭煲" class="hover:text-purple-600">电饭煲</a><a href="search.html?keyword=豆浆机" class="hover:text-purple-600">豆浆机</a><a href="search.html?keyword=榨汁机" class="hover:text-purple-600">榨汁机</a><a href="search.html?keyword=酸奶机" class="hover:text-purple-600">酸奶机</a><a href="search.html?keyword=电熨斗" class="hover:text-purple-600">电熨斗</a><a href="search.html?keyword=暖手宝" class="hover:text-purple-600">暖手宝</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">厨房用品</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=锅具" class="hover:text-purple-600">锅具</a><a href="search.html?keyword=餐具" class="hover:text-purple-600">餐具</a><a href="search.html?keyword=保温杯" class="hover:text-purple-600">保温杯</a><a href="search.html?keyword=便当盒" class="hover:text-purple-600">便当盒</a><a href="search.html?keyword=水杯" class="hover:text-purple-600">水杯</a><a href="search.html?keyword=刀具" class="hover:text-purple-600">刀具</a><a href="search.html?keyword=砧板" class="hover:text-purple-600">砧板</a><a href="search.html?keyword=保鲜盒" class="hover:text-purple-600">保鲜盒</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">日用百货</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=收纳箱" class="hover:text-purple-600">收纳箱</a><a href="search.html?keyword=衣架" class="hover:text-purple-600">衣架</a><a href="search.html?keyword=垃圾桶" class="hover:text-purple-600">垃圾桶</a><a href="search.html?keyword=置物架" class="hover:text-purple-600">置物架</a><a href="search.html?keyword=洗漱用品" class="hover:text-purple-600">洗漱用品</a><a href="search.html?keyword=毛巾浴巾" class="hover:text-purple-600">毛巾浴巾</a><a href="search.html?keyword=雨伞" class="hover:text-purple-600">雨伞</a><a href="search.html?keyword=镜子" class="hover:text-purple-600">镜子</a><a href="search.html?keyword=闹钟" class="hover:text-purple-600">闹钟</a><a href="search.html?keyword=插线板" class="hover:text-purple-600">插线板</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+<!-- ASIDE_CHUNK_3 -->
+                    <!-- 6. 美妆/护肤/个护 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="美妆/护肤/个护">
+                        <span>💄</span><span>美妆</span><span class="text-gray-300">/</span><span>护肤</span><span class="text-gray-300">/</span><span>个护</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">彩妆</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=口红" class="hover:text-purple-600">口红</a><a href="search.html?keyword=粉底液" class="hover:text-purple-600">粉底液</a><a href="search.html?keyword=眼影盘" class="hover:text-purple-600">眼影盘</a><a href="search.html?keyword=腮红" class="hover:text-purple-600">腮红</a><a href="search.html?keyword=化妆刷" class="hover:text-purple-600">化妆刷</a><a href="search.html?keyword=卸妆水" class="hover:text-purple-600">卸妆水</a><a href="search.html?keyword=遮瑕" class="hover:text-purple-600">遮瑕</a><a href="search.html?keyword=睫毛膏" class="hover:text-purple-600">睫毛膏</a><a href="search.html?keyword=眉笔" class="hover:text-purple-600">眉笔</a><a href="search.html?keyword=定妆喷雾" class="hover:text-purple-600">定妆喷雾</a><a href="search.html?keyword=散粉" class="hover:text-purple-600">散粉</a><a href="search.html?keyword=唇釉" class="hover:text-purple-600">唇釉</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">护肤</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=面膜" class="hover:text-purple-600">面膜</a><a href="search.html?keyword=水乳套装" class="hover:text-purple-600">水乳套装</a><a href="search.html?keyword=精华" class="hover:text-purple-600">精华</a><a href="search.html?keyword=防晒霜" class="hover:text-purple-600">防晒霜</a><a href="search.html?keyword=面霜" class="hover:text-purple-600">面霜</a><a href="search.html?keyword=洁面乳" class="hover:text-purple-600">洁面乳</a><a href="search.html?keyword=爽肤水" class="hover:text-purple-600">爽肤水</a><a href="search.html?keyword=眼霜" class="hover:text-purple-600">眼霜</a><a href="search.html?keyword=唇膏" class="hover:text-purple-600">唇膏</a><a href="search.html?keyword=祛痘产品" class="hover:text-purple-600">祛痘产品</a><a href="search.html?keyword=美白精华" class="hover:text-purple-600">美白精华</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">个护电器</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=电动牙刷" class="hover:text-purple-600">电动牙刷</a><a href="search.html?keyword=剃须刀" class="hover:text-purple-600">剃须刀</a><a href="search.html?keyword=美容仪" class="hover:text-purple-600">美容仪</a><a href="search.html?keyword=卷发棒" class="hover:text-purple-600">卷发棒</a><a href="search.html?keyword=直发器" class="hover:text-purple-600">直发器</a><a href="search.html?keyword=洁面仪" class="hover:text-purple-600">洁面仪</a><a href="search.html?keyword=脱毛仪" class="hover:text-purple-600">脱毛仪</a><a href="search.html?keyword=冲牙器" class="hover:text-purple-600">冲牙器</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">香水/身体护理</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=香水" class="hover:text-purple-600">香水</a><a href="search.html?keyword=身体乳" class="hover:text-purple-600">身体乳</a><a href="search.html?keyword=沐浴露" class="hover:text-purple-600">沐浴露</a><a href="search.html?keyword=洗发水" class="hover:text-purple-600">洗发水</a><a href="search.html?keyword=护发素" class="hover:text-purple-600">护发素</a><a href="search.html?keyword=指甲油" class="hover:text-purple-600">指甲油</a><a href="search.html?keyword=美甲工具" class="hover:text-purple-600">美甲工具</a><a href="search.html?keyword=香薰" class="hover:text-purple-600">香薰</a><a href="search.html?keyword=精油" class="hover:text-purple-600">精油</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 7. 乐器/文具/手工 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="乐器/文具/手工">
+                        <span>🎵</span><span>乐器</span><span class="text-gray-300">/</span><span>文具</span><span class="text-gray-300">/</span><span>手工</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">吉他/弦乐</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=民谣吉他" class="hover:text-purple-600">民谣吉他</a><a href="search.html?keyword=古典吉他" class="hover:text-purple-600">古典吉他</a><a href="search.html?keyword=电吉他" class="hover:text-purple-600">电吉他</a><a href="search.html?keyword=贝斯" class="hover:text-purple-600">贝斯</a><a href="search.html?keyword=尤克里里" class="hover:text-purple-600">尤克里里</a><a href="search.html?keyword=小提琴" class="hover:text-purple-600">小提琴</a><a href="search.html?keyword=大提琴" class="hover:text-purple-600">大提琴</a><a href="search.html?keyword=二胡" class="hover:text-purple-600">二胡</a><a href="search.html?keyword=琵琶" class="hover:text-purple-600">琵琶</a><a href="search.html?keyword=古筝" class="hover:text-purple-600">古筝</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">键盘/打击</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=电子琴" class="hover:text-purple-600">电子琴</a><a href="search.html?keyword=电钢琴" class="hover:text-purple-600">电钢琴</a><a href="search.html?keyword=MIDI键盘" class="hover:text-purple-600">MIDI键盘</a><a href="search.html?keyword=合成器" class="hover:text-purple-600">合成器</a><a href="search.html?keyword=架子鼓" class="hover:text-purple-600">架子鼓</a><a href="search.html?keyword=手鼓" class="hover:text-purple-600">手鼓</a><a href="search.html?keyword=口琴" class="hover:text-purple-600">口琴</a><a href="search.html?keyword=竖笛" class="hover:text-purple-600">竖笛</a><a href="search.html?keyword=萨克斯" class="hover:text-purple-600">萨克斯</a><a href="search.html?keyword=长笛" class="hover:text-purple-600">长笛</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">乐器配件</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=琴弦" class="hover:text-purple-600">琴弦</a><a href="search.html?keyword=调音器" class="hover:text-purple-600">调音器</a><a href="search.html?keyword=变调夹" class="hover:text-purple-600">变调夹</a><a href="search.html?keyword=琴包" class="hover:text-purple-600">琴包</a><a href="search.html?keyword=琴架" class="hover:text-purple-600">琴架</a><a href="search.html?keyword=效果器" class="hover:text-purple-600">效果器</a><a href="search.html?keyword=音箱" class="hover:text-purple-600">音箱</a><a href="search.html?keyword=谱架" class="hover:text-purple-600">谱架</a><a href="search.html?keyword=节拍器" class="hover:text-purple-600">节拍器</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">文具/办公</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=钢笔" class="hover:text-purple-600">钢笔</a><a href="search.html?keyword=手账本" class="hover:text-purple-600">手账本</a><a href="search.html?keyword=马克笔" class="hover:text-purple-600">马克笔</a><a href="search.html?keyword=绘图工具" class="hover:text-purple-600">绘图工具</a><a href="search.html?keyword=计算器" class="hover:text-purple-600">计算器</a><a href="search.html?keyword=打印机" class="hover:text-purple-600">打印机</a><a href="search.html?keyword=文件夹" class="hover:text-purple-600">文件夹</a><a href="search.html?keyword=便利贴" class="hover:text-purple-600">便利贴</a><a href="search.html?keyword=笔袋" class="hover:text-purple-600">笔袋</a><a href="search.html?keyword=订书机" class="hover:text-purple-600">订书机</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">画材/手工</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=彩铅套装" class="hover:text-purple-600">彩铅套装</a><a href="search.html?keyword=水彩颜料" class="hover:text-purple-600">水彩颜料</a><a href="search.html?keyword=油画棒" class="hover:text-purple-600">油画棒</a><a href="search.html?keyword=画板画架" class="hover:text-purple-600">画板画架</a><a href="search.html?keyword=素描纸" class="hover:text-purple-600">素描纸</a><a href="search.html?keyword=毛线材料" class="hover:text-purple-600">毛线材料</a><a href="search.html?keyword=十字绣" class="hover:text-purple-600">十字绣</a><a href="search.html?keyword=滴胶模具" class="hover:text-purple-600">滴胶模具</a><a href="search.html?keyword=缝纫机" class="hover:text-purple-600">缝纫机</a><a href="search.html?keyword=橡皮章" class="hover:text-purple-600">橡皮章</a><a href="search.html?keyword=陶艺工具" class="hover:text-purple-600">陶艺工具</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 8. 代步/租赁/其他 -->
+                    <li class="group flex items-center space-x-1 cursor-pointer hover:text-purple-600 hover:bg-purple-50 rounded-lg px-2 py-2 -mx-2" data-cat="代步/租赁/其他">
+                        <span>🚲</span><span>代步</span><span class="text-gray-300">/</span><span>租赁</span><span class="text-gray-300">/</span><span>其他</span>
+                        <span class="ml-auto text-gray-300 text-xs">›</span>
+                        <div class="hidden group-hover:block absolute left-full top-0 ml-1 w-[520px] bg-white rounded-xl shadow-xl p-5 z-50 border border-gray-100 text-gray-600">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">代步工具</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=自行车" class="hover:text-purple-600">自行车</a><a href="search.html?keyword=电动车" class="hover:text-purple-600">电动车</a><a href="search.html?keyword=滑板" class="hover:text-purple-600">滑板</a><a href="search.html?keyword=平衡车" class="hover:text-purple-600">平衡车</a><a href="search.html?keyword=滑板车" class="hover:text-purple-600">滑板车</a><a href="search.html?keyword=独轮车" class="hover:text-purple-600">独轮车</a><a href="search.html?keyword=折叠车" class="hover:text-purple-600">折叠车</a><a href="search.html?keyword=山地车" class="hover:text-purple-600">山地车</a><a href="search.html?keyword=公路车" class="hover:text-purple-600">公路车</a><a href="search.html?keyword=骑行装备" class="hover:text-purple-600">骑行装备</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">租赁服务</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=相机租赁" class="hover:text-purple-600">相机租赁</a><a href="search.html?keyword=西装礼服" class="hover:text-purple-600">西装礼服</a><a href="search.html?keyword=投影仪" class="hover:text-purple-600">投影仪</a><a href="search.html?keyword=帐篷露营" class="hover:text-purple-600">帐篷露营</a><a href="search.html?keyword=乐器短租" class="hover:text-purple-600">乐器短租</a><a href="search.html?keyword=汉服租赁" class="hover:text-purple-600">汉服租赁</a><a href="search.html?keyword=JK制服" class="hover:text-purple-600">JK制服</a><a href="search.html?keyword=演出服装" class="hover:text-purple-600">演出服装</a><a href="search.html?keyword=学士服" class="hover:text-purple-600">学士服</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">宠物</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=猫粮" class="hover:text-purple-600">猫粮</a><a href="search.html?keyword=狗粮" class="hover:text-purple-600">狗粮</a><a href="search.html?keyword=猫砂" class="hover:text-purple-600">猫砂</a><a href="search.html?keyword=宠物玩具" class="hover:text-purple-600">宠物玩具</a><a href="search.html?keyword=猫爬架" class="hover:text-purple-600">猫爬架</a><a href="search.html?keyword=宠物笼" class="hover:text-purple-600">宠物笼</a><a href="search.html?keyword=牵引绳" class="hover:text-purple-600">牵引绳</a><a href="search.html?keyword=宠物衣服" class="hover:text-purple-600">宠物衣服</a><a href="search.html?keyword=鱼缸" class="hover:text-purple-600">鱼缸</a>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">食品/零食</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=进口零食" class="hover:text-purple-600">进口零食</a><a href="search.html?keyword=坚果礼盒" class="hover:text-purple-600">坚果礼盒</a><a href="search.html?keyword=茶叶" class="hover:text-purple-600">茶叶</a><a href="search.html?keyword=咖啡豆" class="hover:text-purple-600">咖啡豆</a><a href="search.html?keyword=保健品" class="hover:text-purple-600">保健品</a><a href="search.html?keyword=特产" class="hover:text-purple-600">特产</a><a href="search.html?keyword=代餐" class="hover:text-purple-600">代餐</a>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-purple-600 mb-2">其他</h4>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                    <a href="search.html?keyword=演出门票" class="hover:text-purple-600">演出门票</a><a href="search.html?keyword=绿植花卉" class="hover:text-purple-600">绿植花卉</a><a href="search.html?keyword=技能互换" class="hover:text-purple-600">技能互换</a><a href="search.html?keyword=跑腿代办" class="hover:text-purple-600">跑腿代办</a><a href="search.html?keyword=家教辅导" class="hover:text-purple-600">家教辅导</a><a href="search.html?keyword=设计服务" class="hover:text-purple-600">设计服务</a><a href="search.html?keyword=摄影约拍" class="hover:text-purple-600">摄影约拍</a><a href="search.html?keyword=搬家服务" class="hover:text-purple-600">搬家服务</a><a href="search.html?keyword=维修服务" class="hover:text-purple-600">维修服务</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </aside>
+
+            <!-- ===== 中间：大促Banner + 商品推荐网格 ===== -->
+            <div class="flex-1 flex gap-4">
+                <!-- 左：大促Banner -->
+                <div class="trade-banner w-[320px] shrink-0 p-6 flex flex-col justify-between min-h-[400px]">
+                    <div class="z-10">
+                        <h2 class="text-white text-2xl font-black leading-tight">校园闲置<br>抄底好物</h2>
+                        <p class="text-white/80 text-sm mt-2">低价好物 等你来淘</p>
+                        <p class="text-white/70 text-xs mt-1">超抢性价比 省到就是赚到</p>
+                    </div>
+                    <div class="z-10">
+                        <a href="search.html" class="inline-block bg-white text-purple-600 font-bold px-6 py-2 rounded-full text-sm hover:bg-purple-50 transition shadow-md">去看看 →</a>
+                    </div>
+                    <div class="absolute right-[-20px] bottom-[-10px] text-[120px] opacity-20 select-none">🐟</div>
+                </div>
+                <!-- 中：2x3 商品推荐网格 -->
+                <div id="card-grid" class="flex-1 grid grid-cols-2 gap-3">
+                    </div>
+            </div> <aside class="sticky top-24 self-start w-20 shrink-0 flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100 z-40">
+                        <a href="messages.html" class="flex flex-col items-center justify-center hover:bg-purple-50 text-gray-600 hover:text-purple-600 py-4 transition">
+                            <span class="text-xl mb-1">💬</span>
+                            <span class="text-[11px] font-medium">信息</span>
+                        </a>
+                        <a href="mypublish.html" class="flex flex-col items-center justify-center hover:bg-purple-50 text-gray-600 hover:text-purple-600 py-4 transition">
+                            <span class="text-xl mb-1">🏷️</span>
+                            <span class="text-[11px] font-medium">发布</span>
+                        </a>
+                        <a href="purchases.html" class="relative flex flex-col items-center justify-center hover:bg-purple-50 text-gray-600 hover:text-purple-600 py-4 transition">
+                            <span class="text-xl mb-1">📦</span>
+                            <span class="text-[11px] font-medium">订单</span>
+                            <span id="badge-buy" class="absolute top-2 right-2 bg-purple-100 text-purple-600 text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                        </a>
+                        <a href="sales.html" class="relative flex flex-col items-center justify-center hover:bg-purple-50 text-gray-600 hover:text-purple-600 py-4 transition">
+                            <span class="text-xl mb-1">💰</span>
+                            <span class="text-[11px] font-medium">卖出</span>
+                            <span id="badge-sell" class="absolute top-2 right-2 bg-purple-100 text-purple-600 text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                        </a>
+                        <a href="favorites.html" class="relative flex flex-col items-center justify-center hover:bg-purple-50 text-gray-600 hover:text-purple-600 py-4 transition">
+                            <span class="text-xl mb-1">⭐</span>
+                            <span class="text-[11px] font-medium">收藏</span>
+                            <span id="badge-fav" class="absolute top-2 right-2 bg-purple-100 text-purple-600 text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 猜你喜欢 推荐流 ===== -->
+        <section class="mt-6">
+            <div class="flex items-center space-x-3 mb-4 overflow-x-auto pb-2" style="-ms-overflow-style:none;scrollbar-width:none;">
+                <button class="recommend-tab shrink-0 px-4 py-1.5 rounded-full text-sm font-bold shadow-sm text-white bg-gradient-to-br from-purple-500 to-purple-600">猜你喜欢</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">个人闲置</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">数码设备</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">教材资料</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">吉他乐器</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">摄影摄像</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">运动户外</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">女装穿搭</button>
+                <button class="recommend-tab shrink-0 px-3 py-1.5 rounded-full text-sm bg-white text-gray-600 hover:bg-gray-50 shadow-sm">居家好物</button>
+            </div>
+            <div id="recommend-grid" class="columns-4 gap-4">
+                <!-- JS 动态渲染 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== 卡片详情弹窗 ===== -->
+    <div id="detail-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl">
+            <div id="modal-banner" class="h-48 flex items-center justify-center text-6xl"></div>
+            <div class="p-6">
+                <h2 id="modal-title" class="text-xl font-bold text-gray-800"></h2>
+                <p id="modal-desc" class="text-sm text-gray-500 mt-1"></p>
+                <div class="flex items-end space-x-3 mt-4">
+                    <span id="modal-price" class="text-purple-600 text-3xl font-black"></span>
+                    <span id="modal-original" class="text-gray-400 line-through text-sm"></span>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="closeModal()" class="flex-1 border border-gray-300 text-gray-600 py-2 rounded-xl hover:bg-gray-50 transition">关闭</button>
+                    <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-xl transition font-semibold">立即查看</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 发布闲置弹窗 ===== -->
+    <div id="publish-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-2xl w-full max-w-2xl mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <!-- 顶栏 -->
+            <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 shrink-0">
+                <h2 class="text-xl font-black text-gray-900">商品上架</h2>
+                <button onclick="closePublish()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+            <!-- 表单内容（可滚动） -->
+            <form id="publish-form" class="px-8 py-6 space-y-8 overflow-y-auto flex-1">
+    
+    <div class="space-y-5">
+        <h3 class="text-sm font-bold text-purple-600 border-b border-purple-50 pb-2">核心信息</h3>
+        
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">商品名称 <span class="text-red-500">*</span></label>
+            <input type="text" name="title" required placeholder="请填写商品标题，如：iPad Pro 11寸 2022款" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
+        </div>
+
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">商品类型 <span class="text-red-500">*</span></label>
+            <select name="category" required 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none bg-white">
+                <option value="">请选择分类</option>
+                <option>手机/数码/电脑</option>
+                <option>教材/考研/资料</option>
+                <option>服饰/箱包/运动</option>
+                <option>游戏/卡券/潮玩</option>
+                <option>家具/家电/日用</option>
+                <option>美妆/护肤/个护</option>
+                <option>乐器/文具/手工</option>
+                <option>代步/租赁/其他</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">商品描述 <span class="text-red-500">*</span></label>
+            <textarea name="description" rows="4" placeholder="描述一下宝贝的来源、成色细节、转让原因..." 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none resize-none transition"></textarea>
+        </div>
+
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">宝贝图片</label>
+            <div class="flex flex-wrap gap-3">
+                <label class="w-24 h-24 rounded-lg bg-gray-50 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:bg-purple-50 hover:border-purple-200 transition">
+                    <input type="file" id="publish-images" name="images" accept="image/*" multiple class="hidden">
+                    <span class="text-gray-400 text-2xl">+</span>
+                    <span class="text-[10px] text-gray-400 mt-1">添加图片</span>
+                </label>
+                <div id="image-preview" class="flex flex-wrap gap-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="space-y-5">
+        <h3 class="text-sm font-bold text-purple-600 border-b border-purple-50 pb-2">定价与交易</h3>
+        
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">商品定价 (元) <span class="text-red-500">*</span></label>
+            <input type="number" name="price" step="0.01" required placeholder="0.00" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none">
+        </div>
+
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">成色 (0-100全新) <span class="text-red-500">*</span></label>
+            <input type="number" name="condition" min="0" max="100" required placeholder="例如：95" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none">
+        </div>
+
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">交易地点</label>
+            <input type="text" name="address" placeholder="如：南区宿舍、图书馆正门" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none">
+        </div>
+    </div>
+
+    <div class="space-y-5">
+        <h3 class="text-sm font-bold text-purple-600 border-b border-purple-50 pb-2">服务选项</h3>
+        
+        <div class="flex flex-col space-y-4">
+            <label class="flex items-center justify-between cursor-pointer group">
+                <span class="text-sm text-gray-700 group-hover:text-purple-600 transition">是否急出</span>
+                <div class="relative">
+                    <input type="checkbox" name="isUrgent" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-purple-500 transition"></div>
+                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
+                </div>
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer group">
+                <span class="text-sm text-gray-700 group-hover:text-purple-600 transition">是否包邮</span>
+                <div class="relative">
+                    <input type="checkbox" name="isShippingFree" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-purple-500 transition"></div>
+                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
+                </div>
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer group">
+                <span class="text-sm text-gray-700 group-hover:text-purple-600 transition">是否可验货</span>
+                <div class="relative">
+                    <input type="checkbox" name="canInspect" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-purple-500 transition"></div>
+                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <div class="pt-4 pb-2">
+        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl transition shadow-lg transform active:scale-[0.98]">
+            确认上架
+        </button>
+    </div>
+</form>
+        </div>
+    </div>
+
+    <!-- ===== Toast 提示 ===== -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-2.5 rounded-full shadow-lg text-sm z-[60] transition-all duration-300 opacity-0 -translate-y-4 pointer-events-none"></div>
+
+    <script src="../js/app/seeds.js"></script>
+    <script src="../js/app/trade.js"></script>
+
+</body>
+</html>
