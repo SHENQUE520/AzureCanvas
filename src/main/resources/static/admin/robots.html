@@ -111,7 +111,7 @@
                 console.warn('localStorage 不可用:', e);
             }
             if (!token) {
-                window.location.href = 'login.html';
+                window.location.href = '../auth/authlogin.html';
                 return false;
             }
             return true;
@@ -131,7 +131,7 @@
             const mergedOptions = { ...defaultOptions, ...options };
             const response = await fetch(url, mergedOptions);
             if (response.status === 401) {
-                window.location.href = 'login.html';
+                window.location.href = '../auth/authlogin.html';
                 return null;
             }
             return response;
@@ -424,7 +424,7 @@
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('token');
-            window.location.href = 'login.html';
+            window.location.href = '../auth/authlogin.html';
         });
 
         window.onload = function () {
@@ -433,6 +433,8 @@
             }
         };
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="../js/effects/mouse-ripple.js"></script>
 </body>
 
 </html>

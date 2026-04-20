@@ -1,67 +1,75 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MUST · 星河论坛</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="css/color_scheme/colors.dark_mode.css">
-        <link rel="stylesheet" href="css/color_scheme/colors.primary.css">
-        <link rel="stylesheet" href="css/app.major.css">
-        <link rel="stylesheet" href="css/attributes.texts.css">
-    </head>
+<html lang="en">
 
-    <body class="light-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUST · 星河论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/color_scheme/colors.dark_mode.css">
+    <link rel="stylesheet" href="css/color_scheme/colors.primary.css">
+    <link rel="stylesheet" href="css/app.major.css">
+    <link rel="stylesheet" href="css/attributes.texts.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
 
-        <!-- 预加载动画页面 -->
-        <div id="preloader">
-            <div class="preloader-content">
-                <div id="preloader-canvas-container"></div>
-                <div class="loading-text-wrapper">
-                    <span class="loading-label">Loading</span>
-                    <span id="loading-percentage">0%</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div id="progress-bar-fill"></div>
-                </div>
-                <div id="loading-status">Initializing environment...</div>
+<body class="light-mode">
+
+    <!-- 预加载动画页面 -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <div id="preloader-canvas-container"></div>
+            <div class="loading-text-wrapper">
+                <span class="loading-label">Loading</span>
+                <span id="loading-percentage">0%</span>
             </div>
+            <div class="progress-bar-container">
+                <div id="progress-bar-fill"></div>
+            </div>
+            <div id="loading-status">Initializing environment...</div>
         </div>
+    </div>
 
-        <div id="splash-screen">
-            <div class="turbine-container">
-                <div class="outer-ring"></div>
-                <div class="turbine-wrapper"></div>
-            </div>
-            <canvas id="splash-canvas"></canvas>
-            <div class="splash-logo">
+    <div id="splash-screen">
+        <div class="turbine-container">
+            <div class="outer-ring"></div>
+            <div class="turbine-wrapper"></div>
+        </div>
+        <canvas id="splash-canvas"></canvas>
+        <div class="splash-logo">
+            <i class="fas fa-university"></i>
+            <div class="logo-text">MUST</div>
+            <div class="logo-sub">澳门科技大学</div>
+            <div style="font-size:1rem; margin-top:10px; color: rgba(255,255,255,0.6); ">点击进入 · 星河社区</div>
+        </div>
+    </div>
+
+    <!--        <div id="main-interface">-->
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="nav-logo">
                 <i class="fas fa-university"></i>
-                <div class="logo-text">MUST</div>
-                <div class="logo-sub">澳门科技大学</div>
-                <div style="font-size:1rem; margin-top:10px; color: rgba(255,255,255,0.6); ">点击进入 · 星河社区</div>
+                <span class="azurecanvas">AzureCanvas</span>
             </div>
         </div>
+        <div class="nav-right">
+            <div class="nav-item"><i class="fas fa-search"></i> 搜索</div>
+            <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>
+            <div class="nav-item"><i class="fas fa-bell"></i> 消息</div>
+            <div class="avatar-small" id="userAvatar">登录</div>
+        </div>
+    </div>
 
-<!--        <div id="main-interface">-->
-            <div class="top-nav">
-                <div class="nav-left">
-                    <div class="nav-logo">
-                        <i class="fas fa-university"></i>
-                        <span class="azurecanvas">AzureCanvas</span>
-                    </div>
-                </div>
-                <div class="nav-right">
-                    <div class="nav-item"><i class="fas fa-search"></i> 搜索</div>
-                    <div class="nav-item" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> 夜间模式</div>
-                    <div class="nav-item"><i class="fas fa-bell"></i> 消息</div>
-                    <div class="avatar-small">登录</div>
-                </div>
-            </div>
-<!--        </div>-->
+    <!-- 欢迎提示 -->
+    <div id="welcomeMessage"
+        style="display: none; position: fixed; top: 80px; right: 20px; padding: 15px 20px; background: rgba(0, 123, 255, 0.9); color: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); z-index: 10000;">
+        欢迎回来，<span id="welcomeUsername"></span>！
+    </div>
+    <!--        </div>-->
 
-        <!-- 立方体容器 -->
-        <div id="cube-container"></div>
-        <script type="importmap">
+    <!-- 立方体容器 -->
+    <div id="cube-container"></div>
+    <script type="importmap">
             {
                 "imports": {
                     "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
@@ -70,13 +78,64 @@
                 }
             }
         </script>
-        <script src="js/effects/starfields.js"></script>
-        <script src="js/effects/vortex_stairs.js"></script>
-        <script type="module" src="js/futurecube/cube.js"></script>
-        <script type="module" src="js/futurecube/cube.interactions.js"></script>
-        <script type="module" src="js/futurecube/audio.controller.js"></script>
-        <script src="js/app/app.js"></script>
+    <script src="js/effects/starfields.js"></script>
+    <script src="js/effects/vortex_stairs.js"></script>
+    <script type="module" src="js/futurecube/cube.js"></script>
+    <script type="module" src="js/futurecube/cube.interactions.js"></script>
+    <script type="module" src="js/futurecube/audio.controller.js"></script>
+    <script src="js/app/app.js"></script>
+    <script src="js/effects/mouse-ripple.js"></script>
 
-    </body>
+    <!-- 左下角登录按钮 -->
+    <div id="loginButton"
+        style="position: fixed; bottom: 20px; left: 20px; padding: 10px 20px; background: rgba(0, 123, 255, 0.9); color: white; border-radius: 25px; cursor: pointer; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+        登录
+    </div>
+
+    <script>
+        // 检查用户是否已登录
+        window.addEventListener('DOMContentLoaded', function () {
+            const user = localStorage.getItem('user');
+            const userAvatar = document.getElementById('userAvatar');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const welcomeUsername = document.getElementById('welcomeUsername');
+            const loginButton = document.getElementById('loginButton');
+
+            if (user) {
+                const userObj = JSON.parse(user);
+
+                // 替换登录按钮为用户名
+                userAvatar.textContent = userObj.username;
+                userAvatar.style.cursor = 'pointer';
+                loginButton.textContent = '个人中心';
+
+                // 显示欢迎提示
+                welcomeUsername.textContent = userObj.username;
+                welcomeMessage.style.display = 'block';
+
+                // 3秒后隐藏欢迎提示
+                setTimeout(() => {
+                    welcomeMessage.style.display = 'none';
+                }, 3000);
+
+                // 添加点击事件，跳转到个人中心
+                userAvatar.addEventListener('click', function () {
+                    window.location.href = './user/user.html';
+                });
+
+                // 个人中心按钮点击事件
+                loginButton.addEventListener('click', function () {
+                    window.location.href = './user/user.html';
+                });
+            } else {
+                // 未登录状态，点击跳转到登录页面
+                loginButton.addEventListener('click', function () {
+                    window.location.href = './auth/authlogin.html?redirect=/index.html';
+                });
+            }
+        });
+    </script>
+
+</body>
 
 </html>

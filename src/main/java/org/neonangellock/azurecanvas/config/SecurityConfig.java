@@ -34,14 +34,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/auth/**", "/", "/css/**", "/js/**", "/images/**", "/cube/**", "/api/robots/**", "/admin/**", "/auth/**", "/forum/**", "/waterfall/**", "/models/**", "/textures/**")
-//                        .permitAll()
-//                        .anyRequest().authenticated())
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors
+                        .configurationSource(request -> {
+                            var config = new org.springframework.web.cors.CorsConfiguration();
+                            config.setAllowedOrigins(
+                                    java.util.List.of("http://localhost:8000", "http://127.0.0.1:5500"));
+                            config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                            config.setAllowedHeaders(java.util.List.of("*"));
+                            config.setAllowCredentials(true);
+                            return config;
+                        }))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/", "/css/**", "/js/**", "/images/**", "/cube/**",
+                                "/api/robots/**", "/admin/**", "/auth/**", "/forum/**", "/waterfall/**", "/models/**",
+                                "/textures/**", "/api/users/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

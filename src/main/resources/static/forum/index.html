@@ -329,6 +329,46 @@
         // 页面加载时加载帖子
         window.onload = loadPosts;
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="../js/effects/mouse-ripple.js"></script>
+
+    <!-- 左下角登录按钮 -->
+    <div id="loginButton" style="position: fixed; bottom: 20px; left: 20px; padding: 10px 20px; background: rgba(0, 123, 255, 0.9); color: white; border-radius: 25px; cursor: pointer; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+        登录
+    </div>
+
+    <script>
+        // 检查用户是否已登录
+        window.addEventListener('DOMContentLoaded', function () {
+            const user = localStorage.getItem('user');
+            const userAvatar = document.querySelector('.nav-right .avatar-small');
+            const loginButton = document.getElementById('loginButton');
+
+            if (user) {
+                const userObj = JSON.parse(user);
+                
+                // 替换登录按钮为用户名
+                userAvatar.textContent = userObj.username;
+                userAvatar.style.cursor = 'pointer';
+                loginButton.textContent = '个人中心';
+
+                // 添加点击事件，跳转到个人中心
+                userAvatar.addEventListener('click', function () {
+                    window.location.href = '../user/user.html';
+                });
+
+                // 个人中心按钮点击事件
+                loginButton.addEventListener('click', function () {
+                    window.location.href = '../user/user.html';
+                });
+            } else {
+                // 未登录状态，点击跳转到登录页面
+                loginButton.addEventListener('click', function () {
+                    window.location.href = '../auth/authlogin.html?redirect=/forum/index.html';
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

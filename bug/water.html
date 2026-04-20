@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>鼠标水面流体波纹 B站原版复刻</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #050a18;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        /* 顶部大标题 */
+        .top-title {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0 12px #2299ff;
+            z-index: 99;
+            background: rgba(0, 15, 40, 0.7);
+            padding: 12px 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(8px);
+        }
+
+        /* 操作提示 */
+        .tip-box {
+            position: absolute;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d0f0ff;
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: center;
+            z-index: 99;
+            background: rgba(0, 20, 50, 0.6);
+            padding: 10px 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(6px);
+        }
+
+        /* 左侧介绍文字 */
+        .left-text {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b8e0ff;
+            font-size: 13px;
+            line-height: 2;
+            background: rgba(0, 10, 35, 0.65);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(6px);
+        }
+
+        /* 右侧技术备注 */
+        .right-text {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b8e0ff;
+            font-size: 13px;
+            line-height: 2;
+            background: rgba(0, 10, 35, 0.65);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(6px);
+        }
+
+        /* 底部版权来源 */
+        .bottom-text {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #99d8ff;
+            font-size: 12px;
+            text-align: center;
+            background: rgba(0, 8, 25, 0.6);
+            padding: 8px 18px;
+            border-radius: 10px;
+            backdrop-filter: blur(6px);
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-title">
+        Three.js 鼠标流体水面波纹特效
+    </div>
+
+    <div class="tip-box">
+        🖱️ 移动鼠标！鼠标划过水面就会产生波纹扩散<br>
+        发光水面 · 实时流体物理模拟
+    </div>
+
+    <div class="left-text">
+        特效原理：<br>
+        GPU 高度图迭代计算<br>
+        GLSL 着色器水面模拟<br>
+        鼠标位置驱动水波<br>
+        法线贴图光影渲染
+    </div>
+
+    <div class="right-text">
+        技术栈：<br>
+        HTML + CSS + JS<br>
+        Three.js 3D渲染<br>
+        GPUComputationRenderer<br>
+        实时水面流体算法
+    </div>
+
+    <div class="bottom-text">
+        完全复刻原视频：BV1aH63YfEjj
+    </div>
+
+    <script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+        let renderer, scene, camera;
+        let waterMesh;
+        let gpuCompute;
+        let heightMap;
+
+        const TEXTURE_SIZE = 256;
+        let mouse = new THREE.Vector2();
+
+        init();
+        animate();
+
+        function init() {
+            // 渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            scene = new THREE.Scene();
+
+            // 修正视角！离水面很近，效果一眼可见
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 3, 5);
+            camera.lookAt(0, 0, 0);
+
+            // GPU水面计算
+            gpuCompute = new GPUComputationRenderer(TEXTURE_SIZE, TEXTURE_SIZE, renderer);
+            heightMap = gpuCompute.createTexture();
+
+            // 水波着色器（原视频核心代码）
+            const waveShader = gpuCompute.addShader('wave', `
+        uniform float time;
+        uniform vec2 mouse;
+        void main(){
+            vec2 uv = gl_FragCoord.xy/resolution.xy;
+            vec2 diff = uv - mouse;
+            float dist = length(diff);
+
+            // 鼠标触碰生成强波纹
+            float wave = exp(-dist*12.0) * sin(dist*40.0 - time*8.0);
+            gl_FragColor = vec4(wave, 0.0, 0.0, 1.0);
+        }
+    `, heightMap);
+
+            gpuCompute.setVariableDependencies(waveShader, [waveShader]);
+            gpuCompute.init();
+
+            // 水面平面
+            const geo = new THREE.PlaneGeometry(20, 20, 128, 128);
+            const mat = new THREE.ShaderMaterial({
+                uniforms: {
+                    uWave: { value: null },
+                    uTime: { value: 0 }
+                },
+                vertexShader: `
+            uniform sampler2D uWave;
+            varying vec2 vUv;
+            void main(){
+                vUv = uv;
+                vec4 info = texture2D(uWave, uv);
+                vec3 pos = position;
+                pos.z += info.r * 1.2;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            }
+        `,
+                fragmentShader: `
+            uniform float uTime;
+            varying vec2 vUv;
+            void main(){
+                // 亮蓝色发光水面，一眼看得见
+                vec3 color = vec3(0.2, 0.6, 1.0);
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `
+            });
+
+            waterMesh = new THREE.Mesh(geo, mat);
+            scene.add(waterMesh);
+
+            // 鼠标监听
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX / window.innerWidth;
+                mouse.y = 1.0 - e.clientY / window.innerHeight;
+                waveShader.uniforms.mouse.value = mouse;
+            });
+
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = performance.now() * 0.001;
+            gpuCompute.variables.wave.uniforms.time.value = time;
+            waterMesh.material.uniforms.uTime.value = time;
+
+            // GPU迭代更新水波
+            gpuCompute.compute();
+            waterMesh.material.uniforms.uWave.value = gpuCompute.getCurrentRenderTarget('wave').texture;
+
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+
+</html>

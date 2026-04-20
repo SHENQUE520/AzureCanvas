@@ -1,5 +1,7 @@
 package org.neonangellock.azurecanvas.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.neonangellock.azurecanvas.model.User;
 import org.neonangellock.azurecanvas.service.UserService;
 import org.neonangellock.azurecanvas.util.JwtUtil;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = {"http://localhost:8000", "http://127.0.0.1:5500"}, allowCredentials = "true")
 public class AuthController {
 
     @Autowired
@@ -71,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials, HttpServletResponse httpResponse) {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
@@ -82,6 +85,13 @@ public class AuthController {
                 // 生成JWT令牌
                 UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
                 String token = jwtUtil.generateToken(userDetails);
+
+                // 创建用户ID Cookie
+                Cookie userIdCookie = new Cookie("user_id", String.valueOf(user.getId()));
+                userIdCookie.setPath("/");
+                userIdCookie.setMaxAge(7 * 24 * 60 * 60); // 7天过期
+                userIdCookie.setHttpOnly(false);
+                httpResponse.addCookie(userIdCookie);
 
                 // 返回令牌和用户信息
                 Map<String, Object> response = new HashMap<>();
@@ -94,5 +104,15 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("登录失败: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse httpResponse) {
+        Cookie userIdCookie = new Cookie("user_id", "");
+        userIdCookie.setPath("/");
+        userIdCookie.setMaxAge(0);
+        httpResponse.addCookie(userIdCookie);
+
+        return ResponseEntity.ok(Map.of("message", "成功退出登录"));
     }
 }
