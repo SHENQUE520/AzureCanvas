@@ -16,5 +16,5 @@ export function fetchWindowCenter() {
 
 export function isCloseToCube(mouseX, mouseY){
     const pos = fetchWindowCenter();
-    return !(Math.abs(mouseX - pos.x) > 400 || Math.abs(mouseY - pos.y) > 400);
+    return !(Math.abs(mouseX - pos.x) > 600 || Math.abs(mouseY - pos.y) > 600);
 }

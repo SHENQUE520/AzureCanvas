@@ -151,7 +151,7 @@ function initCube() {
         anisotrophicBlur: 0.6,
         roughness: 0,
         thickness: 0.4,
-        ior: 2,
+        ior: 2.2,
         distortion: 0.1,
         distortionScale: 0.7,
         temporalDistortion: 0.4,
