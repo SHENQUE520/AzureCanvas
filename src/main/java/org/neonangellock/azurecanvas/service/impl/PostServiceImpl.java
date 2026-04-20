@@ -2,6 +2,7 @@ package org.neonangellock.azurecanvas.service.impl;
 
 import org.neonangellock.azurecanvas.model.Post;
 import org.neonangellock.azurecanvas.model.Section;
+import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.PostService;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +11,10 @@ import jakarta.persistence.Query;
 import java.util.List;
 
 @Service
-public class PostServiceImpl implements PostService {
-
-    private final EntityManager entityManager;
+public class PostServiceImpl extends AbstractQueryService implements PostService {
 
     public PostServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        super(entityManager);
     }
 
     @Override

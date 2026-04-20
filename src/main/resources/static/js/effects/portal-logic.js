@@ -146,7 +146,7 @@ const pMaterial = new THREE.PointsMaterial({
 const particles = new THREE.Points(pGeometry, pMaterial);
 
 // 1. 加载瀑布循环音
-audioLoader.load('/audio/waterfall_loop.mp3', (buffer) => {
+audioLoader.load('../audios/waterfall/loop_water_fall_medium.ogg', (buffer) => {
     waterfallSound.setBuffer(buffer);
     waterfallSound.setLoop(true);
     waterfallSound.setRefDistance(10); // [可调参数] 空间音频参考距离
@@ -158,7 +158,7 @@ audioLoader.load('/audio/waterfall_loop.mp3', (buffer) => {
 });
 
 // 2. 加载穿梭爆发音
-audioLoader.load('/audio/teleport_splash.mp3', (buffer) => {
+audioLoader.load('../audios/enter_splash.ogg', (buffer) => {
     splashSound.setBuffer(buffer);
     splashSound.setVolume(0.6); // [可调参数] 爆发音量
 });
@@ -240,7 +240,7 @@ window.addEventListener('load', () => {
         ease: "power2.out"
     });
     // 如果你希望刚进来时有一声水花，也可以在这里触发
-    // splashSound.play(); 
+    splashSound.play(); 
 });
 
 

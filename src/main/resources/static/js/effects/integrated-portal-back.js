@@ -89,7 +89,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
         window.addEventListener('resize', onWindowResize);
         window.addEventListener('mousedown', onMouseDown);
         window.addEventListener('wheel', onWheel);
-
+        onWindowResize()
         animate();
     }
 
@@ -401,10 +401,10 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
     }
 
     function transitionToPortal() {
-        
+
         // 1. Zoom waterfall & fade to white
         const tl = gsap.timeline();
-        
+
         tl.to(waterfallCamera, {
             zoom: 5,
             duration: 0.7,
@@ -423,12 +423,12 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
             composer.passes[0].scene = portalScene;
             composer.passes[0].camera = portalCamera;
             currentCamera = portalCamera;
-            
+
             // Portal entry animation
             const portalEndMat = portalGroup.userData.portalEnd.material;
             portalEndMat.opacity = 1;
             portalEndMat.color.setRGB(1, 1, 1);
-            
+
             if (splashSound.buffer) splashSound.play();
             isInsidePortal = true;
         });
@@ -456,7 +456,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
         const portalEnd = portalGroup.userData.portalEnd;
         const dist = Math.abs(portalCamera.position.z - portalEnd.position.z);
         const progress = THREE.MathUtils.clamp(1.0 - (dist / 200), 0, 1);
-        
+
         if (progress > 0.6) {
             radialBlurPass.uniforms.strength.value = THREE.MathUtils.mapLinear(progress, 0.6, 0.99, 0, 0.12);
             bloomPass.strength = 1.0 + Math.pow((progress - 0.6) * 6, 2);
@@ -485,7 +485,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
         const width = window.innerWidth, height = window.innerHeight;
         renderer.setSize(width, height);
         composer.setSize(width, height);
-        
+
         const aspect = width / height;
         const viewSize = 5;
         waterfallCamera.left = -viewSize * aspect;

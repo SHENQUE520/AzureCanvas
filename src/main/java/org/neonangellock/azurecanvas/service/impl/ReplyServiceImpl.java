@@ -2,6 +2,7 @@ package org.neonangellock.azurecanvas.service.impl;
 
 import org.neonangellock.azurecanvas.model.Post;
 import org.neonangellock.azurecanvas.model.Reply;
+import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.ReplyService;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +11,10 @@ import jakarta.persistence.Query;
 import java.util.List;
 
 @Service
-public class ReplyServiceImpl implements ReplyService {
+public class ReplyServiceImpl extends AbstractQueryService implements ReplyService {
 
-    private final EntityManager entityManager;
-
-    public ReplyServiceImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    protected ReplyServiceImpl(EntityManager entityManager) {
+        super(entityManager);
     }
 
     @Override

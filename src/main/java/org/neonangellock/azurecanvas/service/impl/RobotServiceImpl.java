@@ -4,6 +4,7 @@ import org.neonangellock.azurecanvas.model.RobotConfig;
 import org.neonangellock.azurecanvas.model.TreeholeComment;
 import org.neonangellock.azurecanvas.model.TreeholePost;
 import org.neonangellock.azurecanvas.model.User;
+import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.RobotService;
 import org.neonangellock.azurecanvas.service.TreeholeService;
 import org.neonangellock.azurecanvas.service.UserService;
@@ -15,14 +16,12 @@ import jakarta.persistence.Query;
 import java.util.List;
 
 @Service
-public class RobotServiceImpl implements RobotService {
-
-    private final EntityManager entityManager;
+public class RobotServiceImpl extends AbstractQueryService implements RobotService {
     private final UserService userService;
     private final TreeholeService treeholeService;
 
     public RobotServiceImpl(EntityManager entityManager, UserService userService, TreeholeService treeholeService) {
-        this.entityManager = entityManager;
+        super(entityManager);
         this.userService = userService;
         this.treeholeService = treeholeService;
     }
