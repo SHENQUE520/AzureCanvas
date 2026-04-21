@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>树洞 · 黑白 校园版</title>
+  <style>
+    /* ===== 全局黑白灰变量 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    body {
+      background-color: #ffffff;
+      color: #111111;
+      line-height: 1.5;
+    }
+    #app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f6f8fa;
+      --bg-tertiary: #f0f2f5;
+      --border-light: #d0d7de;
+      --border-medium: #afb8c1;
+      --text-primary: #1f2328;
+      --text-secondary: #59636e;
+      --text-placeholder: #7d8590;
+      --hover-overlay: #f3f4f6;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 8px rgba(0,0,0,0.05);
+      --accent-dark: #1f2328;
+      --accent-mid: #3b4045;
+    }
+    button, .btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      color: var(--text-primary);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    button:hover {
+      background: var(--hover-overlay);
+      border-color: var(--border-medium);
+    }
+    button.primary {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+      color: white;
+    }
+    button.primary:hover { background: #2d333b; }
+    input, textarea {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent-mid);
+      box-shadow: 0 0 0 2px rgba(59,64,69,0.1);
+    }
+    a { text-decoration: none; color: var(--text-primary); }
+    .app-wrapper { display: flex; flex: 1; }
+    .sidebar-left {
+      width: 260px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-light);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .category-section h3, .reminder-section h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .category-list { list-style: none; }
+    .category-item {
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .category-item.active {
+      background: var(--hover-overlay);
+      border-left: 3px solid var(--accent-dark);
+    }
+    .category-item:hover { background: var(--hover-overlay); }
+    .reminder-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .reminder-title {
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+    }
+    .badge {
+      background: var(--accent-dark);
+      color: white;
+      border-radius: 20px;
+      padding: 0 8px;
+      font-size: 0.75rem;
+    }
+    .main-content {
+      flex: 1;
+      background: var(--bg-primary);
+      padding: 24px 32px;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .nav-left { display: flex; align-items: center; gap: 16px; flex: 2; }
+    .logo { font-weight: 700; font-size: 1.4rem; color: #0d1117; }
+    .search-wrapper { flex: 1; max-width: 400px; }
+    .search-wrapper input { width: 100%; background: var(--bg-secondary); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .publish-btn { background: var(--accent-dark); color: white; border: none; padding: 8px 18px; }
+    .user-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #bdc3c7; cursor: pointer; border: 1px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .home-input-bar {
+      margin: 16px 0 24px; background: var(--bg-secondary);
+      border: 1px solid var(--border-light); border-radius: 12px;
+      padding: 10px 16px; display: flex; align-items: center;
+      color: var(--text-placeholder); cursor: pointer;
+    }
+    .home-input-bar:hover { background: var(--hover-overlay); }
+    .post-card {
+      background: var(--bg-primary); border: 1px solid var(--border-light);
+      border-radius: 10px; padding: 18px 20px; margin-bottom: 16px;
+      box-shadow: var(--shadow-sm); cursor: pointer;
+    }
+    .post-card:hover { box-shadow: var(--shadow-md); }
+    .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .post-author-avatar {
+      width: 40px; height: 40px; border-radius: 50%; background: #d9dee3;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .author-name { font-weight: 700; }
+    .post-time { font-size: 0.8rem; color: var(--text-secondary); }
+    .post-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 6px; }
+    .post-stats { display: flex; gap: 24px; color: var(--text-secondary); margin-top: 8px; }
+    .detail-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .action-bar { display: flex; gap: 24px; margin: 20px 0; padding: 12px 0; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    .comment-item { padding: 14px 0; border-bottom: 1px solid var(--border-light); }
+    .publish-container { max-width: 700px; }
+    .publish-title-input { font-size: 1.3rem; font-weight: 600; width: 100%; padding: 14px 0; border: none; border-bottom: 1px solid var(--border-light); }
+    .publish-body { width: 100%; min-height: 240px; margin: 20px 0; border: none; resize: vertical; }
+    .chat-container {
+      display: flex; flex-direction: column; height: 70vh;
+      border: 1px solid var(--border-light); border-radius: 12px;
+      background: var(--bg-secondary);
+    }
+    .chat-header { padding: 14px; border-bottom: 1px solid var(--border-light); background: var(--bg-primary); }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .message-bubble {
+      max-width: 70%; padding: 10px 14px; border-radius: 18px;
+      background: var(--bg-primary); border: 1px solid var(--border-light);
+    }
+    .message-bubble.self { align-self: flex-end; background: #e9ecef; }
+    .chat-input-area { padding: 12px; background: var(--bg-primary); border-top: 1px solid var(--border-light); }
+    .quick-replies { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .quick-item { background: var(--bg-tertiary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; }
+    .flex-row { display: flex; align-items: center; gap: 8px; }
+    .mt-4 { margin-top: 16px; }
+    .modal-mask {
+      position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center; z-index:1000;
+    }
+    .modal-card {
+      background: white; padding: 24px; border-radius: 12px; width: 320px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; color: #59636e;">正在加载树洞…</div>
+  </div>
+
+  <!-- 引用本地 Vue 和 Vue Router（不再需要 Pinia） -->
+  <script src="./vue.global.js"></script>
+  <script src="./vue-router.global.js"></script>
+
+  <script>
+    (function() {
+      if (typeof Vue === 'undefined' || typeof VueRouter === 'undefined') {
+        document.getElementById('app').innerHTML = `
+          <div style="padding:40px; max-width:600px; margin:0 auto; font-family:system-ui;">
+            <h3>⚠️ 依赖加载失败</h3>
+            <p>请确保以下文件与本 HTML 在同一目录：</p>
+            <ul><li>vue.global.js</li><li>vue-router.global.js</li></ul>
+          </div>`;
+        return;
+      }
+
+      // ---------- 使用 Vue 原生 reactive 创建 Stores (替代 Pinia) ----------
+      const { createApp, ref, reactive, computed, watch, nextTick, readonly } = Vue;
+      
+      // 1. 用户 Store
+      const userState = reactive({
+        currentUser: { id: 'current', name: '我 (黑白)', avatar: '🐼', bio: '树洞原住民' },
+        users: [
+          { id: 'u1', name: '食堂观察员', avatar: '🍜', bio: '干饭人' },
+          { id: 'u2', name: '毕业倒计时', avatar: '🎓', bio: '珍惜校园' },
+          { id: 'u3', name: '匿名小树', avatar: '🌲', bio: '树洞常驻' }
+        ],
+        followers: new Set(['u1'])
+      });
+
+      const useUserStore = () => ({
+        state: readonly(userState),
+        followUser: (userId) => userState.followers.add(userId),
+        unfollowUser: (userId) => userState.followers.delete(userId),
+        isFollowing: (userId) => userState.followers.has(userId),
+        updateProfile: (data) => Object.assign(userState.currentUser, data)
+      });
+
+      // 2. 帖子 Store
+      const postState = reactive({
+        posts: [
+          { id: 'p1', authorId: 'u1', title: '二食堂麻辣香锅', content: '新出的麻辣香锅绝了！但是排队有点长。大家冲！', createdAt: '2小时前', likes: 27, collects: 5, comments: [
+            { id: 'c1', authorId: 'u3', content: '明天去试试', createdAt: '1小时前' }
+          ]},
+          { id: 'p2', authorId: 'u2', title: '毕业照', content: '今天拍毕业照，把四年的记忆留在这里❤️谢谢树洞。', createdAt: '昨天', likes: 42, collects: 12, comments: [] },
+          { id: 'p3', authorId: 'u3', title: '图书馆三楼座位', content: '有人知道图书馆三楼靠窗的座位现在需要预约吗？', createdAt: '5小时前', likes: 12, collects: 2, comments: [
+            { id: 'c2', authorId: 'u1', content: '需要，小程序约', createdAt: '3小时前' }
+          ]}
+        ],
+        likedPosts: new Set(),
+        collectedPosts: new Set(),
+        searchKeyword: ''
+      });
+
+      const filteredPosts = computed(() => {
+        if (!postState.searchKeyword) return postState.posts;
+        const kw = postState.searchKeyword.toLowerCase();
+        return postState.posts.filter(p => p.title.toLowerCase().includes(kw) || p.content.toLowerCase().includes(kw));
+      });
+
+      const usePostStore = () => ({
+        state: readonly(postState),
+        filteredPosts,
+        getPostById: (id) => postState.posts.find(p => p.id === id),
+        addPost: (post) => {
+          post.id = 'p' + Date.now();
+          post.createdAt = '刚刚';
+          post.likes = 0; post.collects = 0; post.comments = [];
+          postState.posts.unshift(post);
+        },
+        likePost: (postId) => {
+          const post = postState.posts.find(p => p.id === postId);
+          if (postState.likedPosts.has(postId)) {
+            postState.likedPosts.delete(postId);
+            post.likes--;
+          } else {
+            postState.likedPosts.add(postId);
+            post.likes++;
+          }
+        },
+        collectPost: (postId) => {
+          const post = postState.posts.find(p => p.id === postId);
+          if (postState.collectedPosts.has(postId)) {
+            postState.collectedPosts.delete(postId);
+            post.collects--;
+          } else {
+            postState.collectedPosts.add(postId);
+            post.collects++;
+          }
+        },
+        addComment: (postId, content, authorId) => {
+          const post = postState.posts.find(p => p.id === postId);
+          post.comments.push({ id: 'c'+Date.now(), authorId, content, createdAt: '刚刚' });
+        }
+      });
+
+      // 3. 通知 Store
+      const notiState = reactive({ commentReplies: 3, followActivities: 2 });
+      const useNotificationStore = () => ({ state: readonly(notiState) });
+
+      // 4. 私信 Store
+      const msgState = reactive({ conversations: new Map() });
+      const useMessageStore = () => ({
+        initConv(userId) {
+          if (!msgState.conversations.has(userId)) {
+            msgState.conversations.set(userId, [
+              { id: 'm1', senderId: userId, text: '嗨！最近怎么样？', timestamp: '昨天', type: 'text' },
+              { id: 'm2', senderId: 'current', text: '还不错~', timestamp: '昨天', type: 'text' }
+            ]);
+          }
+        },
+        getMessages(userId) {
+          this.initConv(userId);
+          return msgState.conversations.get(userId) || [];
+        },
+        sendMessage(userId, text, senderId = 'current') {
+          const msgs = msgState.conversations.get(userId) || [];
+          msgs.push({ id: 'm'+Date.now(), senderId, text, timestamp: '刚刚', type: 'text' });
+          msgState.conversations.set(userId, msgs);
+        }
+      });
+
+      // 5. 快捷回复 Store
+      const quickState = reactive({ quickReplies: ['好的', '谢谢', '哈哈哈', '在吗', '自定义...'] });
+      const useQuickReplyStore = () => ({ state: readonly(quickState) });
+
+      // ---------- 组件定义 (几乎不变，只需调整 store 调用方式) ----------
+      const { createRouter, createWebHashHistory, useRouter, useRoute } = VueRouter;
+
+      const NavBar = {
+        emits: ['open-profile'],
+        setup(props, { emit }) {
+          const router = useRouter();
+          const userStore = useUserStore();
+          const postStore = usePostStore();
+          const searchQuery = ref('');
+          const goToPublish = () => router.push('/publish');
+          const search = () => {
+            postState.searchKeyword = searchQuery.value;
+            router.push('/');
+          };
+          return { userStore, searchQuery, goToPublish, search, emit };
+        },
+        template: `
+          <header class="navbar">
+            <div class="nav-left">
+              <div class="logo">🌳 树洞·黑白</div>
+              <div class="search-wrapper">
+                <input v-model="searchQuery" @keyup.enter="search" placeholder="搜索帖子..." />
+              </div>
+            </div>
+            <div class="nav-right">
+              <button class="publish-btn" @click="goToPublish">发布</button>
+              <div class="user-avatar" @click="emit('open-profile')">{{ userStore.state.currentUser.avatar }}</div>
+            </div>
+          </header>
+        `
+      };
+
+      const SidebarLeft = {
+        setup() {
+          const notiStore = useNotificationStore();
+          const categories = ['最新', '关注', '热门收藏', '我的收藏'];
+          const activeCat = ref('最新');
+          return { notiStore, categories, activeCat };
+        },
+        template: `
+          <aside class="sidebar-left">
+            <div class="category-section">
+              <h3>分类</h3>
+              <ul class="category-list">
+                <li v-for="cat in categories" :key="cat" class="category-item" :class="{ active: cat === activeCat }">
+                  <span>{{ cat }}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="reminder-section">
+              <h3>提醒</h3>
+              <div class="reminder-card">
+                <div class="reminder-title">评论回复 <span class="badge">{{ notiStore.state.commentReplies }}</span></div>
+                <div class="reminder-detail">3条新回复</div>
+              </div>
+              <div class="reminder-card">
+                <div class="reminder-title">关注的人发帖 <span class="badge">{{ notiStore.state.followActivities }}</span></div>
+                <div class="reminder-detail">食堂观察员等发布了新帖</div>
+              </div>
+            </div>
+          </aside>
+        `
+      };
+
+      const PostCard = {
+        props: ['post'],
+        setup(props) {
+          const router = useRouter();
+          const userStore = useUserStore();
+          const author = userStore.state.users.find(u => u.id === props.post.authorId) || { name: '匿名', avatar: '👤' };
+          const goToDetail = () => router.push(`/post/${props.post.id}`);
+          return { author, goToDetail };
+        },
+        template: `
+          <div class="post-card" @click="goToDetail">
+            <div class="post-header">
+              <div class="post-author-avatar">{{ author.avatar }}</div>
+              <div class="post-author-info">
+                <div class="author-name">{{ author.name }} <span class="post-time">{{ post.createdAt }}</span></div>
+              </div>
+            </div>
+            <div class="post-title">{{ post.title }}</div>
+            <div class="post-content-preview">{{ post.content.substring(0, 80) }}{{ post.content.length>80?'...':'' }}</div>
+            <div class="post-stats">
+              <span class="stat-item">👍 {{ post.likes }}</span>
+              <span class="stat-item">⭐ {{ post.collects }}</span>
+              <span class="stat-item">💬 {{ post.comments.length }}</span>
+            </div>
+          </div>
+        `
+      };
+
+      const Home = {
+        components: { PostCard },
+        setup() {
+          const postStore = usePostStore();
+          const router = useRouter();
+          const posts = postStore.filteredPosts;
+          const goToPublish = () => router.push('/publish');
+          return { posts, goToPublish };
+        },
+        template: `
+          <div>
+            <div class="home-input-bar" @click="goToPublish">
+              <span>💬</span> <span>分享新鲜事...  (点击发布)</span>
+            </div>
+            <div v-if="posts.length">
+              <PostCard v-for="post in posts" :key="post.id" :post="post" />
+            </div>
+            <div v-else style="padding:20px;text-align:center;color:#59636e;">暂无帖子，去发布一条吧</div>
+          </div>
+        `
+      };
+
+      const PostDetail = {
+        props: ['id'],
+        setup(props) {
+          const route = useRoute();
+          const router = useRouter();
+          const postId = props.id || route.params.id;
+          const postStore = usePostStore();
+          const userStore = useUserStore();
+          const post = computed(() => postStore.getPostById(postId));
+          const author = computed(() => userStore.state.users.find(u => u.id === post.value?.authorId) || {});
+          const isFollowing = computed(() => userStore.isFollowing(author.value.id));
+          const newComment = ref('');
+          
+          const toggleFollow = () => {
+            if (isFollowing.value) userStore.unfollowUser(author.value.id);
+            else userStore.followUser(author.value.id);
+          };
+          const goToChat = () => {
+            if (author.value.id) router.push(`/messages/${author.value.id}`);
+          };
+          const likePost = () => postStore.likePost(postId);
+          const collectPost = () => postStore.collectPost(postId);
+          const addComment = () => {
+            if (newComment.value.trim()) {
+              postStore.addComment(postId, newComment.value, userStore.state.currentUser.id);
+              newComment.value = '';
+            }
+          };
+          const liked = computed(() => postState.likedPosts.has(postId));
+          const collected = computed(() => postState.collectedPosts.has(postId));
+          
+          return { post, author, isFollowing, toggleFollow, goToChat, likePost, collectPost, newComment, addComment, liked, collected, userStore };
+        },
+        template: `
+          <div v-if="post" class="detail-container">
+            <div class="detail-header">
+              <div class="post-author-avatar" @click="toggleFollow">{{ author.avatar }}</div>
+              <div><strong>{{ author.name }}</strong><br><small>{{ post.createdAt }}</small></div>
+              <button v-if="!isFollowing" @click="toggleFollow" class="follow-btn">+ 关注</button>
+              <button v-else @click="goToChat" class="message-btn primary">💬 私信</button>
+            </div>
+            <h2>{{ post.title }}</h2>
+            <p style="white-space: pre-wrap;">{{ post.content }}</p>
+            <div class="action-bar">
+              <button @click="likePost">👍 {{ post.likes }} {{ liked ? '已赞' : '' }}</button>
+              <button @click="collectPost">⭐ {{ post.collects }} {{ collected ? '已收藏' : '' }}</button>
+            </div>
+            <div class="comments-section">
+              <h4>评论 {{ post.comments.length }}</h4>
+              <div v-for="c in post.comments" :key="c.id" class="comment-item">
+                <strong>{{ userStore.state.users.find(u=>u.id===c.authorId)?.name || '匿名' }}</strong>: {{ c.content }}
+              </div>
+              <div class="flex-row mt-4">
+                <input v-model="newComment" placeholder="写评论..." style="flex:1" />
+                <button @click="addComment">发送</button>
+              </div>
+            </div>
+          </div>
+          <div v-else style="padding:20px;">帖子不存在</div>
+        `
+      };
+
+      const Publish = {
+        setup() {
+          const router = useRouter();
+          const postStore = usePostStore();
+          const userStore = useUserStore();
+          const title = ref('');
+          const content = ref('');
+          const publish = () => {
+            if (title.value.trim() && content.value.trim()) {
+              postStore.addPost({
+                authorId: userStore.state.currentUser.id,
+                title: title.value,
+                content: content.value,
+              });
+              router.push('/');
+            }
+          };
+          return { title, content, publish };
+        },
+        template: `
+          <div class="publish-container">
+            <h3>发布新帖</h3>
+            <input class="publish-title-input" v-model="title" placeholder="请输入标题(5-31字)" maxlength="31" />
+            <textarea class="publish-body" v-model="content" placeholder="请输入正文..."></textarea>
+            <div class="flex-row">
+              <button class="primary" @click="publish">发布</button>
+              <button @click="$router.push('/')">取消</button>
+            </div>
+            <div style="margin-top:12px; color:#59636e;">可添加表情 😊 (支持emoji)</div>
+          </div>
+        `
+      };
+
+      const Messages = {
+        props: ['userId'],
+        setup(props) {
+          const route = useRoute();
+          const userId = props.userId || route.params.userId;
+          const msgStore = useMessageStore();
+          const quickStore = useQuickReplyStore();
+          const userStore = useUserStore();
+          const targetUser = userStore.state.users.find(u => u.id === userId) || { name: '用户', avatar: '👤' };
+          const messages = computed(() => msgStore.getMessages(userId));
+          const newMsg = ref('');
+          const showEmoji = ref(false);
+          const emojis = ['😊','😂','👍','❤️','🎉','😭','🔥'];
+          const chatBody = ref(null);
+          
+          const send = (text = newMsg.value) => {
+            if (text.trim()) {
+              msgStore.sendMessage(userId, text, 'current');
+              newMsg.value = '';
+              nextTick(() => {
+                if (chatBody.value) chatBody.value.scrollTop = chatBody.value.scrollHeight;
+              });
+            }
+          };
+          const quickSend = (text) => send(text);
+          watch(messages, () => {
+            nextTick(() => { if(chatBody.value) chatBody.value.scrollTop = chatBody.value.scrollHeight; });
+          }, { deep: true });
+          
+          return { targetUser, messages, newMsg, send, quickSend, quickStore, showEmoji, emojis, userStore, chatBody };
+        },
+        template: `
+          <div class="chat-container">
+            <div class="chat-header"><strong>与 {{ targetUser.name }} 私信</strong> <span style="margin-left:8px;">{{ targetUser.avatar }}</span></div>
+            <div class="chat-messages" ref="chatBody">
+              <div v-for="msg in messages" :key="msg.id" class="message-bubble" :class="{ self: msg.senderId === 'current' }">
+                <small>{{ msg.senderId==='current'? '我': targetUser.name }}</small>
+                <div>{{ msg.text }}</div>
+              </div>
+            </div>
+            <div class="chat-input-area">
+              <div class="quick-replies">
+                <span v-for="q in quickStore.state.quickReplies" :key="q" class="quick-item" @click="quickSend(q)">{{ q }}</span>
+              </div>
+              <div class="emoji-panel" v-if="showEmoji" style="display:flex; gap:8px; margin-bottom:8px;">
+                <span v-for="e in emojis" @click="newMsg += e" style="cursor:pointer;font-size:20px;">{{ e }}</span>
+              </div>
+              <div class="flex-row">
+                <button @click="showEmoji = !showEmoji">😀</button>
+                <input v-model="newMsg" @keyup.enter="send()" placeholder="输入消息..." style="flex:1" />
+                <button class="primary" @click="send()">发送</button>
+              </div>
+              <div style="margin-top:6px; color: #59636e;">快捷回复可自定义 (演示)</div>
+            </div>
+          </div>
+        `
+      };
+
+      const App = {
+        components: { NavBar, SidebarLeft },
+        setup() {
+          const showProfileModal = ref(false);
+          const userStore = useUserStore();
+          return { showProfileModal, userStore };
+        },
+        template: `
+          <div id="app">
+            <NavBar @open-profile="showProfileModal = true" />
+            <div class="app-wrapper">
+              <SidebarLeft />
+              <div class="main-content">
+                <router-view :key="$route.fullPath"></router-view>
+              </div>
+            </div>
+            <div v-if="showProfileModal" class="modal-mask" @click.self="showProfileModal = false">
+              <div class="modal-card">
+                <h3>编辑资料</h3>
+                <input v-model="userStore.state.currentUser.name" placeholder="昵称" />
+                <input v-model="userStore.state.currentUser.avatar" placeholder="头像(emoji)" />
+                <textarea v-model="userStore.state.currentUser.bio" placeholder="简介"></textarea>
+                <button @click="showProfileModal = false">保存</button>
+              </div>
+            </div>
+          </div>
+        `
+      };
+
+      // 路由配置
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/post/:id', component: PostDetail, props: true },
+        { path: '/publish', component: Publish },
+        { path: '/messages/:userId', component: Messages, props: true },
+      ];
+      const router = createRouter({ history: createWebHashHistory(), routes });
+
+      // 启动应用
+      const app = createApp(App);
+      app.use(router);
+      app.mount('#app');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>树洞 · 校园</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo-area">
+      <span class="logo">🌳 树洞 · 黑白</span>
+      <span class="badge">校园版</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="newPostBtn"><i class="far fa-plus-square"></i> 发布</button>
+    </div>
+  </header>
+
+  <div id="homeView">
+    <div class="main-grid">
+      <div class="feed-column">
+        <div class="section-title">
+          <i class="fas fa-clock"></i> 实时涌动
+        </div>
+        <div id="postsFeedContainer">
+          </div>
+        <div id="emptyFeedMsg" class="empty-tip" style="display: none;">
+          <i class="far fa-comment-dots"></i> 还没有树洞，发布第一条吧
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="update-card">
+          <div class="update-title">
+            <i class="fas fa-code-branch"></i> 最新动态 · 更新日志
+          </div>
+          <div class="changelog-list">
+            <div class="changelog-item">
+              <div class="changelog-meta">3 weeks ago · Release 1.4.2</div>
+              <div class="changelog-title">数据库更新 & Bug修复 <span class="tag">修复</span></div>
+              <div style="font-size:0.85rem; color:#444;">修复 Android Termux 运行问题 #10，终端阅读器初始化。</div>
+            </div>
+            <div class="changelog-item">
+              <div class="changelog-meta">13                                                                          hours ago</div>
+              <div class="changelog-title">新增「低质量评论隐藏」选项</div>
+            </div>
+            <div class="changelog-item">
+              <div class="changelog-meta">3 weeks ago · DolphinBot</div>
+              <div class="changelog-title">仓库成员角色标签现已上线</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="update-card">
+          <div class="update-title">
+            <i class="far fa-star"></i> 热门收藏
+          </div>
+          <div style="color:#333;">
+            <p style="margin-bottom:12px;">📌 期末复习资料共享</p>
+            <p style="margin-bottom:12px;">📌 图书馆占座观察</p>
+            <p>📌 今天吃什么 (食堂版)</p>
+          </div>
+        </div>
+        <div style="font-size:0.8rem; color:#666; padding:8px;"># 黑白 · 简言</div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="detailView" class="detail-view hidden">
+    <div class="back-link" id="backToFeedBtn">
+      <i class="fas fa-arrow-left"></i> 返回树洞广场
+    </div>
+    <div id="detailContent">
+      </div>
+  </div>
+</div>
+
+<div class="modal" id="publishModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="far fa-edit"></i> 写树洞</h3>
+      <span class="close-btn" id="closeModalBtn">&times;</span>
+    </div>
+    <textarea id="postTextInput" placeholder="说点什么… 匿名分享" rows="4"></textarea>
+    
+    <div class="image-preview-area" id="imagePreviewContainer"></div>
+
+    <div class="toolbar">
+      <label class="tool-btn" for="imageUploadInput">
+        <i class="far fa-image"></i> 图片
+      </label>
+      <input type="file" id="imageUploadInput" accept="image/*" multiple style="display:none;">
+      
+      <button class="tool-btn" id="emojiToggleBtn" type="button">
+        <i class="far fa-smile"></i> 表情
+      </button>
+    </div>
+
+    <div class="emoji-picker" id="emojiPicker">
+      <span>😊</span><span>😂</span><span>🥺</span><span>😎</span><span>😍</span><span>😭</span><span>🤔</span><span>👍</span>
+      <span>❤️</span><span>🔥</span><span>🎓</span><span>📚</span><span>🍜</span><span>🌧️</span><span>☕</span><span>✨</span>
+    </div>
+
+    <div class="flex-row">
+      <button class="btn" id="cancelPublishBtn">取消</button>
+      <button class="btn btn-dark" id="submitPostBtn">发布树洞</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

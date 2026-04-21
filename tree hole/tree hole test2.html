@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树洞 · 黑白版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #ffffff; color: #1f2328; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+        .github-border { border: 1px solid #d0d7de; }
+        .sidebar-item:hover { background-color: #f6f8fa; }
+        .btn-primary { background-color: #1f2328; color: white; transition: 0.2s; }
+        .btn-primary:hover { background-color: #30363d; }
+        .home-input { border: 1px solid #d0d7de; border-radius: 6px; box-shadow: inset 0 1px 0 rgba(208,215,222,0.2); }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <header class="h-16 flex items-center justify-between px-6 github-border border-t-0 border-x-0 bg-white sticky top-0 z-50">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center font-bold text-lg">
+                <i data-lucide="trees" class="mr-2"></i> 树洞 · 黑白
+            </div>
+            <div class="relative">
+                <input type="text" placeholder="Search or type /" class="w-64 h-8 px-3 py-1 bg-gray-50 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black">
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="github-border px-3 py-1 rounded-md text-sm flex items-center hover:bg-gray-50" onclick="togglePostModal()">
+                <i data-lucide="plus" class="w-4 h-4 mr-1"></i> 发布
+            </button>
+            <i data-lucide="bell" class="w-5 h-5 cursor-pointer"></i>
+            <div class="w-8 h-8 rounded-full bg-gray-200 border github-border overflow-hidden cursor-pointer">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="avatar">
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <aside class="w-64 github-border border-y-0 border-l-0 p-4 space-y-6 overflow-y-auto">
+            <div>
+                <h3 class="text-xs font-semibold text-gray-500 mb-3 px-2 uppercase">内容分类</h3>
+                <nav class="space-y-1">
+                    <a href="#" class="sidebar-item flex items-center px-2 py-1.5 rounded-md text-sm"><i data-lucide="hash" class="w-4 h-4 mr-2"></i> 学术交流</a>
+                    <a href="#" class="sidebar-item flex items-center px-2 py-1.5 rounded-md text-sm"><i data-lucide="hash" class="w-4 h-4 mr-2"></i> 生活琐事</a>
+                    <a href="#" class="sidebar-item flex items-center px-2 py-1.5 rounded-md text-sm"><i data-lucide="hash" class="w-4 h-4 mr-2"></i> 情感树洞</a>
+                </nav>
+            </div>
+            <div class="border-t pt-4">
+                <h3 class="text-xs font-semibold text-gray-500 mb-3 px-2 uppercase">个人中心</h3>
+                <nav class="space-y-1 text-sm">
+                    <div class="sidebar-item flex justify-between px-2 py-1.5 rounded-md cursor-pointer">
+                        <span class="flex items-center"><i data-lucide="message-square" class="w-4 h-4 mr-2"></i> 评论回复</span>
+                        <span class="bg-gray-200 px-1.5 rounded-full text-xs">5</span>
+                    </div>
+                    <div class="sidebar-item flex justify-between px-2 py-1.5 rounded-md cursor-pointer">
+                        <span class="flex items-center"><i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 关注发帖</span>
+                        <span class="bg-gray-200 px-1.5 rounded-full text-xs">2</span>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto bg-[#f6f8fa] p-6">
+            <div class="max-w-4xl mx-auto space-y-4">
+                
+                <div class="bg-white github-border rounded-md p-4 shadow-sm">
+                    <input type="text" placeholder="Ask anything or type @ to add context" class="w-full h-10 px-4 home-input focus:outline-none focus:border-black">
+                    <div class="flex mt-3 space-x-2">
+                        <button class="text-xs github-border px-2 py-1 rounded hover:bg-gray-50">Agent</button>
+                        <button class="text-xs github-border px-2 py-1 rounded hover:bg-gray-50">Write Code</button>
+                    </div>
+                </div>
+
+                <div class="bg-white github-border rounded-md shadow-sm">
+                    <div class="p-4 flex items-start justify-between border-b border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=docmirror" class="w-10 h-10 border rounded">
+                            <div>
+                                <div class="font-bold text-sm hover:underline cursor-pointer">docmirror / dev-sidecar</div>
+                                <div class="text-xs text-gray-500">2 days ago · v2.0.2</div>
+                            </div>
+                        </div>
+                        <button class="github-border px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-50" id="followBtn" onclick="toggleFollow(this)">关注</button>
+                    </div>
+                    <div class="p-4 text-sm leading-relaxed cursor-pointer hover:bg-gray-50" onclick="openDetail()">
+                        <h2 class="font-bold mb-2">一、更新内容：</h2>
+                        <p class="text-gray-700">【摘要】新增 IPv6 和 镜像仓库 可配置化的一个版本，同时也是 性能 和 稳定性 提升的一个 重要版本。</p>
+                        <ul class="list-disc ml-5 mt-2 text-gray-600">
+                            <li>DNS服务管理 支持添加 IPv6地址</li>
+                            <li>npm 和 yarn 的镜像仓库支持共享配置</li>
+                        </ul>
+                    </div>
+                    <div class="px-4 py-2 flex space-x-6 border-t border-gray-100 text-gray-500">
+                        <button class="flex items-center text-xs hover:text-black"><i data-lucide="heart" class="w-4 h-4 mr-1"></i> 点赞 3</button>
+                        <button class="flex items-center text-xs hover:text-black"><i data-lucide="star" class="w-4 h-4 mr-1"></i> 收藏 1</button>
+                        <button class="flex items-center text-xs hover:text-black" onclick="openDetail()"><i data-lucide="message-circle" class="w-4 h-4 mr-1"></i> 评论 1</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <aside class="w-72 github-border border-y-0 border-r-0 p-4 hidden xl:block">
+            <div class="bg-white github-border rounded-md p-4 mb-4">
+                <h4 class="text-sm font-bold mb-3 flex items-center"><i data-lucide="activity" class="w-4 h-4 mr-2"></i> 最新动态</h4>
+                <div class="space-y-3 text-xs">
+                    <div class="border-l-2 border-gray-200 pl-3">
+                        <div class="text-gray-400">3 weeks ago</div>
+                        <div class="font-medium">数据库更新 & Bug修复</div>
+                    </div>
+                    <div class="border-l-2 border-gray-200 pl-3">
+                        <div class="text-gray-400">13 hours ago</div>
+                        <div class="font-medium">新增「低质量评论隐藏」选项</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div id="chatBox" class="fixed bottom-0 right-10 w-80 h-96 bg-white shadow-2xl rounded-t-xl github-border flex-col hidden">
+        <div class="p-3 bg-gray-50 border-b flex justify-between items-center rounded-t-xl">
+            <span class="font-bold text-sm">与 docmirror 私聊</span>
+            <button onclick="toggleChat()"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="flex-1 p-4 overflow-y-auto space-y-3 text-sm" id="chatMessages">
+            <div class="flex justify-start"><span class="bg-gray-100 px-3 py-2 rounded-2xl rounded-bl-none max-w-[80%]">你好，有什么可以帮到你？</span></div>
+            <div class="flex justify-end"><span class="bg-black text-white px-3 py-2 rounded-2xl rounded-br-none max-w-[80%]">想咨询下 IPv6 配置问题。</span></div>
+        </div>
+        <div class="p-3 border-t">
+            <div class="flex space-x-1 mb-2 overflow-x-auto no-scrollbar">
+                <button class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap">谢谢你</button>
+                <button class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap">在哪设置？</button>
+                <button class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap">自定义回复+</button>
+            </div>
+            <div class="flex items-center space-x-2">
+                <i data-lucide="smile" class="w-5 h-5 text-gray-400 cursor-pointer"></i>
+                <input type="text" placeholder="发送私信..." class="flex-1 text-sm bg-gray-100 border-none rounded-full px-4 py-1 focus:ring-0">
+            </div>
+        </div>
+    </div>
+
+    <div id="postModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-[100]">
+        <div class="bg-white w-[600px] rounded-lg shadow-xl overflow-hidden">
+            <div class="p-4 border-b flex justify-between items-center">
+                <span class="font-bold">发表新帖</span>
+                <button onclick="togglePostModal()"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-4 space-y-4">
+                <select class="w-full border rounded-md p-2 text-sm bg-gray-50 focus:outline-none">
+                    <option>选择板块</option>
+                    <option>学术交流</option>
+                    <option>生活琐事</option>
+                </select>
+                <input type="text" placeholder="请输入标题 (5-31个字)" class="w-full border-b py-2 focus:outline-none text-lg">
+                <textarea placeholder="请输入正文内容..." class="w-full h-40 focus:outline-none resize-none"></textarea>
+                <div class="flex space-x-4 border-t pt-3 text-gray-500">
+                    <i data-lucide="image" class="w-5 h-5 cursor-pointer"></i>
+                    <i data-lucide="at-sign" class="w-5 h-5 cursor-pointer"></i>
+                    <i data-lucide="smile" class="w-5 h-5 cursor-pointer"></i>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 flex justify-end">
+                <button class="btn-primary px-8 py-2 rounded font-bold text-sm">发布</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化图标
+        lucide.createIcons();
+
+        // 模拟交互逻辑
+        function toggleFollow(btn) {
+            if (btn.innerText === "关注") {
+                btn.innerText = "私信";
+                btn.classList.add("bg-gray-100");
+                btn.onclick = toggleChat;
+            }
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chatBox');
+            chat.classList.toggle('hidden');
+            chat.classList.toggle('flex');
+        }
+
+        function togglePostModal() {
+            document.getElementById('postModal').classList.toggle('hidden');
+        }
+
+        function openDetail() {
+            alert("点击跳转至帖子详情页：显示点赞、评论、收藏等功能。");
+        }
+    </script>
+</body>
+</html>
