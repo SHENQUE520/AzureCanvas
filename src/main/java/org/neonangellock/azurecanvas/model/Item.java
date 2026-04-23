@@ -12,6 +12,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "items")
+<<<<<<< HEAD
+=======
+@Getter @Setter
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 public class Item {
 
     @Id
@@ -63,6 +67,7 @@ public class Item {
     @UpdateTimestamp
     @Column(name = "updatedAt", nullable = false)
     private OffsetDateTime updatedAt;
+<<<<<<< HEAD
 
     // Getters and Setters
     public UUID getItemId() { return itemId; }
@@ -95,4 +100,6 @@ public class Item {
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(OffsetDateTime updatedAt) { this.updatedAt = updatedAt; }
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 }

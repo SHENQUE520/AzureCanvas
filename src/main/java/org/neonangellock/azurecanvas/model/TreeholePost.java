@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+@Setter
+@Getter
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 @Entity
 @Table(name = "treehole_posts")
 public class TreeholePost {
@@ -45,6 +50,7 @@ public class TreeholePost {
     @Column(name = "updated_at")
     private Date updatedAt = new Date();
 
+<<<<<<< HEAD
     // Manual Getters and Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -70,4 +76,14 @@ public class TreeholePost {
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
     public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
+=======
+    public boolean isRobotPost() {
+        return isRobotPost;
+    }
+
+    public void setRobotPost(boolean robotPost) {
+        isRobotPost = robotPost;
+    }
+
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 }

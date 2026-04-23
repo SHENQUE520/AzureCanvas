@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh">
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>树洞 · 校园</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../css/treehole/app.treehole.css">
+<<<<<<< HEAD
     <style>
         .header-center {
             flex: 1;
@@ -257,10 +261,176 @@
             const newPost = document.createElement('div');
             newPost.className = 'post-card';
             newPost.innerHTML = `
+=======
+</head>
+<body>
+
+<div class="app">
+    <header class="header">
+        <div class="logo" id="logoHome">🌳 树洞</div>
+        <div class="header-center">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索内容...">
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-black" id="newPostBtn">
+                <i class="far fa-plus-square"></i> 发布
+            </button>
+        </div>
+    </header>
+
+    <main id="app-content">
+        <div id="homeView">
+            <div class="main-grid">
+                <div class="feed-column">
+                    <div class="section-title"><i class="fas fa-clock"></i> 实时涌动</div>
+                    <div id="postsFeedContainer">
+                        </div>
+                </div>
+
+                <aside class="sidebar">
+                    <div class="update-card">
+                        <div class="update-title">
+                            <i class="fas fa-code-branch"></i> 最新动态 · 更新日志
+                        </div>
+                        <div class="changelog-list">
+                            <div class="changelog-item">
+                                <div class="changelog-meta">3 weeks ago · Release 1.4.2</div>
+                                <div class="changelog-title">数据库更新 & Bug修复 <span class="tag">修复</span></div>
+                                <div style="font-size:0.85rem; color:#444;">修复 Android Termux 运行问题 #10，终端阅读器初始化。</div>
+                            </div>
+                            <div class="changelog-item">
+                                <div class="changelog-meta">13 hours ago</div>
+                                <div class="changelog-title">新增「低质量评论隐藏」选项</div>
+                            </div>
+                            <div class="changelog-item">
+                                <div class="changelog-meta">3 weeks ago · DolphinBot</div>
+                                <div class="changelog-title">仓库成员角色标签现已上线</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="update-card">
+                        <div class="update-title">
+                            <i class="far fa-star"></i> 热门收藏
+                        </div>
+                        <div style="color:#333;">
+                            <p style="margin-bottom:12px;">📌 期末复习资料共享</p>
+                            <p style="margin-bottom:12px;">📌 图书馆占座观察</p>
+                            <p>📌 今天吃什么 (食堂版)</p>
+                        </div>
+                    </div>
+                    <div style="font-size:0.8rem; color:#666; padding:8px;"># 黑白 · 简言</div>
+                </aside>
+            </div>
+        </div>
+
+        <div id="publishView" class="hidden">
+            <div class="publish-view">
+                <div class="publish-header">
+                    <div class="publish-tabs">
+                        <span class="tab active">发贴</span>
+                        <span class="tab">发视频</span>
+                    </div>
+                    <div class="close-publish" id="cancelPublishBtn"><i class="fas fa-times"></i></div>
+                </div>
+
+                <div class="publish-form">
+                    <div class="form-row">
+                        <span class="form-label">发布到吧</span>
+                        <select class="custom-select" id="postCategory">
+                            <option>选择吧 (必填)</option>
+                            <option value="campus">校园广场</option>
+                            <option value="trade">二手交易</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <input type="text" id="postTitleInput" class="title-input" placeholder="请输入完整帖子标题 (5-31个字) 必填">
+                    </div>
+
+                    <div class="content-editor">
+                        <textarea id="postContentInput" class="content-textarea" placeholder="请输入正文 (建议200-2000字)"></textarea>
+                        
+                        <div class="editor-toolbar">
+                            <span><i class="far fa-smile"></i> 表情</span>
+                            <span><i class="fas fa-at"></i> 用户</span>
+                            <span><i class="fas fa-hashtag"></i> 话题</span>
+                            <span id="imageUploadTrigger"><i class="far fa-image"></i> 图片</span>
+                        </div>
+                    </div>
+
+                    <div class="publish-footer">
+                        <div class="footer-options">
+                            <div class="option-item">
+                                <span>展示范围</span>
+                                <select style="border: none; background: none; font-weight: bold; cursor: pointer;">
+                                    <option>全场景可见</option>
+                                    <option>仅关注可见</option>
+                                </select>
+                            </div>
+                            <div class="option-item">
+                                <input type="checkbox" id="aiContent"> <label for="aiContent">帖子含AI内容</label>
+                                <input type="checkbox" id="original"> <label for="original">帖子原创声明</label>
+                            </div>
+                        </div>
+                        <button class="btn-publish-final" id="finalPublishBtn">发布</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // 页面元素获取
+    const newPostBtn = document.getElementById('newPostBtn');
+    const cancelPublishBtn = document.getElementById('cancelPublishBtn');
+    const homeView = document.getElementById('homeView');
+    const publishView = document.getElementById('publishView');
+    const finalPublishBtn = document.getElementById('finalPublishBtn');
+    const postsFeedContainer = document.getElementById('postsFeedContainer');
+    const logoHome = document.getElementById('logoHome');
+
+    // 1. 切换显示发布界面
+    newPostBtn.addEventListener('click', () => {
+        homeView.classList.add('hidden');
+        publishView.classList.remove('hidden');
+    });
+
+    // 2. 取消发布，返回主页
+    cancelPublishBtn.addEventListener('click', () => {
+        homeView.classList.remove('hidden');
+        publishView.classList.add('hidden');
+    });
+
+    logoHome.addEventListener('click', () => {
+        homeView.classList.remove('hidden');
+        publishView.classList.add('hidden');
+    });
+
+    // 3. 模拟发布逻辑
+    finalPublishBtn.addEventListener('click', () => {
+        const title = document.getElementById('postTitleInput').value;
+        const content = document.getElementById('postContentInput').value;
+
+        if (title.length < 5) {
+            alert('标题字数不足！');
+            return;
+        }
+
+        // 模拟成功发布：添加到列表最前端
+        const newPost = document.createElement('div');
+        newPost.className = 'post-card';
+        newPost.innerHTML = `
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
             <h3>${title}</h3>
             <p>${content}</p>
             <div style="font-size:0.8rem; color:#999; margin-top:10px;">刚刚发布 · 校园广场</div>
         `;
+<<<<<<< HEAD
 
             // 插入到内容区
             if (postsFeedContainer.innerHTML.includes('正在加载')) {
@@ -278,6 +448,25 @@
         // 初始化一些模拟数据
         window.onload = () => {
             postsFeedContainer.innerHTML = `
+=======
+        
+        // 插入到内容区
+        if (postsFeedContainer.innerHTML.includes('正在加载')) {
+            postsFeedContainer.innerHTML = '';
+        }
+        postsFeedContainer.prepend(newPost);
+
+        // 重置表单并返回
+        document.getElementById('postTitleInput').value = '';
+        document.getElementById('postContentInput').value = '';
+        homeView.classList.remove('hidden');
+        publishView.classList.add('hidden');
+    });
+
+    // 初始化一些模拟数据
+    window.onload = () => {
+        postsFeedContainer.innerHTML = `
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
             <div class="post-card">
                 <h3>关于图书馆二楼插座维修的通知</h3>
                 <p>今天去图书馆发现二楼西侧的插座都断电了，有同学知道什么时候能修好吗？</p>
@@ -289,6 +478,7 @@
                 <div style="font-size:0.8rem; color:#999; margin-top:10px;">5小时前 · 二手交易</div>
             </div>
         `;
+<<<<<<< HEAD
         };
 
         // 搜索功能
@@ -426,4 +616,10 @@
 
 </body>
 
+=======
+    };
+</script>
+
+</body>
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 </html>

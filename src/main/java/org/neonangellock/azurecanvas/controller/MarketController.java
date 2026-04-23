@@ -12,10 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+<<<<<<< HEAD
 import org.neonangellock.azurecanvas.model.es.EsItem;
 import org.neonangellock.azurecanvas.service.EsItemService;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -32,14 +35,18 @@ public class MarketController {
     @Autowired
     private UserService userService;
 
+<<<<<<< HEAD
     @Autowired
     private EsItemService esItemService;
 
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
     private User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userService.findByUsername(username);
     }
 
+<<<<<<< HEAD
     @GetMapping("/search/es")
     public ResponseEntity<List<Map<String, Object>>> searchItemsEs(
             @RequestParam String keyword,
@@ -77,6 +84,8 @@ public class MarketController {
         return ResponseEntity.ok(results);
     }
 
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
     @GetMapping("/items")
     public ResponseEntity<List<ItemDTO>> getAllItems(
             @RequestParam(required = false) String category,

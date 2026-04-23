@@ -15,6 +15,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "users")
+<<<<<<< HEAD
+=======
+@Getter @Setter
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 @ToString
 public class User {
     @Id
@@ -56,6 +60,7 @@ public class User {
 
     private boolean isRobot = false;
 
+<<<<<<< HEAD
     // Getters and Setters
     public UUID getUserId() { return userId; }
     public void setUserId(UUID userId) { this.userId = userId; }
@@ -82,6 +87,8 @@ public class User {
     public boolean isRobot() { return isRobot; }
     public void setRobot(boolean robot) { isRobot = robot; }
 
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
     public enum Role {
         user, moderator, admin
     }

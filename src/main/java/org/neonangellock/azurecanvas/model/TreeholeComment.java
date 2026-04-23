@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import java.util.Date;
 
+<<<<<<< HEAD
+=======
+@Setter
+@Getter
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 @Entity
 @Table(name = "treehole_comments")
 public class TreeholeComment {
@@ -34,6 +39,7 @@ public class TreeholeComment {
     @Column(name = "created_at", updatable = false)
     private Date createdAt = new Date();
 
+<<<<<<< HEAD
     // Manual Getters and Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -51,4 +57,6 @@ public class TreeholeComment {
     public void setRobot(RobotConfig robot) { this.robot = robot; }
     public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 }

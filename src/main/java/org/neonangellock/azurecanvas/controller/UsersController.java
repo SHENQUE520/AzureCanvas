@@ -21,6 +21,7 @@ public class UsersController {
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@CookieValue(name = "user_id", required = false) UUID userId) {
         if (userId == null) {
+<<<<<<< HEAD
             // 为预览环境提供一个默认的 Mock 用户，防止前端报错
             Map<String, Object> userData = new HashMap<>();
             userData.put("id", UUID.randomUUID());
@@ -34,6 +35,12 @@ public class UsersController {
             userData.put("followersCount", 0);
             userData.put("followingCount", 0);
             return ResponseEntity.ok(userData);
+=======
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", "NOT_LOGGED_IN");
+            response.put("redirect", "../login/index.html?redirect=/user/user.html");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
         }
 
         User user = userService.findById(userId);

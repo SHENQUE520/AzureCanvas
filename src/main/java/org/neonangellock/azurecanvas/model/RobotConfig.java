@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import java.util.Date;
 
+<<<<<<< HEAD
+=======
+@Setter
+@Getter
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 @Entity
 @Table(name = "robot_configs")
 public class RobotConfig {
@@ -35,6 +40,7 @@ public class RobotConfig {
     @Column(name = "updated_at")
     private Date updatedAt = new Date();
 
+<<<<<<< HEAD
     // Manual Getters and Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -60,4 +66,6 @@ public class RobotConfig {
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
     public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
+=======
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 }

@@ -1,5 +1,6 @@
 // ========== 商品数据（2x3 紧凑卡片） ==========
 var
+<<<<<<< HEAD
     cards = [
         { id: '001', title: '教材捡漏', desc: '正版教材低至1折', price: '¥5', original: '¥50', emoji: '📚', cat: '教材/考研/资料', gradient: 'from-green-300 to-emerald-500' },
 
@@ -26,6 +27,34 @@ var detailModal = document.getElementById('detail-modal');
 var publishModal = document.getElementById('publish-modal');
 var publishForm = document.getElementById('publish-form');
 var toastEl = document.getElementById('toast');
+=======
+ cards = [
+    { id: '001', title: '教材捡漏',  desc: '正版教材低至1折',  price: '¥5',    original: '¥50',  emoji: '📚', cat: '教材/考研/资料', gradient: 'from-green-300 to-emerald-500'},
+ 
+    { id: '002', title: '手机数码',  desc: '热门3C装备轻松入', price: '¥120',  original: '¥599', emoji: '🎧', cat: '手机/数码/电脑', gradient: 'from-sky-300 to-blue-500'},
+ 
+    { id: '003', title: '潮玩手办',  desc: '热门IP手办随手入', price: '¥29',   original: '¥89',  emoji: '🧸', cat: '游戏/卡券/潮玩', gradient: 'from-pink-300 to-rose-500'},
+ 
+    { id: '004', title: '省钱卡券',  desc: '吃喝玩乐放心购',  price: '¥1.5',  original: '¥15',  emoji: '🎟️', cat: '游戏/卡券/潮玩', gradient: 'from-amber-300 to-yellow-500'},
+ 
+    { id: '005', title: '运动户外',  desc: '球拍器材超值转',  price: '¥35',   original: '¥199', emoji: '🏸', cat: '服饰/箱包/运动', gradient: 'from-violet-300 to-purple-500'},
+ 
+    { id: '006', title: '生活日用',  desc: '宿舍好物便宜出',  price: '¥8',    original: '¥45',  emoji: '🪴', cat: '家具/家电/日用', gradient: 'from-orange-300 to-red-400'}
+ 
+];
+
+// ========== DOM 引用 ==========
+var searchInput    = document.querySelector('header input[type="text"]');
+var searchBtn      = document.querySelector('header button');
+var hotTags        = document.querySelectorAll('.hot-tags a');
+var categoryItems  = document.querySelectorAll('.category-list li');
+var cardGrid       = document.getElementById('card-grid');
+var recommendGrid  = document.getElementById('recommend-grid');
+var detailModal    = document.getElementById('detail-modal');
+var publishModal   = document.getElementById('publish-modal');
+var publishForm    = document.getElementById('publish-form');
+var toastEl        = document.getElementById('toast');
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 
 // ========== Toast 提示 ==========
 function showToast(msg) {
@@ -49,7 +78,11 @@ function renderCards(list) {
             '<div class="text-3xl mb-2">' + c.emoji + '</div>' +
             '<h3 class="text-white text-sm font-black leading-tight">' + c.title + '</h3>' +
             '<p class="text-white/70 text-[11px] mt-0.5">' + c.desc + '</p>';
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
         div.addEventListener('click', function () {
             window.location.href = 'search.html?cat=' + encodeURIComponent(c.cat);
         });
@@ -57,7 +90,22 @@ function renderCards(list) {
     });
 }
 
+<<<<<<< HEAD
 
+=======
+// ========== 搜索 → 跳转 search.html ==========
+function doSearch() {
+    var keyword = searchInput.value.trim();
+    if (keyword) {
+        window.location.href = 'search.html?keyword=' + encodeURIComponent(keyword);
+    }
+}
+
+searchBtn.addEventListener('click', doSearch);
+searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') doSearch();
+});
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 
 // ========== 热搜标签 → 跳转 search.html ==========
 hotTags.forEach(function (tag) {
@@ -78,7 +126,11 @@ categoryItems.forEach(function (li) {
     });
 });
 
+<<<<<<< HEAD
 function clearCategoryActive() { }
+=======
+function clearCategoryActive() {}
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
 
 // ========== 推荐流：动态渲染 ==========
 function getAllSeeds() {
@@ -120,6 +172,7 @@ function renderRecommend(seedFilter) {
         card.innerHTML =
             '<div class="' + h + ' bg-gradient-to-br ' + bg + ' flex items-center justify-center text-6xl">' + item.emoji + '</div>' +
             '<div class="p-3 flex flex-col flex-1">' +
+<<<<<<< HEAD
             (tagHtml ? '<div class="mb-1">' + tagHtml + '</div>' : '') +
             '<p class="text-sm text-gray-800 leading-snug line-clamp-2">' + item.title + '</p>' +
             '<div class="mt-auto pt-2">' +
@@ -132,6 +185,20 @@ function renderRecommend(seedFilter) {
             '<span class="text-xs text-gray-500">' + item.seller + '</span>' +
             '</div>' +
             '</div>' +
+=======
+                (tagHtml ? '<div class="mb-1">' + tagHtml + '</div>' : '') +
+                '<p class="text-sm text-gray-800 leading-snug line-clamp-2">' + item.title + '</p>' +
+                '<div class="mt-auto pt-2">' +
+                    '<div class="flex items-center justify-between">' +
+                        '<span class="trade-price text-base">¥' + item.price + '</span>' +
+                        '<span class="text-xs text-gray-400">' + item.wants + '人想要</span>' +
+                    '</div>' +
+                    '<div class="flex items-center mt-2 space-x-1.5">' +
+                        '<div class="w-5 h-5 rounded-full bg-purple-200 flex items-center justify-center text-[10px] text-purple-600 font-bold">' + item.seller.charAt(0) + '</div>' +
+                        '<span class="text-xs text-gray-500">' + item.seller + '</span>' +
+                    '</div>' +
+                '</div>' +
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
             '</div>';
         card.addEventListener('click', function () {
             sessionStorage.setItem('viewProduct', JSON.stringify(item));
@@ -148,9 +215,15 @@ var tabSeedMap = {
     '数码设备': categoryMap['手机/数码/电脑'],
     '教材资料': categoryMap['教材/考研/资料'],
     '吉他乐器': categoryMap['乐器/文具/手工'],
+<<<<<<< HEAD
     '摄影摄像': ['微单相机', '单反相机'],
     '运动户外': categoryMap['服饰/箱包/运动'],
     '女装穿搭': ['连衣裙', 'T恤', '卫衣', '外套', '牛仔裤'],
+=======
+    '摄影摄像': ['微单相机','单反相机'],
+    '运动户外': categoryMap['服饰/箱包/运动'],
+    '女装穿搭': ['连衣裙','T恤','卫衣','外套','牛仔裤'],
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
     '居家好物': categoryMap['家具/家电/日用']
 };
 
@@ -158,11 +231,19 @@ document.querySelectorAll('.recommend-tab').forEach(function (tab) {
     tab.addEventListener('click', function () {
         // 1. 重置所有标签的样式（移除紫色渐变和白字，恢复未选中时的白底灰字）
         document.querySelectorAll('.recommend-tab').forEach(function (t) {
+<<<<<<< HEAD
             t.style.background = '';
             t.classList.remove('text-white', 'font-bold', 'bg-gradient-to-br', 'from-purple-500', 'to-purple-600');
             t.classList.add('bg-white', 'text-gray-600');
         });
 
+=======
+            t.style.background = ''; 
+            t.classList.remove('text-white', 'font-bold', 'bg-gradient-to-br', 'from-purple-500', 'to-purple-600');
+            t.classList.add('bg-white', 'text-gray-600');
+        });
+        
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
         // 2. 为当前点击的标签添加主题配套的紫色渐变
         tab.classList.remove('bg-white', 'text-gray-600');
         tab.classList.add('text-white', 'font-bold', 'bg-gradient-to-br', 'from-purple-500', 'to-purple-600');
@@ -272,7 +353,11 @@ publishForm.addEventListener('submit', async function (e) {
     });
 
     try {
+<<<<<<< HEAD
         var response = await fetch('http://localhost:8088/api/market/items', {
+=======
+        var response = await fetch('/api/market/items', {
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
             method: 'POST',
             credentials: 'include',
             body: uploadData
@@ -345,8 +430,13 @@ document.addEventListener('keydown', function (e) {
 // ========== 用户头像下拉面板 ==========
 (function () {
     var avatarBtn = document.getElementById('user-avatar-btn');
+<<<<<<< HEAD
     var dropdown = document.getElementById('user-dropdown');
     var arrow = document.getElementById('avatar-arrow');
+=======
+    var dropdown  = document.getElementById('user-dropdown');
+    var arrow     = document.getElementById('avatar-arrow');
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
     var logoutBtn = document.getElementById('logout-btn');
     if (!avatarBtn || !dropdown) return;
 
@@ -400,7 +490,11 @@ updateDropdownCounts();
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+<<<<<<< HEAD
         const response = await fetch('http://localhost:8088/api/users/me', {
+=======
+        const response = await fetch('/api/users/me', {
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
@@ -411,8 +505,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // 保存完整用户数据到 localStorage（供 profile 等页面使用）
             var existing = {};
+<<<<<<< HEAD
             try { existing = JSON.parse(localStorage.getItem('userProfile') || '{}'); } catch (e) { }
             Object.keys(user).forEach(function (k) { existing[k] = user[k]; });
+=======
+            try { existing = JSON.parse(localStorage.getItem('userProfile') || '{}'); } catch(e) {}
+            Object.keys(user).forEach(function(k) { existing[k] = user[k]; });
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
             localStorage.setItem('userProfile', JSON.stringify(existing));
 
             // 更新头像和用户名
@@ -498,7 +597,11 @@ const submit_logic = function () {
         }
 
         try {
+<<<<<<< HEAD
             const response = await fetch('http://localhost:8088/api/market/items', {
+=======
+            const response = await fetch('/api/market/items', {
+>>>>>>> cbc8afc9fcfc514fb98bed1eb0a9dae1e2018167
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
