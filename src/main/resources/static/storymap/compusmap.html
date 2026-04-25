@@ -1005,11 +1005,25 @@
         function applyFilter() { renderStoriesList(); loadMarkers(); }
         
         function locateByIP() {
-            fetch('https://ipapi.co/json/')
-                .then(res=>res.json())
-                .then(data=>{ if(data.latitude && data.longitude) map.setView([data.latitude, data.longitude],13); else throw new Error(); })
-                .catch(()=>showSuccessToast("无法获取IP位置，已定位到珠海附近"));
-        }
+    // 请求自己的后端代理接口（同源，无 CORS 问题）
+    fetch('/api/ip-location')
+        .then(response => {
+            if (!response.ok) throw new Error('HTTP error ' + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.latitude && data.longitude) {
+                map.setView([data.latitude, data.longitude], 13);
+                showSuccessToast(`定位成功: ${data.city || ''}, ${data.country || ''}`);
+            } else {
+                throw new Error('Invalid response');
+            }
+        })
+        .catch(err => {
+            console.warn('IP定位失败:', err);
+            showSuccessToast("无法获取IP位置，将使用默认地图视图");
+        });
+}
         function resetToUST() { map.setView(MUST_CENTER,16); showSuccessToast("已返回澳门科技大学"); }
         
         // 探索功能
