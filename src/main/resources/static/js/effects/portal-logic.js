@@ -291,6 +291,78 @@ function initWaterfallPrologue() {
     createWaterfallCave();
     createWaterfallPlane();
     createWaterfallSplashes();
+
+        // ----- 新增：背景瀑布（稀疏、深色、慢速）-----
+    const bgWaterfallGeometry = new THREE.PlaneGeometry(24, 18);
+    const bgWaterfallShader = {
+        uniforms: {
+            uTime: { value: 0 },
+            uColors: { value: PALETTE }
+        },
+        vertexShader: `
+            varying vec2 vUv;
+            void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+        `,
+        fragmentShader: `
+            uniform float uTime; uniform vec3 uColors[8]; varying vec2 vUv;
+            float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 4358.5453); }
+            void main() {
+                vec2 uv = floor(vUv * vec2(80.0, 100.0)) / vec2(80.0, 100.0);
+                float lineId = floor(vUv.x * 40.0);
+                float speed = 0.5 + hash(vec2(lineId, 1.0)) * 1.5;
+                float flow = uv.y + uTime * speed;
+                float colorValue = hash(vec2(lineId, floor(flow * 5.0)));
+                float mask = step(0.7, hash(vec2(lineId, 0.0)));
+                int colorIndex = int(clamp(floor(colorValue * 5.0) + 3.0, 3.0, 7.0));
+                vec3 color = uColors[colorIndex];
+                float shape = mask * (1.0 - pow(abs(vUv.x - 0.5) * 2.0, 2.0));
+                gl_FragColor = vec4(color, shape * 0.4 * smoothstep(1.0, 0.9, vUv.y));
+            }
+        `,
+        transparent: true
+    };
+    const bgWaterfallMat = new THREE.ShaderMaterial(bgWaterfallShader);
+    const bgWaterfall = new THREE.Mesh(bgWaterfallGeometry, bgWaterfallMat);
+    bgWaterfall.position.set(0, 0, -0.8);
+    waterfallScene.add(bgWaterfall);
+    waterfallScene.userData.bgWaterfallMat = bgWaterfallMat; // 供动画更新
+
+    // ----- 新增：水潭（呼吸水平线条）-----
+    const pondGeometry = new THREE.PlaneGeometry(24, 6);
+    const pondShader = {
+        uniforms: {
+            uTime: { value: 0 },
+            uColors: { value: PALETTE }
+        },
+        vertexShader: `
+            varying vec2 vUv;
+            void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+        `,
+        fragmentShader: `
+            uniform float uTime; uniform vec3 uColors[8]; varying vec2 vUv;
+            float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 4358.5453); }
+            void main() {
+                vec2 uv = floor(vUv * vec2(120.0, 60.0)) / vec2(120.0, 60.0);
+                float rowId = floor(vUv.y * 30.0);
+                float rowOffset = hash(vec2(rowId, 0.0));
+                vec3 baseColor = uColors[7];
+                float lineId = floor((vUv.x + rowOffset) * 15.0);
+                float lineStrength = step(0.65, hash(vec2(lineId, rowId)));
+                float breathing = 0.4 + 0.6 * (0.5 + 0.5 * sin(uTime * 2.5 + rowOffset * 15.0));
+                vec3 lineColor = uColors[int(clamp(rowOffset * 4.0 + 2.0, 0.0, 7.0))];
+                vec3 finalColor = mix(baseColor, lineColor, lineStrength * 0.5);
+                float alpha = smoothstep(0.0, 0.2, vUv.y) * smoothstep(1.0, 0.7, vUv.y);
+                gl_FragColor = vec4(finalColor, alpha * 0.7 * breathing);
+            }
+        `,
+        transparent: true
+    };
+    const pondMat = new THREE.ShaderMaterial(pondShader);
+    const pond = new THREE.Mesh(pondGeometry, pondMat);
+    pond.position.y = -8.0;
+    pond.position.z = 0.2;
+    waterfallScene.add(pond);
+    waterfallScene.userData.pondMat = pondMat;
 }
 
 /**
@@ -387,14 +459,15 @@ function createWaterfallCave() {
  * 创建瀑布平面（移植自 waterfall.js）
  */
 function createWaterfallPlane() {
-    const geometry = new THREE.PlaneGeometry(6, 16);
+    // 原版主瀑布几何体：宽10，高16
+    const geometry = new THREE.PlaneGeometry(10, 16);
     
-    // 瀑布着色器：像素化线条，多层次颜色
+    // 瀑布着色器：像素化线条，多层次颜色（来自原版）
     const waterfallShader = {
         uniforms: {
             uTime: { value: 0 },
             uColors: { value: PALETTE },
-            uResolution: { value: new THREE.Vector2(6, 16) }
+            uResolution: { value: new THREE.Vector2(10, 16) }
         },
         vertexShader: `
             varying vec2 vUv;
@@ -409,56 +482,34 @@ function createWaterfallPlane() {
             varying vec2 vUv;
 
             float hash(vec2 p) {
-                return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+                return fract(sin(dot(p, vec2(12.9898, 78.233))) * 4358.5453);
             }
 
             void main() {
                 // 像素化处理 - 纵横比例
-                vec2 pixelSize = vec2(48.0, 96.0);
-                vec2 uv = floor(vUv * pixelSize) / pixelSize;
+                vec2 uv = floor(vUv * vec2(66.0, 96.0)) / vec2(66.0, 96.0);
                 
-                float speed = 3.5;
-                float flow = uv.y + uTime * speed;
+                float flow = uv.y + uTime * 3.5;
                 
-                // 动漫风线条：通过 x 轴的不同频率波浪叠加
+                // 多条正弦波叠加，产生水流交错感
                 float lines = sin(uv.x * 30.0 + uTime * 2.0) * 0.1;
-                lines += sin(uv.x * 60.0 - uTime * 1.5) * 0.05;
-                lines += sin(uv.x * 120.0 + uTime * 3.0) * 0.02;
+                lines += sin(uv.x * 60.0 - uTime * 1.5) * 0.1;
+                lines += sin(uv.x * 120.0 + uTime * 3.0) * 0.06;
                 
-                // 纵向流动感
-                float verticalNoise = hash(vec2(uv.x, floor(flow * 12.0)));
-                float colorValue = (uv.x + lines + verticalNoise * 0.2);
-                
-                // 确保 8 种颜色都能体现：将 colorValue 映射到 0-7
-                // 我们想要一些垂直的色带效果
+                float colorValue = (uv.x + lines + hash(vec2(uv.x, floor(flow * 12.0))) * 0.2);
                 float stripe = sin(uv.x * 15.0) * 0.5 + 0.5;
-                float combined = mix(colorValue, stripe, 0.4);
-                
-                int colorIndex = int(clamp(floor(combined * 8.0), 0.0, 7.0));
+                int colorIndex = int(clamp(floor(mix(colorValue, stripe, 0.4) * 8.0), 0.0, 7.0));
                 vec3 color = uColors[colorIndex];
                 
-                // 添加白色高光线条 (动漫风常见)
-                float highlights = step(0.92, hash(vec2(uv.x, floor(flow * 15.0))));
-                if (highlights > 0.5) {
-                    color = mix(color, vec3(1.0, 1.0, 1.0), 0.6);
+                // 白色高光
+                if (step(0.92, hash(vec2(uv.x, floor(flow * 15.0)))) > 0.5) {
+                    color = mix(color, vec3(1.0), 0.6);
                 }
                 
-                // 瀑布本体的形状控制：边缘稍微弯曲
                 float shape = 1.0 - pow(abs(vUv.x - 0.5) * 2.0, 4.0);
+                float portalTop = (vUv.y > 0.8) ? (1.0 - smoothstep(0.45, 0.5, length((vUv - vec2(0.5, 0.8)) * vec2(1.0, 0.5)))) : 1.0;
                 
-                // 传送门顶部圆角效果
-                float portalTop = 1.0;
-                if (vUv.y > 0.8) {
-                    float distTop = length((vUv - vec2(0.5, 0.8)) * vec2(1.0, 0.5));
-                    portalTop = 1.0 - smoothstep(0.45, 0.5, distTop);
-                }
-                
-                // 透明度处理
-                float alpha = shape * portalTop;
-                // 顶部淡入效果
-                alpha *= smoothstep(1.0, 0.85, vUv.y);
-                
-                gl_FragColor = vec4(color, alpha);
+                gl_FragColor = vec4(color, shape * portalTop * smoothstep(1.0, 0.95, vUv.y));
             }
         `,
         transparent: true
@@ -466,7 +517,7 @@ function createWaterfallPlane() {
 
     waterfallWaterMaterial = new THREE.ShaderMaterial(waterfallShader);
     const waterfallPlane = new THREE.Mesh(geometry, waterfallWaterMaterial);
-    waterfallPlane.position.y = 1; // 稍微向上偏移，让底部有空间放水花
+    waterfallPlane.position.y = 1; // 与原版一致
     waterfallScene.add(waterfallPlane);
 }
 
@@ -654,9 +705,7 @@ function setupWaterfallTransition() {
                             // 显示滚动提示
                             showScrollHint();
                             // 额外白光消散
-                            createWhiteFlash(() => {
-
-                            });
+                            createWhiteFlash(() => {});
                             isTransitioning = false;
                         });
                     });
@@ -896,7 +945,7 @@ window.addEventListener('wheel', (e) => {
     scrollProgress += e.deltaY * 0.05;
     
     // [可调参数] 限制相机的滚动范围：(-145 为传送门前，100 为隧道外)
-    const targetZ = THREE.MathUtils.clamp(50 - scrollProgress, -145, 100);
+    const targetZ = THREE.MathUtils.clamp(50 - scrollProgress, -150, 100);
 
     gsap.to(camera.position, {
         z: targetZ,
@@ -947,41 +996,23 @@ window.addEventListener('wheel', (e) => {
 
             if (progress >= 0.99) {
     // 停止所有持续性音效
-                if (tunnelSound.isPlaying) tunnelSound.stop();
-                if (splashSound.isPlaying) splashSound.stop();
+    if (tunnelSound.isPlaying) tunnelSound.stop();
+    if (splashSound.isPlaying) splashSound.stop();
+    
+    // 画面彻底变白
+    portalMat.opacity = 1; 
+    const whiteOut = THREE.MathUtils.mapLinear(Math.min(progress, 1.0), 0.99, 1.0, 5, 15);
+    portalMat.color.setRGB(whiteOut, whiteOut, whiteOut);
+}
 
-                // 画面彻底变白
-                portalMat.opacity = 1;
-                const whiteOut = THREE.MathUtils.mapLinear(progress, 0.99, 1.0, 5, 15);
-                portalMat.color.setRGB(whiteOut, whiteOut, whiteOut);
-
-                // ========== 传送跳转（只执行一次，防止重复触发）==========
-                if (!window._hasRedirected) {
-                    window._hasRedirected = true;
-
-                    setTimeout(() => {
-                        // ================================================
-                        // 跳转目标配置（根据需求修改下方任意一行）
-                        // ================================================
-
-                        // 情况1：跳转到 HTML 页面
-                        window.location.href = 'islands/index.html';
-
-                        // 情况2：跳转到外部 URL
-                        // window.location.href = 'https://example.com';
-
-                        // 情况3：跳转到另一个 JS 特效页面（需要先创建该 HTML）
-                        // window.location.href = '/effects/rainbow-portal.html';
-
-                        // 情况4：不跳转，只执行某个函数（需取消上面 href 行）
-                        // if (typeof someEffectFunction === 'function') someEffectFunction();
-
-                        // 情况5：在新标签页打开
-                        // window.open('/target-page.html', '_blank');
-
-                        // ================================================
-                    }, 800);  // 白屏停留时间（毫秒），可调：500-1200
-                }
+// ========== 跳转：只在 progress >= 1.0 时触发一次 ==========
+if (progress >= 1.0 && !window._hasRedirected) {
+    window._hasRedirected = true;
+    // 可选：再留一点白屏时间（0~500ms）
+    setTimeout(() => {
+        window.location.href = '/islands/index.html';   // 请根据实际部署路径调整
+    }
+    , 300);
             }
         }
     });
@@ -1006,22 +1037,36 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (!isInTunnel) {
-        // 渲染瀑布前奏场景
-        const delta = waterfallClock.getDelta();
-        const elapsed = waterfallClock.getElapsedTime();
+    const delta = waterfallClock.getDelta();
+    const elapsed = waterfallClock.getElapsedTime();
 
-        if(waterfallWaterMaterial) {
-            waterfallWaterMaterial.uniforms.uTime.value = elapsed;
-        }
-        
-        if(waterfallCaveMaterial) {
-            waterfallCaveMaterial.uniforms.uTime.value = elapsed;
-        }
+    // 主瀑布材质
+    if (waterfallWaterMaterial) {
+        waterfallWaterMaterial.uniforms.uTime.value = elapsed;
+    }
+    // 山洞材质
+    if (waterfallCaveMaterial) {
+        waterfallCaveMaterial.uniforms.uTime.value = elapsed;
+    }
+    // 新增：背景瀑布材质
+    if (waterfallScene.userData.bgWaterfallMat) {
+        waterfallScene.userData.bgWaterfallMat.uniforms.uTime.value = elapsed;
+    }
+    // 新增：水潭材质
+    if (waterfallScene.userData.pondMat) {
+        waterfallScene.userData.pondMat.uniforms.uTime.value = elapsed;
+    }
+    // 雾气材质（原有）
+    if (waterfallMistMaterial) {
+        waterfallMistMaterial.uniforms.uTime.value = elapsed;
+    }
 
-        updateWaterfallSplashes(delta);
+    updateWaterfallSplashes(delta);
 
-        renderer.render(waterfallScene, waterfallCamera);
-    } else {
+    renderer.render(waterfallScene, waterfallCamera);
+}
+    
+    else {
         // 渲染隧道场景（带后期效果）
         // [可调参数] 瀑布背景水流下落速度
         waterTexture.offset.y += 0.01;
