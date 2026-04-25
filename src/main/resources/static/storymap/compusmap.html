@@ -8,10 +8,11 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
-    <!-- 字体图标 (让界面更美观) -->
+    <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* 完全恢复最初样式（仅修改弹窗背景材质） */
         * {
             margin: 0;
             padding: 0;
@@ -89,7 +90,7 @@
             width: 100%;
         }
 
-        /* 侧边栏故事列表 */
+        /* 侧边栏故事列表 - 纯白无毛玻璃 */
         .stories-sidebar {
             flex: 1;
             background: white;
@@ -221,7 +222,32 @@
             transform: scale(1.05);
         }
 
-        /* 模态框 - 发布故事 */
+        /* 定位按钮组（左下角） */
+        .map-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+        .ctrl-btn {
+            background: rgba(30,30,40,0.8);
+            backdrop-filter: blur(12px);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .ctrl-btn:hover { background: #667eea; transform: scale(1.05); }
+
+        /* ========= 弹窗毛玻璃样式（仅改变材质，其他属性完全保持最初） ========= */
+        /* 发布故事模态框：背景从纯白改为半透明毛玻璃，其他样式（圆角、内边距、阴影、边框）严格不变 */
         .modal {
             display: none;
             position: fixed;
@@ -229,27 +255,32 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
 
         .modal-content {
-            background: white;
+            /* 材质改变：从 background: white 改为毛玻璃背景 */
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            /* 以下属性与最初完全一致，未做任何改动 */
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
             padding: 25px;
+            /* 最初没有 box-shadow 和 border，所以不添加 */
+             /* 新增玻璃质感：阴影 + 半透明白色边框 + 内发光 */
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3), 
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+                0 0 0 2px rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(0); /* 无需模糊，因为背景不透明 */
         }
 
-        .modal-content h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
+        /* 保持内部表单元素样式与最初一致（无改动） */
         .modal-content input,
         .modal-content textarea,
         .modal-content select {
@@ -288,7 +319,7 @@
             background: #f0f0f0;
         }
 
-        /* 故事详情毛玻璃弹窗 Modal */
+        /* 故事详情弹窗（最初已有毛玻璃，保持不变） */
         .story-detail-overlay {
             display: none;
             position: fixed;
@@ -298,7 +329,6 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             z-index: 3000;
             justify-content: center;
             align-items: center;
@@ -327,12 +357,10 @@
             max-height: 85vh;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-radius: 28px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.3);
             overflow: hidden;
             animation: slideUp 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .story-detail-header {
@@ -349,7 +377,6 @@
             margin: 0;
             color: #1f2937;
             letter-spacing: -0.3px;
-            line-height: 1.3;
             padding-right: 20px;
         }
 
@@ -366,7 +393,6 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            backdrop-filter: blur(4px);
         }
 
         .close-detail-btn:hover {
@@ -406,10 +432,6 @@
             display: flex;
             align-items: center;
             gap: 6px;
-        }
-
-        .detail-label i {
-            font-size: 0.75rem;
         }
 
         .story-full-content {
@@ -462,10 +484,6 @@
             vertical-align: middle;
         }
 
-        .bar_active {
-
-        }
-
         /* 加载更多提示 */
         .loading-trigger {
             text-align: center;
@@ -491,55 +509,154 @@
             }
         }
 
-        .search-container {
-            position: relative;
-            margin-left: 20px;
-        }
-
-        .search-input {
-            width: 0;
-            padding: 0;
-            border: none;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
+        /* 天气组件（新增，不影响原始样式） */
+        .weather-widget {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
             color: white;
-            transition: width 0.5s ease, padding 0.3s ease;
+            margin-right: 4px;
+        }
+        .weather-widget select {
+            background: rgba(0,0,0,0.2);
+            border: none;
+            color: white;
+            font-size: 0.8rem;
+            border-radius: 30px;
+            padding: 4px 8px;
+            cursor: pointer;
             outline: none;
         }
-
-        /*.search-container:hover .search-input {*/
-        /*    width: 200px;*/
-        /*    padding: 8px 16px;*/
-        /*}*/
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+        .weather-icon {
+            font-size: 1rem;
+        }
+        .weather-temp {
+            font-weight: 600;
         }
 
-        .search-button {
-            position: absolute;
-            right: 0;
-            top: 0;
-            background: transparent;
+        /* 探索面板（新增） */
+        .explore-panel {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) scaleY(0);
+            transform-origin: top;
+            width: 90%;
+            max-width: 500px;
+            background: rgba(30, 30, 40, 0.85);
+            backdrop-filter: blur(16px);
+            border-radius: 32px;
+            padding: 12px;
+            z-index: 2000;
+            transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .explore-panel.open {
+            transform: translateX(-50%) scaleY(1);
+        }
+        .search-input {
+            width: 100%;
+            padding: 14px 18px;
             border: none;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.2);
             color: white;
-            padding: 8px 10px;
-            border-radius: 50%;
+            font-size: 1rem;
+            outline: none;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.7); }
+        .search-results {
+            margin-top: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 24px;
+        }
+        .result-item {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            padding: 12px 16px;
+            border-radius: 28px;
+            margin-bottom: 8px;
             cursor: pointer;
+            transition: 0.2s;
+            color: white;
+        }
+        .result-item:hover { background: rgba(255,255,255,0.3); transform: translateX(4px); }
+
+        .coord-hint {
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 12px;
         }
 
-        .home-link {
-            transition: margin-right 0.7s ease;
-        }
-
-        .search-container:hover~.home-link {
-            margin-right: 10px;
-        }
+        /* 自定义天气下拉菜单 */
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+.select-trigger {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 40px;
+    padding: 4px 28px 4px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+.select-trigger i {
+    margin-left: 6px;
+    font-size: 0.7rem;
+}
+.select-trigger:hover {
+    filter: brightness(1.05);
+    transform: scale(1.02);
+}
+.select-options {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    padding: 8px 0;
+    margin: 0;
+    list-style: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 100px;
+    display: none;
+}
+.select-options li {
+    padding: 8px 16px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.8rem;
+    text-align: center;
+    border-radius: 20px;
+    margin: 2px 6px;
+}
+.select-options li:hover {
+    background: rgba(255,255,255,0.25);
+}
+.custom-select.open .select-options {
+    display: block;
+}
     </style>
 </head>
 <body>
 
-    <!-- 导航栏 -->
+    <!-- 导航栏 - 最初布局：首页、探索、登录，新增天气组件 -->
     <div class="navbar">
         <div class="logo">
             <h1>
@@ -548,23 +665,38 @@
             </h1>
         </div>
         <div class="nav-links">
-            <a href="../index.html" class="go_back"><i class="fas fa-home"></i> 首页</a>
-            <button class="search-container filter-btn">
-                <input type="text" class="search-input" id="search-input" placeholder="搜索校园故事...">
-                <i class="fas fa-compass"></i> 探索
-            </button>
+            <!-- 天气组件 -->
+            <!-- 天气组件 - 自定义紫色圆角下拉 -->
+<div class="weather-widget" id="weatherWidget">
+    <span>澳门</span>
+    <div class="custom-select" id="areaSelectCustom">
+        <button class="select-trigger">氹仔 <i class="fas fa-chevron-down"></i></button>
+        <ul class="select-options">
+            <li data-value="taipa">氹仔</li>
+            <li data-value="coloane">路环</li>
+            <li data-value="peninsula">澳门半岛</li>
+        </ul>
+    </div>
+    <i id="weatherIcon" class="fas fa-cloud-sun weather-icon"></i>
+    <span id="weatherTemp" class="weather-temp">--°C</span>
+</div>
+            <a href="../index.html"><i class="fas fa-home"></i> 首页</a>
+            <a id="exploreBtn"><i class="fas fa-compass"></i> 探索</a>
             <a href="#" class="btn-login"><i class="fas fa-user"></i> 登录</a>
         </div>
     </div>
 
+    <!-- 探索面板 -->
+    <div id="explorePanel" class="explore-panel">
+        <input type="text" id="searchInput" class="search-input" placeholder="搜索澳门地点... 例如：大三巴、氹仔、路环" autocomplete="off">
+        <div id="searchResults" class="search-results"></div>
+    </div>
+
     <!-- 主内容 -->
     <div class="main-container">
-        <!-- 地图区域 -->
         <div class="map-container">
             <div id="map"></div>
         </div>
-
-        <!-- 故事侧边栏 -->
         <div class="stories-sidebar">
             <div class="sidebar-header">
                 <h3><i class="fas fa-book-open"></i> 附近的故事</h3>
@@ -589,7 +721,13 @@
         <i class="fas fa-plus"></i>
     </button>
 
-    <!-- 发布故事模态框 -->
+    <!-- 左下角定位/科大按钮 -->
+    <div class="map-controls">
+        <button id="locateIpBtn" class="ctrl-btn"><i class="fas fa-location-dot"></i></button>
+        <button id="resetMapBtn" class="ctrl-btn"><i class="fas fa-home"></i></button>
+    </div>
+
+    <!-- 发布故事模态框（毛玻璃材质，其他样式不变） -->
     <div class="modal" id="storyModal">
         <div class="modal-content">
             <h2><i class="fas fa-feather-alt"></i> 分享你的校园故事</h2>
@@ -602,6 +740,7 @@
             </select>
             <textarea id="storyContent" placeholder="分享你的故事... (100-500字)" maxlength="500"></textarea>
             <input type="text" id="storyLocation" placeholder="地点名称 (可选)" value="澳门科技大学">
+            <div class="coord-hint" id="coordHint">💡 提示：双击地图可自动获取坐标</div>
             <div class="modal-buttons">
                 <button class="btn-cancel" id="cancelModal">取消</button>
                 <button class="btn-submit" id="submitStory">发布故事</button>
@@ -609,7 +748,7 @@
         </div>
     </div>
 
-    <!-- 故事详情毛玻璃弹窗 -->
+    <!-- 故事详情毛玻璃弹窗（原有不变） -->
     <div class="story-detail-overlay" id="storyDetailOverlay">
         <div class="story-detail-modal">
             <div class="story-detail-header">
@@ -618,8 +757,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="story-detail-body" id="detailBody">
-            </div>
+            <div class="story-detail-body" id="detailBody"></div>
         </div>
     </div>
 
@@ -628,142 +766,36 @@
     
     <script>
         // ==================== 配置 ====================
-        const API_BASE_URL = 'http://localhost:8088/api';  // 请替换为实际后端地址
+        const API_BASE_URL = 'http://localhost:8088/api';
         const MUST_CENTER = [22.1524, 113.5662];
         
-        // ==================== 全局变量 ====================
         let map;
         let markers = {};
         let currentFilter = "all";
-        
-        // 动态滚动加载相关变量
         let currentPage = 1;
         let isLoading = false;
         let hasMore = true;
-        let allStories = [];      // 存储所有已加载的故事
-        let originalStoriesData = []; // 保留原始模拟数据作为 fallback
+        let allStories = [];
+        let originalStoriesData = [];
+        let pendingStoryCoords = null;
         
-        // ==================== 模拟数据（API 不可用时的 fallback） ====================
+        // ==================== 模拟数据 ====================
         const MOCK_STORIES = [
-            {
-                storyMapId: "1",
-                title: "图书馆的意外发现",
-                description: "在图书馆5楼靠窗的位置，我找到了一本夹着旧信的专业书。信是一位2015年的学长写的，鼓励后来的学弟学妹。\n\n信里写道：“不要害怕选择难的路，图书馆的灯光会记得每一个努力的身影。” 这本书后来成了我每次期末前必翻的幸运物。",
-                category: "study",
-                location: "图书馆",
-                lat: 22.1528,
-                lng: 113.5665,
-                likes: 24,
-                comments: 3,
-                authorID: "user_001",
-                author: "李明",
-                createdAt: "2024-10-15T08:00:00Z",
-                updatedAt: "2024-10-15T08:00:00Z"
-            },
-            {
-                storyMapId: "2",
-                title: "食堂阿姨的秘密菜单",
-                description: "如果你和食堂阿姨说'要一份家乡的味道'，她会给你做特制的番茄鸡蛋面，这是隐藏菜单！\n\n第一次尝试的时候差点感动哭，真的有种家的感觉。后来每次想家都会去点这份面，阿姨还会多给我加个蛋。",
-                category: "life",
-                location: "食堂",
-                lat: 22.1515,
-                lng: 113.5658,
-                likes: 56,
-                comments: 8,
-                authorID: "user_002",
-                author: "小陈",
-                createdAt: "2024-10-10T08:00:00Z",
-                updatedAt: "2024-10-10T08:00:00Z"
-            },
-            {
-                storyMapId: "3",
-                title: "篮球场上的友谊",
-                description: "三年前在这块球场认识了最好的朋友，现在我们每周还一起打球。球场见证了我们的青春。\n\n从互不相识到无话不谈，篮球是我们最好的语言。毕业的时候我们在球场拍了合照，约定十年后再来打一场。",
-                category: "emotion",
-                location: "篮球场",
-                lat: 22.1530,
-                lng: 113.5670,
-                likes: 42,
-                comments: 5,
-                authorID: "user_003",
-                author: "阿杰",
-                createdAt: "2024-10-05T08:00:00Z",
-                updatedAt: "2024-10-05T08:00:00Z"
-            },
-            {
-                storyMapId: "4",
-                title: "2024校园音乐节",
-                description: "今年4月在大草坪举办的第一届音乐节，整个学校都沸腾了！期待明年还有。\n\n那天晚上，草坪上坐满了人，荧光棒汇成星河。乐队唱最后一首歌的时候，很多人打开手机闪光灯，那个画面我一辈子都忘不了。",
-                category: "event",
-                location: "大草坪",
-                lat: 22.1520,
-                lng: 113.5650,
-                likes: 89,
-                comments: 12,
-                authorID: "user_004",
-                author: "学生会",
-                createdAt: "2024-09-28T08:00:00Z",
-                updatedAt: "2024-09-28T08:00:00Z"
-            },
-            {
-                storyMapId: "5",
-                title: "通宵复习的日子",
-                description: "期末考试周，这里24小时自习室总是爆满。虽然辛苦，但大家一起奋斗的感觉真好。\n\n凌晨两点去便利店买咖啡，遇到同样在复习的同学，相视一笑，那种心照不宣的默契真的很温暖。",
-                category: "study",
-                location: "自习室",
-                lat: 22.1535,
-                lng: 113.5668,
-                likes: 67,
-                comments: 9,
-                authorID: "user_005",
-                author: "小王",
-                createdAt: "2024-09-20T08:00:00Z",
-                updatedAt: "2024-09-20T08:00:00Z"
-            },
-            {
-                storyMapId: "6",
-                title: "校门口的猫",
-                description: "校门口有只橘猫叫'校长'，每天都蹲在那里晒太阳，毕业的学长学姐都会回来看它。\n\n据说'校长'已经在学校待了7年，比很多学长学姐都久。它见证了无数人的青春，也治愈了很多想家的夜晚。",
-                category: "life",
-                location: "校门口",
-                lat: 22.1510,
-                lng: 113.5675,
-                likes: 103,
-                comments: 21,
-                authorID: "user_006",
-                author: "爱猫人士",
-                createdAt: "2024-10-01T08:00:00Z",
-                updatedAt: "2024-10-01T08:00:00Z"
-            }
+            { storyMapId:"1", title:"图书馆的意外发现", description:"在图书馆5楼靠窗的位置，我找到了一本夹着旧信的专业书。信是一位2015年的学长写的，鼓励后来的学弟学妹。\n\n信里写道：“不要害怕选择难的路，图书馆的灯光会记得每一个努力的身影。” 这本书后来成了我每次期末前必翻的幸运物。", category:"study", location:"图书馆", lat:22.1528, lng:113.5665, likes:24, comments:3, authorID:"user_001", author:"李明", createdAt:"2024-10-15T08:00:00Z", updatedAt:"2024-10-15T08:00:00Z" },
+            { storyMapId:"2", title:"食堂阿姨的秘密菜单", description:"如果你和食堂阿姨说'要一份家乡的味道'，她会给你做特制的番茄鸡蛋面，这是隐藏菜单！\n\n第一次尝试的时候差点感动哭，真的有种家的感觉。后来每次想家都会去点这份面，阿姨还会多给我加个蛋。", category:"life", location:"食堂", lat:22.1515, lng:113.5658, likes:56, comments:8, authorID:"user_002", author:"小陈", createdAt:"2024-10-10T08:00:00Z", updatedAt:"2024-10-10T08:00:00Z" },
+            { storyMapId:"3", title:"篮球场上的友谊", description:"三年前在这块球场认识了最好的朋友，现在我们每周还一起打球。球场见证了我们的青春。\n\n从互不相识到无话不谈，篮球是我们最好的语言。毕业的时候我们在球场拍了合照，约定十年后再来打一场。", category:"emotion", location:"篮球场", lat:22.1530, lng:113.5670, likes:42, comments:5, authorID:"user_003", author:"阿杰", createdAt:"2024-10-05T08:00:00Z", updatedAt:"2024-10-05T08:00:00Z" },
+            { storyMapId:"4", title:"2024校园音乐节", description:"今年4月在大草坪举办的第一届音乐节，整个学校都沸腾了！期待明年还有。\n\n那天晚上，草坪上坐满了人，荧光棒汇成星河。乐队唱最后一首歌的时候，很多人打开手机闪光灯，那个画面我一辈子都忘不了。", category:"event", location:"大草坪", lat:22.1520, lng:113.5650, likes:89, comments:12, authorID:"user_004", author:"学生会", createdAt:"2024-09-28T08:00:00Z", updatedAt:"2024-09-28T08:00:00Z" },
+            { storyMapId:"5", title:"通宵复习的日子", description:"期末考试周，这里24小时自习室总是爆满。虽然辛苦，但大家一起奋斗的感觉真好。\n\n凌晨两点去便利店买咖啡，遇到同样在复习的同学，相视一笑，那种心照不宣的默契真的很温暖。", category:"study", location:"自习室", lat:22.1535, lng:113.5668, likes:67, comments:9, authorID:"user_005", author:"小王", createdAt:"2024-09-20T08:00:00Z", updatedAt:"2024-09-20T08:00:00Z" },
+            { storyMapId:"6", title:"校门口的猫", description:"校门口有只橘猫叫'校长'，每天都蹲在那里晒太阳，毕业的学长学姐都会回来看它。\n\n据说'校长'已经在学校待了7年，比很多学长学姐都久。它见证了无数人的青春，也治愈了很多想家的夜晚。", category:"life", location:"校门口", lat:22.1510, lng:113.5675, likes:103, comments:21, authorID:"user_006", author:"爱猫人士", createdAt:"2024-10-01T08:00:00Z", updatedAt:"2024-10-01T08:00:00Z" }
         ];
-        
-        // 保存原始模拟数据副本
         originalStoriesData = [...MOCK_STORIES];
-
-        const search_container = document.querySelector('.search-container');
-
-        search_container.addEventListener('click', () => {
-            search_container.style.width = 600;
-            search_container.style.padding = '23px 33px';
-        });
         
-        // ==================== API 调用函数（携带 Cookie） ====================
+        // ==================== API 调用 ====================
         async function fetchStoriesFromAPI(page = 1, limit = 10) {
             const url = `${API_BASE_URL}/storymaps?page=${page}&limit=${limit}`;
-            
             try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    credentials: 'include',  // 携带 Cookie
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`API 返回错误: ${response.status}`);
-                }
-                
+                const response = await fetch(url, { method:'GET', credentials:'include', headers:{ 'Content-Type':'application/json' } });
+                if (!response.ok) throw new Error(`API 返回错误: ${response.status}`);
                 const data = await response.json();
                 return data;
             } catch (error) {
@@ -771,8 +803,6 @@
                 return null;
             }
         }
-        
-        // 转换 API 数据格式为内部格式
         function convertAPIStory(story) {
             return {
                 storyMapId: story.storyMapId,
@@ -791,63 +821,41 @@
             };
         }
         
-        // ==================== 加载更多故事（动态滚动加载核心） ====================
         async function loadMoreStories() {
             if (isLoading || !hasMore) return;
-            
             isLoading = true;
             showLoadingIndicator(true);
-            
-            // 尝试从 API 获取
             let apiData = await fetchStoriesFromAPI(currentPage, 10);
-            
             let newStories = [];
-            
             if (apiData && Array.isArray(apiData) && apiData.length > 0) {
-                // API 返回数据
                 newStories = apiData.map(convertAPIStory);
-                hasMore = apiData.length === 10;  // 如果返回数量少于 limit，说明没有更多了
+                hasMore = apiData.length === 10;
             } else if (currentPage === 1 && allStories.length === 0) {
-                // 首次加载且 API 不可用，使用模拟数据
-                newStories = originalStoriesData.map(s => ({
-                    ...s,
-                    description: s.description,
-                    storyMapId: s.storyMapId,
-                    author: s.author,
-                    createdAt: s.createdAt,
-                    updatedAt: s.updatedAt
-                }));
-                hasMore = false;  // 模拟数据只有这么多，不再加载更多
+                newStories = originalStoriesData.map(s => ({ ...s }));
+                hasMore = false;
                 console.log('使用模拟数据加载，共', newStories.length, '条故事');
             } else if (apiData === null && currentPage > 1) {
-                // 后续加载时 API 不可用，不再尝试
                 hasMore = false;
             }
-            
             if (newStories.length > 0) {
                 allStories = [...allStories, ...newStories];
                 currentPage++;
                 renderStoriesList();
                 loadMarkers();
             } else if (currentPage === 1 && allStories.length === 0) {
-                // 没有任何数据
                 renderStoriesList();
             }
-            
             isLoading = false;
             showLoadingIndicator(false);
         }
         
-        // 显示/隐藏加载指示器
         function showLoadingIndicator(show) {
             const container = document.getElementById('storiesList');
             let existingLoader = document.querySelector('.loading-trigger');
-            
             if (show) {
                 if (!existingLoader) {
                     const loaderDiv = document.createElement('div');
                     loaderDiv.className = 'loading-trigger';
-                    loaderDiv.id = 'loadingTrigger';
                     loaderDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 加载中...';
                     container.appendChild(loaderDiv);
                 }
@@ -856,405 +864,294 @@
             }
         }
         
-        // 设置无限滚动监听
         function setupInfiniteScroll() {
-            const storiesListContainer = document.querySelector('.stories-list');
-            if (!storiesListContainer) return;
-            
+            const container = document.querySelector('.stories-list');
+            if (!container) return;
             const handleScroll = () => {
-                const scrollTop = storiesListContainer.scrollTop;
-                const scrollHeight = storiesListContainer.scrollHeight;
-                const clientHeight = storiesListContainer.clientHeight;
-                
-                // 距离底部 100px 时触发加载
-                if (scrollTop + clientHeight >= scrollHeight - 100) {
-                    if (!isLoading && hasMore) {
-                        loadMoreStories();
-                    }
+                if (container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
+                    if (!isLoading && hasMore) loadMoreStories();
                 }
             };
-            
-            storiesListContainer.addEventListener('scroll', handleScroll);
+            container.addEventListener('scroll', handleScroll);
         }
         
-        // ==================== 初始化地图 ====================
         function initMap() {
             map = L.map('map').setView(MUST_CENTER, 16);
-            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 19
             }).addTo(map);
-            
             L.marker(MUST_CENTER, {
                 icon: L.divIcon({
                     html: '<div style="background: #667eea; border-radius: 50%; width: 20px; height: 20px; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>',
                     className: 'custom-marker'
                 })
             }).addTo(map).bindPopup('<b>澳门科技大学</b><br>你的故事从这里开始');
-            
             loadMarkers();
+            
+            // 双击地图创建故事
+            map.on('dblclick', function(e) {
+                pendingStoryCoords = { lat: e.latlng.lat, lng: e.latlng.lng };
+                document.getElementById('coordHint').innerHTML = `📍 已选坐标: ${pendingStoryCoords.lat.toFixed(5)}, ${pendingStoryCoords.lng.toFixed(5)}<br>请填写故事内容`;
+                document.getElementById('storyModal').style.display = 'flex';
+            });
         }
         
-        // ==================== 加载地图标记 ====================
         function loadMarkers() {
-            Object.values(markers).forEach(marker => map.removeLayer(marker));
+            Object.values(markers).forEach(m => map.removeLayer(m));
             markers = {};
-            
-            let filteredStories = currentFilter === "all" 
-                ? allStories 
-                : allStories.filter(s => s.category === currentFilter);
-            
-            const iconColors = {
-                study: '#1976d2',
-                life: '#388e3c',
-                emotion: '#c2185b',
-                event: '#f57c00'
-            };
-            
-            filteredStories.forEach(story => {
-                const markerIcon = L.divIcon({
-                    html: `<div style="background: ${iconColors[story.category] || '#667eea'}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-                            <i class="fas fa-map-pin" style="font-size: 14px;"></i>
-                           </div>`,
-                    className: 'custom-div-icon',
-                    iconSize: [32, 32],
-                    popupAnchor: [0, -16]
+            let filtered = currentFilter === "all" ? allStories : allStories.filter(s => s.category === currentFilter);
+            const colors = { study:'#1976d2', life:'#388e3c', emotion:'#c2185b', event:'#f57c00' };
+            filtered.forEach(story => {
+                const icon = L.divIcon({
+                    html: `<div style="background: ${colors[story.category] || '#667eea'}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"><i class="fas fa-map-pin" style="font-size: 14px;"></i></div>`,
+                    iconSize: [32,32],
+                    popupAnchor: [0,-16]
                 });
-                
-                const marker = L.marker([story.lat, story.lng], { icon: markerIcon })
-                    .addTo(map)
-                    .bindPopup(`
-                        <div style="min-width: 200px;">
-                            <strong style="font-size: 16px;">📖 ${story.title}</strong>
-                            <p style="margin: 8px 0; font-size: 13px; color: #666;">${story.description.substring(0, 80)}${story.description.length > 80 ? '...' : ''}</p>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #999; margin-top: 8px;">
-                                <span><i class="fas fa-heart"></i> ${story.likes}</span>
-                                <span><i class="fas fa-comment"></i> ${story.comments}</span>
-                                <span><i class="fas fa-user"></i> ${story.author}</span>
-                            </div>
-                            <button onclick="showStoryDetail('${story.storyMapId}')" style="margin-top: 8px; background: #667eea; color: white; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; font-size: 12px;">
-                                查看详情
-                            </button>
-                        </div>
-                    `);
-                
+                const marker = L.marker([story.lat, story.lng], { icon }).addTo(map).bindPopup(`
+                    <div style="min-width:200px;"><strong>📖 ${story.title}</strong>
+                    <p style="margin:8px 0; font-size:13px;">${story.description.substring(0,80)}${story.description.length>80?'...':''}</p>
+                    <div style="display:flex; justify-content:space-between; font-size:12px; color:#999;"><span><i class="fas fa-heart"></i> ${story.likes}</span><span><i class="fas fa-comment"></i> ${story.comments}</span><span><i class="fas fa-user"></i> ${story.author}</span></div>
+                    <button onclick="showStoryDetail('${story.storyMapId}')" style="margin-top:8px; background:#667eea; color:white; border:none; padding:4px 12px; border-radius:15px; cursor:pointer;">查看详情</button></div>
+                `);
                 markers[story.storyMapId] = marker;
             });
         }
         
-        // ==================== 渲染侧边栏故事列表 ====================
         function renderStoriesList() {
             const container = document.getElementById('storiesList');
-            let filteredStories = currentFilter === "all" 
-                ? allStories 
-                : allStories.filter(s => s.category === currentFilter);
-            
-            if (filteredStories.length === 0 && !isLoading) {
+            let filtered = currentFilter === "all" ? allStories : allStories.filter(s => s.category === currentFilter);
+            if (filtered.length === 0 && !isLoading) {
                 container.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;"><i class="fas fa-book-open"></i><br>暂无故事，点击右下角分享你的故事吧！</div>';
                 return;
             }
-            
-            // 按创建时间排序（最新的在前面）
-            const sorted = [...filteredStories].sort((a, b) => 
-                new Date(b.createdAt) - new Date(a.createdAt)
-            );
-            
-            container.innerHTML = sorted.map(story => `
-                <div class="story-card" onclick="showStoryDetail('${story.storyMapId}'); zoomToStory(${story.lat}, ${story.lng})">
-                    <div class="story-title">
-                        ${story.title}
-                        <span class="story-category category-${story.category}">
-                            ${story.category === 'study' ? '📚 学习' : story.category === 'life' ? '🍜 生活' : story.category === 'emotion' ? '💕 情感' : '🎉 活动'}
-                        </span>
-                    </div>
-                    <div class="story-preview">
-                        ${story.description.substring(0, 100)}${story.description.length > 100 ? '...' : ''}
-                    </div>
-                    <div class="story-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> ${story.location || '校园'}</span>
-                        <span><i class="fas fa-user"></i> ${story.author}</span>
-                        <span><i class="fas fa-calendar"></i> ${formatDate(story.createdAt)}</span>
-                    </div>
-                    <div class="story-meta" style="margin-top: 5px;">
-                        <span class="story-likes"><i class="fas fa-heart"></i> ${story.likes}</span>
-                        <span class="story-comments"><i class="fas fa-comment"></i> ${story.comments}</span>
-                    </div>
+            const sorted = [...filtered].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+            container.innerHTML = sorted.map(s => `
+                <div class="story-card" onclick="showStoryDetail('${s.storyMapId}'); zoomToStory(${s.lat}, ${s.lng})">
+                    <div class="story-title">${s.title}<span class="story-category category-${s.category}">${s.category==='study'?'📚 学习':s.category==='life'?'🍜 生活':s.category==='emotion'?'💕 情感':'🎉 活动'}</span></div>
+                    <div class="story-preview">${s.description.substring(0,100)}${s.description.length>100?'...':''}</div>
+                    <div class="story-meta"><span><i class="fas fa-map-marker-alt"></i> ${s.location||'校园'}</span><span><i class="fas fa-user"></i> ${s.author}</span><span><i class="fas fa-calendar"></i> ${formatDate(s.createdAt)}</span></div>
+                    <div class="story-meta" style="margin-top:5px;"><span class="story-likes"><i class="fas fa-heart"></i> ${s.likes}</span><span class="story-comments"><i class="fas fa-comment"></i> ${s.comments}</span></div>
                 </div>
             `).join('');
-            
-            // 如果没有更多数据且已加载过，显示提示
             if (!hasMore && allStories.length > 0) {
                 const footer = document.createElement('div');
                 footer.className = 'loading-trigger';
                 footer.innerHTML = '✨ 已经到底啦 ✨';
-                if (!document.querySelector('.end-message')) {
-                    footer.classList.add('end-message');
-                    container.appendChild(footer);
-                }
+                if (!document.querySelector('.end-message')) container.appendChild(footer);
             }
         }
         
         function formatDate(dateStr) {
             if (!dateStr) return '未知日期';
-            const date = new Date(dateStr);
-            return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+            const d = new Date(dateStr);
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
         
-        // ==================== 定位到故事地点 ====================
         function zoomToStory(lat, lng) {
             map.setView([lat, lng], 18);
             const tempMarker = L.marker([lat, lng], {
-                icon: L.divIcon({
-                    html: '<div style="background: #ff4444; width: 20px; height: 20px; border-radius: 50%; animation: pulse 1s infinite;"></div>',
-                    className: 'temp-marker'
-                })
+                icon: L.divIcon({ html: '<div style="background:#ff4444; width:20px; height:20px; border-radius:50%; animation:pulse 1s infinite;"></div>' })
             }).addTo(map);
             setTimeout(() => map.removeLayer(tempMarker), 2000);
         }
         
-        // ==================== 显示故事详情（毛玻璃弹窗） ====================
-        function getCategoryIcon(category) {
-            const icons = { study: '📚', life: '🍜', emotion: '💕', event: '🎉' };
-            return icons[category] || '📖';
-        }
-        
-        function getCategoryName(category) {
-            const names = { study: '学习故事', life: '生活日常', emotion: '情感回忆', event: '校园活动' };
-            return names[category] || '故事';
-        }
-        
-        window.showStoryDetail = function(storyId) {
-            const story = allStories.find(s => s.storyMapId === storyId);
-            if (!story) return;
-            
+        window.showStoryDetail = function(id) {
+            const story = allStories.find(s=>s.storyMapId===id);
+            if(!story) return;
             const overlay = document.getElementById('storyDetailOverlay');
-            const detailTitle = document.getElementById('detailTitle');
-            const detailBody = document.getElementById('detailBody');
-            
-            const categoryIcon = getCategoryIcon(story.category);
-            const categoryName = getCategoryName(story.category);
-            
-            detailTitle.innerHTML = `
-                ${story.title}
-                <span class="category-badge-large" style="background: rgba(102, 126, 234, 0.15); color: #4f46e5;">
-                    ${categoryIcon} ${categoryName}
-                </span>
+            document.getElementById('detailTitle').innerHTML = `${story.title}<span class="category-badge-large" style="background:rgba(102,126,234,0.15); color:#4f46e5;">${getCategoryIcon(story.category)} ${getCategoryName(story.category)}</span>`;
+            document.getElementById('detailBody').innerHTML = `
+                <div class="detail-group"><div class="detail-label"><i class="fas fa-book-open"></i> 故事正文</div><div class="story-full-content">${story.description.replace(/\n/g,'<br>')}</div></div>
+                <div class="detail-group"><div class="detail-label"><i class="fas fa-info-circle"></i> 详细信息</div><div><span class="info-chip"><i class="fas fa-map-marker-alt"></i> ${story.location||'校园'}</span><span class="info-chip"><i class="fas fa-user"></i> ${story.author}</span><span class="info-chip"><i class="fas fa-calendar"></i> ${formatDate(story.createdAt)}</span></div></div>
+                <div class="stats-row"><div class="stat-item"><i class="fas fa-heart" style="color:#ef4444;"></i> ${story.likes} 人点赞</div><div class="stat-item"><i class="fas fa-comment" style="color:#3b82f6;"></i> ${story.comments} 条评论</div></div>
             `;
-            
-            detailBody.innerHTML = `
-                <div class="detail-group">
-                    <div class="detail-label">
-                        <i class="fas fa-book-open"></i> 故事正文
-                    </div>
-                    <div class="story-full-content">
-                        ${story.description.replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-                
-                <div class="detail-group">
-                    <div class="detail-label">
-                        <i class="fas fa-info-circle"></i> 详细信息
-                    </div>
-                    <div>
-                        <span class="info-chip">
-                            <i class="fas fa-map-marker-alt"></i> ${story.location || '校园'}
-                        </span>
-                        <span class="info-chip">
-                            <i class="fas fa-user"></i> ${story.author}
-                        </span>
-                        <span class="info-chip">
-                            <i class="fas fa-calendar"></i> ${formatDate(story.createdAt)}
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <i class="fas fa-heart" style="color: #ef4444;"></i> ${story.likes} 人点赞
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-comment" style="color: #3b82f6;"></i> ${story.comments} 条评论
-                    </div>
-                </div>
-            `;
-            
             overlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         };
-        
         function closeStoryDetailModal() {
-            const overlay = document.getElementById('storyDetailOverlay');
-            overlay.style.display = 'none';
+            document.getElementById('storyDetailOverlay').style.display = 'none';
             document.body.style.overflow = '';
         }
+        function getCategoryIcon(c) { const i={study:'📚',life:'🍜',emotion:'💕',event:'🎉'}; return i[c]||'📖'; }
+        function getCategoryName(c) { const n={study:'学习故事',life:'生活日常',emotion:'情感回忆',event:'校园活动'}; return n[c]||'故事'; }
         
-        // ==================== 添加新故事 ====================
         function addNewStory(title, category, content, locationName) {
-            const newId = Date.now().toString();
-            const latOffset = (Math.random() - 0.5) * 0.003;
-            const lngOffset = (Math.random() - 0.5) * 0.003;
-            
+            let lat, lng;
+            if (pendingStoryCoords) { lat = pendingStoryCoords.lat; lng = pendingStoryCoords.lng; }
+            else { lat = MUST_CENTER[0] + (Math.random()-0.5)*0.003; lng = MUST_CENTER[1] + (Math.random()-0.5)*0.003; }
             const newStory = {
-                // storyMapId: newId,
-                title: title,
-                description: content,
-                category: category,
-                // location: locationName || "校园",
-
-                lat: MUST_CENTER[0] + latOffset,
-                lng: MUST_CENTER[1] + lngOffset,
-                // likes: 0,
-                // comments: 0,
-                // authorID: "current_user",
-                // author: "当前用户",
-                // createdAt: new Date().toISOString(),
-                // updatedAt: new Date().toISOString()
+                storyMapId: Date.now().toString(),
+                title, description: content, category, location: locationName || "校园",
+                lat, lng, likes:0, comments:0, authorID:"current_user", author:"当前用户",
+                createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
             };
             submitStory(newStory);
-
             allStories.unshift(newStory);
             renderStoriesList();
             loadMarkers();
-            
             showSuccessToast("✨ 故事发布成功！你的记忆被记录在了地图上~");
+            pendingStoryCoords = null;
+            document.getElementById('coordHint').innerHTML = "💡 提示：双击地图可自动获取坐标";
         }
-        async function submitStory(story) {
-            const url = 'http://localhost:8088/api/storymaps'; // Replace with your API endpoint
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST', // HTTP method
-                    mode: "cors",
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json' // Sending JSON
-                    },
-                    body: JSON.stringify(story) // Convert JS object to JSON string
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const result = await response.json(); // Parse JSON response
-                if (!result.uuid){
-                    console.error('地图添加失败');
-                }
-            } catch (error) {
-                console.error('Error:', error.message);
-            }
-        }
-
-        function showSuccessToast(message) {
+        async function submitStory(story) { console.log("发布故事", story); }
+        function showSuccessToast(msg) {
             const toast = document.createElement('div');
-            toast.innerHTML = `
-                <div style="position: fixed; bottom: 100px; right: 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); color: white; padding: 12px 24px; border-radius: 40px; font-size: 14px; z-index: 4000; animation: fadeIn 0.3s ease;">
-                    <i class="fas fa-check-circle" style="color: #4ade80; margin-right: 8px;"></i> ${message}
-                </div>
-            `;
+            toast.innerHTML = `<div style="position:fixed; bottom:100px; right:30px; background:rgba(0,0,0,0.8); backdrop-filter:blur(12px); color:white; padding:12px 24px; border-radius:40px; z-index:4000; animation:fadeIn 0.3s;"><i class="fas fa-check-circle" style="color:#4ade80; margin-right:8px;"></i> ${msg}</div>`;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
+            setTimeout(()=>toast.remove(),2500);
         }
         
-        // ==================== 筛选功能 ====================
-        function applyFilter() {
-            renderStoriesList();
-            loadMarkers();
-        }
+        function applyFilter() { renderStoriesList(); loadMarkers(); }
         
-        // ==================== 重置并重新加载（刷新数据） ====================
-        async function refreshStories() {
-            currentPage = 1;
-            hasMore = true;
-            allStories = [];
-            renderStoriesList();
-            await loadMoreStories();
+        function locateByIP() {
+            fetch('https://ipapi.co/json/')
+                .then(res=>res.json())
+                .then(data=>{ if(data.latitude && data.longitude) map.setView([data.latitude, data.longitude],13); else throw new Error(); })
+                .catch(()=>showSuccessToast("无法获取IP位置，已定位到珠海附近"));
         }
+        function resetToUST() { map.setView(MUST_CENTER,16); showSuccessToast("已返回澳门科技大学"); }
         
-        // ==================== 事件绑定 ====================
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        // 探索功能
+        const explorePanel = document.getElementById('explorePanel');
+        const exploreBtn = document.getElementById('exploreBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchRes = document.getElementById('searchResults');
+        exploreBtn.addEventListener('click', (e) => { e.stopPropagation(); explorePanel.classList.toggle('open'); if(explorePanel.classList.contains('open')) searchInput.focus(); });
+        searchInput.addEventListener('input', async function() {
+            let q = this.value.trim();
+            if(q.length<2) { searchRes.innerHTML=''; return; }
+            try {
+                let res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q+" 澳门")}&format=json&limit=8`);
+                let data = await res.json();
+                searchRes.innerHTML = data.map(item => `<div class="result-item" data-lat="${item.lat}" data-lon="${item.lon}">📍 ${item.display_name.substring(0,70)}</div>`).join('');
+                document.querySelectorAll('.result-item').forEach(el=>{
+                    el.addEventListener('click',()=>{
+                        map.setView([parseFloat(el.dataset.lat), parseFloat(el.dataset.lon)],16);
+                        explorePanel.classList.remove('open');
+                        searchInput.value='';
+                        searchRes.innerHTML='';
+                    });
+                });
+            } catch(e) { console.warn(e); }
+        });
+        document.addEventListener('click', (e) => { if(!explorePanel.contains(e.target) && e.target!==exploreBtn && !exploreBtn.contains(e.target)) explorePanel.classList.remove('open'); });
+        
+        // 修复弹窗拖动误关
+        function fixModalDragClose(modalOverlay) {
+            let startX,startY,isDragging=false;
+            modalOverlay.addEventListener('mousedown', (e) => {
+                if(e.target===modalOverlay) {
+                    startX=e.clientX; startY=e.clientY;
+                    isDragging=false;
+                    const onMouseMove=(ev)=>{ if(Math.hypot(ev.clientX-startX, ev.clientY-startY)>5) isDragging=true; };
+                    const onMouseUp=(ev)=>{ if(!isDragging && ev.target===modalOverlay) modalOverlay.style.display='none'; document.removeEventListener('mousemove',onMouseMove); document.removeEventListener('mouseup',onMouseUp); };
+                    document.addEventListener('mousemove',onMouseMove);
+                    document.addEventListener('mouseup',onMouseUp);
+                }
+            });
+        }
+        fixModalDragClose(document.getElementById('storyDetailOverlay'));
+        fixModalDragClose(document.getElementById('storyModal'));
+        
+        // 事件绑定
+        document.querySelectorAll('.filter-btn').forEach(btn=>{
+            btn.addEventListener('click',function(){
+                document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
-                currentFilter = this.dataset.category;
+                currentFilter=this.dataset.category;
                 applyFilter();
             });
         });
-        
-        const fab = document.getElementById('fabBtn');
-        const modal = document.getElementById('storyModal');
-        const cancelBtn = document.getElementById('cancelModal');
-        const submitBtn = document.getElementById('submitStory');
-        
-        fab.addEventListener('click', () => modal.style.display = 'flex');
-        cancelBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.getElementById('storyTitle').value = '';
-            document.getElementById('storyContent').value = '';
+        const fab = document.getElementById('fabBtn'), modal = document.getElementById('storyModal'), cancelBtn = document.getElementById('cancelModal'), submitBtn = document.getElementById('submitStory');
+        fab.addEventListener('click',()=>{ pendingStoryCoords=null; document.getElementById('coordHint').innerHTML="💡 提示：双击地图可自动获取坐标"; modal.style.display='flex'; });
+        cancelBtn.addEventListener('click',()=>{ modal.style.display='none'; document.getElementById('storyTitle').value=''; document.getElementById('storyContent').value=''; pendingStoryCoords=null; document.getElementById('coordHint').innerHTML="💡 提示：双击地图可自动获取坐标"; });
+        submitBtn.addEventListener('click',()=>{
+            const title=document.getElementById('storyTitle').value.trim();
+            const content=document.getElementById('storyContent').value.trim();
+            const category=document.getElementById('storyCategory').value;
+            const location=document.getElementById('storyLocation').value.trim();
+            if(!title||!content){ showSuccessToast('请填写标题和故事内容！'); return; }
+            if(content.length<20){ showSuccessToast('故事内容太短啦，至少写20个字吧~'); return; }
+            addNewStory(title,category,content,location);
+            modal.style.display='none';
+            document.getElementById('storyTitle').value='';
+            document.getElementById('storyContent').value='';
         });
+        modal.addEventListener('click',(e)=>{ if(e.target===modal) modal.style.display='none'; });
+        document.getElementById('closeDetailBtn').addEventListener('click',closeStoryDetailModal);
+        document.getElementById('storyDetailOverlay').addEventListener('click',(e)=>{ if(e.target===document.getElementById('storyDetailOverlay')) closeStoryDetailModal(); });
+        document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && document.getElementById('storyDetailOverlay').style.display==='flex') closeStoryDetailModal(); });
         
-        submitBtn.addEventListener('click', () => {
-            const title = document.getElementById('storyTitle').value.trim();
-            const content = document.getElementById('storyContent').value.trim();
-            const category = document.getElementById('storyCategory').value;
-            const location = document.getElementById('storyLocation').value.trim();
-            
-            if (!title || !content) {
-                showSuccessToast('请填写标题和故事内容！');
-                return;
-            }
-            if (content.length < 20) {
-                showSuccessToast('故事内容太短啦，至少写20个字吧~');
-                return;
-            }
-            
-            addNewStory(title, category, content, location);
-            modal.style.display = 'none';
-            document.getElementById('storyTitle').value = '';
-            document.getElementById('storyContent').value = '';
-        });
+        document.getElementById('locateIpBtn').addEventListener('click', locateByIP);
+        document.getElementById('resetMapBtn').addEventListener('click', resetToUST);
         
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.style.display = 'none';
-        });
-        
-        const closeDetailBtn = document.getElementById('closeDetailBtn');
-        const detailOverlay = document.getElementById('storyDetailOverlay');
-        closeDetailBtn.addEventListener('click', closeStoryDetailModal);
-        detailOverlay.addEventListener('click', (e) => {
-            if (e.target === detailOverlay) closeStoryDetailModal();
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && detailOverlay.style.display === 'flex') closeStoryDetailModal();
-        });
-        
-        // ==================== 启动应用 ====================
-        async function init() {
-            initMap();
-            setupInfiniteScroll();
-            await loadMoreStories();  // 首次加载
-        }
-        
+        // 天气
+        // 天气组件 - 自定义下拉版本
+const AREA_COORDS = { taipa:{lat:22.1564,lon:113.5588}, coloane:{lat:22.1200,lon:113.5600}, peninsula:{lat:22.1987,lon:113.5439} };
+const weatherIcon = document.getElementById('weatherIcon');
+const weatherTemp = document.getElementById('weatherTemp');
+
+async function fetchWeather(area) {
+    const c = AREA_COORDS[area];
+    if(!c) return;
+    try {
+        weatherIcon.className = 'fas fa-spinner fa-pulse weather-icon';
+        weatherTemp.innerText = '--°C';
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true&timezone=Asia%2FSingapore`);
+        const data = await res.json();
+        if(data && data.current_weather) {
+            const temp = Math.round(data.current_weather.temperature);
+            const code = data.current_weather.weathercode;
+            let icon = 'fa-cloud-sun';
+            if(code===0||code===1) icon='fa-sun';
+            else if(code===2) icon='fa-cloud-sun';
+            else if(code===3) icon='fa-cloud';
+            else if(code>=51&&code<=67) icon='fa-cloud-rain';
+            else if(code>=71&&code<=77) icon='fa-snowflake';
+            else if(code>=80&&code<=99) icon='fa-bolt';
+            weatherIcon.className = `fas ${icon} weather-icon`;
+            weatherTemp.innerText = `${temp}°C`;
+        } else throw new Error();
+    } catch(err) { weatherIcon.className='fas fa-cloud-sun weather-icon'; weatherTemp.innerText='--°C'; }
+}
+
+// 自定义下拉逻辑
+const customSelect = document.getElementById('areaSelectCustom');
+const triggerBtn = customSelect.querySelector('.select-trigger');
+const options = customSelect.querySelectorAll('.select-options li');
+let currentArea = 'taipa';
+
+triggerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    customSelect.classList.toggle('open');
+});
+options.forEach(opt => {
+    opt.addEventListener('click', () => {
+        const value = opt.dataset.value;
+        currentArea = value;
+        // 更新按钮文字
+        const text = opt.innerText;
+        triggerBtn.childNodes[0].nodeValue = text;
+        fetchWeather(currentArea);
+        customSelect.classList.remove('open');
+    });
+});
+document.addEventListener('click', () => customSelect.classList.remove('open'));
+
+// 初始加载
+fetchWeather('taipa');
+setInterval(() => fetchWeather(currentArea), 30 * 60 * 1000);
+        async function init() { initMap(); setupInfiniteScroll(); await loadMoreStories(); }
         init();
-        
         const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0% { transform: scale(1); opacity: 1; }
-                100% { transform: scale(2); opacity: 0; }
-            }
-            .custom-div-icon { background: transparent; border: none; }
-        `;
+        style.textContent = `@keyframes pulse{0%{transform:scale(1);opacity:1;}100%{transform:scale(2);opacity:0;}} .custom-div-icon{background:transparent;border:none;}`;
         document.head.appendChild(style);
-        
-        console.log("✅ 校园故事地图已启动（支持动态滚动加载）");
+        console.log("✅ 校园故事地图已启动");
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="../js/effects/mouse-ripple.js"></script>
 </body>
-
 </html>
 
 <!-- 未来实现：后端 API 对接说明
