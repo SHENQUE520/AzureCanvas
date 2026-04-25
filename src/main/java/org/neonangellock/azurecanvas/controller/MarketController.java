@@ -1,11 +1,9 @@
 package org.neonangellock.azurecanvas.controller;
 
 import org.neonangellock.azurecanvas.dto.ItemDTO;
-import org.neonangellock.azurecanvas.model.Item;
-import org.neonangellock.azurecanvas.model.ItemCategory;
-import org.neonangellock.azurecanvas.model.ItemImage;
-import org.neonangellock.azurecanvas.model.User;
+import org.neonangellock.azurecanvas.model.*;
 import org.neonangellock.azurecanvas.service.IMarketService;
+import org.neonangellock.azurecanvas.service.ItemFavoriteService;
 import org.neonangellock.azurecanvas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +22,9 @@ public class MarketController {
 
     @Autowired
     private IMarketService marketService;
+
+    @Autowired
+    private ItemFavoriteService itemFavoriteService;
 
     @Autowired
     private UserService userService;
@@ -87,6 +88,26 @@ public class MarketController {
     public ResponseEntity<Map<String, Object>> deleteItem(@PathVariable UUID itemId) {
         marketService.deleteItem(itemId);
         return ResponseEntity.ok(Map.of("success", true, "message", "Item deleted successfully."));
+    }
+
+
+    @PostMapping("/items/favorite")
+    public ResponseEntity<?> favoriteItem(@CookieValue(name = "user_id", required = false) UUID userId, @RequestParam(defaultValue = "10") UUID itemId) {
+        ItemFavorite itemFavorite = new ItemFavorite();
+        itemFavorite.setLiker(userService.findById(userId));
+        itemFavorite.setItem(marketService.findItemById(itemId));
+
+        itemFavoriteService.favourite(itemFavorite);
+        return ResponseEntity.ok(Map.of());
+    }
+
+    @GetMapping("/items/favorites/")
+    public ResponseEntity<?> getFavoriteItems(@CookieValue(name = "user_id", required = false) UUID userId) {
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "not logged in"));
+        }
+        List<Item> items = itemFavoriteService.findFavoriteItems(userId);
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping("/categories")

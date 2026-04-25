@@ -2,10 +2,10 @@ package org.neonangellock.azurecanvas.service.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import org.neonangellock.azurecanvas.model.TreeholePost;
+import org.neonangellock.azurecanvas.model.User;
 import org.neonangellock.azurecanvas.model.UserFollower;
 import org.neonangellock.azurecanvas.service.AbstractQueryService;
-import org.neonangellock.azurecanvas.service.UserFollowService;
+import org.neonangellock.azurecanvas.service.IUserFollowService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserFollowServiceImpl extends AbstractQueryService implements UserFollowService{
+public class UserFollowServiceImpl extends AbstractQueryService implements IUserFollowService {
     protected UserFollowServiceImpl(EntityManager entityManager) {
         super(entityManager);
     }
@@ -41,6 +41,26 @@ public class UserFollowServiceImpl extends AbstractQueryService implements UserF
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<User> findFollowerListById(UUID userId) {
+        Query query = entityManager.createQuery(
+                "SELECT u FROM User u WHERE EXISTS (SELECT f FROM UserFollower f where f.following.id = :following AND f.following.id = u.id)");
+
+        query.setParameter("following", userId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<User> findFollowingListById(UUID userId) {
+        Query query = entityManager.createQuery(
+                "SELECT u FROM User u WHERE EXISTS (SELECT f FROM UserFollower f where f.follower.id = :follower AND f.follower.id = u.id)");
+
+        query.setParameter("follower", userId);
+
+        return query.getResultList();
     }
 
     public List<UserFollower> findById(UUID follower, UUID following){

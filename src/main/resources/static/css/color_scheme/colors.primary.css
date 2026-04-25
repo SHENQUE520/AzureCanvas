@@ -11,4 +11,8 @@ body {
     --nav-bg: rgba(255, 255, 255, 0.85);
     --particle-color: rgba(37, 101, 176, 0.5);
     --particle-color2: rgba(100, 150, 255, 0.4);
+
+    display: flex;
+    background-image: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%);
+    overflow: hidden;
 }

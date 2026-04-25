@@ -129,6 +129,58 @@ public class UsersController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/{userId}/following")
+    public ResponseEntity<?> getFollowing(
+            @CookieValue(name = "user_id", required = false) UUID currentUserId,
+            @PathVariable UUID userId) {
+
+        if (currentUserId == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", "NOT_LOGGED_IN");
+            response.put("redirect", "../login/index.html?redirect=/user/user.html");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        if (userId == null){
+            return ResponseEntity.notFound().build();
+        }
+        List<User> followers;
+
+        try {
+            followers = followerService.findFollowingListById(userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(Map.of("success", false ,"message", e.getMessage()));
+        }
+
+        return ResponseEntity.ok(followers);
+    }
+
+    @GetMapping("/{userId}/followers")
+    public ResponseEntity<?> getFollowers(
+            @CookieValue(name = "user_id", required = false) UUID currentUserId,
+            @PathVariable UUID userId) {
+
+        if (currentUserId == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", "NOT_LOGGED_IN");
+            response.put("redirect", "../login/index.html?redirect=/user/user.html");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        if (userId == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        List<User> followers;
+
+        try {
+            followers = followerService.findFollowerListById(userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(Map.of("success", false ,"message", e.getMessage()));
+        }
+
+        return ResponseEntity.ok(followers);
+
+    }
+
     @PostMapping("/{userId}/follow")
     public ResponseEntity<?> followUser(
             @CookieValue(name = "user_id", required = false) UUID currentUserId,
