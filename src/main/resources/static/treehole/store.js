@@ -313,6 +313,70 @@ window.Store = (function () {
     return posts.filter(p => p.collected);
   }
 
+  /** 从 API 获取所有帖子 */
+  async function fetchPostsFromApi() {
+    try {
+      const res = await fetch("/api/treeholes/posts", { credentials: "include" });
+      if (!res.ok) return [];
+      const apiPosts = await res.json();
+      apiPosts.forEach(p => {
+        p.id = p.id || p.postId || "post_" + p.id;
+        p.author = p.author || "匿名用户";
+        p.avatarLetter = p.avatarLetter || (p.author ? p.author.substring(0, 1) : "匿");
+        p.avatarUrl = p.avatarUrl || null;
+        p.images = p.imagesList || [];
+        p.timestamp = p.createdAt ? new Date(p.createdAt).getTime() : Date.now();
+        p.liked = false;
+        p.collected = false;
+        p.comments = p.comments || [];
+      });
+      posts = apiPosts;
+      save();
+      return posts;
+    } catch (e) {
+      console.warn("fetchPostsFromApi failed:", e);
+      return posts;
+    }
+  }
+
+  /** 从 API 获取单个帖子详情 */
+  async function fetchPostFromApi(postId) {
+    try {
+      const res = await fetch("/api/treeholes/posts/" + postId, { credentials: "include" });
+      if (!res.ok) return null;
+      const p = await res.json();
+      p.id = p.id || p.postId || "post_" + p.id;
+      p.author = p.author || "匿名用户";
+      p.avatarLetter = p.avatarLetter || (p.author ? p.author.substring(0, 1) : "匿");
+      p.avatarUrl = p.avatarUrl || null;
+      p.images = p.imagesList || [];
+      p.timestamp = p.createdAt ? new Date(p.createdAt).getTime() : Date.now();
+      p.liked = false;
+      p.collected = false;
+      const idx = posts.findIndex(x => String(x.id) === String(postId));
+      if (idx >= 0) posts[idx] = p;
+      else posts.unshift(p);
+      save();
+      return p;
+    } catch (e) {
+      console.warn("fetchPostFromApi failed:", e);
+      return getPost(postId);
+    }
+  }
+
+  /** 从 API 获取帖子的评论 */
+  async function fetchCommentsFromApi(postId) {
+    try {
+      const res = await fetch("/api/treeholes/posts/" + postId, { credentials: "include" });
+      if (!res.ok) return [];
+      const data = await res.json();
+      return data.comments || [];
+    } catch (e) {
+      console.warn("fetchCommentsFromApi failed:", e);
+      return [];
+    }
+  }
+
   // ===== 公开 API =====
   return {
     init, save,
@@ -326,6 +390,7 @@ window.Store = (function () {
     addNotification, markAllRead, unreadCount,
     updateUser,
     getFilteredPosts, getPost, searchPostsWithES,
-    getFollowedUsers, getCollectedPosts
+    getFollowedUsers, getCollectedPosts,
+    fetchPostsFromApi, fetchPostFromApi, fetchCommentsFromApi
   };
 })();

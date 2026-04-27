@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.neonangellock.azurecanvas.model.*;
 import org.neonangellock.azurecanvas.repository.ItemCategoryRepository;
+import org.neonangellock.azurecanvas.repository.ItemImageRepository;
 import org.neonangellock.azurecanvas.repository.ItemRepository;
 import org.neonangellock.azurecanvas.service.AbstractQueryService;
 import org.neonangellock.azurecanvas.service.IMarketService;
@@ -28,6 +29,9 @@ public class MarketServiceImpl extends AbstractQueryService implements IMarketSe
 
     @Autowired
     private ItemCategoryRepository categoryRepository;
+
+    @Autowired
+    private ItemImageRepository itemImageRepository;
 
     @Autowired
     private ImageService imageService;
@@ -74,13 +78,18 @@ public class MarketServiceImpl extends AbstractQueryService implements IMarketSe
     @Override
     @Transactional
     public void addImages(List<String> urls, Item target){
-        for (String url : urls) {
-            ItemImage image = new ItemImage();
-            image.setImageId(UUID.fromString(url));
-            image.setItem(target);
-            image.setUploadedAt(OffsetDateTime.now());
 
-            entityManager.merge(image);
+        for (String url : urls) {
+            UUID imageId = UUID.fromString(url);
+            String sql = "INSERT INTO item_images (image_id, item_id, image_url, uploaded_at) " +
+                         "VALUES (?, ?, ?, ?) " +
+                         "ON DUPLICATE KEY UPDATE image_url = VALUES(image_url), item_id = VALUES(item_id)";
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter(1, 0);
+            query.setParameter(2, target.getItemId().toString());
+            query.setParameter(3, url);
+            query.setParameter(4, OffsetDateTime.now());
+            query.executeUpdate();
         }
     }
 

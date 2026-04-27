@@ -454,6 +454,7 @@
   Store.init();
 
   let selectedImages = [];
+  let selectedImageFiles = [];
   let selectedCategory = "all";
 
   const textarea = document.getElementById("postTextInput");
@@ -483,6 +484,7 @@
   imageInput.addEventListener("change", e => {
     Array.from(e.target.files).forEach(file => {
       if (selectedImages.length >= 9) return;
+      selectedImageFiles.push(file);
       const reader = new FileReader();
       reader.onload = ev => {
         selectedImages.push(ev.target.result);
@@ -504,6 +506,7 @@
 
   window.removeImage = function(i) {
     selectedImages.splice(i, 1);
+    selectedImageFiles.splice(i, 1);
     renderPreviews();
   };
 
@@ -548,15 +551,51 @@
   };
 
   // 提交
-  document.getElementById("submitPostBtn").addEventListener("click", () => {
+  document.getElementById("submitPostBtn").addEventListener("click", async () => {
     const content = textarea.value.trim();
     if (!content) { alert("内容不能为空"); return; }
-    const post = Store.addPost(content, selectedCategory, [...selectedImages]);
-    const toast = document.getElementById("toast");
-    toast.classList.add("show");
-    // 把新帖子存到 sessionStorage，让 index.html 读取后实时插入
-    sessionStorage.setItem("th_new_post", JSON.stringify(post));
-    setTimeout(() => { window.location.href = "index.html"; }, 1200);
+
+    const submitBtn = document.getElementById("submitPostBtn");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "发布中...";
+
+    try {
+      let imageUrls = [];
+      if (selectedImageFiles.length > 0) {
+        const formData = new FormData();
+        selectedImageFiles.forEach(f => formData.append("files", f));
+        const uploadRes = await fetch("/api/v1/images/upload", { method: "POST", body: formData });
+        if (!uploadRes.ok) throw new Error("图片上传失败");
+        imageUrls = await uploadRes.json();
+      }
+
+      const isAnon = document.getElementById("anonCheck").checked;
+      const titleInput = document.getElementById("postTitle").value.trim();
+
+      const postRes = await fetch("/api/treeholes/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          content,
+          title: titleInput || null,
+          category: selectedCategory,
+          images: imageUrls,
+          isAnonymous: isAnon
+        })
+      });
+
+      if (!postRes.ok) throw new Error("帖子发布失败");
+
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(() => { window.location.href = "index.html"; }, 1200);
+
+    } catch (err) {
+      alert(err.message);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布树洞';
+    }
   });
 </script>
 </body>

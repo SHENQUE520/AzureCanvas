@@ -8,12 +8,14 @@
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         body {
             background-image: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%);
         }
     </style>
-
-    <link type="text/css" href="../css/color_scheme/colors.primary.css">
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800">
 
@@ -57,6 +59,50 @@
                         <div class="flex items-center space-x-3"><span>⭐</span><span>我的收藏</span></div>
                         <span id="sidebar-fav-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                     </a>
+
+                    <!-- 我的投稿 -->
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="contribution-toggle">
+                            <div class="flex items-center space-x-3"><span>📝</span><span>我的投稿</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="contribution-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="contribution-sub" class="ml-6 space-y-0.5">
+                            <a href="my-articles.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>我的文章</span>
+                                <span id="sidebar-article-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                            <a href="my-maps.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>我的地图</span>
+                                <span id="sidebar-map-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">1</span>
+                            </a>
+                            <a href="my-moments.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>我的动态</span>
+                                <span id="sidebar-moment-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 我的点赞 -->
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="like-toggle">
+                            <div class="flex items-center space-x-3"><span>👍</span><span>我的点赞</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="like-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="like-sub" class="ml-6 space-y-0.5">
+                            <a href="my-likes.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>文章</span>
+                                <span id="sidebar-like-article-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                            <a href="my-likes.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>动态</span>
+                                <span id="sidebar-like-moment-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                            <a href="my-likes.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>地图</span>
+                                <span id="sidebar-like-map-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                        </div>
+                    </div>
                 </nav>
                 <div class="mt-6 pt-4 border-t border-gray-100 space-y-2">
                     <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
@@ -94,32 +140,42 @@
                     <div class="mb-2">
                         <div class="flex items-center gap-2 flex-wrap mb-1">
                             <h2 id="profile-username" class="text-xl font-black text-gray-900">Azure同学</h2>
+                            <span id="gender-icon" class="text-base hidden"></span>
                             <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">买家信用极好</span>
                             <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">卖家信用极好</span>
                         </div>
                         <p id="profile-bio" class="text-xs text-gray-400">这个人很懒，什么都没写~</p>
                         <p id="profile-email" class="text-xs text-gray-400 mt-1 hidden">📧 <span></span></p>
+                        <p id="profile-join-date" class="text-xs text-gray-400 mt-1">📅 注册时间：<span></span></p>
                     </div>
 
                     <div class="flex items-center gap-6 text-sm mt-4 mb-2">
-                        <a href="#" class="flex items-baseline gap-1"><span id="profile-followers" class="font-black text-gray-900 text-lg">0</span> <span class="text-gray-500">粉丝</span></a>
-                        <a href="#" class="flex items-baseline gap-1"><span id="profile-following" class="font-black text-gray-900 text-lg">0</span> <span class="text-gray-500">关注</span></a>
-                        <a href="#" class="flex items-baseline gap-1"><span id="profile-posts" class="font-black text-gray-900 text-lg">0</span> <span class="text-gray-500">动态</span></a>
-                        <a href="sales.html" class="flex items-baseline gap-1"><span id="profile-sell" class="font-black text-gray-900 text-lg">0</span> <span class="text-gray-500">卖出</span></a>
-                        <a href="purchases.html" class="flex items-baseline gap-1"><span id="profile-buy" class="font-black text-gray-900 text-lg">0</span> <span class="text-gray-500">买到</span></a>
+                        <a href="#" id="followers-link" class="flex items-baseline gap-1 hover:text-purple-600 transition">
+                            <span id="profile-followers" class="font-black text-gray-900 text-lg">0</span>
+                            <span class="text-gray-500">粉丝</span>
+                        </a>
+                        <a href="following.html" class="flex items-baseline gap-1 hover:text-purple-600 transition">
+                            <span id="profile-following" class="font-black text-gray-900 text-lg">0</span>
+                            <span class="text-gray-500">关注</span>
+                        </a>
+                        <a href="sales.html" class="flex items-baseline gap-1 hover:text-purple-600 transition">
+                            <span id="profile-sell" class="font-black text-gray-900 text-lg">0</span>
+                            <span class="text-gray-500">卖出</span>
+                        </a>
+                        <a href="purchases.html" class="flex items-baseline gap-1 hover:text-purple-600 transition">
+                            <span id="profile-buy" class="font-black text-gray-900 text-lg">0</span>
+                            <span class="text-gray-500">买到</span>
+                        </a>
                     </div>
                 </div>
 
-               
-                
-
                 <div class="flex items-center gap-8 px-6 h-12 border-t border-b border-gray-100 sticky top-14 bg-white z-40">
-                    <div class="profile-tab relative h-full flex items-center cursor-pointer text-sm font-bold text-purple-600 transition-all" data-tab="items">
-                        <span>宝贝 <span class="text-gray-400 font-normal ml-0.5" id="items-count">6</span></span>
+                    <div class="seller-tab relative h-full flex items-center cursor-pointer text-sm font-bold text-purple-600 transition-all" data-tab="items">
+                        <span>宝贝 <span class="text-gray-400 font-normal ml-0.5" id="items-count">51</span></span>
                         <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-100 scale-100"></div>
                     </div>
-                    <div class="profile-tab relative h-full flex items-center cursor-pointer text-sm text-gray-500 hover:text-purple-600 transition-all" data-tab="reviews">
-                        <span>信用及评价 <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">4</span></span>
+                    <div class="seller-tab relative h-full flex items-center cursor-pointer text-sm text-gray-500 hover:text-purple-600 transition-all" data-tab="reviews">
+                        <span>信用及评价 <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">29</span></span>
                         <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-0 scale-0"></div>
                     </div>
                 </div>
@@ -159,6 +215,10 @@
 
                         <div id="reviews-list" class="space-y-3"></div>
                     </div>
+
+                </div>
+
+                
 
                 </div>
             </div>
@@ -259,6 +319,26 @@
         </div>
     </div>
 
+    <!-- 粉丝列表弹窗 -->
+    <div id="followers-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+                <h2 class="text-lg font-black text-gray-900">全部粉丝 (<span id="followers-total">0</span>)</h2>
+                <button id="followers-close-btn" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+            <div class="px-6 py-2 border-b border-gray-100 shrink-0">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span>排序方式：当前排序条件每天更新一次，排序结果仅供参考。</span>
+                    <select id="followers-sort" class="border border-gray-200 rounded px-2 py-1 text-xs">
+                        <option value="time">粉丝数倒序</option>
+                        <option value="time-asc" selected>关注时间倒序</option>
+                    </select>
+                </div>
+            </div>
+            <div id="followers-list" class="px-6 py-4 overflow-y-auto flex-1 space-y-3"></div>
+        </div>
+    </div>
+
 <script>
 var myItems = [
     { title: '包邮【全部包出】纸飞机折纸套装十款精选', price: 280, wants: 11, emoji: '✈️', bg: 'from-sky-200 to-blue-300' },
@@ -270,16 +350,16 @@ var myItems = [
 ];
 
 var reviews = [
-    { name: '快乐同学', avatar: 'K', text: '发货很快，东西和描述一致，沟通非常愉快！而且卖家非常细心包装得很严实，下次还会再来的！', time: '2026-04-08 14:30', rating: 5, role: 'buyer' },
-    { name: '学霸小铺', avatar: 'X', text: '包装很好，没有损坏，非常满意。', time: '2026-04-06 09:15', rating: 4, role: 'buyer' },
-    { name: '佛系卖家', avatar: 'F', text: '同学人很好，面交很准时。', time: '2026-04-04 18:45', rating: 5, role: 'seller' },
-    { name: '挑剔的鱼', avatar: 'T', text: '有点小瑕疵，但考虑到是二手价格整体还行吧。', time: '2026-03-28 11:20', rating: 3, role: 'buyer' }
+    { name: '快乐同学', avatar: 'K', text: '发货很快，东西和描述一致，沟通非常愉快！而且卖家非常细心包装得很严实，下次还会再来的！', time: '2026-04-08 14:30', rating: 'good', role: 'buyer' },
+    { name: '学霸小铺', avatar: 'X', text: '包装很好，没有损坏，非常满意。', time: '2026-04-06 09:15', rating: 'good', role: 'buyer' },
+    { name: '佛系卖家', avatar: 'F', text: '同学人很好，面交很准时。', time: '2026-04-04 18:45', rating: 'good', role: 'seller' },
+    { name: '挑剔的鱼', avatar: 'T', text: '有点小瑕疵，但考虑到是二手价格整体还行吧。', time: '2026-03-28 11:20', rating: 'medium', role: 'buyer' }
 ];
 
 var grid = document.getElementById('profile-grid');
 var reviewsPanel = document.getElementById('reviews-panel');
 var reviewsList = document.getElementById('reviews-list');
-var tabs = document.querySelectorAll('.profile-tab');
+var tabs = document.querySelectorAll('.seller-tab');
 
 function renderItems() {
     grid.innerHTML = '';
@@ -295,7 +375,7 @@ function renderItems() {
                     '<span class="text-xs text-gray-400">' + item.wants + '人想要</span>' +
                 '</div>' +
             '</div>';
-            
+
         // 👇 新增：添加点击跳转事件
         card.addEventListener('click', function() {
             // 跳转到商品详情页（如果有具体的 id 也可以用 product.html?id=xxx）
@@ -307,7 +387,7 @@ function renderItems() {
 }
 
 function updateFilterCounts() {
-    var countGood = reviews.filter(r => r.rating >= 4).length;
+    var countGood = reviews.filter(r => r.rating === 'good').length;
     var countBuyer = reviews.filter(r => r.role === 'buyer').length;
     var countSeller = reviews.filter(r => r.role === 'seller').length;
 
@@ -320,49 +400,41 @@ function updateFilterCounts() {
 
 function renderReviews(dataToRender) {
     reviewsList.innerHTML = '';
-    
+
     if (dataToRender.length === 0) {
         reviewsList.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">暂无符合条件的评价</div>';
         return;
     }
 
     dataToRender.forEach(function(r) {
-        var stars = '';
-        for (var i = 0; i < 5; i++) stars += i < r.rating ? '⭐' : '☆';
-        
-        // 角色标签
-        var roleTag = r.role === 'buyer' 
-            ? '<span class="bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">来自买家</span>'
-            : '<span class="bg-green-50 text-green-600 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">来自卖家</span>';
-        
-        // 🌟 核心修改 1：将好评标签变成了 inline-block，这样它就能像一个“字”一样完美融入文本行内
-        var ratingTag = r.rating >= 4 
-            ? '<span class="inline-block bg-orange-50 text-orange-500 px-1.5 py-[2px] rounded text-[10px] mr-1.5 align-text-bottom">好评</span>'
-            : '';
+        var ratingTag = '';
+        if (r.rating === 'good') {
+            ratingTag = '<span class="inline-block bg-orange-50 text-orange-500 px-2 py-1 rounded text-xs font-medium">👍 好评</span>';
+        } else if (r.rating === 'medium') {
+            ratingTag = '<span class="inline-block bg-blue-50 text-blue-500 px-2 py-1 rounded text-xs font-medium">😐 中评</span>';
+        } else if (r.rating === 'bad') {
+            ratingTag = '<span class="inline-block bg-red-50 text-red-500 px-2 py-1 rounded text-xs font-medium">👎 差评</span>';
+        }
+
+        var userType = r.role === 'buyer' ? '买家' : '卖家';
 
         var div = document.createElement('div');
         div.className = 'bg-white rounded-xl p-4 shadow-sm border border-gray-100';
-        
+
         div.innerHTML =
-            '<div class="flex items-start justify-between mb-2">' +
-                '<div class="flex items-center gap-3">' +
-                    '<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm text-purple-600 font-bold flex-shrink-0">' + r.avatar + '</div>' +
-                    '<div class="flex flex-col">' +
-                        '<div class="flex items-center gap-2">' +
-                            '<span class="text-sm font-bold text-gray-800">' + r.name + '</span>' +
-                            roleTag +
-                        '</div>' +
-                        // 🌟 核心修改 2：把原本在这里的时间删掉了
+            '<div class="flex items-start gap-3 mb-3">' +
+                '<div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-lg text-purple-600 font-bold flex-shrink-0">' + r.avatar + '</div>' +
+                '<div class="flex-1">' +
+                    '<div class="flex items-center gap-2 mb-1">' +
+                        '<span class="text-sm font-bold text-gray-800">' + r.name + '</span>' +
+                        '<span class="text-xs text-blue-500 bg-blue-50 px-2 py-0.5 rounded">' + userType + '</span>' +
                     '</div>' +
+                    '<div class="mb-2">' + ratingTag + '</div>' +
+                    '<p class="text-sm text-gray-600 leading-relaxed">' + r.text + '</p>' +
+                    '<div class="text-xs text-gray-400 mt-2">' + r.time + '</div>' +
                 '</div>' +
-                '<span class="text-xs flex-shrink-0 mt-1">' + stars + '</span>' +
-            '</div>' +
-            // 🌟 核心修改 3：标签和文本被合并到了同一个 <p> 标签里，保证同行折行；并在下方新增了时间
-            '<div class="pl-[52px]">' + 
-                '<p class="text-sm text-gray-600 leading-relaxed">' + ratingTag + r.text + '</p>' +
-                '<div class="text-[11px] text-gray-400 mt-2">' + r.time + '</div>' +
             '</div>';
-            
+
         reviewsList.appendChild(div);
     });
 }
@@ -375,7 +447,11 @@ filterRadios.forEach(function(radio) {
         var filteredData = reviews;
 
         if (filterValue === 'good') {
-            filteredData = reviews.filter(r => r.rating >= 4);
+            filteredData = reviews.filter(r => r.rating === 'good');
+        } else if (filterValue === 'medium') {
+            filteredData = reviews.filter(r => r.rating === 'medium');
+        } else if (filterValue === 'bad') {
+            filteredData = reviews.filter(r => r.rating === 'bad');
         } else if (filterValue === 'buyer') {
             filteredData = reviews.filter(r => r.role === 'buyer');
         } else if (filterValue === 'seller') {
@@ -429,10 +505,115 @@ if(toggle && sub && arrow) {
     });
 }
 
+// 我的投稿折叠逻辑
+var contributionToggle = document.getElementById('contribution-toggle');
+var contributionSub = document.getElementById('contribution-sub');
+var contributionArrow = document.getElementById('contribution-arrow');
+if(contributionToggle && contributionSub && contributionArrow) {
+    contributionToggle.addEventListener('click', function() {
+        var hidden = contributionSub.style.display === 'none';
+        contributionSub.style.display = hidden ? '' : 'none';
+        contributionArrow.classList.toggle('rotate-180', hidden);
+    });
+}
+
+// 我的点赞折叠逻辑
+var likeToggle = document.getElementById('like-toggle');
+var likeSub = document.getElementById('like-sub');
+var likeArrow = document.getElementById('like-arrow');
+if(likeToggle && likeSub && likeArrow) {
+    likeToggle.addEventListener('click', function() {
+        var hidden = likeSub.style.display === 'none';
+        likeSub.style.display = hidden ? '' : 'none';
+        likeArrow.classList.toggle('rotate-180', hidden);
+    });
+}
+
 // 初始化执行
 renderItems();
 updateFilterCounts();
 renderReviews(reviews);
+
+// 粉丝列表数据
+var followers = [
+    { name: 'PQQDJT', avatar: 'P', bio: '娱乐博主', fans: 14400, followTime: '2026-04-20 10:30' },
+    { name: '炸了个鸡翅', avatar: '炸', bio: '娱乐博主 超话小主持人（橙子酱超话）', fans: 1580, followTime: '2026-04-18 15:20' },
+    { name: 'znziaoedsbakise87172', avatar: 'Z', bio: '', fans: 1065, followTime: '2026-04-15 09:10' },
+    { name: '不爱吃鱼_0527', avatar: '不', bio: '账号多人使用/小包/全包/没回请➕ Buaichiyu_0527（请备注来意不然不...', fans: 406, followTime: '2026-04-10 18:45' },
+    { name: 'Ttthua0318', avatar: 'T', bio: '只发自己想发的 不看统道❌', fans: 342, followTime: '2026-04-05 12:30' }
+];
+
+// 粉丝列表弹窗
+var followersModal = document.getElementById('followers-modal');
+var followersLink = document.getElementById('followers-link');
+var followersCloseBtn = document.getElementById('followers-close-btn');
+var followersList = document.getElementById('followers-list');
+var followersSort = document.getElementById('followers-sort');
+
+function renderFollowers(data) {
+    followersList.innerHTML = '';
+    data.forEach(function(f) {
+        var div = document.createElement('div');
+        div.className = 'flex items-start justify-between';
+        div.innerHTML =
+            '<div class="flex items-center gap-3">' +
+                '<div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-sm text-purple-600 font-bold flex-shrink-0">' + f.avatar + '</div>' +
+                '<div class="flex flex-col">' +
+                    '<span class="text-sm font-bold text-gray-800">' + f.name + '</span>' +
+                    (f.bio ? '<p class="text-xs text-gray-500 mt-0.5 line-clamp-1">' + f.bio + '</p>' : '') +
+                    '<span class="text-[11px] text-gray-400 mt-1">粉丝 ' + f.fans + '</span>' +
+                '</div>' +
+            '</div>' +
+            '<button class="px-4 py-1.5 bg-purple-50 text-purple-600 rounded-full text-xs font-medium hover:bg-purple-100 transition shrink-0">互相关注</button>';
+        followersList.appendChild(div);
+    });
+}
+
+function sortFollowers(type) {
+    var sorted = followers.slice();
+    if (type === 'time-asc') {
+        sorted.sort(function(a, b) {
+            return new Date(b.followTime) - new Date(a.followTime);
+        });
+    } else if (type === 'time') {
+        sorted.sort(function(a, b) {
+            return b.fans - a.fans;
+        });
+    }
+    return sorted;
+}
+
+if (followersLink) {
+    followersLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        followersModal.classList.remove('hidden');
+        followersModal.classList.add('flex');
+        document.getElementById('followers-total').textContent = followers.length;
+        renderFollowers(sortFollowers('time-asc'));
+    });
+}
+
+if (followersCloseBtn) {
+    followersCloseBtn.addEventListener('click', function() {
+        followersModal.classList.add('hidden');
+        followersModal.classList.remove('flex');
+    });
+}
+
+if (followersModal) {
+    followersModal.addEventListener('click', function(e) {
+        if (e.target === followersModal) {
+            followersModal.classList.add('hidden');
+            followersModal.classList.remove('flex');
+        }
+    });
+}
+
+if (followersSort) {
+    followersSort.addEventListener('change', function(e) {
+        renderFollowers(sortFollowers(e.target.value));
+    });
+}
 
 // ========== localStorage 持久化 + API 调用 ==========
 function loadProfileFromStorage() {
@@ -458,6 +639,22 @@ function applyProfileToPage(data) {
 
     if (profileUsername && data.username) profileUsername.textContent = data.username;
 
+    // 显示性别图标
+    var genderIcon = document.getElementById('gender-icon');
+    if (genderIcon && data.gender) {
+        if (data.gender === 'male') {
+            genderIcon.textContent = '♂';
+            genderIcon.style.color = '#3b82f6';
+            genderIcon.classList.remove('hidden');
+        } else if (data.gender === 'female') {
+            genderIcon.textContent = '♀';
+            genderIcon.style.color = '#ec4899';
+            genderIcon.classList.remove('hidden');
+        } else {
+            genderIcon.classList.add('hidden');
+        }
+    }
+
     if (profileAvatar) {
         if (data.avatar_url) {
             profileAvatar.innerHTML = '<img src="' + data.avatar_url + '" class="w-20 h-20 rounded-full object-cover">';
@@ -473,6 +670,18 @@ function applyProfileToPage(data) {
     if (profileEmail && data.email) {
         profileEmail.querySelector('span').textContent = data.email;
         profileEmail.classList.remove('hidden');
+    }
+
+    // 显示注册时间
+    var profileJoinDate = document.getElementById('profile-join-date');
+    if (profileJoinDate && data.createdAt) {
+        var joinDate = new Date(data.createdAt);
+        var formattedDate = joinDate.getFullYear() + '年' + (joinDate.getMonth() + 1) + '月' + joinDate.getDate() + '日';
+        profileJoinDate.querySelector('span').textContent = formattedDate;
+    } else if (profileJoinDate && data.joinedAt) {
+        var joinDate = new Date(data.joinedAt);
+        var formattedDate = joinDate.getFullYear() + '年' + (joinDate.getMonth() + 1) + '月' + joinDate.getDate() + '日';
+        profileJoinDate.querySelector('span').textContent = formattedDate;
     }
 
     if (profileFollowers) profileFollowers.textContent = data.followers || 0;
@@ -505,6 +714,9 @@ function applyProfileToPage(data) {
     if (sidebarPublish) sidebarPublish.textContent = postsCount;
     if (sidebarSell) sidebarSell.textContent = sellCount;
     if (sidebarBuy) sidebarBuy.textContent = buyCount;
+
+    var panelSell = document.getElementById('panel-sell-count');
+    if (panelSell) panelSell.textContent = sellCount;
 
     if (sidebarFav) {
         sidebarFav.textContent = favCount;

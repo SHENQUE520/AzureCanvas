@@ -500,6 +500,20 @@ body {
   flex-shrink: 0;
 }
 
+.avatar-gradient {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.avatar-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .post-meta {
   flex: 1;
   min-width: 0;

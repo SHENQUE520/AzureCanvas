@@ -168,9 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Render.updateNotifBadges();
   }
 
-  function showDetail(postId) {
+  async function showDetail(postId) {
     currentPostId = postId;
-    const post = Store.getPost(postId);
+    const post = await Store.fetchPostFromApi(postId);
     if (!post) return;
     homeView.classList.add("hidden");
     detailView.classList.add("active");
@@ -225,7 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
       searchResultsBar.textContent = `搜索「${window._curQuery}」，找到 ${posts.length} 条结果`;
       searchResultsBar.classList.add("visible");
     } else {
-      // 没有搜索词，使用本地过滤
+      // 从 API 获取帖子
+      await Store.fetchPostsFromApi();
       posts = Store.getFilteredPosts(window._curCategory, window._curQuery);
       searchResultsBar.classList.remove("visible");
     }
@@ -264,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
     card.className = "post-card real-inject animated";
     card.dataset.id = post.id;
     const imgHtml = post.images && post.images.length
-      ? `<div class="post-images">${post.images.map(u => `<img src="${u}" alt="">`).join("")}</div>`
+      ? `<div class="post-images">${post.images.map(u => `<img src="../resources/${u}" alt="">`).join("")}</div>`
       : "";
     const isMe = post.authorId === Store.currentUser.id;
     card.innerHTML = `
@@ -335,16 +336,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  submitCommentBtn.addEventListener("click", () => {
+  submitCommentBtn.addEventListener("click", async () => {
     const text = commentInput.value.trim();
     if (!text || !currentPostId) return;
-    Store.addComment(currentPostId, text, replyingTo ? { id: replyingTo.id, author: replyingTo.author, authorId: replyingTo.authorId } : null);
-    commentInput.value = "";
-    replyingTo = null;
-    updateReplyHint();
-    const post = Store.getPost(currentPostId);
-    Render.renderComments(commentsList, commentCountEl, post, onReply);
-    Render.updateNotifBadges();
+    try {
+      const body = { content: text, isAnonymous: true };
+      if (replyingTo && replyingTo.id) body.parentId = parseInt(replyingTo.id) || null;
+      const res = await fetch("/api/treeholes/posts/" + currentPostId + "/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        commentInput.value = "";
+        replyingTo = null;
+        updateReplyHint();
+        const post = await Store.fetchPostFromApi(currentPostId);
+        Render.renderComments(commentsList, commentCountEl, post, onReply);
+        Render.updateNotifBadges();
+      }
+    } catch (e) {
+      console.warn("addComment failed:", e);
+    }
   });
 
   commentInput.addEventListener("keydown", e => {

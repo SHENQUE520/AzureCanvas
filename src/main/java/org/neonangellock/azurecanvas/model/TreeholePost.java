@@ -3,10 +3,12 @@ package org.neonangellock.azurecanvas.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -20,11 +22,14 @@ public class TreeholePost {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    private String authorName;
+    private String title;
 
-    private String authorAvatar;
+    private String category;
 
     private String images;
+
+    @Column(name = "user_id")
+    private UUID userId;
 
     private Integer likeCount = 0;
 
@@ -36,7 +41,8 @@ public class TreeholePost {
     @JoinColumn(name = "robot_id")
     private RobotConfig robot;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<TreeholeComment> comments = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)

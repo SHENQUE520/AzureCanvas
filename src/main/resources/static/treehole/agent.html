@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,195 +19,515 @@
     .agent-sidebar {
       border-right: 1px solid var(--border);
       background: var(--bg);
-      display: flex; flex-direction: column;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
     }
+
     .agent-sidebar-header {
       padding: 16px;
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .agent-sidebar-title { font-weight: 700; font-size: 1rem; }
-    .new-chat-btn {
-      width: 30px; height: 30px; border-radius: var(--radius);
-      border: 1px solid var(--border); background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: var(--transition); color: var(--text-muted);
-    }
-    .new-chat-btn:hover { background: var(--hover-bg); color: var(--text); }
 
-    .chat-list { flex: 1; overflow-y: auto; padding: 8px; }
+    .agent-sidebar-title {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .new-chat-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-muted);
+    }
+
+    .new-chat-btn:hover {
+      background: var(--hover-bg);
+      color: var(--text);
+    }
+
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
     .chat-list-item {
-      padding: 10px 12px; border-radius: var(--radius);
-      cursor: pointer; transition: var(--transition);
-      font-size: 0.9rem; color: var(--text);
-      display: flex; align-items: center; gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 2px;
     }
-    .chat-list-item:hover { background: var(--hover-bg); }
-    .chat-list-item.active { background: var(--bg-inset); font-weight: 500; }
-    .chat-list-item i { color: var(--text-muted); font-size: 0.85rem; flex-shrink: 0; }
-    .chat-list-item-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .chat-list-item-time { font-size: 0.72rem; color: var(--text-light); flex-shrink: 0; }
+
+    .chat-list-item:hover {
+      background: var(--hover-bg);
+    }
+
+    .chat-list-item.active {
+      background: var(--bg-inset);
+      font-weight: 500;
+    }
+
+    .chat-list-item i {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .chat-list-item-text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chat-list-item-time {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      flex-shrink: 0;
+    }
 
     .agent-sidebar-footer {
       padding: 12px 16px;
       border-top: 1px solid var(--border);
-      font-size: 0.8rem; color: var(--text-muted);
-      display: flex; align-items: center; gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     /* ===== 右侧聊天区 ===== */
     .agent-main {
-      display: flex; flex-direction: column;
-      background: var(--bg-subtle); overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-subtle);
+      overflow: hidden;
     }
 
     .agent-topbar {
-      background: var(--bg); border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
       padding: 12px 20px;
-      display: flex; align-items: center; gap: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+
     .agent-model-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 12px; border: 1px solid var(--border);
-      border-radius: 20px; font-size: 0.82rem; color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
       background: var(--bg-subtle);
     }
+
     .agent-model-badge .dot {
-      width: 7px; height: 7px; border-radius: 50%; background: #2ea043;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2ea043;
     }
-    .agent-topbar-title { font-weight: 600; font-size: 1rem; flex: 1; }
+
+    .agent-topbar-title {
+      font-weight: 600;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    .agent-topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .model-selector {
+      position: relative;
+    }
+
+    .model-select-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .model-select-btn:hover {
+      border-color: #888;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .model-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      width: 200px;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .model-dropdown.show {
+      display: block;
+    }
+
+    .model-option {
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .model-option:hover {
+      background: var(--hover-bg);
+    }
 
     /* 消息区 */
     .agent-messages {
-      flex: 1; overflow-y: auto;
+      flex: 1;
+      overflow-y: auto;
       padding: 24px 20px;
-      display: flex; flex-direction: column; gap: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     /* 欢迎屏 */
     .agent-welcome {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 40px 20px; text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
     }
+
     .agent-welcome-icon {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: var(--text); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; margin-bottom: 20px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--text);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
     }
-    .agent-welcome h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
-    .agent-welcome p { color: var(--text-muted); font-size: 0.97rem; margin-bottom: 28px; }
+
+    .agent-welcome h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .agent-welcome p {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      margin-bottom: 28px;
+    }
+
     .suggestion-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-      max-width: 520px; width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 520px;
+      width: 100%;
     }
+
     .suggestion-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 14px 16px;
-      cursor: pointer; transition: var(--transition); text-align: left;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
     }
-    .suggestion-card:hover { border-color: #888; box-shadow: var(--shadow-sm); }
-    .suggestion-card-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
-    .suggestion-card-sub { font-size: 0.8rem; color: var(--text-muted); }
+
+    .suggestion-card:hover {
+      border-color: #888;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .suggestion-card-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .suggestion-card-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
 
     /* 消息气泡 */
-    .msg-group { display: flex; gap: 12px; max-width: 780px; width: 100%; }
-    .msg-group.user-group { flex-direction: row-reverse; margin-left: auto; }
+    .msg-group {
+      display: flex;
+      gap: 12px;
+      max-width: 780px;
+      width: 100%;
+    }
+
+    .msg-group.user-group {
+      flex-direction: row-reverse;
+      margin-left: auto;
+    }
+
     .msg-group-avatar {
-      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; font-weight: 700;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
     }
-    .agent-avatar-icon { background: var(--text); color: #fff; }
-    .user-avatar-icon { background: var(--bg-inset); border: 1px solid var(--border); color: var(--text); }
-    .msg-group-body { flex: 1; min-width: 0; }
-    .msg-group-name { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px; }
-    .user-group .msg-group-name { text-align: right; }
+
+    .agent-avatar-icon {
+      background: var(--text);
+      color: #fff;
+    }
+
+    .user-avatar-icon {
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .msg-group-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .msg-group-name {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .user-group .msg-group-name {
+      text-align: right;
+    }
+
     .msg-bubble-agent {
-      background: var(--bg); border: 1px solid var(--border);
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
-      padding: 12px 16px; font-size: 0.95rem; line-height: 1.7;
-      color: var(--text); word-break: break-word;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text);
+      word-break: break-word;
     }
+
     .msg-bubble-user {
-      background: var(--text); color: #fff;
+      background: var(--text);
+      color: #fff;
       border-radius: var(--radius-lg) 0 var(--radius-lg) var(--radius-lg);
-      padding: 12px 16px; font-size: 0.95rem; line-height: 1.7;
-      word-break: break-word; display: inline-block;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      word-break: break-word;
+      display: inline-block;
     }
-    .user-group .msg-group-body { display: flex; flex-direction: column; align-items: flex-end; }
+
+    .user-group .msg-group-body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
 
     /* 打字动画 */
     .typing-indicator {
-      display: flex; gap: 4px; padding: 14px 16px;
-      background: var(--bg); border: 1px solid var(--border);
+      display: flex;
+      gap: 4px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
       width: fit-content;
     }
+
     .typing-dot {
-      width: 7px; height: 7px; border-radius: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
       background: var(--text-muted);
       animation: typingBounce 1.2s ease infinite;
     }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
     @keyframes typingBounce {
-      0%,60%,100% { transform: translateY(0); }
-      30% { transform: translateY(-6px); }
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-6px);
+      }
     }
 
     /* 输入栏 */
     .agent-input-area {
-      background: var(--bg); border-top: 1px solid var(--border);
+      background: var(--bg);
+      border-top: 1px solid var(--border);
       padding: 16px 20px;
     }
+
     .agent-input-box {
-      background: var(--bg-subtle); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); overflow: hidden;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
       transition: var(--transition);
     }
-    .agent-input-box:focus-within { border-color: #888; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); background: var(--bg); }
+
+    .agent-input-box:focus-within {
+      border-color: #888;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+      background: var(--bg);
+    }
+
     .agent-textarea {
-      width: 100%; padding: 12px 16px; border: none; outline: none;
-      font-size: 0.97rem; background: transparent; color: var(--text);
-      resize: none; min-height: 52px; max-height: 160px;
-      font-family: inherit; line-height: 1.6;
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      outline: none;
+      font-size: 0.97rem;
+      background: transparent;
+      color: var(--text);
+      resize: none;
+      min-height: 52px;
+      max-height: 160px;
+      font-family: inherit;
+      line-height: 1.6;
     }
+
     .agent-input-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 12px; border-top: 1px solid var(--border-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-muted);
     }
-    .agent-input-tools { display: flex; gap: 4px; }
+
+    .agent-input-tools {
+      display: flex;
+      gap: 4px;
+    }
+
     .agent-tool-btn {
-      width: 30px; height: 30px; border-radius: var(--radius);
-      border: none; background: transparent; color: var(--text-muted);
-      cursor: pointer; transition: var(--transition);
-      display: flex; align-items: center; justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.9rem;
     }
-    .agent-tool-btn:hover { background: var(--hover-bg); color: var(--text); }
+
+    .agent-tool-btn:hover {
+      background: var(--hover-bg);
+      color: var(--text);
+    }
+
     .agent-send-btn {
-      width: 34px; height: 34px; border-radius: var(--radius);
-      border: none; background: var(--text); color: #fff;
-      cursor: pointer; transition: var(--transition);
-      display: flex; align-items: center; justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--text);
+      color: #fff;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.9rem;
     }
-    .agent-send-btn:hover { background: #333; }
-    .agent-send-btn:disabled { background: var(--bg-inset); color: var(--text-muted); cursor: not-allowed; }
+
+    .agent-send-btn:hover {
+      background: #333;
+    }
+
+    .agent-send-btn:disabled {
+      background: var(--bg-inset);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
     .agent-input-hint {
-      font-size: 0.75rem; color: var(--text-light); margin-top: 8px; text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 8px;
+      text-align: center;
     }
 
     @media (max-width: 768px) {
-      .agent-layout { grid-template-columns: 1fr; }
-      .agent-sidebar { display: none; }
+      .agent-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .agent-sidebar {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
 <nav class="navbar">
   <div class="nav-logo">
@@ -246,8 +567,17 @@
   <div class="agent-main">
     <div class="agent-topbar">
       <span class="agent-topbar-title" id="chatTitle">新对话</span>
-      <div class="agent-model-badge">
-        <span class="dot"></span> MUST-Agent v1.0
+      <div class="agent-topbar-actions">
+        <div class="model-selector">
+          <button class="model-select-btn" id="modelSelectBtn">
+            <span class="dot"></span>
+            <span id="currentModel">deepseek-chat</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="model-dropdown" id="modelDropdown">
+            <div class="model-option" data-model="deepseek-chat">deepseek-chat</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -281,11 +611,11 @@
     <!-- 输入栏 -->
     <div class="agent-input-area">
       <div class="agent-input-box">
-        <textarea class="agent-textarea" id="agentInput"
-          placeholder="向 MUST Agent 提问…" rows="1"></textarea>
+        <textarea class="agent-textarea" id="agentInput" placeholder="向 MUST Agent 提问…" rows="1"></textarea>
         <div class="agent-input-footer">
           <div class="agent-input-tools">
-            <button class="agent-tool-btn" title="上传图片"><i class="far fa-image"></i></button>
+            <button class="agent-tool-btn" id="uploadImageBtn" title="上传图片"><i class="far fa-image"></i></button>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
             <button class="agent-tool-btn" title="表情"><i class="far fa-smile"></i></button>
             <button class="agent-tool-btn" title="清空对话" id="clearChatBtn"><i class="fas fa-trash-alt"></i></button>
           </div>
@@ -300,124 +630,321 @@
 </div>
 
 <script>
-const MOCK_RESPONSES = [
-  "这是个很好的问题！根据我的了解，你可以尝试以下几个方法：\n\n1. 提前规划时间，避免临时抱佛脚\n2. 和同学组成学习小组互相监督\n3. 适当休息，保持良好的作息规律\n\n希望对你有帮助 😊",
-  "我理解你的感受，校园生活确实有很多压力。建议你可以：\n\n• 找朋友倾诉，不要一个人扛\n• 尝试运动，跑步或打球都很解压\n• 写树洞也是很好的方式，把心里话说出来\n\n你不是一个人在战斗 💪",
-  "关于这个问题，我有几点建议供你参考：\n\n首先，了解清楚具体的规则和流程很重要。其次，可以向学长学姐请教经验。最后，保持积极的心态，相信自己能解决！\n\n有什么具体问题可以继续问我 🌟",
-  "哈哈，这个问题问得好！其实很多同学都有同样的困惑。\n\n简单来说：**做好时间管理** 是关键。可以用番茄工作法，25分钟专注 + 5分钟休息，效率会提升很多。\n\n加油！你一定可以的 🎯",
-  "我明白你的心情。有时候校园生活会让人感到迷茫，这很正常。\n\n重要的是：**不要和别人比较**，每个人都有自己的节奏。专注于自己的成长，一步一步来。\n\n树洞永远是你倾诉的地方 🌳",
-];
+  // 配置信息
+  const API_CONFIG = {
+    baseURL: 'http://localhost:8080/api/chat',
+    apiKey: ''
+  };
 
-let messages = [];
-let isTyping = false;
-let chatSessions = [{ id: 1, title: "新对话", messages: [] }];
-let currentSession = 0;
+  // 提示词
+  const SYSTEM_PROMPT = "你是树洞ai,帮助用户生成帖子的内容，你热情友好，积极和用户互动";
 
-const agentMessages = document.getElementById("agentMessages");
-const agentWelcome = document.getElementById("agentWelcome");
-const agentInput = document.getElementById("agentInput");
-const agentSendBtn = document.getElementById("agentSendBtn");
+  let messages = [];
+  let isTyping = false;
+  let chatSessions = [{ id: 1, title: "新对话", messages: [] }];
+  let currentSession = 0;
+  let currentModel = 'gpt-4o-mini';
 
-agentInput.addEventListener("input", () => {
-  agentSendBtn.disabled = !agentInput.value.trim() || isTyping;
-  agentInput.style.height = "auto";
-  agentInput.style.height = Math.min(agentInput.scrollHeight, 160) + "px";
-});
+  const agentMessages = document.getElementById("agentMessages");
+  const agentWelcome = document.getElementById("agentWelcome");
+  const agentInput = document.getElementById("agentInput");
+  const agentSendBtn = document.getElementById("agentSendBtn");
 
-agentInput.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
-
-agentSendBtn.addEventListener("click", sendMessage);
-
-document.querySelectorAll(".suggestion-card").forEach(card => {
-  card.addEventListener("click", () => {
-    agentInput.value = card.dataset.prompt;
-    agentSendBtn.disabled = false;
-    sendMessage();
+  agentInput.addEventListener("input", () => {
+    agentSendBtn.disabled = !agentInput.value.trim() || isTyping;
+    agentInput.style.height = "auto";
+    agentInput.style.height = Math.min(agentInput.scrollHeight, 160) + "px";
   });
-});
 
-document.getElementById("newChatBtn").addEventListener("click", () => {
-  messages = [];
-  agentMessages.innerHTML = "";
-  agentMessages.appendChild(agentWelcome);
-  agentWelcome.style.display = "flex";
-  document.getElementById("chatTitle").textContent = "新对话";
-  const item = document.createElement("div");
-  item.className = "chat-list-item active";
-  item.innerHTML = `<i class="fas fa-comment-dots"></i><span class="chat-list-item-text">新对话</span><span class="chat-list-item-time">刚刚</span>`;
-  document.querySelectorAll(".chat-list-item").forEach(i => i.classList.remove("active"));
-  document.getElementById("chatList").insertBefore(item, document.getElementById("chatList").firstChild);
-});
+  agentInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
 
-document.getElementById("clearChatBtn").addEventListener("click", () => {
-  if (!messages.length) return;
-  if (confirm("确定清空当前对话？")) {
+  agentSendBtn.addEventListener("click", sendMessage);
+
+  // 模型选择功能
+  const modelSelectBtn = document.getElementById('modelSelectBtn');
+  const modelDropdown = document.getElementById('modelDropdown');
+  const currentModelEl = document.getElementById('currentModel');
+
+  // 图片上传功能
+  const uploadImageBtn = document.getElementById('uploadImageBtn');
+  const imageInput = document.getElementById('imageInput');
+
+  // 点击上传按钮触发文件选择
+  uploadImageBtn.addEventListener('click', () => {
+    imageInput.click();
+  });
+
+  // 处理文件选择
+  imageInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // 检查文件类型
+      if (!file.type.startsWith('image/')) {
+        alert('请选择图片文件！');
+        return;
+      }
+
+      // 检查文件大小
+      if (file.size > 5 * 1024 * 1024) {
+        alert('图片大小不能超过 5MB！');
+        return;
+      }
+
+      // 预览图片
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+        // 显示图片
+        appendImageMessage('user', imageUrl);
+        // 清空文件输入
+        imageInput.value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // 添加图片消息
+  function appendImageMessage(role, imageUrl) {
+    const isUser = role === "user";
+    const group = document.createElement("div");
+    group.className = `msg-group ${isUser ? "user-group" : ""}`;
+    const avatarClass = isUser ? "user-avatar-icon" : "agent-avatar-icon";
+    const avatarContent = isUser ? "我" : '<i class="fas fa-robot"></i>';
+    const bubbleClass = isUser ? "msg-bubble-user" : "msg-bubble-agent";
+    const name = isUser ? "你" : "MUST 树洞 AI";
+
+    group.innerHTML = `
+        <div class="msg-group-avatar ${avatarClass}">${avatarContent}</div>
+        <div class="msg-group-body">
+          <div class="msg-group-name">${name}</div>
+          <div class="${bubbleClass}">
+            <img src="${imageUrl}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+          </div>
+        </div>`;
+
+    agentMessages.appendChild(group);
+    agentMessages.scrollTop = agentMessages.scrollHeight;
+
+    // 添加到消息列表
+    messages.push({ role: role, type: 'image', content: imageUrl });
+  }
+
+  modelSelectBtn.addEventListener('click', () => {
+    modelDropdown.classList.toggle('show');
+  });
+
+  // 点击其他地方关闭下拉菜单
+  document.addEventListener('click', (e) => {
+    if (!modelSelectBtn.contains(e.target) && !modelDropdown.contains(e.target)) {
+      modelDropdown.classList.remove('show');
+    }
+  });
+
+  // 选择模型
+  document.querySelectorAll('.model-option').forEach(option => {
+    option.addEventListener('click', () => {
+      currentModel = option.dataset.model;
+      currentModelEl.textContent = currentModel;
+      modelDropdown.classList.remove('show');
+    });
+  });
+
+  document.querySelectorAll(".suggestion-card").forEach(card => {
+    card.addEventListener("click", () => {
+      agentInput.value = card.dataset.prompt;
+      agentSendBtn.disabled = false;
+      sendMessage();
+    });
+  });
+
+  document.getElementById("newChatBtn").addEventListener("click", () => {
     messages = [];
     agentMessages.innerHTML = "";
     agentMessages.appendChild(agentWelcome);
     agentWelcome.style.display = "flex";
-  }
-});
+    document.getElementById("chatTitle").textContent = "新对话";
+    const item = document.createElement("div");
+    item.className = "chat-list-item active";
+    item.innerHTML = `<i class="fas fa-comment-dots"></i><span class="chat-list-item-text">新对话</span><span class="chat-list-item-time">刚刚</span>`;
+    document.querySelectorAll(".chat-list-item").forEach(i => i.classList.remove("active"));
+    document.getElementById("chatList").insertBefore(item, document.getElementById("chatList").firstChild);
+  });
 
-function sendMessage() {
-  const text = agentInput.value.trim();
-  if (!text || isTyping) return;
+  document.getElementById("clearChatBtn").addEventListener("click", () => {
+    if (!messages.length) return;
+    if (confirm("确定清空当前对话？")) {
+      messages = [];
+      agentMessages.innerHTML = "";
+      agentMessages.appendChild(agentWelcome);
+      agentWelcome.style.display = "flex";
+    }
+  });
 
-  agentWelcome.style.display = "none";
-  agentInput.value = "";
-  agentInput.style.height = "auto";
-  agentSendBtn.disabled = true;
+  async function sendMessage() {
+    const userInput = agentInput.value.trim();
+    if (!userInput || isTyping) return;
 
-  appendMessage("user", text);
-  messages.push({ role: "user", text });
+    agentWelcome.style.display = "none";
+    agentInput.value = "";
+    agentInput.style.height = "auto";
+    agentSendBtn.disabled = true;
 
-  // 更新会话标题
-  if (messages.length === 1) {
-    const title = text.slice(0, 18) + (text.length > 18 ? "…" : "");
-    document.getElementById("chatTitle").textContent = title;
-    const activeItem = document.querySelector(".chat-list-item.active .chat-list-item-text");
-    if (activeItem) activeItem.textContent = title;
-  }
+    // 先显示用户消息
+    appendMessage("user", userInput);
+    messages.push({ role: "user", text: userInput });
 
-  showTyping();
-  const delay = 800 + Math.random() * 1200;
-  setTimeout(() => {
+    // 更新会话标题
+    if (messages.length === 1) {
+      const title = userInput.slice(0, 18) + (userInput.length > 18 ? "…" : "");
+      document.getElementById("chatTitle").textContent = title;
+      const activeItem = document.querySelector(".chat-list-item.active .chat-list-item-text");
+      if (activeItem) activeItem.textContent = title;
+    }
+
+    showTyping();
+
+    const tempId = "ai-" + Date.now();
     removeTyping();
-    const response = MOCK_RESPONSES[Math.floor(Math.random() * MOCK_RESPONSES.length)];
-    appendMessage("agent", response);
-    messages.push({ role: "agent", text: response });
-    isTyping = false;
-    agentSendBtn.disabled = !agentInput.value.trim();
-  }, delay);
-}
+    // 创建 AI 消息占位
+    appendMessage("agent", "", tempId);
 
-function appendMessage(role, text) {
-  const isUser = role === "user";
-  const group = document.createElement("div");
-  group.className = `msg-group ${isUser ? "user-group" : ""}`;
-  const avatarClass = isUser ? "user-avatar-icon" : "agent-avatar-icon";
-  const avatarContent = isUser ? "我" : '<i class="fas fa-robot"></i>';
-  const bubbleClass = isUser ? "msg-bubble-user" : "msg-bubble-agent";
-  const name = isUser ? "你" : "MUST Agent";
-  const formattedText = text.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  group.innerHTML = `
-    <div class="msg-group-avatar ${avatarClass}">${avatarContent}</div>
-    <div class="msg-group-body">
-      <div class="msg-group-name">${name}</div>
-      <div class="${bubbleClass}">${formattedText}</div>
-    </div>`;
-  agentMessages.appendChild(group);
-  agentMessages.scrollTop = agentMessages.scrollHeight;
-}
+    try {
+      // 1. 知识库调用（即使失败也不影响对话）
+      let context = "";
+      try {
+        const res = await fetch(`http://localhost:8080/api/knowledge/search?keyword=${encodeURIComponent(userInput)}`);
+        const docs = await res.json();
+        console.log('知识库搜索结果:', docs);
+        if (docs && docs.length > 0) {
+          context = docs.map(d => `【参考】${d.title || "无标题"}：${d.content}`).join("\n---\n");
+        }
+      } catch (err) {
+        console.warn("知识库调用失败，继续对话:", err);
+      }
 
-function showTyping() {
-  isTyping = true;
-  const group = document.createElement("div");
-  group.className = "msg-group";
-  group.id = "typingGroup";
-  group.innerHTML = `
+      // 2. 构建系统提示词（确保不为空）
+      const systemPrompt = `你是 AzureCanvas 树洞 AI 助手，语气温暖、简短、友好。
+${context ? "以下是相关参考内容：\n" + context : ""}
+请自然地回复用户的问题，不需要引用参考来源。`;
+
+      // 3. 构建请求体（强制保证 messages 不为空）
+      const requestBody = {
+        model: "deepseek-chat",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userInput || "你好" }
+        ],
+        stream: true,
+        max_tokens: 800
+      };
+
+      console.log('发送 API 请求:', API_CONFIG.baseURL);
+      console.log('API Key:', API_CONFIG.apiKey);
+      console.log('请求体:', requestBody);
+
+      // 调用 API
+      const response = await fetch(API_CONFIG.baseURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${API_CONFIG.apiKey}`
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      console.log('API 响应状态:', response.status);
+
+      if (!response.ok) {
+        // 尝试获取错误详情
+        try {
+          const errorData = await response.json();
+          console.error('API 错误详情:', errorData);
+          throw new Error('API 调用失败: ' + response.status + ' - ' + (errorData.error?.message || 'Unknown error'));
+        } catch (e) {
+          throw new Error('API 调用失败: ' + response.status);
+        }
+      }
+
+      // 流式输出
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let aiReply = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
+
+        for (const line of lines) {
+          const jsonStr = line.slice(5).trim();
+          if (jsonStr === "[DONE]") break;
+
+          try {
+            const data = JSON.parse(jsonStr);
+            const delta = data.choices?.[0]?.delta?.content;
+            if (delta) {
+              aiReply += delta;
+              updateMessage(tempId, aiReply);
+            }
+          } catch (e) {
+            console.warn("解析流数据失败:", e);
+          }
+        }
+      }
+
+      // 流式输出完成，更新消息列表
+      messages.push({ role: "agent", text: aiReply });
+    } catch (err) {
+      console.error("对话失败:", err);
+      updateMessage(tempId, "抱歉，我暂时无法回复，请稍后再试~");
+      messages.push({ role: "agent", text: "抱歉，我暂时无法回复，请稍后再试~" });
+    } finally {
+      isTyping = false;
+      agentSendBtn.disabled = !agentInput.value.trim();
+    }
+  }
+
+  // 更新消息内容
+  function updateMessage(messageId, content) {
+    const messageElement = document.getElementById(messageId);
+    if (messageElement) {
+      const formattedText = content.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+      messageElement.innerHTML = formattedText;
+      agentMessages.scrollTop = agentMessages.scrollHeight;
+    }
+  }
+
+  // 修改 appendMessage 函数，添加 messageId 参数
+  function appendMessage(role, text, messageId = null) {
+    const isUser = role === "user";
+    const group = document.createElement("div");
+    group.className = `msg-group ${isUser ? "user-group" : ""}`;
+    const avatarClass = isUser ? "user-avatar-icon" : "agent-avatar-icon";
+    const avatarContent = isUser ? "我" : '<i class="fas fa-robot"></i>';
+    const bubbleClass = isUser ? "msg-bubble-user" : "msg-bubble-agent";
+    const name = isUser ? "你" : "MUST 树洞 AI";
+    const formattedText = text.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    const bubbleId = messageId ? `id="${messageId}"` : "";
+    group.innerHTML = `
+        <div class="msg-group-avatar ${avatarClass}">${avatarContent}</div>
+        <div class="msg-group-body">
+          <div class="msg-group-name">${name}</div>
+          <div class="${bubbleClass}" ${bubbleId}>${formattedText}</div>
+        </div>`;
+    agentMessages.appendChild(group);
+    agentMessages.scrollTop = agentMessages.scrollHeight;
+  }
+
+  function showTyping() {
+    isTyping = true;
+    const group = document.createElement("div");
+    group.className = "msg-group";
+    group.id = "typingGroup";
+    group.innerHTML = `
     <div class="msg-group-avatar agent-avatar-icon"><i class="fas fa-robot"></i></div>
     <div class="msg-group-body">
       <div class="msg-group-name">MUST Agent</div>
@@ -427,14 +954,26 @@ function showTyping() {
         <div class="typing-dot"></div>
       </div>
     </div>`;
-  agentMessages.appendChild(group);
-  agentMessages.scrollTop = agentMessages.scrollHeight;
-}
+    agentMessages.appendChild(group);
+    agentMessages.scrollTop = agentMessages.scrollHeight;
+  }
 
-function removeTyping() {
-  const el = document.getElementById("typingGroup");
-  if (el) el.remove();
-}
+  function removeTyping() {
+    const el = document.getElementById("typingGroup");
+    if (el) el.remove();
+  }
+</script>
+<script type="importmap">
+  {
+      "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+      }
+  }
+</script>
+<script type="module">
+  import { initLiquidEffect } from "../js/effects/liquid/liquid.js";
+  initLiquidEffect();
 </script>
 </body>
+
 </html>

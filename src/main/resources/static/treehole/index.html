@@ -230,6 +230,17 @@
   </div>
 
   <!-- ===== 脚本加载（顺序：数据层→渲染层→功能模块→入口）===== -->
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+        }
+    }
+  </script>
+  <script type="module">
+    import { initLiquidEffect } from "../js/effects/liquid/liquid.js";
+    initLiquidEffect();
+  </script>
   <script src="store.js"></script>
   <script src="render.js"></script>
   <script src="user.js"></script>
@@ -242,14 +253,18 @@
     btn.addEventListener("change", e => {
       if (e.detail === 'dark') {
         document.body.style.backgroundColor = "rgba(0,0,0,0.83)";
-        let ele = document.querySelector(".post-card");
-        ele.style.color = "aliceblue";
-        ele.style.background = "rgba(74,66,94,0.83)";
+        let ele = document.getElementsByClassName("post-card");
+        for (let eleElement of ele) {
+          eleElement.style.color = "aliceblue";
+          eleElement.style.background = "rgba(74,66,94,0.83)";
+        }
       }
       else {
-        let ele = document.querySelector(".post-card");
-        ele.style.background = "var(--bg)";
-        ele.style.color = "aliceblue";
+        let ele = document.getElementsByClassName("post-card");
+        for (let eleElement of ele) {
+          eleElement.style.color = "aliceblue";
+          eleElement.style.background = "var(--bg)";
+        }
         document.body.style.backgroundColor = "aliceblue";
       }
     });

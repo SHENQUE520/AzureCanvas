@@ -108,28 +108,31 @@ public class MarketController {
         return ResponseEntity.ok(items.getContent().stream().map(this::convertToDTO).collect(Collectors.toList()));
     }
 
+    @PostMapping("/item/{itemId}/images")
+    public ResponseEntity<?> createItemImage(@PathVariable UUID itemId, @RequestBody Map<String, Object> request) {
+        List<String> images = (List<String>) request.get("images");
+        if (images != null && !images.isEmpty()) {
+            marketService.addImages(images, marketService.findItemById(itemId));
+        }
+        return ResponseEntity.ok(Map.of("success", true));
+    }
+
     @PostMapping("/items")
     public ResponseEntity<?> createItem(@RequestBody Map<String, Object> request, @CookieValue(name = "user_id", required = false) UUID userId) {
         User user = this.userService.findById(userId);
-        Item item;
-        if (user != null) {
-            item = new Item();
-            item.setTitle((String) request.get("title"));
-            item.setDescription((String) request.get("description"));
-            item.setPrice(new BigDecimal(request.get("price").toString()));
-            item.setCategory((String) request.get("category"));
-            item.setSeller(user);
-        }else {
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "not logged in", "redirect", "/login/index.html?redirect=/azure_trade/trade.html"));
         }
 
-        Item savedItem = marketService.saveItem(item);
-        List<String> images = (List<String>) request.get("images");
-        if (images != null) {
-            marketService.addImages(images, savedItem);
-        }
+        Item item = new Item();
+        item.setTitle((String) request.get("title"));
+        item.setDescription((String) request.get("description"));
+        item.setPrice(new BigDecimal(request.get("price").toString()));
+        item.setCategory((String) request.get("category"));
+        item.setSeller(user);
 
-        return ResponseEntity.ok(convertToDTO(savedItem));
+        Item savedItem = marketService.saveItem(item);
+        return ResponseEntity.ok(Map.of("itemId", savedItem.getItemId()));
     }
 
     @DeleteMapping("/items/{itemId}")

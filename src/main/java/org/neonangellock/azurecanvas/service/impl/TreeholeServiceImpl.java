@@ -149,8 +149,6 @@ public class TreeholeServiceImpl extends AbstractQueryService implements Treehol
 
         TreeholePost post = new TreeholePost();
         post.setContent(content);
-        post.setAuthorName(robot.getName());
-        post.setAuthorAvatar(robot.getAvatar());
         post.setRobotPost(true);
         post.setRobot(robot);
         
@@ -170,8 +168,6 @@ public class TreeholeServiceImpl extends AbstractQueryService implements Treehol
 
         TreeholeComment comment = new TreeholeComment();
         comment.setContent(content);
-        comment.setAuthorName(robot.getName());
-        comment.setAuthorAvatar(robot.getAvatar());
         comment.setRobotComment(true);
         comment.setRobot(robot);
         comment.setPost(post);

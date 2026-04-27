@@ -53,6 +53,50 @@
                         <div class="flex items-center space-x-3"><span>⭐</span><span>我的收藏</span></div>
                         <span id="sidebar-fav-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                     </a>
+
+                    <!-- 我的投稿 -->
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="contribution-toggle">
+                            <div class="flex items-center space-x-3"><span>📝</span><span>我的投稿</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="contribution-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="contribution-sub" class="ml-6 space-y-0.5">
+                            <a href="#" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>我的文章</span>
+                                <span class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>我的地图</span>
+                                <span class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">1</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>我的动态</span>
+                                <span class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 我的点赞 -->
+                    <div>
+                        <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="like-toggle">
+                            <div class="flex items-center space-x-3"><span>👍</span><span>我的点赞</span></div>
+                            <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="like-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div id="like-sub" class="ml-6 space-y-0.5">
+                            <a href="#" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>文章</span>
+                                <span class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>动态</span>
+                                <span class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
+                                <span>地图</span>
+                                <span class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
+                            </a>
+                        </div>
+                    </div>
                 </nav>
                 <div class="mt-6 pt-4 border-t border-gray-100 space-y-2">
                     <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
@@ -175,6 +219,30 @@ toggle.addEventListener('click', function() {
     sub.style.display = hidden ? '' : 'none';
     arrow.classList.toggle('rotate-180', hidden);
 });
+
+// 我的投稿 展开/收起
+var contributionToggle = document.getElementById('contribution-toggle');
+var contributionSub = document.getElementById('contribution-sub');
+var contributionArrow = document.getElementById('contribution-arrow');
+if(contributionToggle && contributionSub && contributionArrow) {
+    contributionToggle.addEventListener('click', function() {
+        var hidden = contributionSub.style.display === 'none';
+        contributionSub.style.display = hidden ? '' : 'none';
+        contributionArrow.classList.toggle('rotate-180', hidden);
+    });
+}
+
+// 我的点赞 展开/收起
+var likeToggle = document.getElementById('like-toggle');
+var likeSub = document.getElementById('like-sub');
+var likeArrow = document.getElementById('like-arrow');
+if(likeToggle && likeSub && likeArrow) {
+    likeToggle.addEventListener('click', function() {
+        var hidden = likeSub.style.display === 'none';
+        likeSub.style.display = hidden ? '' : 'none';
+        likeArrow.classList.toggle('rotate-180', hidden);
+    });
+}
 
 // 退出登录
 var logoutBtn = document.getElementById('logout-btn');

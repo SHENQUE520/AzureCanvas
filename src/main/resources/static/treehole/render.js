@@ -24,6 +24,23 @@ window.Render = (function () {
     return div.innerHTML;
   }
 
+  /** 渲染用户头像：有 avatarUrl 则用图片，否则粉紫渐变+首字母 */
+  function renderAvatar(avatarUrl, avatarLetter, extraClass) {
+    const letter = avatarLetter || "匿";
+    const cls = extraClass || "";
+    if (avatarUrl) {
+      return `<img src="${avatarUrl}" alt="" class="${cls}" style="border-radius:50%;object-fit:cover;${getAvatarSizeStyle(cls)}" onerror="this.style.display='none'">`;
+    }
+    return `<div class="${cls}" style="border-radius:50%;background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 50%,#fad0c4 100%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.2);${getAvatarSizeStyle(cls)};display:flex;align-items:center;justify-content:center;font-weight:600;">${escapeHtml(letter)}</div>`;
+  }
+
+  function getAvatarSizeStyle(cls) {
+    if (cls.includes("detail-avatar")) return "width:56px;height:56px;font-size:1.3rem;";
+    if (cls.includes("ap-avatar")) return "width:48px;height:48px;font-size:1.2rem;";
+    if (cls.includes("comment-avatar")) return "width:32px;height:32px;font-size:0.8rem;";
+    return "width:42px;height:42px;font-size:0.95rem;";
+  }
+
   /** 高亮关键字 */
   function highlightKeyword(text, keyword) {
     if (!keyword || !text) return escapeHtml(text);
@@ -81,9 +98,9 @@ window.Render = (function () {
         <div class="post-card animated" data-id="${post.id}">
           <div class="post-header">
             <div class="avatar-popover-wrap">
-              <div class="avatar">${escapeHtml(post.avatarLetter || "匿")}</div>
+              ${renderAvatar(post.avatarUrl, post.avatarLetter)}
               <div class="author-popover">
-                <div class="ap-avatar">${escapeHtml(post.avatarLetter || "匿")}</div>
+                ${renderAvatar(post.avatarUrl, post.avatarLetter, "ap-avatar")}
                 <div class="ap-name">${escapeHtml(post.author)}</div>
                 <div class="ap-meta">${userPosts} 条帖子</div>
                 ${!isMe ? `<button class="ap-follow-btn ${following ? "following" : ""}" data-author-id="${post.authorId}">
@@ -159,8 +176,8 @@ window.Render = (function () {
 
     bodyEl.innerHTML = `
       <div class="post-header">
-        <div class="avatar detail-avatar" id="detailAvatar" data-author-id="${post.authorId}" style="cursor:pointer" title="点击关注">
-          ${escapeHtml(post.avatarLetter || "匿")}
+        <div id="detailAvatar" data-author-id="${post.authorId}" style="cursor:pointer" title="点击关注">
+          ${renderAvatar(post.avatarUrl, post.avatarLetter, "detail-avatar")}
         </div>
         <div class="post-meta" style="flex:1">
           <span class="post-author">${escapeHtml(post.author)}</span>
@@ -222,39 +239,73 @@ window.Render = (function () {
 
   // ===== 评论渲染 =====
 
+  function countComments(comments) {
+    if (!comments || comments.length === 0) return 0;
+    let count = 0;
+    for (const c of comments) {
+      count++;
+      if (c.children && c.children.length) count += countComments(c.children);
+    }
+    return count;
+  }
+
+  function renderCommentNode(c, depth, onReply) {
+    const replyTag = c.parentId
+      ? `<span class="reply-tag">回复 #${c.parentId}</span> `
+      : "";
+    const authorName = c.authorName || c.author || "匿名用户";
+    const avatarUrl = c.avatarUrl || null;
+    const avatarLetter = c.avatarLetter || (authorName ? authorName.substring(0, 1) : "匿");
+    const time = c.createdAt
+      ? formatTime(new Date(c.createdAt).getTime())
+      : formatTime(c.timestamp || Date.now());
+    const text = c.content || c.text || "";
+    const children = c.children && c.children.length > 0
+      ? `<div class="comment-children">${c.children.map(child => renderCommentNode(child, depth + 1, onReply)).join("")}</div>`
+      : "";
+    return `
+      <div class="comment-item" data-cmt-id="${c.id}" style="margin-left: ${depth * 16}px">
+        <div class="comment-header">
+          ${renderAvatar(avatarUrl, avatarLetter, "comment-avatar")}
+          <span class="comment-author">${escapeHtml(authorName)}</span>
+          <span class="comment-time">${time}</span>
+          <button class="reply-btn" data-cmt-id="${c.id}">回复</button>
+        </div>
+        <div class="comment-text">${replyTag}${escapeHtml(text)}</div>
+        ${children}
+      </div>`;
+  }
+
   /**
-   * 渲染评论列表
+   * 渲染评论列表（支持多级嵌套）
    * @param {HTMLElement} listEl - 评论列表容器
    * @param {HTMLElement} countEl - 评论数标题元素
    * @param {Object} post - 帖子对象
    * @param {Function} onReply - 回复回调(comment)
    */
   function renderComments(listEl, countEl, post, onReply) {
-    if (countEl) countEl.textContent = `评论 (${post.comments ? post.comments.length : 0})`;
+    const totalCount = countComments(post.comments);
+    if (countEl) countEl.textContent = `评论 (${totalCount})`;
     if (!post.comments || post.comments.length === 0) {
       listEl.innerHTML = `<div class="empty-tip" style="padding:16px 0;">暂无评论，抢沙发</div>`;
       return;
     }
-    listEl.innerHTML = post.comments.map(c => {
-      const replyTag = c.replyTo
-        ? `<span class="reply-tag">回复 @${escapeHtml(c.replyTo.author)}</span> `
-        : "";
-      return `
-        <div class="comment-item" data-cmt-id="${c.id}">
-          <div class="comment-header">
-            <span class="comment-author">${escapeHtml(c.author)}</span>
-            <span class="comment-time">${formatTime(c.timestamp)}</span>
-            <button class="reply-btn" data-cmt-id="${c.id}">回复</button>
-          </div>
-          <div class="comment-text">${replyTag}${escapeHtml(c.text)}</div>
-        </div>`;
-    }).join("");
+    listEl.innerHTML = post.comments.map(c => renderCommentNode(c, 0, onReply)).join("");
 
-    // 绑定回复按钮
     listEl.querySelectorAll(".reply-btn").forEach(btn => {
       btn.addEventListener("click", e => {
         e.stopPropagation();
-        const cmt = post.comments.find(c => c.id === btn.dataset.cmtId);
+        const findComment = (list, id) => {
+          for (const c of list) {
+            if (String(c.id) === String(id)) return c;
+            if (c.children && c.children.length) {
+              const found = findComment(c.children, id);
+              if (found) return found;
+            }
+          }
+          return null;
+        };
+        const cmt = findComment(post.comments, btn.dataset.cmtId);
         if (cmt && onReply) onReply(cmt);
       });
     });
@@ -288,5 +339,5 @@ window.Render = (function () {
   }
 
   // ===== 公开 API =====
-  return { formatTime, escapeHtml, renderFeed, renderDetailPost, renderComments, updateNotifBadges };
+  return { formatTime, escapeHtml, renderAvatar, getAvatarSizeStyle, renderFeed, renderDetailPost, renderComments, updateNotifBadges };
 })();

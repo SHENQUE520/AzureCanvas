@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(("/api/storymaps/**"))
                         .ignoringRequestMatchers(("/api/posts/**"))
                         .ignoringRequestMatchers("/api/v1/images/**")
-
+                        .ignoringRequestMatchers("/api/treeholes/**")
                         .csrfTokenRepository(new CookieCsrfTokenRepository())
                 )
                 .authorizeHttpRequests(auth -> auth
