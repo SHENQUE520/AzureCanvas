@@ -19,6 +19,8 @@ import './cube.interactions.js';
 import { Preloader } from '../effects/preloader.js';
 
 let scene, camera, renderer, composer, cube, earth, glowMesh, transmissionMaterial;
+let EarthSpeed = 0.007;
+let isFocusing = true;
 let isTransitioning = false;
 export let isCubePage = false;
 let currentRotation = { x: 0, y: 0 };
@@ -26,6 +28,18 @@ let clock = new THREE.Clock();
 
 const loadingManager = new THREE.LoadingManager();
 let navigatorBar;
+
+export function onFocus(){
+    if (isFocusing) return;
+    EarthSpeed = 0.03;
+    isFocusing = true;
+}
+
+export function resetFocus(){
+    if (!isFocusing) return;
+    EarthSpeed = 0.007;
+    isFocusing = false;
+}
 
 // 资源加载进度
 loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
@@ -139,21 +153,21 @@ function initCube() {
 
     const cubeModelPath = isCubeSubdir ? '../models/FutureCube.glb' : 'models/FutureCube.glb';
 
-    transmissionMaterial = Object.assign(new MeshTransmissionMaterial(10), {
+    transmissionMaterial = Object.assign(new MeshTransmissionMaterial(1), {
         color: new THREE.Color('#ffffff'),
         clearcoat: 1,
         clearcoatRoughness: 0,
         transmission: 1,
-        iridescence: 0.6,
+        iridescence: 0.7,
         iridescenceIOR: 0.8,
-        chromaticAberration: 0.6,
-        anisotrophicBlur: 0.6,
+        chromaticAberration: 0.7,
+        anisotrophicBlur: 0.7,
         roughness: 0,
-        thickness: 0.4,
+        thickness: 0.8,
         ior: 2.2,
         distortion: 0.1,
         distortionScale: 0.7,
-        temporalDistortion: 0.4,
+        temporalDistortion: 0.6,
         backsideThickness: 3,
         anisotropicBlur: 0.6,
         side: THREE.DoubleSide
@@ -307,7 +321,7 @@ function animate() {
         }
 
         if (earth) {
-            earth.rotation.y += 0.005;
+            earth.rotation.y += EarthSpeed;
             earth.rotation.x = currentRotation.x * 0.3;
             earth.rotation.z = Math.sin(time * 0.5) * 0.1;
 
@@ -344,6 +358,8 @@ window.showCubePage = function() {
         cubeContainer.style.zIndex = '201'; // 确保在顶层
         cubeContainer.style.pointerEvents = 'auto';
     }
+    // 显示导航卡片
+    setTimeout(() => showNavCards(), 800);
 };
 
 window.showCubePageFull = function() {
@@ -493,6 +509,262 @@ function triggerEntrance() {
     }, 6);
 }
 
+// 导航卡片显示控制
+function showNavCards() {
+    const container = document.getElementById('nav-cards-container');
+    if (container) {
+        container.style.display = 'block';
+        gsap.fromTo('.nav-card', 
+            { opacity: 0, scale: 0.8, y: 20 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'back.out(1.7)' }
+        );
+    }
+}
+
+function hideNavCards() {
+    const container = document.getElementById('nav-cards-container');
+    if (container) {
+        gsap.to('.nav-card', {
+            opacity: 0, scale: 0.8, y: 20, duration: 0.3, stagger: 0.05,
+            onComplete: () => { container.style.display = 'none'; }
+        });
+    }
+}
+
+// 卡片点击过渡动画 - 摄像机飞向立方体
+function triggerCardTransition(targetLink, clickedCard) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    const cubeContainer = document.getElementById('cube-container');
+    const overlay = document.getElementById('cube-transition-overlay');
+    const flashOverlay = document.getElementById('white-flash-overlay');
+
+    if (flashOverlay) {
+        flashOverlay.classList.add('active');
+    }
+    if (overlay) {
+        overlay.classList.add('active');
+    }
+
+    // 触发点击卡片垂直拉伸动画
+    if (clickedCard) {
+        gsap.to(clickedCard, {
+            scaleY: 3,
+            duration: 0.25,
+            ease: 'power4.out',
+            //yoyo: true,
+            repeat: 1
+        });
+    }
+
+    const tl = gsap.timeline();
+
+    // 摄像机飞向立方体动画
+    if (camera && cube) {
+        const cubeWorldPos = new THREE.Vector3();
+        cube.getWorldPosition(cubeWorldPos);
+
+        tl.to(camera.position, {
+            x: cubeWorldPos.x * 0.3,
+            y: cubeWorldPos.y * 0.3,
+            z: -5,
+            duration: 1.5,
+            ease: 'power2.inOut'
+        }, 0);
+
+        tl.to([cube.rotation, earth.rotation, glowMesh.rotation], {
+            y: Math.PI * 4, // 旋转两圈
+            duration: 4,
+            ease: "power2.inOut",
+            delay: 0.5
+        }, 0);
+
+        tl.to(camera.position, {
+            z: -1,
+            duration: 1,
+            ease: 'power2.in'
+        }, 1.5);
+    }
+
+    // 隐藏导航卡片
+    hideNavCards();
+
+    // 立方体放大效果
+    if (cube) {
+        tl.to(cube.scale, {
+            x: 6, y: 6, z: 6,
+            duration: 2,
+            ease: 'power2.inOut'
+        }, 0);
+
+        tl.to(cube.rotation, {
+            y: cube.rotation.y + Math.PI * 2,
+            duration: 2,
+            ease: 'power2.inOut'
+        }, 0);
+    }
+
+    // 地球缩小消失
+    if (earth) {
+        tl.to(earth.scale, {
+            x: 0, y: 0, z: 0,
+            duration: 1.2,
+            ease: 'power2.in'
+        }, 0);
+    }
+
+    // 背景变化
+    if (scene) {
+        tl.to(scene.background, {
+            r: 0.95, g: 0.95, b: 1.0,
+            duration: 2,
+            ease: 'power2.inOut',
+            onUpdate: function() {
+                scene.background.setRGB(this.targets()[0].r, this.targets()[0].g, this.targets()[0].b);
+            }
+        }, 0);
+    }
+
+    // 白场过渡效果
+    tl.to(flashOverlay, {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.in'
+    }, 1.5);
+
+    tl.to(flashOverlay, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.out'
+    }, 2.5);
+
+    // 跳转到目标页面
+    tl.add(() => {
+        if (targetLink) {
+            window.location.href = targetLink;
+        }
+    }, 2.8);
+}
+
+// 立方体点击过渡动画 - 10秒艺术字过渡
+function triggerCubeTransition() {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    // 播放音效
+    const audio = new Audio('audios/cube_entry.ogg');
+    audio.volume = 1.5;
+    audio.play().catch(e => console.log('Audio play failed:', e));
+
+    // 隐藏导航卡片
+    hideNavCards();
+
+    const overlay = document.getElementById('cube-transition-overlay');
+    const text = document.getElementById('transition-text');
+    const flashOverlay = document.getElementById('white-flash-overlay');
+    const cubeContainer = document.getElementById('cube-container');
+
+    if (overlay) {
+        overlay.style.display = 'block';
+        overlay.classList.add('active');
+    }
+
+    const tl = gsap.timeline();
+
+    // 0-2.5秒：立方体旋转至前方，背景变深紫
+    tl.to(cubeContainer, {
+        duration: 1.5,
+        ease: 'power2.inOut'
+    }, 0);
+
+    if (cube && camera) {
+        tl.to(camera.position, {
+            z: -9,
+            duration: 4,
+            ease: "expo.out",
+        }, 0);
+        tl.to(cube.scale, {
+            x: 8, y: 8, z: 8,
+            duration: 2.5,
+            ease: 'power2.inOut'
+        }, 0);
+    }
+
+    if (earth) {
+        tl.to(earth.scale, {
+            x: 0, y: 0, z: 0,
+            duration: 1.5,
+            ease: 'power2.in'
+        }, 0);
+    }
+
+    // 背景渐变深紫
+    tl.to('body', {
+        backgroundColor: '#1a0a2e',
+        duration: 1.5,
+        ease: 'power2.inOut'
+    }, 0);
+
+    if (scene) {
+        tl.to(scene.background, {
+            r: 0.1, g: 0.04, b: 0.18,
+            duration: 2.5,
+            ease: 'power2.inOut',
+            onUpdate: function() {
+                scene.background.setRGB(this.targets()[0].r, this.targets()[0].g, this.targets()[0].b);
+            }
+        }, 0);
+    }
+
+    // 显示艺术字
+    tl.to(text, {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: 'power2.out'
+    }, 1.5);
+
+    tl.to(text, {
+        opacity: 1,
+        scale: 1.4,
+        duration: 7,
+        ease: 'power2.out'
+    }, 1.5);
+
+    tl.fromTo('.transition-line1',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' },
+        1.5
+    );
+
+    tl.fromTo('.transition-line2',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power2.out' },
+        1.8
+    );
+
+    // 白场过渡效果
+    tl.to(flashOverlay, {
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.in'
+    }, 8.5);
+
+    // 2.5-10秒：持续效果
+    tl.to(text, {
+        opacity: 0,
+        scale: 4,
+        duration: 3.5,
+        ease: 'power3.in'
+    }, 7);
+
+    // 10秒后跳转
+    tl.add(() => {
+        window.location.href = './islands/index.html';
+    }, 11);
+}
+
 // 页面加载完成后初始化
 window.addEventListener('DOMContentLoaded', () => {
     // 立即初始化预加载器并开始加载
@@ -502,6 +774,36 @@ window.addEventListener('DOMContentLoaded', () => {
     if (splashLogo) {
         splashLogo.addEventListener('click', () => {
             triggerEntrance();
+        });
+    }
+
+    // 导航卡片点击事件 - 触发摄像机飞向立方体动画
+    document.querySelectorAll('.nav-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const link = card.dataset.link;
+            if (link) {
+                triggerCardTransition(link, card);
+            }
+        });
+
+        // 卡片悬停时添加拉伸动画类
+        card.addEventListener('mouseenter', () => {
+            if (!isTransitioning) {
+                card.classList.add('stretch');
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.classList.remove('stretch');
+        });
+    });
+
+    // 立方体点击事件
+    const cubeContainer = document.getElementById('cube-container');
+    if (cubeContainer) {
+        cubeContainer.addEventListener('click', (e) => {
+            if (isCubePage && isFocusing) triggerCubeTransition();
         });
     }
 });

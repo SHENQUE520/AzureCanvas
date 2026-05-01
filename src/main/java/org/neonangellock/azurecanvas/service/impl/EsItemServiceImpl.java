@@ -1,17 +1,17 @@
 package org.neonangellock.azurecanvas.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.neonangellock.azurecanvas.model.Item;
 import org.neonangellock.azurecanvas.model.es.EsItem;
 import org.neonangellock.azurecanvas.repository.ItemRepository;
 import org.neonangellock.azurecanvas.repository.es.EsItemRepository;
 import org.neonangellock.azurecanvas.service.EsItemService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.SearchShardStatistics;
-import org.springframework.data.elasticsearch.core.suggest.response.Suggest;
 import org.springframework.data.elasticsearch.core.query.HighlightQuery;
 import org.springframework.data.elasticsearch.core.query.highlight.Highlight;
 import org.springframework.data.elasticsearch.core.query.highlight.HighlightField;
@@ -20,72 +20,21 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-class EmptySearchHits<T> implements SearchHits<T> {
-    public long getTotalHits() {
-        return 0;
-    }
-
-    public org.springframework.data.elasticsearch.core.TotalHitsRelation getTotalHitsRelation() {
-        return org.springframework.data.elasticsearch.core.TotalHitsRelation.EQUAL_TO;
-    }
-
-    public float getMaxScore() {
-        return 0f;
-    }
-
-    public Suggest getSuggest() {
-        return null;
-    }
-
-    public List<org.springframework.data.elasticsearch.core.SearchHit<T>> getSearchHits() {
-        return Collections.emptyList();
-    }
-
-    public org.springframework.data.elasticsearch.core.SearchHit<T> getSearchHit(int index) {
-        throw new IndexOutOfBoundsException();
-    }
-
-    public List<T> getSearchHitsContents() {
-        return Collections.emptyList();
-    }
-
-    public boolean hasSearchHits() {
-        return false;
-    }
-
-    public org.springframework.data.elasticsearch.core.AggregationsContainer<?> getAggregations() {
-        return null;
-    }
-
-    public <A> A getAggregation(String name, Class<A> aClass) {
-        return null;
-    }
-
-    public SearchShardStatistics getSearchShardStatistics() {
-        return null;
-    }
-
-    public String getPointInTimeId() {
-        return null;
-    }
-
-    public java.time.Duration getExecutionDuration() {
-        return java.time.Duration.ZERO;
-    }
-}
-
+@Slf4j
 @Service
+@EnableScheduling
 public class EsItemServiceImpl implements EsItemService {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    private static final int SYNC_BATCH_SIZE = 100;
+    private static final int MAX_RETRIES = 3;
+    private static final long RETRY_DELAY_MS = 1000;
 
     @Autowired
     private ItemRepository itemRepository;
@@ -96,119 +45,227 @@ public class EsItemServiceImpl implements EsItemService {
     @Autowired(required = false)
     private ElasticsearchOperations elasticsearchOperations;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-    private static final String TEST_DATA_URL = "https://api.szsummer.com/test/trade/data";
-
-    @Override
-    public SearchHits<EsItem> searchItems(String keyword, int page, int size) {
-        // 1. 先从远程 API 获取数据并同步到本地 ES
-        try {
-            System.out.println("Fetching remote test data for sync to local ES...");
-            String remoteDataStr = restTemplate.getForObject(TEST_DATA_URL, String.class);
-            System.out.println("Remote data string length: " + (remoteDataStr != null ? remoteDataStr.length() : 0));
-
-            List<EsItem> esItems = new ArrayList<>();
-            if (remoteDataStr != null && !remoteDataStr.isEmpty()) {
-                try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    Object remoteData = objectMapper.readValue(remoteDataStr, Object.class);
-
-                    List<Map<String, Object>> dataList = new ArrayList<>();
-
-                    // 处理 API 返回的数据，无论是数组还是对象
-                    if (remoteData instanceof List) {
-                        System.out.println("Remote data is a List, size: " + ((List<?>) remoteData).size());
-                        dataList = (List<Map<String, Object>>) remoteData;
-                    } else if (remoteData instanceof Map) {
-                        System.out.println("Remote data is a Map, keys: " + ((Map<?, ?>) remoteData).keySet());
-                        Map<?, ?> remoteMap = (Map<?, ?>) remoteData;
-                        for (Object key : remoteMap.keySet()) {
-                            Object value = remoteMap.get(key);
-                            if (value instanceof List) {
-                                System.out.println("Value is a List, size: " + ((List<?>) value).size());
-                                dataList.addAll((List<Map<String, Object>>) value);
-                            }
-                        }
-                    }
-
-                    // 将远程数据转换为 EsItem 并保存到本地 ES
-                    for (Map<String, Object> data : dataList) {
-                        EsItem item = new EsItem();
-                        item.setId(String.valueOf(data.get("id")));
-                        item.setTitle((String) data.get("title"));
-                        item.setDescription((String) data.getOrDefault("description", ""));
-
-                        Object priceObj = data.get("price");
-                        if (priceObj != null) {
-                            item.setPrice(new java.math.BigDecimal(priceObj.toString()));
-                        }
-
-                        item.setCategory((String) data.getOrDefault("category", ""));
-                        item.setLocation((String) data.getOrDefault("location", ""));
-                        item.setStatus((String) data.getOrDefault("status", ""));
-
-                        Object viewsObj = data.get("views");
-                        if (viewsObj != null) {
-                            item.setViews(((Number) viewsObj).intValue());
-                        }
-
-                        esItems.add(item);
-                    }
-
-                    // 批量保存到本地 ES 索引
-                    if (!esItems.isEmpty()) {
-                        System.out.println("Saving " + esItems.size() + " items to local ES index...");
-                        esItemRepository.saveAll(esItems);
-                        System.out.println("Successfully saved items to local ES index");
-                    }
-                } catch (JsonProcessingException e) {
-                    System.err.println("Failed to parse JSON data: " + e.getMessage());
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Failed to sync remote data to local ES: " + e.getMessage());
-        }
-
-        // 2. 使用本地 ES 进行搜索
-        try {
-            if (elasticsearchOperations != null) {
-                NativeQuery query = NativeQuery.builder()
-                        .withQuery(q -> q.multiMatch(m -> m.fields("title", "description").query(keyword)))
-                        .withPageable(PageRequest.of(page, size))
-                        .withHighlightQuery(new HighlightQuery(
-                                new Highlight(List.of(new HighlightField("title"), new HighlightField("description"))),
-                                EsItem.class))
-                        .build();
-                System.out.println("Searching in local ES with keyword: " + keyword);
-                return elasticsearchOperations.search(query, EsItem.class);
-            }
-        } catch (Exception e) {
-            System.err.println("Local ES search failed: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        // 返回空结果
-        return new EmptySearchHits<>();
-    }
+    private OffsetDateTime lastFullSyncTime = null;
+    private volatile boolean isSyncing = false;
 
     @Override
     @Transactional(readOnly = true)
-    @Scheduled(fixedRate = 300000)
-    public void syncItemsFromDb() {
-        try {
-            List<Item> items = itemRepository.findAll();
-            List<EsItem> esItems = items.stream().map(item -> {
-                EsItem esItem = new EsItem();
-                BeanUtils.copyProperties(item, esItem);
-                esItem.setId(item.getItemId().toString());
-                if (item.getCreatedAt() != null) {
-                    esItem.setCreatedAt(item.getCreatedAt().toString());
-                }
-                return esItem;
-            }).collect(Collectors.toList());
-            esItemRepository.saveAll(esItems);
-        } catch (Exception e) {
-            System.err.println("Elasticsearch sync failed: " + e.getMessage());
+    public SearchHits<EsItem> searchItems(String keyword, int page, int size) {
+        if (elasticsearchOperations == null) {
+            log.warn("Elasticsearch operations not available");
+            return createEmptySearchHits();
         }
+
+        try {
+            NativeQuery query = NativeQuery.builder()
+                    .withQuery(q -> q.multiMatch(m -> m.fields("title", "description").query(keyword)))
+                    .withPageable(PageRequest.of(page, size))
+                    .withHighlightQuery(new HighlightQuery(
+                            new Highlight(List.of(
+                                    new HighlightField("title"),
+                                    new HighlightField("description"))),
+                            EsItem.class))
+                    .build();
+
+            log.debug("Searching items in ES with keyword: {}", keyword);
+            return elasticsearchOperations.search(query, EsItem.class);
+        } catch (Exception e) {
+            log.error("Failed to search items in ES: {}", e.getMessage(), e);
+            return createEmptySearchHits();
+        }
+    }
+
+    @Override
+    @Scheduled(fixedRate = 300000)
+    @Transactional(readOnly = true)
+    public void syncItemsFromDb() {
+        if (isSyncing) {
+            log.info("Sync already in progress, skipping...");
+            return;
+        }
+
+        isSyncing = true;
+        long startTime = System.currentTimeMillis();
+        int totalSynced = 0;
+        int pageNum = 0;
+
+        try {
+            log.info("Starting scheduled item sync from database");
+
+            while (true) {
+                Pageable pageable = PageRequest.of(pageNum, SYNC_BATCH_SIZE);
+                Page<Item> itemPage = itemRepository.findAll(pageable);
+
+                if (itemPage.isEmpty()) {
+                    break;
+                }
+
+                List<EsItem> esItems = itemPage.getContent().stream()
+                        .map(this::convertToEsItem)
+                        .collect(Collectors.toList());
+
+                int synced = syncBatchWithRetry(esItems);
+                totalSynced += synced;
+
+                log.debug("Synced batch {} with {} items", pageNum, synced);
+
+                if (!itemPage.hasNext()) {
+                    break;
+                }
+                pageNum++;
+            }
+
+            lastFullSyncTime = OffsetDateTime.now();
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("Completed full item sync: {} items in {}ms", totalSynced, duration);
+
+        } catch (Exception e) {
+            log.error("Failed to sync items from database: {}", e.getMessage(), e);
+        } finally {
+            isSyncing = false;
+        }
+    }
+
+    @Override
+    @Scheduled(cron = "0 */15 * * * *")
+    @Transactional(readOnly = true)
+    public void incrementalSyncItems() {
+        if (isSyncing) {
+            log.info("Sync already in progress, skipping incremental sync");
+            return;
+        }
+
+        if (lastFullSyncTime == null) {
+            log.info("No previous sync time found, performing full sync");
+            syncItemsFromDb();
+            return;
+        }
+
+        isSyncing = true;
+        long startTime = System.currentTimeMillis();
+        int totalSynced = 0;
+
+        try {
+            log.info("Starting incremental item sync since {}", lastFullSyncTime);
+
+            OffsetDateTime syncSince = lastFullSyncTime.minusMinutes(5);
+            int pageNum = 0;
+
+            while (true) {
+                Pageable pageable = PageRequest.of(pageNum, SYNC_BATCH_SIZE);
+                Page<Item> itemPage = itemRepository.findAll(pageable);
+
+                if (itemPage.isEmpty()) {
+                    break;
+                }
+
+                List<EsItem> esItems = itemPage.getContent().stream()
+                        .filter(item -> item.getUpdatedAt() != null &&
+                                        item.getUpdatedAt().isAfter(syncSince))
+                        .map(this::convertToEsItem)
+                        .collect(Collectors.toList());
+
+                if (!esItems.isEmpty()) {
+                    int synced = syncBatchWithRetry(esItems);
+                    totalSynced += synced;
+                }
+
+                if (!itemPage.hasNext()) {
+                    break;
+                }
+                pageNum++;
+            }
+
+            lastFullSyncTime = OffsetDateTime.now();
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("Completed incremental item sync: {} items in {}ms", totalSynced, duration);
+
+        } catch (Exception e) {
+            log.error("Failed to incrementally sync items: {}", e.getMessage(), e);
+        } finally {
+            isSyncing = false;
+        }
+    }
+
+    private int syncBatchWithRetry(List<EsItem> esItems) {
+        int attempts = 0;
+        while (attempts < MAX_RETRIES) {
+            try {
+                if (elasticsearchOperations != null && esItemRepository != null) {
+                    esItemRepository.saveAll(esItems);
+                    return esItems.size();
+                }
+            } catch (Exception e) {
+                attempts++;
+                log.warn("Failed to sync batch (attempt {}/{}): {}",
+                        attempts, MAX_RETRIES, e.getMessage());
+                if (attempts < MAX_RETRIES) {
+                    try {
+                        Thread.sleep(RETRY_DELAY_MS * attempts);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    private EsItem convertToEsItem(Item item) {
+        EsItem esItem = new EsItem();
+        esItem.setId(item.getItemId().toString());
+        esItem.setTitle(item.getTitle());
+        esItem.setDescription(item.getDescription());
+        esItem.setPrice(item.getPrice());
+        esItem.setCategory(item.getCategory());
+        esItem.setStatus(item.getStatus());
+        esItem.setLocation(item.getLocation());
+        esItem.setViews(item.getViews());
+        esItem.setQuality(item.getQuality());
+        esItem.setUrgent(item.isUrgent());
+        esItem.setFreeShipping(item.isFreeShipping());
+        esItem.setCanInspect(item.isCanInspect());
+        if (item.getCreatedAt() != null) {
+            esItem.setCreatedAt(item.getCreatedAt().format(DATE_FORMATTER));
+        }
+        return esItem;
+    }
+
+    private SearchHits<EsItem> createEmptySearchHits() {
+        return new EmptySearchHits<>();
+    }
+
+    private static class EmptySearchHits<T> implements SearchHits<T> {
+        @Override
+        public long getTotalHits() { return 0; }
+        @Override
+        public org.springframework.data.elasticsearch.core.TotalHitsRelation getTotalHitsRelation() {
+            return org.springframework.data.elasticsearch.core.TotalHitsRelation.EQUAL_TO;
+        }
+        @Override
+        public float getMaxScore() { return 0f; }
+        @Override
+        public org.springframework.data.elasticsearch.core.suggest.response.Suggest getSuggest() { return null; }
+        @Override
+        public List<org.springframework.data.elasticsearch.core.SearchHit<T>> getSearchHits() {
+            return List.of();
+        }
+        @Override
+        public org.springframework.data.elasticsearch.core.SearchHit<T> getSearchHit(int index) {
+            throw new IndexOutOfBoundsException();
+        }
+        public List<T> getSearchHitsContents() { return List.of(); }
+        @Override
+        public boolean hasSearchHits() { return false; }
+        @Override
+        public org.springframework.data.elasticsearch.core.AggregationsContainer<?> getAggregations() { return null; }
+        public <A> A getAggregation(String name, Class<A> aClass) { return null; }
+        @Override
+        public org.springframework.data.elasticsearch.core.SearchShardStatistics getSearchShardStatistics() { return null; }
+        @Override
+        public String getPointInTimeId() { return null; }
+        @Override
+        public java.time.Duration getExecutionDuration() { return java.time.Duration.ZERO; }
     }
 }

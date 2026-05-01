@@ -26,6 +26,7 @@ window.Store = (function () {
       {
         id: "p1", author: "匿名小树", authorId: "u_tree",
         avatarLetter: "匿", timestamp: Date.now() - 3600000 * 5,
+        title: "",
         content: "有人知道图书馆三楼靠窗的座位现在需要预约吗？📚",
         category: "question", images: [], likes: 12, liked: false, collected: false,
         comments: [
@@ -36,6 +37,7 @@ window.Store = (function () {
       {
         id: "p2", author: "毕业倒计时", authorId: "u_grad",
         avatarLetter: "毕", timestamp: Date.now() - 86400000,
+        title: "",
         content: "今天拍毕业照，把四年的记忆留在这里🎓 谢谢树洞。",
         category: "emotion", images: [], likes: 45, liked: false, collected: true,
         comments: [
@@ -45,6 +47,7 @@ window.Store = (function () {
       {
         id: "p3", author: "食堂观察员", authorId: "u_food",
         avatarLetter: "食", timestamp: Date.now() - 7200000,
+        title: "",
         content: "二食堂新出的麻辣香锅绝了！🌶️ 但是排队有点长。",
         category: "life", images: [], likes: 28, liked: true, collected: false,
         comments: []
@@ -146,8 +149,49 @@ window.Store = (function () {
 
   // ===== 关注操作 =====
 
-  /** 切换关注状态，返回新状态 */
-  function toggleFollow(authorId) {
+  /** 从 API 获取我的关注列表 */
+  async function fetchFollowingFromApi() {
+    try {
+      const res = await fetch("/api/users/me", { credentials: "include" });
+      if (!res.ok) return [];
+      const user = await res.json();
+      const userId = user.userId || user.id;
+      if (!userId) return [];
+      
+      const followRes = await fetch(`/api/users/${userId}/following`, { credentials: "include" });
+      if (!followRes.ok) return [];
+      const followingList = await followRes.json();
+      
+      // 更新本地关注集合
+      follows = new Set(followingList.map(u => u.userId || u.id));
+      save();
+      return followingList;
+    } catch (e) {
+      console.warn("fetchFollowingFromApi failed:", e);
+      return [...follows];
+    }
+  }
+
+  /** 切换关注状态，返回新状态（调用后端API）*/
+  async function toggleFollow(authorId) {
+    try {
+      const res = await fetch(`/api/users/${authorId}/follow`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" }
+      });
+      if (res.ok) {
+        follows.add(authorId);
+        save();
+        return true;
+      } else if (res.status === 400) {
+        // 已关注，尝试取消关注
+        return await unfollowUser(authorId);
+      }
+    } catch (e) {
+      console.warn("toggleFollow API failed, using local:", e);
+    }
+    // 回退到本地操作
     if (follows.has(authorId)) {
       follows.delete(authorId);
     } else {
@@ -157,7 +201,27 @@ window.Store = (function () {
     return follows.has(authorId);
   }
 
-  /** 是否已关注 */
+  /** 取消关注用户 */
+  async function unfollowUser(authorId) {
+    try {
+      const res = await fetch(`/api/users/${authorId}/follow`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+      if (res.ok) {
+        follows.delete(authorId);
+        save();
+        return true;
+      }
+    } catch (e) {
+      console.warn("unfollowUser API failed:", e);
+    }
+    follows.delete(authorId);
+    save();
+    return false;
+  }
+
+  /** 是否已关注（优先本地缓存） */
   function isFollowing(authorId) {
     return follows.has(authorId);
   }
@@ -317,7 +381,7 @@ window.Store = (function () {
   async function fetchPostsFromApi() {
     try {
       const res = await fetch("/api/treeholes/posts", { credentials: "include" });
-      if (!res.ok) return [];
+      if (!res.ok) throw new Error("HTTP " + res.status);
       const apiPosts = await res.json();
       apiPosts.forEach(p => {
         p.id = p.id || p.postId || "post_" + p.id;
@@ -326,6 +390,8 @@ window.Store = (function () {
         p.avatarUrl = p.avatarUrl || null;
         p.images = p.imagesList || [];
         p.timestamp = p.createdAt ? new Date(p.createdAt).getTime() : Date.now();
+        // 重要：将API的likeCount映射到前端的likes字段
+        p.likes = (p.likeCount !== undefined && p.likeCount !== null) ? p.likeCount : 0;
         p.liked = false;
         p.collected = false;
         p.comments = p.comments || [];
@@ -334,7 +400,12 @@ window.Store = (function () {
       save();
       return posts;
     } catch (e) {
-      console.warn("fetchPostsFromApi failed:", e);
+      console.warn("fetchPostsFromApi failed, using local data:", e);
+      // API失败时使用本地数据
+      if (posts.length === 0) {
+        posts = getMockPosts();
+        save();
+      }
       return posts;
     }
   }
@@ -351,6 +422,9 @@ window.Store = (function () {
       p.avatarUrl = p.avatarUrl || null;
       p.images = p.imagesList || [];
       p.timestamp = p.createdAt ? new Date(p.createdAt).getTime() : Date.now();
+      // 重要：将API的likeCount映射到前端的likes字段
+      p.likes = (p.likeCount !== undefined && p.likeCount !== null) ? p.likeCount : 0;
+      p.comments = (p.commentCount !== undefined && p.commentCount !== null) ? p.likeCount : 0;
       p.liked = false;
       p.collected = false;
       const idx = posts.findIndex(x => String(x.id) === String(postId));
@@ -385,7 +459,7 @@ window.Store = (function () {
     get notifications() { return notifications; },
     get messages() { return messages; },
     addPost, toggleLike, toggleCollect, addComment,
-    toggleFollow, isFollowing,
+    toggleFollow, unfollowUser, isFollowing, fetchFollowingFromApi,
     sendMessage, getThread, getOrCreateThread,
     addNotification, markAllRead, unreadCount,
     updateUser,

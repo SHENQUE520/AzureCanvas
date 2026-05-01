@@ -9,4 +9,5 @@ public abstract class AbstractQueryService {
     protected AbstractQueryService(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
 }

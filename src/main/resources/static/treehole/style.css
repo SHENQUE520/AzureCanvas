@@ -22,7 +22,7 @@
   --bg: #ffffff;
   --bg-subtle: #f6f8fa;
   --bg-inset: #f0f0f0;
-  --border: #d0d7de;
+  --border: none;
   --border-muted: #e8eaed;
   --text: #1f2328;
   --text-muted: #656d76;
@@ -32,7 +32,7 @@
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
   --radius: 8px;
   --radius-lg: 14px;
-  --transition: 0.18s ease;
+  --transition: all 0.3s ease;
 }
 
 body::before {
@@ -467,7 +467,8 @@ body {
   padding: 20px;
   margin-bottom: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  z-index: 100;
+  transition: all 0.6s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .post-card:hover {

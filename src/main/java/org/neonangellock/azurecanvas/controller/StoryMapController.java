@@ -119,7 +119,7 @@ public class StoryMapController {
     public ResponseEntity<String> updateStorymaps() {
         try {
             // 调用ES服务同步数据
-            esStoryMapService.syncStoryMapFromJson();
+            esStoryMapService.syncStoryMapFromDb();
             return ResponseEntity.ok("数据更新成功");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("数据更新失败: " + e.getMessage());

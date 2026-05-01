@@ -211,8 +211,8 @@ window.Render = (function () {
     // 绑定关注按钮
     const followBtnEl = document.getElementById("detailFollowBtn");
     if (followBtnEl) {
-      followBtnEl.addEventListener("click", () => {
-        Store.toggleFollow(post.authorId);
+      followBtnEl.addEventListener("click", async () => {
+        await Store.toggleFollow(post.authorId);
         renderDetailPost(bodyEl, actionsEl, Store.getPost(post.id), onFollowClick);
         updateNotifBadges();
       });
@@ -229,8 +229,8 @@ window.Render = (function () {
     // 点击头像也可关注
     const avatarEl = document.getElementById("detailAvatar");
     if (avatarEl && !isMe) {
-      avatarEl.addEventListener("click", () => {
-        Store.toggleFollow(post.authorId);
+      avatarEl.addEventListener("click", async () => {
+        await Store.toggleFollow(post.authorId);
         renderDetailPost(bodyEl, actionsEl, Store.getPost(post.id), onFollowClick);
         updateNotifBadges();
       });

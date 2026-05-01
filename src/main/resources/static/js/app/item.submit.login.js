@@ -1,7 +1,12 @@
 // Publish Item Modal Logic
 
 export const submit_login = function () {
-    document.getElementById('publishForm').addEventListener('submit', async (e) => {
+    // 注意：这里要确保获取的表单 ID 与你 trade.html 里的一致
+    const formElement = document.getElementById('publish-form') || document.getElementById('publishForm');
+    
+    if(!formElement) return;
+
+    formElement.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const title = document.getElementById('itemTitle').value;
@@ -10,11 +15,17 @@ export const submit_login = function () {
         const price = parseFloat(document.getElementById('itemPrice').value);
         const condition = parseInt(document.getElementById('itemCondition').value);
         const location = document.getElementById('itemLocation').value;
+        
+        // 👇👇 新增：获取隐藏的地图坐标 👇👇
+        const latVal = document.getElementById('itemLat').value;
+        const lngVal = document.getElementById('itemLng').value;
+        const lat = latVal ? parseFloat(latVal) : null;
+        const lng = lngVal ? parseFloat(lngVal) : null;
+        // 👆👆 新增结束 👆👆
+
         const isUrgent = document.getElementById('isUrgent').checked;
         const isShippingFree = document.getElementById('isShippingFree').checked;
         const canInspect = document.getElementById('canInspect').checked;
-        // For images, you would typically upload them separately or use FormData
-        // For now, we'll send an empty array or placeholder if the API expects it.
 
         if (!title || !category || !description || isNaN(price) || isNaN(condition)) {
             window.notify.show('请填写所有必填项！', 'warning');
@@ -33,20 +44,28 @@ export const submit_login = function () {
                     category: category,
                     description: description,
                     price: price,
-                    condition: condition, // Assuming backend handles this
+                    condition: condition, 
                     location: location,
-                    isUrgent: isUrgent, // Assuming backend handles this
-                    isShippingFree: isShippingFree, // Assuming backend handles this
-                    canInspect: canInspect, // Assuming backend handles this
-                    images: [] // Placeholder for images
+                    lat: lat, // <-- 发送纬度给后端
+                    lng: lng, // <-- 发送经度给后端
+                    isUrgent: isUrgent, 
+                    isShippingFree: isShippingFree, 
+                    canInspect: canInspect, 
+                    images: [] 
                 })
             });
 
             if (response.ok) {
                 window.notify.show('商品上架成功！', 'success');
-                closePublish();
-                // Optionally clear form or refresh item list
-                document.getElementById('publishForm').reset();
+                if (typeof closePublish === 'function') closePublish();
+                formElement.reset();
+                
+                // 提交成功后顺便清空隐藏的坐标，并把地图收起
+                document.getElementById('itemLat').value = '';
+                document.getElementById('itemLng').value = '';
+                const mapContainer = document.getElementById('mini-map-container');
+                if (mapContainer) mapContainer.classList.add('hidden');
+                
             } else {
                 const errorData = await response.json();
                 window.notify.show(`上架失败: ${errorData.message || response.statusText}`, 'error');

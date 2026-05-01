@@ -3,6 +3,8 @@
 // 负责人：@glow
 // ============================================
 import {isCloseToCube} from '../cube.event.util.js';
+import {resetFocus} from "./cube.js";
+import {onFocus} from "./cube.js";
 
 (function() {
     let isBound = false;
@@ -61,11 +63,12 @@ import {isCloseToCube} from '../cube.event.util.js';
         canvas.addEventListener('mousemove', function(e) {
             if (isCloseToCube(e.clientX, e.clientY)){
                 updateTargetRotation(e.clientX, e.clientY);
-
+                onFocus();
             }
             else {
                 targetRotateX = 0;
                 targetRotateY = 0;
+                resetFocus();
             }
 
         }, { passive: true });
@@ -74,6 +77,7 @@ import {isCloseToCube} from '../cube.event.util.js';
         canvas.addEventListener('mouseleave', function() {
             targetRotateX = 0;
             targetRotateY = 0;
+            resetFocus();
         });
         canvas.addEventListener('mouseup', function() {
 

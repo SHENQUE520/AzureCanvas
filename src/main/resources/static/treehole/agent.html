@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent — MUST树洞</title>
+  <title>Agent — 树洞</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -15,7 +15,6 @@
       max-width: 100%;
     }
 
-    /* ===== 左侧会话列表 ===== */
     .agent-sidebar {
       border-right: 1px solid var(--border);
       background: var(--bg);
@@ -113,7 +112,6 @@
       gap: 8px;
     }
 
-    /* ===== 右侧聊天区 ===== */
     .agent-main {
       display: flex;
       flex-direction: column;
@@ -130,25 +128,6 @@
       gap: 12px;
     }
 
-    .agent-model-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      background: var(--bg-subtle);
-    }
-
-    .agent-model-badge .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #2ea043;
-    }
-
     .agent-topbar-title {
       font-weight: 600;
       font-size: 1rem;
@@ -161,62 +140,6 @@
       gap: 12px;
     }
 
-    .model-selector {
-      position: relative;
-    }
-
-    .model-select-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      background: var(--bg-subtle);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .model-select-btn:hover {
-      border-color: #888;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .model-dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      margin-top: 4px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      width: 200px;
-      max-height: 300px;
-      overflow-y: auto;
-      z-index: 1000;
-      display: none;
-    }
-
-    .model-dropdown.show {
-      display: block;
-    }
-
-    .model-option {
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
-    .model-option:hover {
-      background: var(--hover-bg);
-    }
-
-    /* 消息区 */
     .agent-messages {
       flex: 1;
       overflow-y: auto;
@@ -226,7 +149,6 @@
       gap: 20px;
     }
 
-    /* 欢迎屏 */
     .agent-welcome {
       flex: 1;
       display: flex;
@@ -296,7 +218,6 @@
       color: var(--text-muted);
     }
 
-    /* 消息气泡 */
     .msg-group {
       display: flex;
       gap: 12px;
@@ -375,7 +296,6 @@
       align-items: flex-end;
     }
 
-    /* 打字动画 */
     .typing-indicator {
       display: flex;
       gap: 4px;
@@ -394,28 +314,14 @@
       animation: typingBounce 1.2s ease infinite;
     }
 
-    .typing-dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .typing-dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
     @keyframes typingBounce {
-
-      0%,
-      60%,
-      100% {
-        transform: translateY(0);
-      }
-
-      30% {
-        transform: translateY(-6px);
-      }
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
     }
 
-    /* 输入栏 */
     .agent-input-area {
       background: var(--bg);
       border-top: 1px solid var(--border);
@@ -499,9 +405,7 @@
       font-size: 0.9rem;
     }
 
-    .agent-send-btn:hover {
-      background: #333;
-    }
+    .agent-send-btn:hover { background: #333; }
 
     .agent-send-btn:disabled {
       background: var(--bg-inset);
@@ -517,14 +421,218 @@
     }
 
     @media (max-width: 768px) {
-      .agent-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .agent-sidebar {
-        display: none;
-      }
+      .agent-layout { grid-template-columns: 1fr; }
+      .agent-sidebar { display: none; }
     }
+
+    /* ===== 图片预览栏 ===== */
+    .image-preview-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px 0;
+      min-height: 0;
+      transition: min-height 0.2s ease;
+    }
+
+    .image-preview-bar.has-images {
+      min-height: 56px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-muted);
+    }
+
+    .image-preview-item {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      flex-shrink: 0;
+      cursor: pointer;
+      animation: previewIn 0.25s ease forwards;
+    }
+
+    .image-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-preview-item .preview-delete {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .image-preview-item:hover .preview-delete { opacity: 1; }
+
+    @keyframes previewIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* ===== 模型选择器（输入栏上方）===== */
+    .input-model-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 20px 0;
+    }
+
+    .input-model-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .model-chip-group {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .model-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .model-chip:hover {
+      border-color: #888;
+      color: var(--text);
+    }
+
+    .model-chip.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    .model-chip .chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+
+    /* ===== AI 加载发光动画 ===== */
+    .ai-loading-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      max-width: fit-content;
+    }
+
+    .ai-loading-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--text);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .ai-loading-bubble {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
+      padding: 12px 22px;
+      position: relative;
+      overflow: hidden;
+      min-width: 120px;
+      min-height: 24px;
+    }
+
+    .ai-loading-bubble::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(126, 194, 255, 0.08) 25%,
+        rgba(126, 194, 255, 0.18) 50%,
+        rgba(126, 194, 255, 0.08) 75%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: glowSweep 1.5s ease-in-out infinite;
+      border-radius: inherit;
+    }
+
+    .ai-loading-dots {
+      display: flex;
+      gap: 5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ai-loading-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      animation: dotPulse 1.2s ease-in-out infinite;
+    }
+
+    .ai-loading-dot:nth-child(2) { animation-delay: 0.15s; }
+    .ai-loading-dot:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes glowSweep {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes dotPulse {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    .msg-image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .msg-image-grid img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .msg-image-grid img:hover { transform: scale(1.03); }
   </style>
 </head>
 
@@ -542,13 +650,10 @@
 </nav>
 
 <div class="agent-layout">
-  <!-- 左侧会话列表 -->
   <div class="agent-sidebar">
     <div class="agent-sidebar-header">
       <span class="agent-sidebar-title">对话历史</span>
-      <button class="new-chat-btn" id="newChatBtn" title="新建对话">
-        <i class="fas fa-plus"></i>
-      </button>
+      <button class="new-chat-btn" id="newChatBtn" title="新建对话"><i class="fas fa-plus"></i></button>
     </div>
     <div class="chat-list" id="chatList">
       <div class="chat-list-item active">
@@ -563,25 +668,12 @@
     </div>
   </div>
 
-  <!-- 右侧聊天区 -->
   <div class="agent-main">
     <div class="agent-topbar">
       <span class="agent-topbar-title" id="chatTitle">新对话</span>
-      <div class="agent-topbar-actions">
-        <div class="model-selector">
-          <button class="model-select-btn" id="modelSelectBtn">
-            <span class="dot"></span>
-            <span id="currentModel">deepseek-chat</span>
-            <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="model-dropdown" id="modelDropdown">
-            <div class="model-option" data-model="deepseek-chat">deepseek-chat</div>
-          </div>
-        </div>
-      </div>
+      <div class="agent-topbar-actions"></div>
     </div>
 
-    <!-- 消息区 / 欢迎屏 -->
     <div class="agent-messages" id="agentMessages">
       <div class="agent-welcome" id="agentWelcome">
         <div class="agent-welcome-icon"><i class="fas fa-robot"></i></div>
@@ -608,360 +700,396 @@
       </div>
     </div>
 
-    <!-- 输入栏 -->
     <div class="agent-input-area">
+      <!-- 模型选择器 -->
+      <div class="input-model-selector">
+        <span class="input-model-label">模型</span>
+        <div class="model-chip-group" id="modelChipGroup"></div>
+      </div>
+
+      <!-- 图片预览栏 -->
+      <div class="image-preview-bar" id="imagePreviewBar"></div>
+
       <div class="agent-input-box">
         <textarea class="agent-textarea" id="agentInput" placeholder="向 MUST Agent 提问…" rows="1"></textarea>
         <div class="agent-input-footer">
           <div class="agent-input-tools">
             <button class="agent-tool-btn" id="uploadImageBtn" title="上传图片"><i class="far fa-image"></i></button>
-            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
             <button class="agent-tool-btn" title="表情"><i class="far fa-smile"></i></button>
             <button class="agent-tool-btn" title="清空对话" id="clearChatBtn"><i class="fas fa-trash-alt"></i></button>
           </div>
-          <button class="agent-send-btn" id="agentSendBtn" disabled>
-            <i class="fas fa-paper-plane"></i>
-          </button>
+          <button class="agent-send-btn" id="agentSendBtn" disabled><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
-      <div class="agent-input-hint">MUST Agent 仅供参考，不代表官方意见</div>
+      <div class="agent-input-hint">AzureCanvas Agent 仅供参考，不代表官方意见</div>
     </div>
   </div>
 </div>
 
 <script>
-  // 配置信息
-  const API_CONFIG = {
-    baseURL: 'http://localhost:8080/api/chat',
-    apiKey: ''
+  const OLLAMA_CONFIG = {
+    host: 'http://192.168.1.100:11434',
+    model: 'qwen:4b'
   };
 
-  // 提示词
-  const SYSTEM_PROMPT = "你是树洞ai,帮助用户生成帖子的内容，你热情友好，积极和用户互动";
+  const AVAILABLE_MODELS = [
+    { id: 'qwen:4b', name: 'qwen 4B', desc: '轻量快速' },
+    { id: 'deepseek-v3.1:671b-cloud', name: 'deepseek-v3.1 671B', desc: '强推理' },
+    { id: 'deepseek-r1:7b', name: 'deepseek-r1 7B', desc: '深度思考' }
+  ];
 
-  let messages = [];
+  const STORAGE_KEY = 'must-treehole-sessions';
+  const MODEL_STORAGE_KEY = 'must-agent-model';
+  const SYSTEM_PROMPT = '你是 树洞 AI 助手，语气温暖、简短、友好。你帮助用户解答校园问题、倾听烦恼、提供建议。请自然地回复用户的问题。';
+  const MAX_IMAGES = 6;
+  const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+
+  let sessions = [];
+  let currentSessionId = null;
   let isTyping = false;
-  let chatSessions = [{ id: 1, title: "新对话", messages: [] }];
-  let currentSession = 0;
-  let currentModel = 'gpt-4o-mini';
+  let abortController = null;
+  let currentModel = localStorage.getItem(MODEL_STORAGE_KEY) || 'qwen:4b';
+  let pendingImages = [];
 
-  const agentMessages = document.getElementById("agentMessages");
-  const agentWelcome = document.getElementById("agentWelcome");
-  const agentInput = document.getElementById("agentInput");
-  const agentSendBtn = document.getElementById("agentSendBtn");
+  const agentMessages = document.getElementById('agentMessages');
+  const agentWelcome = document.getElementById('agentWelcome');
+  const agentInput = document.getElementById('agentInput');
+  const agentSendBtn = document.getElementById('agentSendBtn');
+  const chatListEl = document.getElementById('chatList');
+  const chatTitleEl = document.getElementById('chatTitle');
+  const imagePreviewBar = document.getElementById('imagePreviewBar');
+  const modelChipGroup = document.getElementById('modelChipGroup');
 
-  agentInput.addEventListener("input", () => {
-    agentSendBtn.disabled = !agentInput.value.trim() || isTyping;
-    agentInput.style.height = "auto";
-    agentInput.style.height = Math.min(agentInput.scrollHeight, 160) + "px";
-  });
-
-  agentInput.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  });
-
-  agentSendBtn.addEventListener("click", sendMessage);
-
-  // 模型选择功能
-  const modelSelectBtn = document.getElementById('modelSelectBtn');
-  const modelDropdown = document.getElementById('modelDropdown');
-  const currentModelEl = document.getElementById('currentModel');
-
-  // 图片上传功能
-  const uploadImageBtn = document.getElementById('uploadImageBtn');
-  const imageInput = document.getElementById('imageInput');
-
-  // 点击上传按钮触发文件选择
-  uploadImageBtn.addEventListener('click', () => {
-    imageInput.click();
-  });
-
-  // 处理文件选择
-  imageInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // 检查文件类型
-      if (!file.type.startsWith('image/')) {
-        alert('请选择图片文件！');
-        return;
-      }
-
-      // 检查文件大小
-      if (file.size > 5 * 1024 * 1024) {
-        alert('图片大小不能超过 5MB！');
-        return;
-      }
-
-      // 预览图片
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageUrl = event.target.result;
-        // 显示图片
-        appendImageMessage('user', imageUrl);
-        // 清空文件输入
-        imageInput.value = '';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  // 添加图片消息
-  function appendImageMessage(role, imageUrl) {
-    const isUser = role === "user";
-    const group = document.createElement("div");
-    group.className = `msg-group ${isUser ? "user-group" : ""}`;
-    const avatarClass = isUser ? "user-avatar-icon" : "agent-avatar-icon";
-    const avatarContent = isUser ? "我" : '<i class="fas fa-robot"></i>';
-    const bubbleClass = isUser ? "msg-bubble-user" : "msg-bubble-agent";
-    const name = isUser ? "你" : "MUST 树洞 AI";
-
-    group.innerHTML = `
-        <div class="msg-group-avatar ${avatarClass}">${avatarContent}</div>
-        <div class="msg-group-body">
-          <div class="msg-group-name">${name}</div>
-          <div class="${bubbleClass}">
-            <img src="${imageUrl}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
-          </div>
-        </div>`;
-
-    agentMessages.appendChild(group);
-    agentMessages.scrollTop = agentMessages.scrollHeight;
-
-    // 添加到消息列表
-    messages.push({ role: role, type: 'image', content: imageUrl });
+  function initModelChips() {
+    modelChipGroup.innerHTML = '';
+    AVAILABLE_MODELS.forEach(m => {
+      const chip = document.createElement('div');
+      chip.className = `model-chip${m.id === currentModel ? ' active' : ''}`;
+      chip.dataset.model = m.id;
+      chip.innerHTML = `<span class="chip-dot"></span>${m.name}`;
+      chip.title = m.desc;
+      chip.addEventListener('click', () => selectModel(m.id));
+      modelChipGroup.appendChild(chip);
+    });
   }
 
-  modelSelectBtn.addEventListener('click', () => {
-    modelDropdown.classList.toggle('show');
-  });
+  function selectModel(modelId) {
+    if (isTyping) return;
+    currentModel = modelId;
+    OLLAMA_CONFIG.model = modelId;
+    localStorage.setItem(MODEL_STORAGE_KEY, modelId);
+    modelChipGroup.querySelectorAll('.model-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.model === modelId);
+    });
+    console.log(`[Agent] 切换模型 → ${modelId}`);
+  }
 
-  // 点击其他地方关闭下拉菜单
-  document.addEventListener('click', (e) => {
-    if (!modelSelectBtn.contains(e.target) && !modelDropdown.contains(e.target)) {
-      modelDropdown.classList.remove('show');
+  function loadSessions() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      sessions = raw ? JSON.parse(raw) : [];
+      if (!sessions.length) {
+        createNewSession();
+      } else {
+        currentSessionId = sessions[0].id;
+        renderChatList();
+        renderCurrentSession();
+      }
+    } catch (e) {
+      console.error('加载会话失败:', e);
+      sessions = [];
+      createNewSession();
     }
-  });
+  }
 
-  // 选择模型
-  document.querySelectorAll('.model-option').forEach(option => {
-    option.addEventListener('click', () => {
-      currentModel = option.dataset.model;
-      currentModelEl.textContent = currentModel;
-      modelDropdown.classList.remove('show');
+  function saveSessions() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); } catch (e) { console.error('保存会话失败:', e); }
+  }
+
+  function createNewSession() {
+    const session = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title: '新对话', messages: [], createdAt: Date.now() };
+    sessions.unshift(session);
+    currentSessionId = session.id;
+    saveSessions();
+    renderChatList();
+    renderCurrentSession();
+  }
+
+  function getCurrentSession() { return sessions.find(s => s.id === currentSessionId) || null; }
+
+  function switchSession(sessionId) { if (!isTyping && sessionId !== currentSessionId) { currentSessionId = sessionId; renderChatList(); renderCurrentSession(); } }
+
+  function deleteSession(sessionId, event) {
+    event.stopPropagation();
+    if (sessions.length <= 1) { alert('至少保留一个会话'); return; }
+    sessions = sessions.filter(s => s.id !== sessionId);
+    if (currentSessionId === sessionId) currentSessionId = sessions[0].id;
+    saveSessions();
+    renderChatList();
+    renderCurrentSession();
+  }
+
+  function renderChatList() {
+    chatListEl.innerHTML = '';
+    sessions.forEach(session => {
+      const item = document.createElement('div');
+      item.className = `chat-list-item${session.id === currentSessionId ? ' active' : ''}`;
+      item.innerHTML = `<i class="fas fa-comment-dots"></i><span class="chat-list-item-text">${escapeHtml(session.title)}</span><span class="chat-list-item-time">${formatTime(session.createdAt)}</span>${sessions.length > 1 ? '<i class="fas fa-times" style="color:var(--text-muted);font-size:0.7rem;cursor:pointer;margin-left:4px;" onclick=""></i>' : ''}`;
+      item.addEventListener('click', () => switchSession(session.id));
+      const closeBtn = item.querySelector('.fa-times');
+      if (closeBtn) closeBtn.addEventListener('click', (e) => deleteSession(session.id, e));
+      chatListEl.appendChild(item);
     });
-  });
+  }
 
-  document.querySelectorAll(".suggestion-card").forEach(card => {
-    card.addEventListener("click", () => {
-      agentInput.value = card.dataset.prompt;
-      agentSendBtn.disabled = false;
-      sendMessage();
-    });
-  });
-
-  document.getElementById("newChatBtn").addEventListener("click", () => {
-    messages = [];
-    agentMessages.innerHTML = "";
-    agentMessages.appendChild(agentWelcome);
-    agentWelcome.style.display = "flex";
-    document.getElementById("chatTitle").textContent = "新对话";
-    const item = document.createElement("div");
-    item.className = "chat-list-item active";
-    item.innerHTML = `<i class="fas fa-comment-dots"></i><span class="chat-list-item-text">新对话</span><span class="chat-list-item-time">刚刚</span>`;
-    document.querySelectorAll(".chat-list-item").forEach(i => i.classList.remove("active"));
-    document.getElementById("chatList").insertBefore(item, document.getElementById("chatList").firstChild);
-  });
-
-  document.getElementById("clearChatBtn").addEventListener("click", () => {
-    if (!messages.length) return;
-    if (confirm("确定清空当前对话？")) {
-      messages = [];
-      agentMessages.innerHTML = "";
+  function renderCurrentSession() {
+    const session = getCurrentSession();
+    if (!session) return;
+    chatTitleEl.textContent = session.title;
+    agentMessages.innerHTML = '';
+    if (session.messages.length === 0) {
+      agentWelcome.style.display = 'flex';
       agentMessages.appendChild(agentWelcome);
-      agentWelcome.style.display = "flex";
+    } else {
+      agentWelcome.style.display = 'none';
+      session.messages.forEach(msg => appendMessage(msg.role, msg.content, null, false));
     }
-  });
+    agentSendBtn.disabled = !agentInput.value.trim() && pendingImages.length === 0 || isTyping;
+  }
 
+  function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
+
+  function formatTime(timestamp) {
+    const d = new Date(timestamp), diff = Date.now() - timestamp;
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+    if (d.toDateString() === new Date().toDateString()) return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
+  }
+
+  function formatContent(text) { return escapeHtml(text).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); }
+
+  /* ===== 图片预览栏管理 ===== */
+  function renderImagePreview() {
+    imagePreviewBar.innerHTML = '';
+    if (pendingImages.length > 0) {
+      imagePreviewBar.classList.add('has-images');
+      pendingImages.forEach((imgData, idx) => {
+        const item = document.createElement('div');
+        item.className = 'image-preview-item';
+        item.innerHTML = `<img src="${imgData.preview}" alt="预览"><button class="preview-delete" data-idx="${idx}"><i class="fas fa-times"></i></button>`;
+        item.querySelector('.preview-delete').addEventListener('click', (e) => { e.stopPropagation(); removePendingImage(idx); });
+        imagePreviewBar.appendChild(item);
+      });
+    } else {
+      imagePreviewBar.classList.remove('has-images');
+    }
+    agentSendBtn.disabled = !agentInput.value.trim() && pendingImages.length === 0 || isTyping;
+  }
+
+  function addPendingImage(file) {
+    if (pendingImages.length >= MAX_IMAGES) { alert(`最多添加 ${MAX_IMAGES} 张图片`); return; }
+    if (!file.type.startsWith('image/')) { alert('请选择图片文件'); return; }
+    if (file.size > MAX_IMAGE_SIZE) { alert('单张图片不能超过 10MB'); return; }
+    const reader = new FileReader();
+    reader.onload = ev => { pendingImages.push({ file, preview: ev.target.result, base64: ev.target.result }); renderImagePreview(); };
+    reader.readAsDataURL(file);
+  }
+
+  function removePendingImage(idx) { pendingImages.splice(idx, 1); renderImagePreview(); }
+  function clearPendingImages() { pendingImages = []; renderImagePreview(); }
+
+  /* ===== AI 加载动画 ===== */
+  function showAILoading() {
+    hideAILoading();
+    const wrapper = document.createElement('div');
+    wrapper.className = 'ai-loading-wrapper';
+    wrapper.id = 'aiLoadingIndicator';
+    wrapper.innerHTML = `<div class="ai-loading-avatar"><i class="fas fa-robot"></i></div><div class="ai-loading-bubble"><div class="ai-loading-dots"><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div></div></div>`;
+    agentMessages.appendChild(wrapper);
+    agentMessages.scrollTop = agentMessages.scrollHeight;
+  }
+
+  function hideAILoading() { const el = document.getElementById('aiLoadingIndicator'); if (el) el.remove(); }
+
+  /* ===== 消息发送与流式接收 ===== */
   async function sendMessage() {
-    const userInput = agentInput.value.trim();
-    if (!userInput || isTyping) return;
+    const text = agentInput.value.trim();
+    if ((!text && pendingImages.length === 0) || isTyping) return;
 
-    agentWelcome.style.display = "none";
-    agentInput.value = "";
-    agentInput.style.height = "auto";
+    const session = getCurrentSession();
+    if (!session) return;
+
+    abortController = new AbortController();
+    isTyping = true;
     agentSendBtn.disabled = true;
 
-    // 先显示用户消息
-    appendMessage("user", userInput);
-    messages.push({ role: "user", text: userInput });
-
-    // 更新会话标题
-    if (messages.length === 1) {
-      const title = userInput.slice(0, 18) + (userInput.length > 18 ? "…" : "");
-      document.getElementById("chatTitle").textContent = title;
-      const activeItem = document.querySelector(".chat-list-item.active .chat-list-item-text");
-      if (activeItem) activeItem.textContent = title;
+    if (session.messages.length === 0 && text) {
+      session.title = text.slice(0, 30) + (text.length > 30 ? '...' : '');
+      renderChatList();
+      chatTitleEl.textContent = session.title;
     }
 
-    showTyping();
+    if (pendingImages.length > 0) {
+      appendMessageWithImages('user', text, pendingImages.map(p => p.base64));
+    } else {
+      appendMessage('user', text);
+    }
 
-    const tempId = "ai-" + Date.now();
-    removeTyping();
-    // 创建 AI 消息占位
-    appendMessage("agent", "", tempId);
+    session.messages.push({ role: 'user', content: text, images: pendingImages.map(p => p.base64) });
+    saveSessions();
+
+    agentInput.value = '';
+    agentInput.style.height = 'auto';
+    clearPendingImages();
+
+    showAILoading();
+    agentWelcome.style.display = 'none';
 
     try {
-      // 1. 知识库调用（即使失败也不影响对话）
-      let context = "";
-      try {
-        const res = await fetch(`http://localhost:8080/api/knowledge/search?keyword=${encodeURIComponent(userInput)}`);
-        const docs = await res.json();
-        console.log('知识库搜索结果:', docs);
-        if (docs && docs.length > 0) {
-          context = docs.map(d => `【参考】${d.title || "无标题"}：${d.content}`).join("\n---\n");
-        }
-      } catch (err) {
-        console.warn("知识库调用失败，继续对话:", err);
-      }
+      const ollamaMessages = [{ role: 'system', content: SYSTEM_PROMPT }];
+      session.messages.forEach(m => {
+        if (m.role === 'user') ollamaMessages.push({ role: 'user', content: m.content || '[图片]' });
+        else ollamaMessages.push({ role: 'assistant', content: m.content });
+      });
 
-      // 2. 构建系统提示词（确保不为空）
-      const systemPrompt = `你是 AzureCanvas 树洞 AI 助手，语气温暖、简短、友好。
-${context ? "以下是相关参考内容：\n" + context : ""}
-请自然地回复用户的问题，不需要引用参考来源。`;
-
-      // 3. 构建请求体（强制保证 messages 不为空）
       const requestBody = {
-        model: "deepseek-chat",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userInput || "你好" }
-        ],
+        model: currentModel,
+        messages: ollamaMessages,
         stream: true,
-        max_tokens: 800
+        options: { temperature: 0.7, num_predict: 2048 }
       };
 
-      console.log('发送 API 请求:', API_CONFIG.baseURL);
-      console.log('API Key:', API_CONFIG.apiKey);
-      console.log('请求体:', requestBody);
+      const hasImagesInHistory = session.messages.some(m => m.images && m.images.length > 0);
+      if (hasImagesInHistory) {
+        requestBody.images = [];
+        session.messages.forEach(m => {
+          if (m.images) m.images.forEach(img => {
+            requestBody.images.push(img.startsWith('data:') ? img.split(',')[1] : img);
+          });
+        });
+      }
 
-      // 调用 API
-      const response = await fetch(API_CONFIG.baseURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${API_CONFIG.apiKey}`
-        },
+      const response = await fetch(`${OLLAMA_CONFIG.host}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: abortController.signal,
         body: JSON.stringify(requestBody)
       });
 
-      console.log('API 响应状态:', response.status);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-      if (!response.ok) {
-        // 尝试获取错误详情
-        try {
-          const errorData = await response.json();
-          console.error('API 错误详情:', errorData);
-          throw new Error('API 调用失败: ' + response.status + ' - ' + (errorData.error?.message || 'Unknown error'));
-        } catch (e) {
-          throw new Error('API 调用失败: ' + response.status);
-        }
-      }
+      hideAILoading();
+      const tempId = 'msg-' + Date.now();
+      appendMessage('assistant', '', tempId);
 
-      // 流式输出
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let aiReply = "";
+      let aiReply = '';
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
         const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
-
-        for (const line of lines) {
-          const jsonStr = line.slice(5).trim();
-          if (jsonStr === "[DONE]") break;
-
+        for (const line of chunk.split('\n').filter(l => l.trim())) {
           try {
-            const data = JSON.parse(jsonStr);
-            const delta = data.choices?.[0]?.delta?.content;
-            if (delta) {
-              aiReply += delta;
-              updateMessage(tempId, aiReply);
-            }
-          } catch (e) {
-            console.warn("解析流数据失败:", e);
-          }
+            const data = JSON.parse(line);
+            if (data.done) continue;
+            const delta = data.message?.content;
+            if (delta) { aiReply += delta; updateMessage(tempId, aiReply); }
+          } catch (e) {}
         }
       }
 
-      // 流式输出完成，更新消息列表
-      messages.push({ role: "agent", text: aiReply });
+      session.messages.push({ role: 'assistant', content: aiReply });
+      saveSessions();
     } catch (err) {
-      console.error("对话失败:", err);
-      updateMessage(tempId, "抱歉，我暂时无法回复，请稍后再试~");
-      messages.push({ role: "agent", text: "抱歉，我暂时无法回复，请稍后再试~" });
+      hideAILoading();
+      if (err.name !== 'AbortError') {
+        session.messages.push({ role: 'assistant', content: '抱歉，连接失败，请稍后再试~' });
+        appendMessage('assistant', '抱歉，连接失败，请稍后再试~');
+        saveSessions();
+      }
     } finally {
       isTyping = false;
-      agentSendBtn.disabled = !agentInput.value.trim();
+      abortController = null;
+      agentSendBtn.disabled = !agentInput.value.trim() && pendingImages.length === 0;
     }
   }
 
-  // 更新消息内容
+  function appendMessage(role, content, messageId = null, scroll = true) {
+    const isUser = role === 'user';
+    const group = document.createElement('div');
+    group.className = `msg-group ${isUser ? 'user-group' : ''}`;
+    const avatarClass = isUser ? 'user-avatar-icon' : 'agent-avatar-icon';
+    const avatarContent = isUser ? '我' : '<i class="fas fa-robot"></i>';
+    const bubbleClass = isUser ? 'msg-bubble-user' : 'msg-bubble-agent';
+    const name = isUser ? '你' : '树洞 AI';
+    group.innerHTML = `<div class="msg-group-avatar ${avatarClass}">${avatarContent}</div><div class="msg-group-body"><div class="msg-group-name">${name}</div><div class="${bubbleClass}" ${messageId ? `id="${messageId}"` : ''}>${formatContent(content)}</div></div>`;
+    agentMessages.appendChild(group);
+    if (scroll) agentMessages.scrollTop = agentMessages.scrollHeight;
+  }
+
+  function appendMessageWithImages(role, text, imageUrls) {
+    const isUser = role === 'user';
+    const group = document.createElement('div');
+    group.className = `msg-group ${isUser ? 'user-group' : ''}`;
+    const avatarClass = isUser ? 'user-avatar-icon' : 'agent-avatar-icon';
+    const avatarContent = isUser ? '我' : '<i class="fas fa-robot"></i>';
+    const bubbleClass = isUser ? 'msg-bubble-user' : 'msg-bubble-agent';
+    const name = isUser ? '你' : '树洞 AI';
+    let bodyHtml = `<div class="msg-group-name">${name}</div><div class="${bubbleClass}">`;
+    if (text) bodyHtml += formatContent(text);
+    if (imageUrls && imageUrls.length > 0) {
+      bodyHtml += `<div class="msg-image-grid">`;
+      imageUrls.forEach(url => { bodyHtml += `<img src="${url}" alt="图片">`; });
+      bodyHtml += `</div>`;
+    }
+    bodyHtml += `</div>`;
+    group.innerHTML = `<div class="msg-group-avatar ${avatarClass}">${avatarContent}</div><div class="msg-group-body">${bodyHtml}</div>`;
+    agentMessages.appendChild(group);
+    agentMessages.scrollTop = agentMessages.scrollHeight;
+  }
+
   function updateMessage(messageId, content) {
-    const messageElement = document.getElementById(messageId);
-    if (messageElement) {
-      const formattedText = content.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-      messageElement.innerHTML = formattedText;
-      agentMessages.scrollTop = agentMessages.scrollHeight;
-    }
+    const el = document.getElementById(messageId);
+    if (el) { el.innerHTML = formatContent(content); agentMessages.scrollTop = agentMessages.scrollHeight; }
   }
 
-  // 修改 appendMessage 函数，添加 messageId 参数
-  function appendMessage(role, text, messageId = null) {
-    const isUser = role === "user";
-    const group = document.createElement("div");
-    group.className = `msg-group ${isUser ? "user-group" : ""}`;
-    const avatarClass = isUser ? "user-avatar-icon" : "agent-avatar-icon";
-    const avatarContent = isUser ? "我" : '<i class="fas fa-robot"></i>';
-    const bubbleClass = isUser ? "msg-bubble-user" : "msg-bubble-agent";
-    const name = isUser ? "你" : "MUST 树洞 AI";
-    const formattedText = text.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-    const bubbleId = messageId ? `id="${messageId}"` : "";
-    group.innerHTML = `
-        <div class="msg-group-avatar ${avatarClass}">${avatarContent}</div>
-        <div class="msg-group-body">
-          <div class="msg-group-name">${name}</div>
-          <div class="${bubbleClass}" ${bubbleId}>${formattedText}</div>
-        </div>`;
-    agentMessages.appendChild(group);
-    agentMessages.scrollTop = agentMessages.scrollHeight;
-  }
+  /* ===== 事件绑定 ===== */
+  agentInput.addEventListener('input', () => {
+    agentSendBtn.disabled = !agentInput.value.trim() && pendingImages.length === 0 || isTyping;
+    agentInput.style.height = 'auto';
+    agentInput.style.height = Math.min(agentInput.scrollHeight, 160) + 'px';
+  });
 
-  function showTyping() {
-    isTyping = true;
-    const group = document.createElement("div");
-    group.className = "msg-group";
-    group.id = "typingGroup";
-    group.innerHTML = `
-    <div class="msg-group-avatar agent-avatar-icon"><i class="fas fa-robot"></i></div>
-    <div class="msg-group-body">
-      <div class="msg-group-name">MUST Agent</div>
-      <div class="typing-indicator">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-      </div>
-    </div>`;
-    agentMessages.appendChild(group);
-    agentMessages.scrollTop = agentMessages.scrollHeight;
-  }
+  agentInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
 
-  function removeTyping() {
-    const el = document.getElementById("typingGroup");
-    if (el) el.remove();
-  }
+  agentSendBtn.addEventListener('click', sendMessage);
+
+  document.querySelectorAll('.suggestion-card').forEach(card => {
+    card.addEventListener('click', () => { agentInput.value = card.dataset.prompt; agentSendBtn.disabled = false; sendMessage(); });
+  });
+
+  document.getElementById('newChatBtn').addEventListener('click', () => { if (!isTyping) createNewSession(); });
+
+  document.getElementById('clearChatBtn').addEventListener('click', () => {
+    if (isTyping) return;
+    const s = getCurrentSession();
+    if (s) { s.messages = []; s.title = '新对话'; saveSessions(); renderCurrentSession(); renderChatList(); }
+    clearPendingImages();
+  });
+
+  document.getElementById('uploadImageBtn').addEventListener('click', () => document.getElementById('imageInput').click());
+
+  document.getElementById('imageInput').addEventListener('change', e => {
+    Array.from(e.target.files).forEach(file => addPendingImage(file));
+    e.target.value = '';
+  });
+
+  initModelChips();
+  loadSessions();
 </script>
 <script type="importmap">
   {
@@ -975,5 +1103,4 @@ ${context ? "以下是相关参考内容：\n" + context : ""}
   initLiquidEffect();
 </script>
 </body>
-
 </html>

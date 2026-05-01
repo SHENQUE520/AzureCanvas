@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EsStoryMapService {
     SearchHits<EsStoryMap> searchStoryMap(String keyword, int page, int size);
-    void syncStoryMapFromJson();
+    void syncStoryMapFromDb();
+    void incrementalSyncStoryMap();
     List<EsStoryMap> getAllStoryMaps(int page, int size);
 }

@@ -708,18 +708,6 @@
         securityJsCode: 'e63fb52ca8a343c906e699296138ce7b',
     }
 </script>
-<script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-            }
-        }
-</script>
-<script type="module">
-        import { initLiquidEffect } from "../js/effects/liquid/liquid.js";
-        initLiquidEffect();
-</script>
-
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=a93cadfe783d24d3b7b7e9df5b22e14e&plugin=AMap.Geocoder"></script>
 
     <script>
@@ -861,10 +849,14 @@
     </script>
     <script src="../js/app/seeds.js"></script>
     <script src="../js/app/trade.js"></script>
-</body>
-</html>
-
-    <script src="../js/app/seeds.js"></script>
-    <script src="../js/app/trade.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+            }
+        }
+    </script>
+    <script type="module" src="../js/effects/liquid/liquid.js">
+    </script>
 </body>
 </html>

@@ -38,7 +38,7 @@ class NotificationManager {
         notification.className = `
             pointer-events-auto
             flex items-center gap-3 px-4 py-3 rounded-2xl
-            backdrop-filter blur-xl border
+            backdrop-filter border
             ${config.bg} ${config.border} ${config.text}
             shadow-2xl shadow-black/20
             translate-x-full opacity-0 transition-all duration-500 ease-out

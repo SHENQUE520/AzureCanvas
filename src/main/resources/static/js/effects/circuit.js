@@ -141,7 +141,7 @@
                 this.colorHue = colorHue;
                 this.active = true;
                 this.length = 0;
-                this.maxLength = 80 + Math.random() * 100;  // 总节点数
+                this.maxLength = 80 + Math.random() * 50;  // 总节点数
                 this.currentDirIdx = startDirIdx;
                 this.branches = [];
                 this.hasBranched = false;

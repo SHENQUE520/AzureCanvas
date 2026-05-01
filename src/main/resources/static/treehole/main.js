@@ -133,6 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== 1. 初始化数据层 =====
   Store.init();
+  
+  // 从 API 加载关注列表
+  Store.fetchFollowingFromApi().catch(() => {});
 
   // ===== 2. 初始化各功能模块 =====
   UserModule.init();
@@ -424,11 +427,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===== 关注按钮 & 作者气泡 =====
   window.bindFollowBtns = function (root) {
     (root || document).querySelectorAll(".follow-btn-card").forEach(btn => {
-      btn.addEventListener("click", e => {
+      btn.addEventListener("click", async e => {
         e.stopPropagation();
         const uid = btn.dataset.authorId;
-        Store.toggleFollow(uid);
-        const following = Store.isFollowing(uid);
+        const following = await Store.toggleFollow(uid);
         btn.innerHTML = following
           ? '<i class="fas fa-check"></i> 已关注'
           : '<i class="fas fa-plus"></i> 关注';
@@ -446,11 +448,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     (root || document).querySelectorAll(".ap-follow-btn").forEach(btn => {
-      btn.addEventListener("click", e => {
+      btn.addEventListener("click", async e => {
         e.stopPropagation();
         const uid = btn.dataset.authorId;
-        Store.toggleFollow(uid);
-        const following = Store.isFollowing(uid);
+        const following = await Store.toggleFollow(uid);
         btn.textContent = following ? "已关注" : "+ 关注";
         btn.classList.toggle("following", following);
         const card = btn.closest(".post-card");
@@ -526,36 +527,4 @@ document.addEventListener("DOMContentLoaded", () => {
     await refreshFeed();
     Render.updateNotifBadges();
   })();
-
-  // ===== 17. 定时任务更新数据 =====
-  function setupUpdateTask() {
-    // 每5分钟更新一次数据
-    setInterval(async () => {
-      try {
-        // 调用后端API更新数据
-        const response = await fetch('/api/treeholes/update', {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.ok) {
-          console.log('数据更新成功');
-          // 如果当前有搜索，刷新搜索结果
-          if (window._curQuery) {
-            await refreshFeed();
-          }
-        } else {
-          console.warn('数据更新失败');
-        }
-      } catch (error) {
-        console.warn('定时任务执行失败:', error);
-      }
-    }, 5 * 60 * 1000); // 5分钟
-  }
-
-  // 启动定时任务
-  setupUpdateTask();
 });

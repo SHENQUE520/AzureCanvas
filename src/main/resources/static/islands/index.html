@@ -5,24 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azure空岛传送门</title>
     <link rel="stylesheet" href="../css/skyland/skyland.major.css">
+    <style>
+        /* 开场动画艺术字样式 */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 500;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .intro-text-container {
+            text-align: center;
+            transform: translateY(30px);
+        }
+
+        .intro-line-welcome {
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            opacity: 0;
+            text-shadow: 0 2px 20px rgba(126, 194, 255, 0.5);
+        }
+
+        .intro-line-title {
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7ec2ff 0%, #ffffff 50%, #bde0ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 8px;
+            margin-top: 15px;
+            opacity: 0;
+            filter: drop-shadow(0 4px 30px rgba(126, 194, 255, 0.6));
+        }
+
+        @media (max-width: 768px) {
+            .intro-line-welcome { font-size: 1.3rem; letter-spacing: 6px; }
+            .intro-line-title { font-size: 2.8rem; letter-spacing: 4px; }
+        }
+    </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div id="overlay"></div>
+<div id="canvas-container"></div>
+<div id="overlay"></div>
 
-    <!-- 引入库文件 -->
-    <script type="importmap">
+<!-- 开场动画层 -->
+<div id="intro-overlay">
+    <div class="intro-text-container">
+        <div class="intro-line-welcome">Welcome To...</div>
+        <div class="intro-line-title">Azure Skyland</div>
+    </div>
+</div>
+
+<!-- 引入库文件 -->
+<script type="importmap">
     {
         "imports": {
             "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
         }
     }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <!-- 引入自定义逻辑 -->
-    <script type="module" src="../js/effects/islands.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<!-- 引入自定义逻辑 -->
+<script type="module" src="../js/effects/islands.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 
 </html>

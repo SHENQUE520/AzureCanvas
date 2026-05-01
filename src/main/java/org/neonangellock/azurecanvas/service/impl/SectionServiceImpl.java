@@ -53,4 +53,9 @@ public class SectionServiceImpl extends AbstractQueryService implements SectionS
         query.setParameter("user_id", user.getUserId());
         return query.getResultList();
     }
+
+    @Override
+    public List<Section> findAllWithRange(int page, int limit) {
+        return null;
+    }
 }

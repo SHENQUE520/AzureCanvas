@@ -72,7 +72,7 @@ public class StoryMapServiceImpl extends AbstractQueryService implements IStoryM
     public List<StoryMap> findAll() {
         return repository.findAll();
     }
-
+    @Override
     public List<StoryMap> findAllWithRange(int page, int limit) {
         return repository.findAll(PageRequest.of(page - 1, limit, Sort.by("createdAt").descending())).getContent();
     }

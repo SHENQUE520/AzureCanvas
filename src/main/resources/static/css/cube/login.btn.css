@@ -1,0 +1,13 @@
+#loginButton{
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: linear-gradient(to right, #0bebff 0%, #09a4ff 100%);
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

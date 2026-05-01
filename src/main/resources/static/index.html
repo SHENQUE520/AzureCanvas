@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="css/color_scheme/colors.primary.css">
     <link rel="stylesheet" href="css/app.major.css">
     <link rel="stylesheet" href="css/attributes.texts.css">
+    <link rel="stylesheet" href="css/cube/cube.navcards.css">
+    <link rel="stylesheet" href="css/cube/login.btn.css">
+    <link rel="stylesheet" href="css/index.cube.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
@@ -40,7 +43,7 @@
             <i class="fas fa-university"></i>
             <div class="logo-text">MUST</div>
             <div class="logo-sub">澳门科技大学</div>
-            <div style="font-size:1rem; margin-top:10px; color: rgba(255,255,255,0.6); ">点击进入 · 星河社区</div>
+            <div id="splash-text">点击进入 · 星河社区</div>
         </div>
     </div>
 
@@ -61,14 +64,84 @@
     </div>
 
     <!-- 欢迎提示 -->
-    <div id="welcomeMessage"
-        style="display: none; position: fixed; top: 80px; right: 20px; padding: 15px 20px; background: rgba(0, 123, 255, 0.9); color: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); z-index: 10000;">
+    <div id="welcomeMessage">
         欢迎回来，<span id="welcomeUsername"></span>！
     </div>
     <!--        </div>-->
 
     <!-- 立方体容器 -->
     <div id="cube-container"></div>
+
+    <!-- 导航毛玻璃卡片 -->
+    <div id="nav-cards-container">
+        <div class="nav-card" data-link="./azure_trade/trade.html" data-color="#FF1493" data-position="top-center">
+<!--            <div class="nav-card-edge" style="&#45;&#45;glow-color: #FF1493;"></div>-->
+            <div class="nav-card-liquid"></div>
+            <div class="nav-card-glow" style="background: radial-gradient(circle, #FF1493 0%, transparent 60%);"></div>
+            <div class="nav-card-glow-pulse" style="--glow-color: #FF1493;"></div>
+<!--            <div class="nav-card-shine"></div>-->
+            <div class="nav-card-content">
+                <i class="fas fa-shopping-bag"></i>
+                <span>校园二手交易</span>
+            </div>
+        </div>
+        <div class="nav-card" data-link="./treehole/index.html" data-color="#9400D3" data-position="top-left">
+            <div class="nav-card-edge" style="--glow-color: #9400D3;"></div>
+            <div class="nav-card-liquid"></div>
+            <div class="nav-card-glow" style="background: radial-gradient(circle, #9400D3 0%, transparent 60%);"></div>
+            <div class="nav-card-glow-pulse" style="--glow-color: #9400D3;"></div>
+<!--            <div class="nav-card-shine"></div>-->
+            <div class="nav-card-content">
+                <i class="fas fa-tree"></i>
+                <span>树洞</span>
+            </div>
+        </div>
+        <div class="nav-card" data-link="./storymap/index.html" data-color="#FF0000" data-position="top-right">
+            <div class="nav-card-edge" style="--glow-color: #FF0000;"></div>
+            <div class="nav-card-liquid"></div>
+            <div class="nav-card-glow" style="background: radial-gradient(circle, #FF0000 0%, transparent 60%);"></div>
+            <div class="nav-card-glow-pulse" style="--glow-color: #FF0000;"></div>
+            <div class="nav-card-shine"></div>
+            <div class="nav-card-content">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>故事地图</span>
+            </div>
+        </div>
+        <div class="nav-card" data-link="./islands/index.html" data-color="#00FF00" data-position="bottom-left">
+            <div class="nav-card-edge" style="--glow-color: #00FF00;"></div>
+            <div class="nav-card-liquid"></div>
+            <div class="nav-card-glow" style="background: radial-gradient(circle, #00FF00 0%, transparent 60%);"></div>
+            <div class="nav-card-glow-pulse" style="--glow-color: #00FF00;"></div>
+            <div class="nav-card-shine"></div>
+            <div class="nav-card-content">
+                <i class="fas fa-cloud"></i>
+                <span>空岛大厅</span>
+            </div>
+        </div>
+        <div class="nav-card" data-link="./azure_trade/profile.html" data-color="#00BFFF" data-position="bottom-right">
+            <div class="nav-card-edge" style="--glow-color: #00BFFF;"></div>
+            <div class="nav-card-liquid"></div>
+            <div class="nav-card-glow" style="background: radial-gradient(circle, #00BFFF 0%, transparent 60%);"></div>
+            <div class="nav-card-glow-pulse" style="--glow-color: #00BFFF;"></div>
+            <div class="nav-card-shine"></div>
+            <div class="nav-card-content">
+                <i class="fas fa-user"></i>
+                <span>个人空间</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 白场过渡层 -->
+    <div id="white-flash-overlay"></div>
+
+    <!-- 立方体点击过渡动画层 -->
+    <div id="cube-transition-overlay">
+        <div id="transition-text">
+            <div class="transition-line1">The Eye of</div>
+            <div class="transition-line2">AzureCanvas</div>
+        </div>
+    </div>
+
     <script type="importmap">
             {
                 "imports": {
@@ -88,10 +161,7 @@
     <script src="js/app/app.js"></script>
 
     <!-- 左下角登录按钮 -->
-    <div id="loginButton"
-        style="position: fixed; bottom: 20px; left: 20px; padding: 10px 20px; background: linear-gradient(to right, #0bebff 0%, #09a4ff 100%); color: white; border-radius: 25px; cursor: pointer; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
-        登录
-    </div>
+    <div id="loginButton">登录</div>
 
     <script>
         // 检查用户是否已登录

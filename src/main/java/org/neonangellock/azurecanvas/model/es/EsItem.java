@@ -76,4 +76,8 @@ public class EsItem {
     public void setCanInspect(boolean canInspect) { this.canInspect = canInspect; }
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+
+    public void setFreeShipping(boolean freeShipping) {
+        isFreeShipping = freeShipping;
+    }
 }

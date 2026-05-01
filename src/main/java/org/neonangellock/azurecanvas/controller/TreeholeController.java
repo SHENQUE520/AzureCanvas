@@ -329,19 +329,8 @@ public class TreeholeController {
         return ResponseEntity.ok(responseList);
     }
 
-    /**
-     * 更新树洞数据
-     *
-     * @return 更新结果
-     */
-    @GetMapping("/update")
-    public ResponseEntity<String> updateTreeholes() {
-        try {
-            // 调用ES服务同步数据
-            esTreeHoleService.syncTreeHoleFromApi();
-            return ResponseEntity.ok("数据更新成功");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("数据更新失败: " + e.getMessage());
-        }
+    @GetMapping("/sync/status")
+    public ResponseEntity<Map<String, Object>> getSyncStatus() {
+        return ResponseEntity.ok(esTreeHoleService.getSyncStatus());
     }
 }

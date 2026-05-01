@@ -297,26 +297,26 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   // ===== 我的关注 =====
-  (function() {
-    const users = Store.getFollowedUsers();
-    document.getElementById("followingCount").textContent = `共 ${users.length} 人`;
+  (async function() {
     const listEl = document.getElementById("followingList");
+    const users = await Store.fetchFollowingFromApi();
+    document.getElementById("followingCount").textContent = `共 ${users.length} 人`;
     if (users.length === 0) {
       listEl.innerHTML = `<div class="fav-empty"><i class="fas fa-user-friends"></i>还没有关注任何人</div>`;
       return;
     }
     listEl.innerHTML = users.map(u => `
       <div class="following-card">
-        <div class="following-card-avatar">${Render.escapeHtml(u.avatarLetter || "匿")}</div>
+        <div class="following-card-avatar" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%); color: #fff;">${Render.escapeHtml(u.username ? u.username.substring(0, 1) : (u.avatarLetter || "匿"))}</div>
         <div class="following-card-info">
-          <div class="following-card-name">${Render.escapeHtml(u.nickname)}</div>
-          <div class="following-card-meta">共 ${u.postCount} 条帖子</div>
+          <div class="following-card-name">${Render.escapeHtml(u.username || u.nickname || "用户")}</div>
+          <div class="following-card-meta">ID: ${u.userId || u.id}</div>
         </div>
-        <button class="unfollow-btn" data-uid="${u.id}">取消关注</button>
+        <button class="unfollow-btn" data-uid="${u.userId || u.id}">取消关注</button>
       </div>`).join("");
     listEl.querySelectorAll(".unfollow-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        Store.toggleFollow(btn.dataset.uid);
+      btn.addEventListener("click", async () => {
+        await Store.unfollowUser(btn.dataset.uid);
         const card = btn.closest(".following-card");
         card.style.opacity = "0.4";
         btn.textContent = "已取消";
