@@ -1,0 +1,67 @@
+/* src/styles/main.css */
+/* 动画系统全屏画布与滚动容器样式 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0a0a1a; /* 深色背景，与 Three.js 一致 */
+}
+
+/* Canvas 容器：固定全屏，作为 Three.js 背景层 */
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; /* 让鼠标事件穿透，点击下方 UI */
+}
+
+/* 滚动容器：撑开滚动条，触发动画 */
+.scroll-container {
+  position: relative;
+  z-index: 2;
+  height: 300vh;          /* 足够滚动长度 */
+  background: transparent;
+  pointer-events: none;   /* 如果不需要交互，可设为 none */
+}
+
+/* 可选的滚动提示浮层 */
+.scroll-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #ccc;
+  pointer-events: none;
+  font-family: monospace;
+}
+
+/* 确保 Vite UI 层在画布之上且背景透明 */
+#app {
+  position: relative;
+  z-index: 10;
+  background: transparent !important; /* 覆盖原样式背景 */
+  pointer-events: auto;
+  /* 保留原有的 border、max-width 等样式 */
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .scroll-hint {
+    font-size: 12px;
+  }
+}/*$vite$:1*/

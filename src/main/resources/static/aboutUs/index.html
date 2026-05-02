@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动描边动画 - 螺线（从上到下全程画线）</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #87CEEB;
+            font-family: system-ui, 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .header-section {
+            height: 100px;
+            width: 100%;
+            background: #87CEEB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-section h1 {
+            color: #FFD700;
+            font-size: 3rem;
+            letter-spacing: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .canvas-container {
+            margin: 0 auto;
+            width: 100%;
+            background: linear-gradient(to bottom, #8A2BE2, #87CEEB);
+        }
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .spacer {
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEEB, #8A2BE2);
+        }
+        .top-spacer {
+            height: 200vh;
+            background: #87CEEB;
+            position: relative;
+        }
+
+        .poker-iframe-wrapper {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- 移植自 portal-logic 的外景展示框 --- */
+        .portal-section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #87CEEB;
+            position: relative;
+        }
+
+        #portal-preview-box {
+            width: 600px;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            cursor: pointer;
+            position: relative;
+            background: #000;
+            z-index: 100;
+            /* 防止点击闪烁 */
+            backface-visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-spacer">
+    <div class="header-section">
+        <h1 id="about-us-title">About us</h1>
+    </div>
+    <div id="canvas-container" class="poker-iframe-wrapper"></div>
+</div>
+
+<div class="spacer"></div>
+
+<div class="canvas-container">
+    <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="myGradient" x1="27.85" y1="167.12" x2="154.96" y2="167.12" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#ffa07a" stop-opacity="1" />
+                <stop offset="100%" stop-color="#ffd700" stop-opacity="1" />
+            </linearGradient>
+        </defs>
+        <path id="spiralPath" d="m 68.181817,16.363636 c -3.459103,3.882689 -5.577674,8.937854 -5.920328,14.126617 -0.342654,5.188762 1.092755,10.478624 4.011238,14.782474 3.336848,4.920808 8.467722,8.435947 13.998337,10.617962 5.530616,2.182016 11.473643,3.116865 17.394104,3.661879 5.920464,0.545013 11.875284,0.715834 17.775894,1.444984 5.90062,0.72915 11.80153,2.041119 17.10439,4.72972 5.26379,2.66879 9.8255,6.659803 13.33048,11.407961 3.50497,4.748157 5.96261,10.241185 7.36081,15.974849 2.79641,11.467328 1.32629,23.700428 -2.69129,34.799008 -4.22496,11.67147 -11.28499,22.3581 -20.6384,30.5182 -9.3534,8.1601 -21.00918,13.7375 -33.296009,15.50023 -12.28683,1.76273 -25.162214,-0.3566 -36.048514,-6.31998 -10.886301,-5.96338 -19.676316,-15.79682 -24.017076,-27.42572 -2.652495,-7.10603 -3.652721,-14.87437 -2.489416,-22.36958 1.163306,-7.49521 4.538273,-14.69114 9.845681,-20.109893 5.307408,-5.418753 12.567114,-8.977391 20.136079,-9.469558 7.568965,-0.492167 15.365348,2.183282 20.780382,7.494484 3.827906,3.754507 6.404643,8.704207 7.591972,13.932927 1.187328,5.22871 1.016627,10.72377 -0.184468,15.94933 -2.402189,10.45114 -8.773056,19.59292 -16.134774,27.39047 -7.862901,8.32841 -16.978854,15.44059 -24.448398,24.12353 -3.734771,4.34148 -7.053288,9.08458 -9.408548,14.3047 -2.355261,5.22011 -3.726379,10.94004 -3.506692,16.66268 0.236457,6.15948 2.315606,12.17454 5.517293,17.44182 3.201687,5.26729 7.498738,9.81352 12.271198,13.71464 9.544921,7.80223 20.878296,13.0226 31.626113,19.06122 10.747818,6.03861 21.316237,13.27508 27.849227,23.72976 3.2665,5.22734 5.43346,11.20729 5.77639,17.36176 0.34292,6.15447 -1.20791,12.47663 -4.76749,17.50897 -0.26253,0.37115 -0.5354,0.73498 -0.81819,1.09093" fill="none" stroke="url(#myGradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+</div>
+
+<!-- 新增：瀑布外景移植区域 -->
+<div class="portal-section">
+    <div id="portal-preview-box"></div>
+</div>
+
+<script type="module" src="./poker-animation/src/main.js"></script>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    // --- 移植自 portal-logic 的核心渲染逻辑 ---
+    const PALETTE = [
+        new THREE.Color('#E0F7FA'), new THREE.Color('#B2EBF2'),
+        new THREE.Color('#81D4FA'), new THREE.Color('#4FC3F7'),
+        new THREE.Color('#29B6F6'), new THREE.Color('#0288D1'),
+        new THREE.Color('#01579B'), new THREE.Color('#0D47A1')
+    ];
+
+    const box = document.getElementById('portal-preview-box');
+    
+    // 初始化 Three.js 场景
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050505);
+
+    const viewSize = 10;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(box.clientWidth, box.clientHeight);
+    box.appendChild(renderer.domElement);
+
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
+    camera.position.z = 10;
+
+    // 辅助函数：根据当前容器尺寸更新相机
+    function updateCameraSize(w, h) {
+        const aspect = w / h;
+        camera.left = -viewSize * aspect;
+        camera.right = viewSize * aspect;
+        camera.top = viewSize;
+        camera.bottom = -viewSize;
+        camera.updateProjectionMatrix();
+    }
+    updateCameraSize(box.clientWidth, box.clientHeight);
+
+    // 1. 主瀑布 Shader
+    const waterfallMat = new THREE.ShaderMaterial({
+        uniforms: { uTime: { value: 0 }, uColors: { value: PALETTE } },
+        vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `
+            uniform float uTime; uniform vec3 uColors[8]; varying vec2 vUv;
+            float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 4358.5453); }
+            void main() {
+                vec2 uv = floor(vUv * vec2(66.0, 96.0)) / vec2(66.0, 96.0);
+                float flow = uv.y + uTime * 3.5;
+                float lines = sin(uv.x * 30.0 + uTime * 2.0) * 0.1 + sin(uv.x * 60.0 - uTime * 1.5) * 0.1;
+                float colorValue = (uv.x + lines + hash(vec2(uv.x, floor(flow * 12.0))) * 0.2);
+                int colorIndex = int(clamp(floor(colorValue * 8.0), 0.0, 7.0));
+                vec3 color = uColors[colorIndex];
+                if (step(0.92, hash(vec2(uv.x, floor(flow * 15.0)))) > 0.5) color = mix(color, vec3(1.0), 0.6);
+                float shape = 1.0 - pow(abs(vUv.x - 0.5) * 2.0, 4.0);
+                gl_FragColor = vec4(color, shape * smoothstep(1.0, 0.95, vUv.y));
+            }
+        `,
+        transparent: true
+    });
+    const waterfall = new THREE.Mesh(new THREE.PlaneGeometry(10, 16), waterfallMat);
+    scene.add(waterfall);
+
+    // 2. 水潭 Shader
+    const pondMat = new THREE.ShaderMaterial({
+        uniforms: { uTime: { value: 0 }, uColors: { value: PALETTE } },
+        vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `
+            uniform float uTime; uniform vec3 uColors[8]; varying vec2 vUv;
+            float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 4358.5453); }
+            void main() {
+                vec2 uv = floor(vUv * vec2(120.0, 60.0)) / vec2(120.0, 60.0);
+                float rowId = floor(vUv.y * 30.0);
+                float rowOffset = hash(vec2(rowId, 0.0));
+                float breathing = 0.4 + 0.6 * (0.5 + 0.5 * sin(uTime * 2.5 + rowOffset * 15.0));
+                gl_FragColor = vec4(uColors[7], smoothstep(0.0, 0.2, vUv.y) * 0.7 * breathing);
+            }
+        `,
+        transparent: true
+    });
+    const pond = new THREE.Mesh(new THREE.PlaneGeometry(24, 6), pondMat);
+    pond.position.y = -8.0;
+    scene.add(pond);
+
+    // 动画循环
+    const clock = new THREE.Clock();
+    function animate() {
+        requestAnimationFrame(animate);
+        const elapsed = clock.getElapsedTime();
+        waterfallMat.uniforms.uTime.value = elapsed;
+        pondMat.uniforms.uTime.value = elapsed;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // 点击放大（原位扩展且防黑屏逻辑）
+    box.addEventListener('click', () => {
+        const rect = box.getBoundingClientRect();
+        
+        // 关键：先用 set 固定当前位置，切换到 fixed 瞬间不闪烁
+        gsap.set(box, {
+            position: 'fixed',
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height,
+            margin: 0,
+            zIndex: 9999
+        });
+
+        gsap.to(box, {
+            duration: 0.7,
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            borderRadius: 0,
+            ease: "expo.inOut",
+            onStart: () => {
+                // 解决切换 fixed 瞬间的渲染同步
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                updateCameraSize(window.innerWidth, window.innerHeight);
+            },
+            onUpdate: () => {
+                // 动画期间持续更新，确保画面撑满
+                renderer.setSize(box.clientWidth, box.clientHeight);
+                updateCameraSize(box.clientWidth, box.clientHeight);
+            },
+            onComplete: () => {
+                window.location.href = '../portal/inner-portal.html'; 
+            }
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        if(box.style.position !== 'fixed') {
+            renderer.setSize(box.clientWidth, box.clientHeight);
+            updateCameraSize(box.clientWidth, box.clientHeight);
+        }
+    });
+</script>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 关于我们文字消失动画
+    gsap.to("#about-us-title", {
+        scrollTrigger: {
+            trigger: ".top-spacer",
+            start: "top top",
+            end: "100px top",
+            scrub: true,
+        },
+        opacity: 0,
+        ease: "none"
+    });
+
+    // 螺线描边逻辑
+    const path = document.querySelector('#spiralPath');
+    const pathLength = path.getTotalLength();
+    path.style.strokeDasharray = pathLength;
+    path.style.strokeDashoffset = pathLength;
+
+    const scrollProgressToDrawProgress = (scrollProgress) => {
+        if (scrollProgress < 0.3) return scrollProgress / 0.3 * 0.2;
+        if (scrollProgress < 0.5) return 0.2 + (scrollProgress - 0.3) / 0.2 * 0.6;
+        return 0.8 + (scrollProgress - 0.5) / 0.5 * 0.2;
+    };
+
+    ScrollTrigger.create({
+        trigger: ".canvas-container", 
+        start: "top 60%", 
+        end: "bottom 20%",
+        scrub: 0.5,
+        onUpdate: (self) => {
+            const drawProgress = scrollProgressToDrawProgress(self.progress);
+            const drawLength = drawProgress * pathLength;
+            path.style.strokeDashoffset = pathLength - drawLength;
+        }
+    });
+</script>
+
+</body>
+</html>
