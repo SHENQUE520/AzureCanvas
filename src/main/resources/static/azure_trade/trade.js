@@ -199,6 +199,7 @@ document.querySelectorAll('.recommend-tab').forEach(function (tab) {
 
 // ========== 卡片详情弹窗 ==========
 function openModal(card) {
+
     var banner = document.getElementById('modal-banner');
     banner.className = 'h-48 flex items-center justify-center text-6xl bg-gradient-to-br ' + (card.gradient || 'from-purple-300 to-purple-500');
     banner.textContent = card.emoji;
@@ -221,6 +222,9 @@ detailModal.addEventListener('click', function (e) {
 
 // ========== 发布弹窗 ==========
 function openPublish() {
+    if (!loggedIn){
+        window.location.href = '/login/index.html?redirect=/azure_trade/trade';
+    }
     publishModal.classList.remove('hidden');
     publishModal.classList.add('flex');
     submit_logic();
@@ -336,8 +340,8 @@ document.addEventListener('keydown', function (e) {
     if (!avatarBtn || !dropdown) return;
 
     avatarBtn.addEventListener('click', function (e) {
-        if (loggedIn){
-            window.location.href = '/login?redirect=/azure_trade/trade';
+        if (!loggedIn){
+            window.location.href = '/login/index.html?redirect=/azure_trade/trade';
         }
         e.stopPropagation();
         var isOpen = !dropdown.classList.contains('hidden');
@@ -418,7 +422,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (user.avatar) {
                 const avatarUrl = user.avatar.startsWith('http') ? user.avatar : `/resources/${user.avatar}`;
                 if (headerAvatar) {
-                    headerAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-9 h-9 rounded-full object-cover" onerror="this.parentElement.textContent=\'登录\'">';
+                    headerAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-9 h-9 rounded-full object-cover" onerror="this.parentElement.textContent=\''+firstChar+'\'>';
                     headerAvatar.className = 'w-9 h-9 rounded-full overflow-hidden shadow';
                 }
                 if (dropdownAvatar) {
@@ -426,7 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     dropdownAvatar.className = 'w-14 h-14 rounded-full overflow-hidden shadow-md';
                 }
             } else {
-                if (headerAvatar) headerAvatar.textContent = "登录";
+                if (headerAvatar) headerAvatar.textContent = firstChar;
                 if (dropdownAvatar) dropdownAvatar.textContent = firstChar;
             }
 
@@ -653,7 +657,7 @@ const submit_logic = function () {
 
         } catch (error) {
             console.error('Error submitting item:', error);
-            showToast(error.message || '上架失败，请重试');
+            showToast(error.message || '上架失败，请重试', 'error');
         } finally {
             resetBtn();
         }

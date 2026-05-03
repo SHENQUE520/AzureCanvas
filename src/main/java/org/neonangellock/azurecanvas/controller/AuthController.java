@@ -33,7 +33,7 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> registrationData) {
+    public ResponseEntity<?> register(@RequestBody Map<String, String> registrationData, HttpServletResponse httpResponse) {
         String username = registrationData.get("username");
         String email = registrationData.get("email");
         String password = registrationData.get("password");
@@ -55,12 +55,11 @@ public class AuthController {
         // 注册用户
         User registeredUser = userService.register(user, password);
 
-        // 返回用户信息
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("id", registeredUser.getUserId());
-//        response.put("username", registeredUser.getUsername());
-//        response.put("email", registeredUser.getEmail());
-//        response.put("role", registeredUser.getRole());
+        Cookie userIdCookie = new Cookie("user_id", String.valueOf(user.getUserId()));
+        userIdCookie.setPath("/");
+        userIdCookie.setMaxAge(7 * 24 * 60 * 60); // 7天过期
+        userIdCookie.setHttpOnly(false);
+        httpResponse.addCookie(userIdCookie);
 
         return ResponseEntity.ok(Map.of("success",true,"message", "Register Successfully!","user", registeredUser));
     }

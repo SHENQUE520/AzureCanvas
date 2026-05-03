@@ -44,7 +44,7 @@
             height: 100%;
             background: rgba(255, 255, 255, 0.1);
             z-index: 9999;
-            cursor: wait;
+            /*cursor: wait;*/
         }
     </style>
 </head>
@@ -88,8 +88,8 @@
                 <!-- 用户头像 + 下拉面板 -->
                 <div class="relative" id="user-menu-wrapper">
                     <button id="user-avatar-btn" class="flex items-center space-x-2 hover:opacity-80 transition">
-                        <div id="header-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-sm font-bold shadow">A</div>
-                        <span id="header-username" class="text-sm text-gray-700 font-medium hidden sm:inline">Azure同学</span>
+                        <div id="header-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-sm font-bold shadow">登录</div>
+                        <span id="header-username" class="text-sm text-gray-700 font-medium hidden sm:inline">点我登录</span>
                         <svg class="w-3.5 h-3.5 text-gray-400 transition-transform" id="avatar-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <!-- 下拉面板 -->
@@ -97,9 +97,9 @@
                         <!-- 用户信息区 -->
                         <a href="profile.html" class="block px-5 pt-5 pb-4 border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer">
                             <div class="flex items-center space-x-3">
-                                <div id="dropdown-avatar" class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold shadow-md">A</div>
+                                <div id="dropdown-avatar" class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold shadow-md">登录</div>
                                 <div>
-                                    <p id="dropdown-username" class="text-base font-bold text-gray-800">Azure同学</p>
+                                    <p id="dropdown-username" class="text-base font-bold text-gray-800">点我登录</p>
                                     <p class="text-xs text-gray-400 mt-0.5"><span id="dropdown-followers">0</span> 粉丝 &nbsp;|&nbsp; <span id="dropdown-following">0</span> 关注</p>
                                 </div>
                             </div>
@@ -851,7 +851,8 @@
                                         }
                                         locInput.value = specificName;
                                     } else {
-                                        console.error('查询地址失败');
+                                        // console.error('查询地址失败');
+                                        window.notify.show.show('查询地址失败', 'warning')
                                         locInput.value = "已获取坐标，请手动输入建筑名";
                                     }
                                 });
@@ -870,10 +871,8 @@
     </script>
     <script src="../js/app/seeds.js"></script>
     <script src="trade.js"></script>
-
+    <script src="../js/notifications.js"></script>
     <script type="module">
-        import {NotificationManager} from '../js/notifications.js'
-
         window.notify.show = new NotificationManager();
     </script>
     <script type="importmap">
