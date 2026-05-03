@@ -146,7 +146,8 @@ function makeItem(seed) {
         wants: Math.floor(Math.random() * 200) + 1,
         seller: randSeller(),
         tags: tagPool[Math.floor(Math.random() * tagPool.length)],
-        time: Math.floor(Math.random() * 48) + 1
+        time: Math.floor(Math.random() * 48) + 1,
+        highlightTitle: seed.highlightTitle || null
     };
 }
 
@@ -186,8 +187,17 @@ function renderCard(grid, item, keyword) {
     }).join(' ');
     var card = document.createElement('div');
     card.className = 'flex bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer';
-    // 高亮显示关键字
-    var highlightedTitle = keyword ? highlightKeyword(item.title, keyword) : item.title;
+    
+    // 优先使用ES返回的高亮标题，否则对普通标题进行高亮处理
+    var highlightedTitle;
+    if (item.highlightTitle) {
+        highlightedTitle = item.highlightTitle;
+    } else if (keyword) {
+        highlightedTitle = highlightKeyword(item.title, keyword);
+    } else {
+        highlightedTitle = item.title;
+    }
+    
     card.innerHTML =
         '<div class="w-44 shrink-0 ' + h + ' bg-gradient-to-br ' + bg + ' flex items-center justify-center text-5xl relative">' +
         item.emoji +

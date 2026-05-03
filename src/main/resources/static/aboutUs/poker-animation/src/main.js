@@ -1,6 +1,6 @@
 import { __toESM } from "../_virtual/_rolldown/runtime.js";
 /* empty css            */
-import { AmbientLight, Color, DirectionalLight, PerspectiveCamera, Scene } from "../node_modules/three/build/three.core.js";
+import { AmbientLight,Clock, Color, DirectionalLight, PerspectiveCamera, Scene } from "three";
 import { WebGLRenderer } from "../node_modules/three/build/three.module.js";
 import { require_matter } from "../node_modules/matter-js/build/matter.js";
 import { gsapWithCSS } from "../node_modules/gsap/index.js";
@@ -32,13 +32,18 @@ async function startAnimation() {
 	const cardDeck = new CardDeck(scene, camera, engine);
 	cardDeck.initCards(deckData);
     
-    // 初始化滚动动画逻辑[cite: 5]
+    // 初始化滚动动画逻辑
 	new ScrollAnimation().init(cardDeck);
 
-	let animState = { progress: 0 };
+	const clock = new Clock();
 	function animate() {
 		requestAnimationFrame(animate);
 		import_matter.default.Engine.update(engine, 16);
+		
+		// 更新卡牌律动动画
+		const dt = clock.getDelta();
+		cardDeck.updateIdleAnimation(dt);
+		
 		renderer.render(scene, camera);
 	}
 	animate();

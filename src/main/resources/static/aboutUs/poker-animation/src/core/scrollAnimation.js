@@ -6,11 +6,9 @@ gsapWithCSS.registerPlugin(ScrollTrigger);
 export class ScrollAnimation {
     constructor(options = {}) {
         this.cardDeck = null;
-        this.isAnimating = false; // 状态锁[cite: 10]
-        this.currentState = 0;    // 状态机[cite: 10]
-        this.triggerScrollPos = 0; // 记录触发时的滚动位置
+        this.currentState = 0;
         this.options = {
-            trigger: ".top-spacer",
+            trigger: ".poker-section", // 触发器改为卡牌专用的 section
             start: "top top",
             end: "bottom bottom",
             ...options
@@ -27,29 +25,55 @@ export class ScrollAnimation {
             onUpdate: (self) => {
                 const p = self.progress;
 
-                // --- 新增：禁止向下移动的锁定逻辑 ---
-                if (this.isAnimating) {
-                    // 如果正在动画且用户试图往下滚，强制弹回触发点
-                    if (self.scroll() > this.triggerScrollPos) {
-                        self.scroll(this.triggerScrollPos);
-                        return; 
+                // 背景渐变：从深蓝到纯蓝
+                if (p > 0.1 && p < 0.9) {
+                    const bgProg = (p - 0.1) / 0.8;
+                    document.body.style.backgroundColor = `rgb(0, ${Math.floor(15 * (1 - bgProg))}, ${Math.floor(51 + (204 * bgProg))})`;
+                }
+
+                // 1. 展开螺旋阶段 (0% - 30%)
+                if (p <= 0.3) {
+                    const expandProg = p / 0.3;
+                    this.cardDeck.setShuffleSpiralProgress(expandProg);
+                    this.cardDeck.isIdleAnimationEnabled = false;
+                } 
+                // 2. 从外向内回收阶段 (30% - 50%)
+                else if (p > 0.3 && p <= 0.5) {
+                    const collectProg = (p - 0.3) / 0.2;
+                    this.cardDeck.collectSpiral(collectProg);
+                    this.cardDeck.isIdleAnimationEnabled = false;
+                }
+                // 3. 史诗抽出主角牌阶段 (50% - 65%)
+                else if (p > 0.5 && p <= 0.65) {
+                    const drawProg = (p - 0.5) / 0.15;
+                    this.cardDeck.drawMainCards(drawProg);
+                    this.cardDeck.isIdleAnimationEnabled = false;
+                }
+                // 4. 扇形散开阶段 (65% - 85%)
+                else if (p > 0.65 && p <= 0.85) {
+                    const spreadProg = (p - 0.65) / 0.2;
+                    this.cardDeck.spreadMainCards(spreadProg);
+                    this.cardDeck.isIdleAnimationEnabled = false;
+                    
+                    if (p > 0.8 && this.currentState !== 1) {
+                        this.currentState = 1;
+                        this.cardDeck.flipMainCards();
+                    }
+                }
+                // 5. 完成阶段：开启呼吸律动并终极放大
+                else if (p > 0.85) {
+                    this.cardDeck.isIdleAnimationEnabled = true;
+                    if (this.currentState !== 2) {
+                        this.currentState = 2;
+                        this.cardDeck.finalZoomIn();
                     }
                 }
 
-                // 螺旋动画阶段 (0% - 30%)[cite: 10]
-                if (this.currentState === 0 && !this.isAnimating) {
-                    if (p <= 0.3) {
-                        const spiralProg = p / 0.3;
-                        this.cardDeck.setShuffleSpiralProgress(spiralProg);
-                    } else {
-                        // 记录触发序列时的瞬间滚动位置
-                        this.triggerScrollPos = self.scroll();
-                        this.triggerFanSequence();
-                    }
+                // 重置状态
+                if (p < 0.82 && this.currentState === 2) {
+                    this.currentState = 1;
                 }
-
-                // 重置逻辑：回到顶部时解锁状态[cite: 10]
-                if (p < 0.05 && this.currentState === 2 && !this.isAnimating) {
+                if (p < 0.75 && this.currentState === 1) {
                     this.currentState = 0;
                 }
             }

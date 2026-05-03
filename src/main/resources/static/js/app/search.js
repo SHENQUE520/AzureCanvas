@@ -195,9 +195,18 @@ document.addEventListener('DOMContentLoaded', function () {
 // ========== 辅助函数：高亮关键字 ==========
 function highlightKeyword(text, keyword) {
     if (!keyword || !text) return text;
+    
+    // 如果文本已经包含HTML标签（如ES返回的高亮结果），直接返回
+    if (text.indexOf('<') !== -1 && text.indexOf('>') !== -1) {
+        return text;
+    }
+    
+    // 转义HTML特殊字符，防止XSS
+    var escapedText = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    
     // 将关键词分解为单个字符，分别标红
     var chars = keyword.split('');
-    var result = text;
+    var result = escapedText;
     chars.forEach(function (char) {
         if (char.trim()) {
             var regex = new RegExp('(' + char + ')', 'gi');

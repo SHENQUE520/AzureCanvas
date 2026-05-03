@@ -1,4 +1,4 @@
-import { CanvasTexture } from "../../node_modules/three/build/three.core.js";
+import { CanvasTexture } from "three";
 import { CARD_APPEARANCE } from "../config/cardConfig.js";
 
 function createCardTexture(cardData, quality = 2, isBack = false) {

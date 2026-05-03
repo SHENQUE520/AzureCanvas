@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <!-- 引入 Lenis 平滑滚动库 -->
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="libs/lenis.js"></script>
     <script type="importmap">
         {
             "imports": {
@@ -23,15 +23,44 @@
             box-sizing: border-box;
         }
         body {
-            background: #0035bd;
+            background: #000F33FF;
             font-family: system-ui, 'Inter', sans-serif;
             overflow-x: hidden;
+            color: white;
+            transition: background-color 0.8s ease;
         }
+
+        /* --- 液态玻璃光效背景 --- */
+        .glass-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: #000F33FF;
+            filter: blur(80px);
+        }
+
+        .experience-orb {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 100, 255, 0.4) 0%, rgba(0, 200, 255, 0) 70%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        .orb-1 { top: -10%; left: -10%; background: radial-gradient(circle, rgba(0, 80, 255, 0.5) 0%, rgba(0, 0, 0, 0) 70%); }
+        .orb-2 { bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(100, 0, 255, 0.3) 0%, rgba(0, 0, 0, 0) 70%); }
 
         .header-section {
             height: 100vh;
             width: 100%;
-            background: #000F33FF;
+            background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -39,20 +68,60 @@
             top: 0;
             z-index: 10;
             overflow: hidden;
+            pointer-events: none;
         }
 
-        #about-us-title {
-            position: relative;
-            font-size: 12vw;
-            letter-spacing: -0.02em;
+        /* --- Sponsors 信息流 --- */
+        .sponsors-container {
+            width: 100%;
+            padding: 80px 0;
+            background: transparent;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .marquee-row {
+            display: flex;
+            white-space: nowrap;
+            gap: 60px;
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 60px;
+            animation: scroll-left 30s linear infinite;
+        }
+
+        .marquee-row.reverse .marquee-content {
+            animation: scroll-right 30s linear infinite;
+        }
+
+        .sponsor-item {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
             text-transform: uppercase;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.03);
-            z-index: 2;
-            pointer-events: none;
-            user-select: none;
-            margin: 0;
-            line-height: 1;
+            letter-spacing: 2px;
+        }
+
+        .sponsor-item i {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
         }
 
         #fluid-canvas {
@@ -62,12 +131,13 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            pointer-events: auto; /* 只有 canvas 接收交互 */
         }
 
         .canvas-container {
             margin: 0 auto;
             width: 100%;
-            background: #000F33FF;
+            background: #002c91;
         }
         svg {
             display: block;
@@ -77,12 +147,18 @@
         .spacer {
             height: 100vh;
             /*background: linear-gradient(to bottom, #87CEEB, #0035bd);*/
-            background: #000F33FF;
+            background: #003bbe;
         }
         .top-spacer {
-            height: 200vh;
-            background: linear-gradient(to bottom, #000F33FF, #0035bd);;
+            height: 100vh;
+            background: #000F33FF;
             position: relative;
+        }
+
+        .poker-section {
+            height: 300vh; /* 为卡牌动画预留足够的滚动空间 */
+            position: relative;
+            background: #000F33FF;
         }
 
         .poker-iframe-wrapper {
@@ -91,6 +167,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
+            z-index: 5;
         }
 
         /* --- 移植自 portal-logic 的外景展示框 --- */
@@ -119,17 +196,64 @@
     </style>
     <link rel="stylesheet" href="aboutUs.css">
 </head>
-<body>
+<body class="immersive-about">
+
+<div class="glass-background">
+    <div class="experience-orb orb-1"></div>
+    <div class="experience-orb orb-2"></div>
+</div>
 
 <div class="top-spacer">
     <div class="header-section">
         <canvas id="fluid-canvas"></canvas>
         <h1 id="about-us-title">About us</h1>
     </div>
+</div>
+
+<div class="poker-section">
     <div id="canvas-container" class="poker-iframe-wrapper"></div>
 </div>
 
-<div class="spacer"></div>
+<div class="spacer">
+    <div class="sponsors-container">
+        <!-- 第一列：向左滚动 -->
+        <div class="marquee-row">
+            <div class="marquee-content">
+                <div class="sponsor-item">GitHub</div>
+                <div class="sponsor-item">Blender</div>
+                <div class="sponsor-item">IntelliJ</div>
+                <div class="sponsor-item">DataGrid</div>
+                <div class="sponsor-item">WebStorm</div>
+                <div class="sponsor-item">GoldWave</div>
+                <!-- 复制一份以实现无缝循环 -->
+                <div class="sponsor-item">GitHub</div>
+                <div class="sponsor-item">Blender</div>
+                <div class="sponsor-item">IntelliJ</div>
+                <div class="sponsor-item">DataGrid</div>
+                <div class="sponsor-item">WebStorm</div>
+                <div class="sponsor-item">GoldWave</div>
+            </div>
+        </div>
+        <!-- 第二列：向右滚动 -->
+        <div class="marquee-row reverse">
+            <div class="marquee-content">
+                <div class="sponsor-item">WebStorm</div>
+                <div class="sponsor-item">DataGrid</div>
+                <div class="sponsor-item">IntelliJ</div>
+                <div class="sponsor-item">Blender</div>
+                <div class="sponsor-item">GitHub</div>
+                <div class="sponsor-item">GoldWave</div>
+                <!-- 复制一份以实现无缝循环 -->
+                <div class="sponsor-item">WebStorm</div>
+                <div class="sponsor-item">DataGrid</div>
+                <div class="sponsor-item">IntelliJ</div>
+                <div class="sponsor-item">Blender</div>
+                <div class="sponsor-item">GitHub</div>
+                <div class="sponsor-item">GoldWave</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="canvas-container">
     <div class="svg-wrapper">
@@ -157,397 +281,499 @@
 <div class="portal-section">
     <div id="portal-preview-box"></div>
 </div>
-
-<script type="module">
-    import * as THREE from 'three';
-
-    class FluidSimulation {
-        constructor(canvasId, textId) {
-            this.canvas = document.getElementById(canvasId);
-            this.textElement = document.getElementById(textId);
-            this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
-            this.renderer.setPixelRatio(window.devicePixelRatio);
-            
-            this.width = 0;
-            this.height = 0;
-            this.simRes = 128; // 模拟分辨率
-            
-            this.mouse = new THREE.Vector2(0, 0);
-            this.lastMouse = new THREE.Vector2(0, 0);
-            this.velocity = new THREE.Vector2(0, 0);
-            this.isMouseDown = false;
-            
-            this.init();
-        }
-
-        async init() {
-            this.resize();
-            this.setupBuffers();
-            this.setupShaders();
-            this.setupTextMask();
-            this.addEventListeners();
-            this.animate();
-        }
-
-        resize() {
-            const parent = this.canvas.parentElement;
-            this.width = parent.clientWidth;
-            this.height = parent.clientHeight;
-            this.renderer.setSize(this.width, this.height);
-            
-            if (this.textMaskMaterial) {
-                this.setupTextMask();
-            }
-        }
-
-        setupBuffers() {
-            const params = {
-                type: THREE.HalfFloatType,
-                format: THREE.RGBAFormat,
-                minFilter: THREE.LinearFilter,
-                magFilter: THREE.LinearFilter
-            };
-
-            this.density = this.createDoubleBuffer(this.simRes, this.simRes, params);
-            this.velocityField = this.createDoubleBuffer(this.simRes, this.simRes, params);
-            this.pressure = this.createDoubleBuffer(this.simRes, this.simRes, params);
-            this.divergence = new THREE.WebGLRenderTarget(this.simRes, this.simRes, params);
-        }
-
-        createDoubleBuffer(w, h, params) {
-            return {
-                read: new THREE.WebGLRenderTarget(w, h, params),
-                write: new THREE.WebGLRenderTarget(w, h, params),
-                swap: function() {
-                    const tmp = this.read;
-                    this.read = this.write;
-                    this.write = tmp;
-                }
-            };
-        }
-
-        setupShaders() {
-            this.scene = new THREE.Scene();
-            this.camera = new THREE.Camera();
-            this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
-            this.scene.add(this.mesh);
-
-            this.baseVertex = `
-                varying vec2 vUv;
-                void main() {
-                    vUv = uv;
-                    gl_Position = vec4(position, 1.0);
-                }
-            `;
-
-            // 通用渲染函数
-            this.renderQuad = (material, target) => {
-                this.mesh.material = material;
-                this.renderer.setRenderTarget(target);
-                this.renderer.render(this.scene, this.camera);
-            };
-        }
-
-        setupTextMask() {
-            const canvas = document.createElement('canvas');
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = this.width * dpr;
-            canvas.height = this.height * dpr;
-            const ctx = canvas.getContext('2d');
-            ctx.scale(dpr, dpr);
-            
-            const style = window.getComputedStyle(this.textElement);
-            // 确保字体加载完成或使用系统字体
-            ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            // 绘制文本
-            ctx.fillText(this.textElement.innerText.toUpperCase(), this.width / 2, this.height / 2);
-            
-            if (this.textTexture) this.textTexture.dispose();
-            this.textTexture = new THREE.CanvasTexture(canvas);
-        }
-
-        addEventListeners() {
-            window.addEventListener('resize', () => this.resize());
-            
-            const handleMove = (e) => {
-                const x = e.clientX || (e.touches && e.touches[0].clientX);
-                const y = e.clientY || (e.touches && e.touches[0].clientY);
-                
-                const rect = this.canvas.getBoundingClientRect();
-                this.mouse.set(
-                    (x - rect.left) / rect.width,
-                    1.0 - (y - rect.top) / rect.height
-                );
-                
-                this.velocity.subVectors(this.mouse, this.lastMouse);
-                this.lastMouse.copy(this.mouse);
-            };
-
-            window.addEventListener('mousemove', handleMove);
-            window.addEventListener('touchstart', handleMove);
-            window.addEventListener('touchmove', handleMove);
-        }
-
-        // 核心 Shader 逻辑
-        getAdvectShader() {
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    uVelocity: { value: null },
-                    uSource: { value: null },
-                    dt: { value: 0.016 },
-                    dissipation: { value: 0.98 },
-                    texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
-                },
-                vertexShader: this.baseVertex,
-                fragmentShader: `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uVelocity;
-                    uniform sampler2D uSource;
-                    uniform float dt;
-                    uniform float dissipation;
-                    uniform vec2 texelSize;
-                    void main() {
-                        vec2 pos = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
-                        gl_FragColor = dissipation * texture2D(uSource, pos);
-                    }
-                `
-            });
-        }
-
-        getDivergenceShader() {
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    uVelocity: { value: null },
-                    texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
-                },
-                vertexShader: this.baseVertex,
-                fragmentShader: `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uVelocity;
-                    uniform vec2 texelSize;
-                    void main() {
-                        float L = texture2D(uVelocity, vUv - vec2(texelSize.x, 0.0)).x;
-                        float R = texture2D(uVelocity, vUv + vec2(texelSize.x, 0.0)).x;
-                        float T = texture2D(uVelocity, vUv + vec2(0.0, texelSize.y)).y;
-                        float B = texture2D(uVelocity, vUv - vec2(0.0, texelSize.y)).y;
-                        float div = 0.5 * (R - L + T - B);
-                        gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
-                    }
-                `
-            });
-        }
-
-        getJacobiShader() {
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    uPressure: { value: null },
-                    uDivergence: { value: null },
-                    texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
-                },
-                vertexShader: this.baseVertex,
-                fragmentShader: `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uPressure;
-                    uniform sampler2D uDivergence;
-                    uniform vec2 texelSize;
-                    void main() {
-                        float L = texture2D(uPressure, vUv - vec2(texelSize.x, 0.0)).x;
-                        float R = texture2D(uPressure, vUv + vec2(texelSize.x, 0.0)).x;
-                        float T = texture2D(uPressure, vUv + vec2(0.0, texelSize.y)).x;
-                        float B = texture2D(uPressure, vUv - vec2(0.0, texelSize.y)).x;
-                        float div = texture2D(uDivergence, vUv).x;
-                        float pressure = (L + R + B + T - div) * 0.25;
-                        gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);
-                    }
-                `
-            });
-        }
-
-        getGradientSubtractShader() {
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    uPressure: { value: null },
-                    uVelocity: { value: null },
-                    texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
-                },
-                vertexShader: this.baseVertex,
-                fragmentShader: `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uPressure;
-                    uniform sampler2D uVelocity;
-                    uniform vec2 texelSize;
-                    void main() {
-                        float L = texture2D(uPressure, vUv - vec2(texelSize.x, 0.0)).x;
-                        float R = texture2D(uPressure, vUv + vec2(texelSize.x, 0.0)).x;
-                        float T = texture2D(uPressure, vUv + vec2(0.0, texelSize.y)).x;
-                        float B = texture2D(uPressure, vUv - vec2(0.0, texelSize.y)).x;
-                        vec2 velocity = texture2D(uVelocity, vUv).xy;
-                        velocity -= 0.5 * vec2(R - L, T - B);
-                        gl_FragColor = vec4(velocity, 0.0, 1.0);
-                    }
-                `
-            });
-        }
-
-        getForceShader() {
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    uSource: { value: null },
-                    uPoint: { value: new THREE.Vector2() },
-                    uColor: { value: new THREE.Vector3() },
-                    uRadius: { value: 0.05 }
-                },
-                vertexShader: this.baseVertex,
-                fragmentShader: `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uSource;
-                    uniform vec2 uPoint;
-                    uniform vec3 uColor;
-                    uniform float uRadius;
-                    void main() {
-                        float d = distance(vUv, uPoint);
-                        float f = exp(-d * d / uRadius);
-                        vec4 base = texture2D(uSource, vUv);
-                        gl_FragColor = vec4(base.rgb + f * uColor, 1.0);
-                    }
-                `
-            });
-        }
-
-        getDisplayShader() {
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    uDensity: { value: null },
-                    uMask: { value: null }
-                },
-                vertexShader: this.baseVertex,
-                fragmentShader: `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uDensity;
-                    uniform sampler2D uMask;
-                    void main() {
-                        vec4 d = texture2D(uDensity, vUv);
-                        float mask = texture2D(uMask, vUv).r;
-                        
-                        // Lusion 风格色彩：基于密度的动态调色
-                        vec3 color1 = vec3(1.0, 0.1, 0.5); // Pink/Magenta
-                        vec3 color2 = vec3(0.1, 0.8, 1.0); // Cyan/Blue
-                        vec3 color3 = vec3(0.1, 0.1, 0.9); // Deep Blue
-                        
-                        float m = length(d.rgb);
-                        vec3 finalColor = mix(color3, color2, clamp(m * 2.0, 0.0, 1.0));
-                        finalColor = mix(finalColor, color1, clamp(m - 0.5, 0.0, 1.0));
-                        
-                        // 增加一些亮度变化
-                        finalColor *= (1.0 + m * 0.5);
-                        
-                        float alpha = smoothstep(0.01, 0.2, m) * mask;
-                        gl_FragColor = vec4(finalColor, alpha);
-                    }
-                `,
-                transparent: true
-            });
-        }
-
-        animate() {
-            requestAnimationFrame(() => this.animate());
-
-            if (!this.advectMat) {
-                this.advectMat = this.getAdvectShader();
-                this.divergenceMat = this.getDivergenceShader();
-                this.jacobiMat = this.getJacobiShader();
-                this.gradientSubtractMat = this.getGradientSubtractShader();
-                this.forceMat = this.getForceShader();
-                this.displayMat = this.getDisplayShader();
-            }
-
-            // 1. Advect
-            this.advectMat.uniforms.uVelocity.value = this.velocityField.read.texture;
-            this.advectMat.uniforms.uSource.value = this.velocityField.read.texture;
-            this.advectMat.uniforms.dissipation.value = 0.99;
-            this.renderQuad(this.advectMat, this.velocityField.write);
-            this.velocityField.swap();
-
-            this.advectMat.uniforms.uSource.value = this.density.read.texture;
-            this.advectMat.uniforms.dissipation.value = 0.97; // 墨水消失稍快
-            this.renderQuad(this.advectMat, this.density.write);
-            this.density.swap();
-
-            // 2. Add Force
-            const time = Date.now() * 0.002;
-            
-            // 始终添加微小的扰动
-            this.forceMat.uniforms.uPoint.value.set(
-                0.5 + Math.sin(time * 0.3) * 0.3,
-                0.5 + Math.cos(time * 0.5) * 0.3
-            );
-            this.forceMat.uniforms.uSource.value = this.velocityField.read.texture;
-            this.forceMat.uniforms.uColor.value.set(Math.sin(time) * 0.05, Math.cos(time) * 0.05, 0);
-            this.forceMat.uniforms.uRadius.value = 0.001;
-            this.renderQuad(this.forceMat, this.velocityField.write);
-            this.velocityField.swap();
-
-            if (this.velocity.length() > 0.0001) {
-                this.forceMat.uniforms.uPoint.value.copy(this.mouse);
-                
-                // Add Velocity
-                this.forceMat.uniforms.uSource.value = this.velocityField.read.texture;
-                this.forceMat.uniforms.uColor.value.set(this.velocity.x * 50.0, this.velocity.y * 50.0, 0);
-                this.forceMat.uniforms.uRadius.value = 0.0005;
-                this.renderQuad(this.forceMat, this.velocityField.write);
-                this.velocityField.swap();
-
-                // Add Density (Ink)
-                this.forceMat.uniforms.uSource.value = this.density.read.texture;
-                this.forceMat.uniforms.uColor.value.set(
-                    Math.sin(time) * 0.5 + 0.5,
-                    Math.cos(time * 0.7) * 0.5 + 0.5,
-                    Math.sin(time * 1.3) * 0.5 + 0.5
-                );
-                this.forceMat.uniforms.uRadius.value = 0.0003;
-                this.renderQuad(this.forceMat, this.density.write);
-                this.density.swap();
-                
-                this.velocity.multiplyScalar(0.9);
-            }
-
-            // 3. Pressure Solver (Navier-Stokes)
-            // Divergence
-            this.divergenceMat.uniforms.uVelocity.value = this.velocityField.read.texture;
-            this.renderQuad(this.divergenceMat, this.divergence);
-
-            // Jacobi Iterations
-            this.jacobiMat.uniforms.uDivergence.value = this.divergence.texture;
-            for (let i = 0; i < 40; i++) {
-                this.jacobiMat.uniforms.uPressure.value = this.pressure.read.texture;
-                this.renderQuad(this.jacobiMat, this.pressure.write);
-                this.pressure.swap();
-            }
-
-            // Gradient Subtract
-            this.gradientSubtractMat.uniforms.uPressure.value = this.pressure.read.texture;
-            this.gradientSubtractMat.uniforms.uVelocity.value = this.velocityField.read.texture;
-            this.renderQuad(this.gradientSubtractMat, this.velocityField.write);
-            this.velocityField.swap();
-
-            // 4. Display
-            this.displayMat.uniforms.uDensity.value = this.density.read.texture;
-            this.displayMat.uniforms.uMask.value = this.textTexture;
-            this.renderQuad(this.displayMat, null);
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
         }
     }
+</script>
 
-    new FluidSimulation('fluid-canvas', 'about-us-title');
+<script type="module">
+import * as THREE from 'three';
+
+class FluidSimulation {
+constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+
+    this.width = 0;
+    this.height = 0;
+    this.simRes = 128;
+
+    this.mouse = new THREE.Vector2(0, 0);
+    this.lastMouse = new THREE.Vector2(0, 0);
+    this.velocity = new THREE.Vector2(0, 0);
+    this.scrollOffset = 0;
+
+    this.colorProgress = 0;
+    this.spectrumTexture = null;
+    this.spectrumCanvas = null;
+    this.spectrumCtx = null;
+
+    this.titles = [
+        { text: 'ABOUT US', size: '12vw', xOffset: 0, yOffset: 0, weight: 900, opacity: 0.03 },
+        { text: 'Tenacity Codex', size: '5vw', xOffset: 0.1, yOffset: 0.15, weight: 700, opacity: 0.02 },
+        { text: 'CREATIVE TEAM', size: '14vw', xOffset: -0.05, yOffset: 0.35, weight: 900, opacity: 0.03 }
+    ];
+
+    this.init();
+}
+
+async init() {
+    await this.loadSpectrum();
+    this.resize();
+    this.setupBuffers();
+    this.setupShaders();
+    this.setupTextMask();
+    this.addEventListeners();
+    this.animate();
+}
+
+async loadSpectrum() {
+    const loader = new THREE.TextureLoader();
+    this.spectrumTexture = await new Promise(resolve => {
+        loader.load('colors/download.png', (tex) => {
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            resolve(tex);
+        });
+    });
+
+    // 为了在 JS 中高效取色，创建一个隐藏的 Canvas 副本
+    const img = this.spectrumTexture.image;
+    this.spectrumCanvas = document.createElement('canvas');
+    this.spectrumCanvas.width = img.width;
+    this.spectrumCanvas.height = 1;
+    this.spectrumCtx = this.spectrumCanvas.getContext('2d', { willReadFrequently: true });
+    this.spectrumCtx.drawImage(img, 0, 0, img.width, 1);
+}
+
+getSpectrumColor(progress) {
+    if (!this.spectrumCtx) return new THREE.Vector3(1, 1, 1);
+    const x = Math.floor((progress % 1.0) * this.spectrumCanvas.width);
+    const data = this.spectrumCtx.getImageData(x, 0, 1, 1).data;
+    return new THREE.Vector3(data[0] / 255, data[1] / 255, data[2] / 255);
+}
+
+resize() {
+    const parent = this.canvas.parentElement;
+    this.width = parent.clientWidth;
+    this.height = parent.clientHeight;
+    this.renderer.setSize(this.width, this.height);
+
+    if (this.displayMat) {
+        this.displayMat.uniforms.uTexelSize.value.set(1/this.width, 1/this.height);
+    }
+    if (this.textElement) {
+        this.setupTextMask();
+    }
+}
+
+setupBuffers() {
+    const params = {
+        type: THREE.HalfFloatType,
+        format: THREE.RGBAFormat,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter
+    };
+
+    this.density = this.createDoubleBuffer(this.simRes, this.simRes, params);
+    this.velocityField = this.createDoubleBuffer(this.simRes, this.simRes, params);
+    this.pressure = this.createDoubleBuffer(this.simRes, this.simRes, params);
+    this.divergence = new THREE.WebGLRenderTarget(this.simRes, this.simRes, params);
+}
+
+createDoubleBuffer(w, h, params) {
+    return {
+        read: new THREE.WebGLRenderTarget(w, h, params),
+        write: new THREE.WebGLRenderTarget(w, h, params),
+        swap: function() {
+            const tmp = this.read;
+            this.read = this.write;
+            this.write = tmp;
+        }
+    };
+}
+
+setupShaders() {
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.Camera();
+    this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+    this.scene.add(this.mesh);
+
+    this.baseVertex = `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = vec4(position, 1.0);
+        }
+    `;
+
+    // 通用渲染函数
+    this.renderQuad = (material, target) => {
+        this.mesh.material = material;
+        this.renderer.setRenderTarget(target);
+        this.renderer.render(this.scene, this.camera);
+    };
+}
+
+setupTextMask() {
+    const canvas = document.createElement('canvas');
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = this.width * dpr;
+    canvas.height = this.height * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // 绘制所有标题
+    this.titles.forEach(title => {
+        ctx.font = `${title.weight} ${title.size} 'Inter', sans-serif`;
+
+        // 计算当前标题的基础位置 + 滚动偏移
+        const x = (this.width / 2) + (title.xOffset * this.width) + this.scrollOffset;
+        const y = (this.height / 2) + (title.yOffset * this.height);
+
+        // 1. 绘制极低透明度的背景文字（替代原 HTML 标题）
+        ctx.fillStyle = `rgba(255, 255, 255, ${title.opacity})`;
+        ctx.fillText(title.text.toUpperCase(), x, y);
+
+        // 2. 在另一个层（或通过通道）标记遮罩区域
+        // 这里我们直接用纯白绘制，稍后在 Shader 中作为 mask
+        // 注意：由于我们需要在同一个 canvas 纹理中区分背景和遮罩，
+        // 我们使用 Red 通道作为 mask 强度。
+        ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+        ctx.fillText(title.text.toUpperCase(), x, y);
+    });
+
+    if (this.textTexture) this.textTexture.dispose();
+    this.textTexture = new THREE.CanvasTexture(canvas);
+}
+
+addEventListeners() {
+    window.addEventListener('resize', () => this.resize());
+
+    // 监听滚动事件更新文字位置
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        // 滚动驱动移动：向右移动
+        this.scrollOffset = scrollY * 0.5;
+        this.setupTextMask(); // 重新生成遮罩纹理
+    });
+
+    const handleMove = (e) => {
+        const x = e.clientX || (e.touches && e.touches[0].clientX);
+        const y = e.clientY || (e.touches && e.touches[0].clientY);
+
+        const rect = this.canvas.getBoundingClientRect();
+        const newMouseX = (x - rect.left) / rect.width;
+        const newMouseY = 1.0 - (y - rect.top) / rect.height;
+
+        this.mouse.set(newMouseX, newMouseY);
+
+        // 计算移动距离以更新色谱进度
+        const dist = this.mouse.distanceTo(this.lastMouse);
+        if (dist > 0) {
+            this.colorProgress += dist * 0.7; // 调节此系数改变色谱切换速度
+            this.velocity.subVectors(this.mouse, this.lastMouse);
+        }
+
+        this.lastMouse.copy(this.mouse);
+    };
+
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('touchstart', handleMove);
+    window.addEventListener('touchmove', handleMove);
+}
+
+// 核心 Shader 逻辑
+getAdvectShader() {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            uVelocity: { value: null },
+            uSource: { value: null },
+            dt: { value: 0.016 },
+            dissipation: { value: 0.98 },
+            texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
+        },
+        vertexShader: this.baseVertex,
+        fragmentShader: `
+            precision highp float;
+            varying vec2 vUv;
+            uniform sampler2D uVelocity;
+            uniform sampler2D uSource;
+            uniform float dt;
+            uniform float dissipation;
+            uniform vec2 texelSize;
+            void main() {
+                vec2 pos = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
+                gl_FragColor = dissipation * texture2D(uSource, pos);
+            }
+        `
+    });
+}
+
+getDivergenceShader() {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            uVelocity: { value: null },
+            texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
+        },
+        vertexShader: this.baseVertex,
+        fragmentShader: `
+            precision highp float;
+            varying vec2 vUv;
+            uniform sampler2D uVelocity;
+            uniform vec2 texelSize;
+            void main() {
+                float L = texture2D(uVelocity, vUv - vec2(texelSize.x, 0.0)).x;
+                float R = texture2D(uVelocity, vUv + vec2(texelSize.x, 0.0)).x;
+                float T = texture2D(uVelocity, vUv + vec2(0.0, texelSize.y)).y;
+                float B = texture2D(uVelocity, vUv - vec2(0.0, texelSize.y)).y;
+                float div = 0.5 * (R - L + T - B);
+                gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
+            }
+        `
+    });
+}
+
+getJacobiShader() {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            uPressure: { value: null },
+            uDivergence: { value: null },
+            texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
+        },
+        vertexShader: this.baseVertex,
+        fragmentShader: `
+            precision highp float;
+            varying vec2 vUv;
+            uniform sampler2D uPressure;
+            uniform sampler2D uDivergence;
+            uniform vec2 texelSize;
+            void main() {
+                float L = texture2D(uPressure, vUv - vec2(texelSize.x, 0.0)).x;
+                float R = texture2D(uPressure, vUv + vec2(texelSize.x, 0.0)).x;
+                float T = texture2D(uPressure, vUv + vec2(0.0, texelSize.y)).x;
+                float B = texture2D(uPressure, vUv - vec2(0.0, texelSize.y)).x;
+                float div = texture2D(uDivergence, vUv).x;
+                float pressure = (L + R + B + T - div) * 0.25;
+                gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);
+            }
+        `
+    });
+}
+
+getGradientSubtractShader() {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            uPressure: { value: null },
+            uVelocity: { value: null },
+            texelSize: { value: new THREE.Vector2(1/this.simRes, 1/this.simRes) }
+        },
+        vertexShader: this.baseVertex,
+        fragmentShader: `
+            precision highp float;
+            varying vec2 vUv;
+            uniform sampler2D uPressure;
+            uniform sampler2D uVelocity;
+            uniform vec2 texelSize;
+            void main() {
+                float L = texture2D(uPressure, vUv - vec2(texelSize.x, 0.0)).x;
+                float R = texture2D(uPressure, vUv + vec2(texelSize.x, 0.0)).x;
+                float T = texture2D(uPressure, vUv + vec2(0.0, texelSize.y)).x;
+                float B = texture2D(uPressure, vUv - vec2(0.0, texelSize.y)).x;
+                vec2 velocity = texture2D(uVelocity, vUv).xy;
+                velocity -= 0.5 * vec2(R - L, T - B);
+                gl_FragColor = vec4(velocity, 0.0, 1.0);
+            }
+        `
+    });
+}
+
+getForceShader() {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            uSource: { value: null },
+            uPoint: { value: new THREE.Vector2() },
+            uColor: { value: new THREE.Vector3() },
+            uRadius: { value: 0.05 }
+        },
+        vertexShader: this.baseVertex,
+        fragmentShader: `
+            precision highp float;
+            varying vec2 vUv;
+            uniform sampler2D uSource;
+            uniform vec2 uPoint;
+            uniform vec3 uColor;
+            uniform float uRadius;
+            void main() {
+                float d = distance(vUv, uPoint);
+                float f = exp(-d * d / uRadius);
+                vec4 base = texture2D(uSource, vUv);
+                gl_FragColor = vec4(base.rgb + f * uColor, 1.0);
+            }
+        `
+    });
+}
+
+getDisplayShader() {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            uDensity: { value: null },
+            uMask: { value: null },
+            uTexelSize: { value: new THREE.Vector2(1/this.width, 1/this.height) }
+        },
+        vertexShader: this.baseVertex,
+        fragmentShader: `
+            precision highp float;
+            varying vec2 vUv;
+            uniform sampler2D uDensity;
+            uniform sampler2D uMask;
+            uniform vec2 uTexelSize;
+
+            void main() {
+                vec4 d = texture2D(uDensity, vUv);
+                vec4 maskTex = texture2D(uMask, vUv);
+                float mask = maskTex.r; // 我们在 setupTextMask 中绘制的是白色，r=1.0
+
+                // 绘制背景文字：我们通过 maskTex 的 alpha 或者颜色值来决定
+                // 因为我们在 Canvas 里绘制了低透明度的背景，它在 maskTex 中也存在
+                // 这里我们简单地用一个底色叠加
+                vec3 bgTextColor = vec3(1.0) * 0.03; // 对应 0.03 的 opacity
+
+                // 边缘检测
+                float m_l = texture2D(uMask, vUv - vec2(uTexelSize.x * 2.0, 0.0)).r;
+                float m_r = texture2D(uMask, vUv + vec2(uTexelSize.x * 2.0, 0.0)).r;
+                float m_t = texture2D(uMask, vUv + vec2(0.0, uTexelSize.y * 2.0)).r;
+                float m_b = texture2D(uMask, vUv - vec2(0.0, uTexelSize.y * 2.0)).r;
+
+                float edge = (1.0 - m_l) + (1.0 - m_r) + (1.0 - m_t) + (1.0 - m_b);
+                edge = smoothstep(0.0, 1.0, edge * mask);
+
+                float m = length(d.rgb);
+                vec3 finalColor = d.rgb;
+
+                float glow = m * edge * 2.5;
+                finalColor += glow * finalColor;
+                finalColor *= 1.2;
+
+                float alpha = smoothstep(0.005, 0.15, m) * mask;
+
+                // 最终颜色：背景文字 + 流体墨水
+                vec3 outputColor = mix(bgTextColor * mask, finalColor, alpha);
+                float finalAlpha = max(mask * 0.03, alpha);
+
+                gl_FragColor = vec4(outputColor, finalAlpha);
+            }
+        `,
+        transparent: true
+    });
+}
+
+animate() {
+    requestAnimationFrame(() => this.animate());
+
+    if (!this.advectMat) {
+        this.advectMat = this.getAdvectShader();
+        this.divergenceMat = this.getDivergenceShader();
+        this.jacobiMat = this.getJacobiShader();
+        this.gradientSubtractMat = this.getGradientSubtractShader();
+        this.forceMat = this.getForceShader();
+        this.displayMat = this.getDisplayShader();
+    }
+
+    // 1. Advect
+    this.advectMat.uniforms.uVelocity.value = this.velocityField.read.texture;
+    this.advectMat.uniforms.uSource.value = this.velocityField.read.texture;
+    this.advectMat.uniforms.dissipation.value = 1.0; // 增加惯性，让流动持续更久
+    this.renderQuad(this.advectMat, this.velocityField.write);
+    this.velocityField.swap();
+
+    this.advectMat.uniforms.uSource.value = this.density.read.texture;
+    this.advectMat.uniforms.dissipation.value = 0.99; // 墨水扩散更持久
+    this.renderQuad(this.advectMat, this.density.write);
+    this.density.swap();
+
+    // 2. Add Force
+    const time = Date.now() * 20;
+
+    // 始终添加微小的扰动
+    this.forceMat.uniforms.uPoint.value.set(
+        0.5 + Math.sin(time * 0.3) * 0.4,
+        0.5 + Math.cos(time * 0.5) * 0.4
+    );
+    this.forceMat.uniforms.uSource.value = this.velocityField.read.texture;
+    this.forceMat.uniforms.uColor.value.set(Math.sin(time) * 0.02, Math.cos(time) * 0.02, 0);
+    this.forceMat.uniforms.uRadius.value = 0.001;
+    this.renderQuad(this.forceMat, this.velocityField.write);
+    this.velocityField.swap();
+
+    if (this.velocity.length() > 0.0001) {
+        const speed = this.velocity.length();
+        this.forceMat.uniforms.uPoint.value.copy(this.mouse);
+
+        // Add Velocity (基于鼠标速度增强惯性)
+        this.forceMat.uniforms.uSource.value = this.velocityField.read.texture;
+        this.forceMat.uniforms.uColor.value.set(this.velocity.x * 80.0, this.velocity.y * 80.0, 0);
+        this.forceMat.uniforms.uRadius.value = 0.0005 + speed * 0.5; // 速度越快，影响范围越大
+        this.renderQuad(this.forceMat, this.velocityField.write);
+        this.velocityField.swap();
+
+        // Add Density (Ink) - 使用色谱取色
+        this.forceMat.uniforms.uSource.value = this.density.read.texture;
+        const inkColor = this.getSpectrumColor(this.colorProgress);
+        this.forceMat.uniforms.uColor.value.copy(inkColor).multiplyScalar(1.5); // 增加初始亮度
+        this.forceMat.uniforms.uRadius.value = 0.0002 + speed * 0.05;
+        this.renderQuad(this.forceMat, this.density.write);
+        this.density.swap();
+
+        this.velocity.multiplyScalar(0.96); // 减缓自身衰减
+    }
+
+    // 3. Pressure Solver (Navier-Stokes)
+    // Divergence
+    this.divergenceMat.uniforms.uVelocity.value = this.velocityField.read.texture;
+    this.renderQuad(this.divergenceMat, this.divergence);
+
+    // Jacobi Iterations
+    this.jacobiMat.uniforms.uDivergence.value = this.divergence.texture;
+    for (let i = 0; i < 40; i++) {
+        this.jacobiMat.uniforms.uPressure.value = this.pressure.read.texture;
+        this.renderQuad(this.jacobiMat, this.pressure.write);
+        this.pressure.swap();
+    }
+
+    // Gradient Subtract
+    this.gradientSubtractMat.uniforms.uPressure.value = this.pressure.read.texture;
+    this.gradientSubtractMat.uniforms.uVelocity.value = this.velocityField.read.texture;
+    this.renderQuad(this.gradientSubtractMat, this.velocityField.write);
+    this.velocityField.swap();
+
+    // 4. Display
+    this.displayMat.uniforms.uDensity.value = this.density.read.texture;
+    this.displayMat.uniforms.uMask.value = this.textTexture;
+    this.renderQuad(this.displayMat, null);
+}
+}
+
+new FluidSimulation('fluid-canvas');
+
+    // 鼠标移动背景光效
+    const orbs = document.querySelectorAll('.experience-orb');
+    window.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 40;
+        const y = (e.clientY / window.innerHeight - 0.5) * 40;
+        
+        orbs.forEach((orb, index) => {
+            const factor = (index + 1) * 0.5;
+            orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+        });
+    });
 </script>
 
 <script type="module" src="poker-animation/src/main.js"></script>
