@@ -11,6 +11,23 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(DuplicateUserFieldException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateUserField(DuplicateUserFieldException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of(
+                "code", "DUPLICATE_FIELD",
+                "field", ex.getField(),
+                "message", ex.getMessage()
+        ));
+    }
+
+    @ExceptionHandler(InvalidImageIdException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidImageId(InvalidImageIdException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "success", false,
+                "message", ex.getMessage()
+        ));
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(

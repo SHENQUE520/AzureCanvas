@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(("/api/market/**"))
                         .ignoringRequestMatchers(("/api/storymaps/**"))
                         .ignoringRequestMatchers(("/api/posts/**"))
+                        .ignoringRequestMatchers("/api/users/**")
                         .ignoringRequestMatchers("/api/v1/images/**")
                         .ignoringRequestMatchers("/api/treeholes/**")
                         .csrfTokenRepository(new CookieCsrfTokenRepository())

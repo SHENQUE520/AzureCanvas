@@ -57,6 +57,10 @@ public class User {
 
     private boolean isRobot = false;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("interest ASC")
+    private List<UserInterest> interests;
+
     public enum Role {
         user, moderator, admin
     }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的空间 - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/notifications.js" type="module"></script>
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -642,11 +643,11 @@ function applyProfileToPage(data) {
     // 显示性别图标
     var genderIcon = document.getElementById('gender-icon');
     if (genderIcon && data.gender) {
-        if (data.gender === 'male') {
+        if (data.gender === 'MALE') {
             genderIcon.textContent = '♂';
             genderIcon.style.color = '#3b82f6';
             genderIcon.classList.remove('hidden');
-        } else if (data.gender === 'female') {
+        } else if (data.gender === 'FEMALE') {
             genderIcon.textContent = '♀';
             genderIcon.style.color = '#ec4899';
             genderIcon.classList.remove('hidden');
@@ -656,11 +657,17 @@ function applyProfileToPage(data) {
     }
 
     if (profileAvatar) {
-        if (data.avatar_url) {
-            profileAvatar.innerHTML = '<img src="' + data.avatar_url + '" class="w-20 h-20 rounded-full object-cover">';
-            profileAvatar.className = 'w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden z-10 relative';
-        } else if (data.username) {
-            profileAvatar.textContent = data.username.charAt(0).toUpperCase();
+        // 统一处理头像显示逻辑
+        const defaultClasses = 'w-20 h-20 rounded-full border-4 border-white bg-gradient-to-br from-purple-400 to-pink-400 shadow-md flex items-center justify-center text-white font-bold text-3xl z-10 relative';
+        const imgClasses = 'w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden z-10 relative';
+
+        if (data.avatar) {
+            const avatarUrl = data.avatar.startsWith('http') ? data.avatar : `/resources/${data.avatar}`;
+            profileAvatar.className = imgClasses;
+            profileAvatar.innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover" alt="${data.username || ''}" onerror="this.parentElement.innerHTML='${(data.username || 'A').charAt(0).toUpperCase()}'; this.parentElement.className='${defaultClasses}'">`;
+        } else {
+            profileAvatar.className = defaultClasses;
+            profileAvatar.textContent = (data.username || 'A').charAt(0).toUpperCase();
         }
     }
 
@@ -821,7 +828,7 @@ function openEditModal() {
     }
     if (saved.birthday) editForm.birthday.value = saved.birthday;
     if (saved.interests) {
-        var interests = saved.interests.split(',');
+        var interests = saved.interests;
         var presetTags = document.querySelectorAll('input[name="interest_tag"]');
         presetTags.forEach(function(cb) { cb.checked = interests.indexOf(cb.value) !== -1; });
         customInterests = [];
@@ -917,71 +924,101 @@ if (customInterestInput) {
 editForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    var formData = new FormData(editForm);
-    var username = formData.get('username') || '';
-    var bio = formData.get('bio') || '';
-    var email = formData.get('email') || '';
-    var gender = formData.get('gender') || 'secret';
-    var birthday = formData.get('birthday') || '';
+    const submitBtn = editForm.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+    
+    // 禁用按钮并显示加载状态
+    submitBtn.disabled = true;
+    submitBtn.textContent = '保存中...';
+    submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
-    // 收集兴趣：预设标签 + 自定义
-    var selectedTags = [];
-    document.querySelectorAll('input[name="interest_tag"]:checked').forEach(function (cb) {
-        selectedTags.push(cb.value);
-    });
-    var allInterests = selectedTags.concat(customInterests).join(',');
-
-    // 头像处理
-    var avatarFile = editAvatarInput.files[0];
-    var avatarUrl = '';
-    var previewImg = editAvatarPreview.querySelector('img');
-    if (previewImg) avatarUrl = previewImg.src;
-
-    // 更新页面显示
-    var profileUsername = document.getElementById('profile-username');
-    var profileBio = document.getElementById('profile-bio');
-    var profileAvatar = document.getElementById('profile-avatar');
-
-    if (profileUsername && username) profileUsername.textContent = username;
-    if (profileBio) profileBio.textContent = bio || '这个人很懒，什么都没写~';
-
-    if (avatarUrl && profileAvatar) {
-        profileAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-20 h-20 rounded-full object-cover">';
-        profileAvatar.className = 'w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden z-10 relative';
-    }
-
-    // 保存到 localStorage
-    saveProfileToStorage({
-        username: username,
-        bio: bio,
-        email: email,
-        gender: gender,
-        birthday: birthday,
-        interests: allInterests,
-        avatar_url: avatarUrl
-    });
-
-    // 调用后端保存
     try {
-        var uploadData = new FormData();
-        uploadData.append('username', username);
-        uploadData.append('bio', bio);
-        uploadData.append('email', email);
-        uploadData.append('gender', gender);
-        uploadData.append('birthday', birthday);
-        uploadData.append('interests', allInterests);
-        if (avatarFile) uploadData.append('avatar', avatarFile);
+        var formData = new FormData(editForm);
+        var username = formData.get('username') || '';
+        var bio = formData.get('bio') || '';
+        var email = formData.get('email') || '';
+        var gender = formData.get('gender') || 'secret';
+        var birthday = formData.get('birthday') || '';
 
-        await fetch('/api/users/profile', {
-            method: 'PUT',
-            credentials: 'include',
-            body: uploadData
+        // 收集兴趣：预设标签 + 自定义
+        var selectedTags = [];
+        document.querySelectorAll('input[name="interest_tag"]:checked').forEach(function (cb) {
+            selectedTags.push(cb.value);
         });
-    } catch (err) {
-        console.error('保存个人信息失败:', err);
-    }
+        var allInterests = selectedTags.concat(customInterests).join(',');
 
-    closeEditModal();
+        // 1. 头像处理：如果有新文件，先上传
+        var avatarFile = editAvatarInput.files[0];
+        var avatarUuid = null;
+        
+        if (avatarFile) {
+            const imageData = new FormData();
+            imageData.append('files', avatarFile);
+            
+            const uploadRes = await fetch('/api/v1/images/upload', {
+                method: 'POST',
+                body: imageData
+            });
+
+            if (!uploadRes.ok) {
+                throw new Error('头像上传失败，请稍后重试');
+            }
+            const uuids = await uploadRes.json();
+            avatarUuid = uuids[0];
+        }
+
+        // 2. 组装数据并发送 PUT 请求
+        const updateData = {
+            username: username,
+            bio: bio,
+            email: email,
+            gender: gender,
+            birthday: birthday,
+            interests: allInterests
+        };
+        if (avatarUuid) {
+            updateData.avatar = avatarUuid;
+        }
+
+        const response = await fetch('/api/users/me', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(updateData)
+        });
+
+        if (response.ok) {
+            const updatedUser = await response.json();
+            saveProfileToStorage(updatedUser);
+            applyProfileToPage(updatedUser);
+            window.notify.show('资料更新成功！', 'success');
+            closeEditModal();
+        } else if (response.status === 422) {
+            const error = await response.json();
+            if (error.code === 'DUPLICATE_FIELD') {
+                const input = editForm.querySelector(`input[name="${error.field}"]`);
+                if (input && window.notify.showInputError) {
+                    window.notify.showInputError(input, error.message);
+                } else {
+                    window.notify.show(`${error.field} ${error.message}`, 'error');
+                }
+            } else {
+                window.notify.show(error.message || '更新失败', 'error');
+            }
+        } else {
+            const error = await response.json().catch(() => ({ message: '更新失败' }));
+            window.notify.show(error.message || '更新失败', 'error');
+        }
+
+    } catch (err) {
+        console.error('保存资料失败:', err);
+        window.notify.show(err.message || '保存资料失败', 'error');
+    } finally {
+        // 恢复按钮状态
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+    }
 });
 </script>
 

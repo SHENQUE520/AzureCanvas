@@ -415,13 +415,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (headerUsername) headerUsername.textContent = username;
             if (dropdownUsername) dropdownUsername.textContent = username;
 
-            if (user.avatar_url) {
+            if (user.avatar) {
+                const avatarUrl = user.avatar.startsWith('http') ? user.avatar : `/resources/${user.avatar}`;
                 if (headerAvatar) {
-                    headerAvatar.innerHTML = '<img src="' + user.avatar_url + '" class="w-9 h-9 rounded-full object-cover">';
+                    headerAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-9 h-9 rounded-full object-cover" onerror="this.parentElement.textContent=\'登录\'">';
                     headerAvatar.className = 'w-9 h-9 rounded-full overflow-hidden shadow';
                 }
                 if (dropdownAvatar) {
-                    dropdownAvatar.innerHTML = '<img src="' + user.avatar_url + '" class="w-14 h-14 rounded-full object-cover">';
+                    dropdownAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-14 h-14 rounded-full object-cover" onerror="this.parentElement.textContent=\'' + firstChar + '\'">';
                     dropdownAvatar.className = 'w-14 h-14 rounded-full overflow-hidden shadow-md';
                 }
             } else {

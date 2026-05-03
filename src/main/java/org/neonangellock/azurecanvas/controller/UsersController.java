@@ -1,6 +1,9 @@
 package org.neonangellock.azurecanvas.controller;
 
 import jakarta.servlet.http.Cookie;
+import org.neonangellock.azurecanvas.dto.UserDTO;
+import org.neonangellock.azurecanvas.exception.DuplicateUserFieldException;
+import org.neonangellock.azurecanvas.exception.InvalidImageIdException;
 import org.neonangellock.azurecanvas.model.User;
 import org.neonangellock.azurecanvas.model.UserFollower;
 import org.neonangellock.azurecanvas.service.UserService;
@@ -8,10 +11,14 @@ import org.neonangellock.azurecanvas.service.impl.UserFollowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,7 +40,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
-        User user = userService.findById(userId);
+        User user = userService.findByIdWithInterests(userId);
         if (user == null) {
             Map<String, Object> response = new HashMap<>();
             response.put("error", "USER_NOT_FOUND");
@@ -41,10 +48,11 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserDTO.fromEntity(user));
     }
 
     @PutMapping("/me")
+    @Transactional
     public ResponseEntity<?> updateCurrentUser(
             @CookieValue(name = "user_id", required = false) UUID userId,
             @RequestBody Map<String, String> updates) {
@@ -63,36 +71,81 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
+        // 唯一性校验
+        if (updates.containsKey("username")) {
+            String newUsername = updates.get("username");
+            if (userService.existsByUsernameExcludingUser(newUsername, userId)) {
+                throw new DuplicateUserFieldException("username", "已被使用");
+            }
+            user.setUsername(newUsername);
+        }
         if (updates.containsKey("email")) {
-            user.setEmail(updates.get("email"));
+            String newEmail = updates.get("email");
+            if (userService.existsByEmailExcludingUser(newEmail, userId)) {
+                throw new DuplicateUserFieldException("email", "已被使用");
+            }
+            user.setEmail(newEmail);
         }
+
+        // 头像处理
         if (updates.containsKey("avatar")) {
-            user.setAvatarUrl(updates.get("avatar"));
+            String avatarUuid = updates.get("avatar");
+            try {
+                UUID.fromString(avatarUuid);
+                user.setAvatarUrl(avatarUuid);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidImageIdException("无效的图片ID格式");
+            }
         }
+
         if (updates.containsKey("bio")) {
             user.setBio(updates.get("bio"));
         }
 
+        if (updates.containsKey("gender")) {
+            try {
+                user.setGender(User.Gender.valueOf(updates.get("gender").toUpperCase()));
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (updates.containsKey("birthday")) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                user.setBirthDate(sdf.parse(updates.get("birthday")));
+            } catch (ParseException ignored) {}
+        }
+
         userService.save(user);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("id", user.getUserId());
-        response.put("username", user.getUsername());
-        response.put("email", user.getEmail());
-        response.put("avatar", user.getAvatarUrl());
-        response.put("role", user.getRole().name());
-        response.put("isRobot", user.isRobot());
-        response.put("createdAt", user.getJoinedAt());
+        // 兴趣多值关联
+        List<String> interestsList = null;
+        if (updates.containsKey("interests")) {
+            String interestsStr = updates.get("interests");
+            if (interestsStr != null && !interestsStr.isEmpty()) {
+                interestsList = Arrays.stream(interestsStr.split(","))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .distinct()
+                        .collect(Collectors.toList());
+                userService.updateUserInterests(user, interestsList);
+            } else {
+                userService.updateUserInterests(user, new ArrayList<>());
+            }
+        }
 
-        return ResponseEntity.ok(response);
+        if (interestsList == null) {
+            interestsList = userService.getUserInterests(userId);
+        }
+
+        return ResponseEntity.ok(UserDTO.fromEntity(user, interestsList));
     }
 
     @GetMapping("{uuid}")
     public ResponseEntity<?> getUserProfileById(@PathVariable UUID uuid){
-        User user = userService.findById(uuid);
+        User user = userService.findByIdWithInterests(uuid);
 
         if (user != null){
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(UserDTO.fromEntity(user));
         }
         return ResponseEntity.noContent().build();
     }

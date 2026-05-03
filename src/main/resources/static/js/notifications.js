@@ -2,7 +2,7 @@
  * Gorgeous Bubble Notifications
  * Styles using Tailwind CSS classes with custom glassmorphism.
  */
-export class NotificationManager {
+class NotificationManager {
     constructor() {
         this.container = document.createElement('div');
         this.container.id = 'notification-container';
@@ -81,6 +81,47 @@ export class NotificationManager {
         if (duration > 0) {
             setTimeout(close, duration);
         }
+    }
+
+    /**
+     * Show a bubble error under a specific input element
+     * @param {HTMLElement} element - The input element
+     * @param {string} message - The error message
+     * @param {number} duration - How long to show (ms)
+     */
+    showInputError(element, message, duration = 3000) {
+        const container = element.parentElement;
+        if (!container) return;
+
+        // Remove existing error bubbles for this element
+        const existing = container.querySelector('.input-error-bubble');
+        if (existing) existing.remove();
+
+        const bubble = document.createElement('div');
+        bubble.className = `
+            input-error-bubble
+            absolute left-0 top-full mt-1 px-3 py-1.5
+            bg-rose-500 text-white text-xs font-medium rounded-lg
+            shadow-lg z-[20000] whitespace-nowrap
+            animate-in fade-in slide-in-from-top-1 duration-200
+        `;
+        bubble.innerHTML = `
+            <div class="absolute -top-1 left-4 w-2 h-2 bg-rose-500 rotate-45"></div>
+            ${message}
+        `;
+
+        // Ensure container is relative for absolute positioning
+        const originalPosition = window.getComputedStyle(container).position;
+        if (originalPosition === 'static') {
+            container.style.position = 'relative';
+        }
+
+        container.appendChild(bubble);
+
+        setTimeout(() => {
+            bubble.classList.add('animate-out', 'fade-out', 'slide-out-to-top-1');
+            setTimeout(() => bubble.remove(), 200);
+        }, duration);
     }
 }
 
