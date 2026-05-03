@@ -126,7 +126,7 @@ class NotificationManager {
 }
 
 // Global instance
-window.notify.show = new NotificationManager();
+window.notify = new NotificationManager();
 
 // Utility function to get CSRF token from cookie
 window.getCsrfToken = function() {

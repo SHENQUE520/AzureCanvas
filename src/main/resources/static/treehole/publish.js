@@ -88,7 +88,10 @@ window.Publish = (function () {
   /** 提交发布 */
   function submit() {
     const content = textarea.value.trim();
-    if (!content) { alert("内容不能为空"); return; }
+    if (!content) {
+      window.notify.show.show("内容不能为空", 'error');
+      return;
+    }
     Store.addPost(content, categorySelect.value, [...selectedImages]);
     close();
     // 通知 main.js 刷新 feed

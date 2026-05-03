@@ -422,8 +422,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (user.avatar) {
                 const avatarUrl = user.avatar.startsWith('http') ? user.avatar : `/resources/${user.avatar}`;
                 if (headerAvatar) {
-                    headerAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-9 h-9 rounded-full object-cover" onerror="this.parentElement.textContent=\''+firstChar+'\'>';
-                    headerAvatar.className = 'w-9 h-9 rounded-full overflow-hidden shadow';
+                    headerAvatar.innerHTML = `<img src="${avatarUrl}" alt="${user.nickname}" class="w-10 h-10 rounded-full">`;
+                    headerAvatar.className = 'w-10 h-10 rounded-full overflow-hidden';
                 }
                 if (dropdownAvatar) {
                     dropdownAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-14 h-14 rounded-full object-cover" onerror="this.parentElement.textContent=\'' + firstChar + '\'">';

@@ -418,6 +418,10 @@
 
 <div class="save-toast" id="saveToast">设置已保存 ✓</div>
 
+<script src="../js/notifications.js"></script>
+<script>
+  window.notify.show = new NotificationManager();
+</script>
 <script src="store.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -584,7 +588,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 保存
   document.getElementById("saveSettingsBtn").addEventListener("click", () => {
     const nickname = document.getElementById("inputNickname").value.trim();
-    if (!nickname) { alert("昵称不能为空"); return; }
+    if (!nickname) { window.notify.show.show("昵称不能为空", 'error'); return; }
     const avatarLetter = document.getElementById("inputAvatarLetter").value.trim().slice(0,1) || nickname.slice(0,1);
     const avatarColor = colorPicker.querySelector(".color-dot.selected")?.dataset.color || u.avatarColor || "#555";
     Store.updateUser({

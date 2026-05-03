@@ -292,7 +292,7 @@
 
   function publishPost() {
     const content = postTextInput.value.trim();
-    if (!content) { alert("内容不能为空"); return; }
+    if (!content) { window.notify.show.show("内容不能为空", 'error'); return; }
     posts.unshift({
       id: "post_" + Date.now(),
       author: "树洞小枝",

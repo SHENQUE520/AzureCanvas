@@ -448,8 +448,14 @@
 
 <!-- 成功提示 -->
 <div class="toast" id="toast">发布成功！正在跳转…</div>
-
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="../js/frameworks/tailwind.js"></script>
 <script src="store.js"></script>
+<script src="../js/notifications.js"></script>
+<script>
+  window.notify.show = new NotificationManager();
+</script>
+<script src="../js/security.util.js"></script>
 <script>
   Store.init();
 
@@ -556,7 +562,10 @@
   // 提交
   document.getElementById("submitPostBtn").addEventListener("click", async () => {
     const content = textarea.value.trim();
-    if (!content) { alert("内容不能为空"); return; }
+    if (!content) {
+      window.notify.show.show("内容不能为空", 'error');
+      return;
+    }
 
     const submitBtn = document.getElementById("submitPostBtn");
     submitBtn.disabled = true;
@@ -567,8 +576,15 @@
       if (selectedImageFiles.length > 0) {
         const formData = new FormData();
         selectedImageFiles.forEach(f => formData.append("files", f));
-        const uploadRes = await fetch("/api/v1/images/upload", { method: "POST", body: formData });
-        if (!uploadRes.ok) throw new Error("图片上传失败");
+        const uploadRes = await fetch("/api/v1/images/upload", {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+            'X-XSRF-TOKEN': window.getCsrfToken()
+          }
+        });
+        if (!uploadRes.ok) ("图片上传失败");
         imageUuids = await uploadRes.json();
       }
 
@@ -578,7 +594,10 @@
       // 1. 创建帖子
       const postRes = await fetch("/api/treeholes/posts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          'X-XSRF-TOKEN': window.getCsrfToken()
+        },
         credentials: "include",
         body: JSON.stringify({
           content,
@@ -598,7 +617,10 @@
 
         const bindRes = await fetch(`/api/treeholes/posts/${savedPost.id}/images`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            'X-XSRF-TOKEN': window.getCsrfToken()
+          },
           credentials: "include",
           body: JSON.stringify({ images: imageUuids })
         });
@@ -620,7 +642,7 @@
       setTimeout(() => { window.location.href = "index.html"; }, 1200);
 
     } catch (err) {
-      alert(err.message);
+      window.notify.show.show(err.message, 'error');
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布树洞';
     }

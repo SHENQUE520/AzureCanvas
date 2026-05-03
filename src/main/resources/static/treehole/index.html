@@ -230,6 +230,7 @@
   </div>
 
   <!-- ===== 脚本加载（顺序：数据层→渲染层→功能模块→入口）===== -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script type="importmap">
     {
         "imports": {
@@ -241,12 +242,17 @@
     import { initLiquidEffect } from "../js/effects/liquid/liquid.js";
     initLiquidEffect();
   </script>
+  <script src="../js/notifications.js"></script>
+  <script>
+    window.notify.show = new NotificationManager();
+  </script>
   <script src="store.js"></script>
   <script src="render.js"></script>
   <script src="user.js"></script>
   <script src="message.js"></script>
   <script src="main.js"></script>
   <script src="daynight.changer.js"></script>
+  <script src="../js/security.util.js"></script>
   <script src="../js/app/treehole/daynight.changer.js"></script>
 </body>
 
