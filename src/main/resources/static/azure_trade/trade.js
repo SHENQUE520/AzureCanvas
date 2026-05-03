@@ -459,14 +459,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (dropdownSell) dropdownSell.textContent = user.sell || 0;
             if (dropdownFav) dropdownFav.textContent = user.favorites || 0;
 
-            try {
-                headerAvatar.innerHTML = '<img src="' + avatarUrl + '" class="w-9 h-9 rounded-full object-cover" onerror="this.parentElement.textContent=\''+firstChar+'\'>';
-                headerAvatar.className = 'w-9 h-9 rounded-full overflow-hidden shadow';
-            }
-            catch (e){
-
-            }
-
             loggedIn = true;
         } else {
             if (response.status === 401) {
