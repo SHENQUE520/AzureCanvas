@@ -1,6 +1,6 @@
 // ========== 商品数据（2x3 紧凑卡片） ==========
 
-let loggedIn = false;
+let loggedIn = true;
 
 var
  cards = [
@@ -458,6 +458,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (dropdownBuy) dropdownBuy.textContent = user.buy || 0;
             if (dropdownSell) dropdownSell.textContent = user.sell || 0;
             if (dropdownFav) dropdownFav.textContent = user.favorites || 0;
+
+            loggedIn = true;
         } else {
             if (response.status === 401) {
                 loggedIn = false;
