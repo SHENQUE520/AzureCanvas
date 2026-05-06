@@ -45,7 +45,7 @@ function createClickHint() {
     clickHintDiv.style.transition = 'opacity 0.8s ease';
     clickHintDiv.innerHTML = `
         <div style="background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: inline-block; padding: 12px 28px; border-radius: 60px; color: white; font-size: 20px;">
-            ⚡ 点击瀑布，进入传送门 ⚡
+            ⚡ Click the waterfall to enter the portal ⚡
             <div style="font-size: 24px; margin-top: 8px; animation: floatArrow 1.2s infinite;">▼</div>
         </div>
         <style>@keyframes floatArrow{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}</style>
@@ -75,7 +75,7 @@ function showScrollHint() {
     scrollHintDiv.style.opacity = '0';
     scrollHintDiv.style.transition = 'opacity 1s ease';
     scrollHintDiv.innerHTML = `
-        <div><div style="font-size: 28px;">向下滚动，进入传送门</div><div style="font-size: 16px;">SCROLL TO ENTER</div></div>
+        <div><div style="font-size: 28px;">Scroll down to enter the portal</div><div style="font-size: 16px;">SCROLL TO ENTER</div></div>
         <div style="font-size: 24px; animation: floatArrow 1.2s infinite;">▼</div>
     `;
     document.body.appendChild(scrollHintDiv);
