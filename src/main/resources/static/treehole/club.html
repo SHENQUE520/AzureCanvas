@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>社团大舞台 - MUST树洞</title>
+  <title>Club Hub - MUST Treehole</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -129,10 +129,10 @@
 
 <nav class="navbar">
   <div class="nav-logo">
-    <button class="btn btn-sm" onclick="history.back()" style="font-weight:400"><i class="fas fa-arrow-left"></i> 返回</button>
+    <button class="btn btn-sm" onclick="history.back()" style="font-weight:400"><i class="fas fa-arrow-left"></i> Back</button>
   </div>
   <div class="nav-search-center">
-    <div style="font-size:1.1rem;font-weight:700;color:var(--text)">社团大舞台</div>
+    <div style="font-size:1.1rem;font-weight:700;color:var(--text)">Club Hub</div>
   </div>
   <div class="nav-actions">
     <button class="btn btn-sm" id="nightBtn"><i class="fas fa-moon"></i></button>
@@ -147,29 +147,29 @@
       <div class="club-hero-name" id="heroName"></div>
       <div class="club-hero-desc" id="heroDesc"></div>
       <div class="club-hero-stats">
-        <div class="club-stat"><strong id="heroMemberCount"></strong> 成员</div>
-        <div class="club-stat"><strong id="heroActivityCount"></strong> 近期活动</div>
+        <div class="club-stat"><strong id="heroMemberCount"></strong> Members</div>
+        <div class="club-stat"><strong id="heroActivityCount"></strong> Recent Activities</div>
       </div>
     </div>
-    <button class="club-join-btn" id="joinBtn">+ 加入社团</button>
+    <button class="club-join-btn" id="joinBtn">+ Join Club</button>
   </div>
 
   <!-- tabs -->
   <div class="club-tabs">
-    <button class="club-tab active" data-tab="intro"><i class="fas fa-info-circle"></i> 社团介绍</button>
-    <button class="club-tab" data-tab="activity"><i class="fas fa-calendar-alt"></i> 活动预约</button>
-    <button class="club-tab" data-tab="forum"><i class="fas fa-comments"></i> 社团论坛</button>
-    <button class="club-tab" data-tab="chat"><i class="fas fa-comment-dots"></i> 社团聊天</button>
+    <button class="club-tab active" data-tab="intro"><i class="fas fa-info-circle"></i> Club Intro</button>
+    <button class="club-tab" data-tab="activity"><i class="fas fa-calendar-alt"></i> Activities</button>
+    <button class="club-tab" data-tab="forum"><i class="fas fa-comments"></i> Forum</button>
+    <button class="club-tab" data-tab="chat"><i class="fas fa-comment-dots"></i> Chat</button>
   </div>
 
   <!-- intro panel -->
   <div class="club-panel active" id="panel-intro">
     <div class="intro-section">
-      <div class="intro-section-title">社团简介</div>
+      <div class="intro-section-title">Club Description</div>
       <div id="introFullDesc" style="font-size:0.95rem;line-height:1.8;color:var(--text)"></div>
     </div>
     <div class="intro-section">
-      <div class="intro-section-title">现任负责人</div>
+      <div class="intro-section-title">Current Leader</div>
       <div class="leader-card">
         <div class="leader-avatar" id="leaderAvatar"></div>
         <div class="leader-info">
@@ -179,7 +179,7 @@
       </div>
     </div>
     <div class="intro-section">
-      <div class="intro-section-title">社团成员</div>
+      <div class="intro-section-title">Club Members</div>
       <div class="members-row" id="membersRow"></div>
     </div>
   </div>
@@ -192,9 +192,9 @@
   <!-- forum panel -->
   <div class="club-panel" id="panel-forum">
     <div class="forum-input-card">
-      <textarea class="forum-input" id="forumInput" placeholder="在社团论坛发布内容…"></textarea>
+      <textarea class="forum-input" id="forumInput" placeholder="Post in the club forum…"></textarea>
       <div class="forum-input-footer">
-        <button class="btn btn-primary btn-sm" id="forumPostBtn">发布</button>
+        <button class="btn btn-primary btn-sm" id="forumPostBtn">Post</button>
       </div>
     </div>
     <div id="forumList"></div>
@@ -204,9 +204,9 @@
   <div class="club-panel" id="panel-chat">
     <div class="chat-apply-box" id="chatApplyBox">
       <div class="chat-apply-icon">💬</div>
-      <div class="chat-apply-title">加入社团聊天室</div>
-      <div class="chat-apply-sub">申请通过社团管理员审核后，即可与社团成员实时聊天</div>
-      <button class="chat-apply-btn" id="chatApplyBtn">申请加入</button>
+      <div class="chat-apply-title">Join Club Chat Room</div>
+      <div class="chat-apply-sub">After approval by club administrator, you can chat with club members in real-time</div>
+      <button class="chat-apply-btn" id="chatApplyBtn">Apply to Join</button>
       <div class="chat-status" id="chatStatus"></div>
     </div>
     <div class="chat-room" id="chatRoom">
@@ -217,8 +217,8 @@
       </div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input-bar">
-        <input class="chat-input" id="chatInput" placeholder="发送消息…" autocomplete="off">
-        <button class="btn btn-primary btn-sm" id="chatSendBtn">发送</button>
+        <input class="chat-input" id="chatInput" placeholder="Send message…" autocomplete="off">
+        <button class="btn btn-primary btn-sm" id="chatSendBtn">Send</button>
       </div>
     </div>
   </div>
@@ -227,124 +227,124 @@
 <script>
 const CLUBS = [
   {
-    id:0, name:'学生总会', emoji:'🏛️',
-    desc:'学生总会是学校最高学生自治组织，负责统筹协调各学生社团活动，维护学生权益，组织各类校园文化活动。每年举办迎新晚会、毕业晚会、运动会等大型活动，是同学们展示自我的重要舞台。',
-    leader:{name:'张明远', grade:'大三', dept:'计算机学院'},
-    members:['李','王','陈','刘','赵','孙','周','吴','郑','冯'],
+    id:0, name:'Student Union', emoji:'🏛️',
+    desc:'The Student Union is the highest student self-governing organization in the university, responsible for coordinating various student club activities, safeguarding student rights, and organizing campus cultural activities. It hosts large-scale events such as welcome parties, graduation parties, and sports meets every year, providing an important stage for students to showcase themselves.',
+    leader:{name:'Mingyuan Zhang', grade:'Junior', dept:'Computer Science College'},
+    members:['Li','Wang','Chen','Liu','Zhao','Sun','Zhou','Wu','Zheng','Feng'],
     memberCount:120,
     activities:[
-      {id:1,title:'五四青年节文艺汇演',date:'2026-05-04',time:'19:00',location:'大礼堂',desc:'庆祝五四青年节，展示青春风采',spots:200,booked:156},
-      {id:2,title:'学生代表大会',date:'2026-05-15',time:'14:00',location:'行政楼报告厅',desc:'讨论学生权益相关议题',spots:100,booked:88},
+      {id:1,title:'May Fourth Youth Day Art Performance',date:'2026-05-04',time:'19:00',location:'Grand Auditorium',desc:'Celebrating May Fourth Youth Day, showcasing youth elegance',spots:200,booked:156},
+      {id:2,title:'Student Representative Assembly',date:'2026-05-15',time:'14:00',location:'Administration Building Lecture Hall',desc:'Discussing student rights-related topics',spots:100,booked:88},
     ],
     chatMsgs:[
-      {from:'张明远',text:'大家好，欢迎加入学生总会聊天室！',mine:false},
-      {from:'王晓燕',text:'五四晚会的节目单出来了吗？',mine:false},
-      {from:'陈志远',text:'正在排练中，下周公布！',mine:false},
+      {from:'Mingyuan Zhang',text:'Hello everyone, welcome to the Student Union chat room!',mine:false},
+      {from:'Xiaoyan Wang',text:'Has the program list for the May Fourth evening party been released?',mine:false},
+      {from:'Zhiyuan Chen',text:'Still rehearsing, will be announced next week!',mine:false},
     ]
   },
   {
-    id:1, name:'羽毛球社', emoji:'🏸',
-    desc:'羽毛球社成立于2010年，是学校最活跃的体育社团之一。定期举办校内联赛，欢迎各水平球友加入，共同享受羽毛球运动的乐趣。',
-    leader:{name:'林晓峰', grade:'大二', dept:'体育学院'},
-    members:['黄','郑','何','高','林','梁','郭','罗','韩','唐'],
+    id:1, name:'Badminton Club', emoji:'🏸',
+    desc:'Founded in 2010, the Badminton Club is one of the most active sports clubs in the university. It regularly hosts campus leagues and welcomes players of all levels to join and enjoy the fun of badminton.',
+    leader:{name:'Xiaofeng Lin', grade:'Sophomore', dept:'Physical Education College'},
+    members:['Huang','Zheng','He','Gao','Lin','Liang','Guo','Luo','Han','Tang'],
     memberCount:85,
     activities:[
-      {id:1,title:'春季羽毛球联赛',date:'2026-05-10',time:'09:00',location:'体育馆3号场',desc:'单打双打混双全面开赛',spots:64,booked:48},
-      {id:2,title:'新生入社训练营',date:'2026-05-20',time:'15:00',location:'体育馆',desc:'基础技术培训，欢迎零基础新生',spots:30,booked:12},
+      {id:1,title:'Spring Badminton League',date:'2026-05-10',time:'09:00',location:'Gymnasium Court 3',desc:'Singles, doubles, and mixed doubles competitions',spots:64,booked:48},
+      {id:2,title:'New Member Training Camp',date:'2026-05-20',time:'15:00',location:'Gymnasium',desc:'Basic skills training, welcome beginners',spots:30,booked:12},
     ],
     chatMsgs:[
-      {from:'林晓峰',text:'本周六上午9点联赛，大家准时到场！',mine:false},
-      {from:'黄志强',text:'好的，我带球拍来',mine:false},
+      {from:'Xiaofeng Lin',text:'League at 9am this Saturday, everyone be on time!',mine:false},
+      {from:'Zhiqiang Huang',text:'OK, I will bring my racket',mine:false},
     ]
   },
   {
-    id:2, name:'乒乓球社', emoji:'🏓',
-    desc:'乒乓球社致力于推广乒乓球运动，定期组织训练和比赛，培养同学们的竞技精神和团队合作能力。',
-    leader:{name:'赵小明', grade:'大三', dept:'工程学院'},
-    members:['钱','孙','李','周','吴','郑','王','冯','陈','褚'],
+    id:2, name:'Table Tennis Club', emoji:'🏓',
+    desc:'The Table Tennis Club is dedicated to promoting table tennis, regularly organizing training and competitions, and cultivating students' competitive spirit and teamwork skills.',
+    leader:{name:'Xiaoming Zhao', grade:'Junior', dept:'Engineering College'},
+    members:['Qian','Sun','Li','Zhou','Wu','Zheng','Wang','Feng','Chen','Chu'],
     memberCount:60,
     activities:[
-      {id:1,title:'校际乒乓球友谊赛',date:'2026-05-12',time:'14:00',location:'体育馆乒乓室',desc:'与兄弟院校切磋球技',spots:20,booked:18},
+      {id:1,title:'Inter-University Table Tennis Friendly',date:'2026-05-12',time:'14:00',location:'Gymnasium Table Tennis Room',desc:'Compete with brother universities',spots:20,booked:18},
     ],
     chatMsgs:[
-      {from:'赵小明',text:'友谊赛名单已确定，请查收通知',mine:false},
+      {from:'Xiaoming Zhao',text:'Friendly match roster confirmed, please check the notice',mine:false},
     ]
   },
   {
-    id:3, name:'国学社', emoji:'📜',
-    desc:'国学社以弘扬中华优秀传统文化为宗旨，开展经典诵读、书法、茶艺、汉服等活动，让同学们感受传统文化的魅力。',
-    leader:{name:'苏雅文', grade:'大四', dept:'文学院'},
-    members:['卫','蒋','沈','韩','杨','朱','秦','尤','许','何'],
+    id:3, name:'Chinese Classics Society', emoji:'📜',
+    desc:'The Chinese Classics Society is committed to promoting excellent traditional Chinese culture, conducting activities such as classic reading, calligraphy, tea ceremony, and Hanfu, allowing students to experience the charm of traditional culture.',
+    leader:{name:'Yawen Su', grade:'Senior', dept:'Literature College'},
+    members:['Wei','Jiang','Shen','Han','Yang','Zhu','Qin','You','Xu','He'],
     memberCount:45,
     activities:[
-      {id:1,title:'端午节传统文化体验',date:'2026-05-31',time:'10:00',location:'文化广场',desc:'包粽子、做香囊、写书法',spots:50,booked:32},
-      {id:2,title:'《论语》读书会',date:'2026-05-08',time:'19:00',location:'图书馆研讨室',desc:'共读经典，交流心得',spots:20,booked:15},
+      {id:1,title:'Dragon Boat Festival Traditional Culture Experience',date:'2026-05-31',time:'10:00',location:'Culture Square',desc:'Make zongzi, sachets, and calligraphy',spots:50,booked:32},
+      {id:2,title:'"Analects" Reading Club',date:'2026-05-08',time:'19:00',location:'Library Seminar Room',desc:'Read classics together, exchange insights',spots:20,booked:15},
     ],
     chatMsgs:[
-      {from:'苏雅文',text:'端午活动材料已备好，欢迎大家参与！',mine:false},
-      {from:'卫晨曦',text:'太期待了，我已经报名了',mine:false},
+      {from:'Yawen Su',text:'Dragon Boat Festival materials are ready, welcome to participate!',mine:false},
+      {from:'Chenxi Wei',text:'Looking forward to it, I have already signed up',mine:false},
     ]
   },
   {
-    id:4, name:'户外运动协会', emoji:'🏕️',
-    desc:'户外运动协会组织徒步、露营、攀岩等户外活动，培养同学们的探险精神和环保意识，享受大自然的美好。',
-    leader:{name:'吴浩然', grade:'大二', dept:'地理学院'},
-    members:['施','张','孔','曹','严','华','金','魏','陶','姜'],
+    id:4, name:'Outdoor Sports Association', emoji:'🏕️',
+    desc:'The Outdoor Sports Association organizes hiking, camping, rock climbing and other outdoor activities, cultivating students' adventurous spirit and environmental awareness, and enjoying the beauty of nature.',
+    leader:{name:'Haoran Wu', grade:'Sophomore', dept:'Geography College'},
+    members:['Shi','Zhang','Kong','Cao','Yan','Hua','Jin','Wei','Tao','Jiang'],
     memberCount:72,
     activities:[
-      {id:1,title:'周末徒步登山活动',date:'2026-05-09',time:'07:00',location:'学校南门集合',desc:'目的地：附近山峰，全程约8km',spots:30,booked:28},
-      {id:2,title:'夏季露营活动',date:'2026-06-01',time:'16:00',location:'郊外营地',desc:'两天一夜，体验野外生存',spots:25,booked:10},
+      {id:1,title:'Weekend Hiking & Mountain Climbing',date:'2026-05-09',time:'07:00',location:'Gather at South Gate',desc:'Destination: nearby mountain, about 8km total',spots:30,booked:28},
+      {id:2,title:'Summer Camping Trip',date:'2026-06-01',time:'16:00',location:'Suburban Camp',desc:'Two days and one night, experience wilderness survival',spots:25,booked:10},
     ],
     chatMsgs:[
-      {from:'吴浩然',text:'周末徒步还有2个名额，快来报名！',mine:false},
-      {from:'施晓雨',text:'装备清单发一下？',mine:false},
-      {from:'吴浩然',text:'已发到群文件，记得带防晒和水',mine:false},
+      {from:'Haoran Wu',text:'Only 2 spots left for weekend hiking, sign up now!',mine:false},
+      {from:'Xiaoyu Shi',text:'Can you send the equipment list?',mine:false},
+      {from:'Haoran Wu',text:'Sent to group files, remember to bring sunscreen and water',mine:false},
     ]
   },
   {
-    id:5, name:'舞蹈联盟', emoji:'💃',
-    desc:'舞蹈联盟汇聚了热爱舞蹈的同学，涵盖街舞、现代舞、民族舞等多种风格，定期举办演出和交流活动。',
-    leader:{name:'林美琪', grade:'大三', dept:'艺术学院'},
-    members:['戚','谢','邹','喻','柏','水','窦','章','云','苏'],
+    id:5, name:'Dance Alliance', emoji:'💃',
+    desc:'The Dance Alliance gathers students who love dance, covering street dance, modern dance, folk dance and other styles, regularly holding performances and exchange activities.',
+    leader:{name:'Meiqi Lin', grade:'Junior', dept:'Art College'},
+    members:['Qi','Xie','Zou','Yu','Bai','Shui','Dou','Zhang','Yun','Su'],
     memberCount:95,
     activities:[
-      {id:1,title:'校园舞蹈大赛',date:'2026-05-22',time:'18:30',location:'大礼堂',desc:'各风格舞蹈同台竞技',spots:300,booked:245},
-      {id:2,title:'街舞公开课',date:'2026-05-07',time:'19:00',location:'活动中心',desc:'零基础入门，感受街舞魅力',spots:40,booked:38},
+      {id:1,title:'Campus Dance Competition',date:'2026-05-22',time:'18:30',location:'Grand Auditorium',desc:'Various dance styles compete on the same stage',spots:300,booked:245},
+      {id:2,title:'Street Dance Open Class',date:'2026-05-07',time:'19:00',location:'Activity Center',desc:'Zero-basis introduction, experience the charm of street dance',spots:40,booked:38},
     ],
     chatMsgs:[
-      {from:'林美琪',text:'大赛排练时间：每天晚上7-9点，活动中心',mine:false},
-      {from:'戚雨晴',text:'好的，我今晚到',mine:false},
+      {from:'Meiqi Lin',text:'Competition rehearsal time: 7-9pm every day, Activity Center',mine:false},
+      {from:'Yuqing Qi',text:'OK, I will be there tonight',mine:false},
     ]
   },
   {
-    id:6, name:'音乐学会', emoji:'🎵',
-    desc:'音乐学会是学校最具影响力的艺术社团，涵盖声乐、器乐、合唱等方向，每年举办多场音乐会和演出。',
-    leader:{name:'陈乐天', grade:'大四', dept:'音乐学院'},
-    members:['潘','葛','奚','范','彭','郎','鲁','韦','昌','马'],
+    id:6, name:'Music Society', emoji:'🎵',
+    desc:'The Music Society is the most influential art club in the university, covering vocal, instrumental, choral and other directions, hosting multiple concerts and performances every year.',
+    leader:{name:'Letian Chen', grade:'Senior', dept:'Music College'},
+    members:['Pan','Ge','Xi','Fan','Peng','Lang','Lu','Wei','Chang','Ma'],
     memberCount:110,
     activities:[
-      {id:1,title:'春季音乐会',date:'2026-05-18',time:'19:30',location:'音乐厅',desc:'声乐器乐联合演出',spots:150,booked:142},
-      {id:2,title:'吉他入门工作坊',date:'2026-05-11',time:'15:00',location:'音乐楼204',desc:'从零开始学吉他',spots:15,booked:9},
+      {id:1,title:'Spring Concert',date:'2026-05-18',time:'19:30',location:'Concert Hall',desc:'Vocal and instrumental joint performance',spots:150,booked:142},
+      {id:2,title:'Guitar Beginner Workshop',date:'2026-05-11',time:'15:00',location:'Music Building 204',desc:'Learn guitar from scratch',spots:15,booked:9},
     ],
     chatMsgs:[
-      {from:'陈乐天',text:'音乐会节目单已定，大家最后冲刺！',mine:false},
-      {from:'潘晓月',text:'好期待，票还有吗？',mine:false},
-      {from:'陈乐天',text:'还有少量票，找我领',mine:false},
+      {from:'Letian Chen',text:'Concert program list finalized, final sprint everyone!',mine:false},
+      {from:'Xiaoyue Pan',text:'So excited, are there still tickets?',mine:false},
+      {from:'Letian Chen',text:'Still a few tickets left, come get them from me',mine:false},
     ]
   },
   {
-    id:7, name:'IEEE学生分会', emoji:'⚡',
-    desc:'IEEE学生分会是国际电气电子工程师学会在校学生组织，致力于推动电子、计算机、通信等领域的学术交流与技术创新。',
-    leader:{name:'刘科远', grade:'大三', dept:'电子信息学院'},
-    members:['苗','凤','花','方','俞','任','袁','柳','酆','鲍'],
+    id:7, name:'IEEE Student Branch', emoji:'⚡',
+    desc:'The IEEE Student Branch is the on-campus organization of the Institute of Electrical and Electronics Engineers, dedicated to promoting academic exchange and technological innovation in electronics, computer, and communications fields.',
+    leader:{name:'Keyuan Liu', grade:'Junior', dept:'Electronic Information College'},
+    members:['Miao','Feng','Hua','Fang','Yu','Ren','Yuan','Liu','Feng','Bao'],
     memberCount:68,
     activities:[
-      {id:1,title:'嵌入式系统开发讲座',date:'2026-05-06',time:'19:00',location:'工程楼报告厅',desc:'业界专家分享实战经验',spots:80,booked:75},
-      {id:2,title:'电子设计竞赛培训',date:'2026-05-13',time:'14:00',location:'实验楼301',desc:'备战全国大学生电子设计竞赛',spots:25,booked:20},
+      {id:1,title:'Embedded Systems Development Lecture',date:'2026-05-06',time:'19:00',location:'Engineering Building Lecture Hall',desc:'Industry experts share practical experience',spots:80,booked:75},
+      {id:2,title:'Electronic Design Contest Training',date:'2026-05-13',time:'14:00',location:'Lab Building 301',desc:'Prepare for National College Student Electronic Design Contest',spots:25,booked:20},
     ],
     chatMsgs:[
-      {from:'刘科远',text:'讲座嘉宾已确认，来自华为研究院',mine:false},
-      {from:'苗志远',text:'太强了！我已经报名了',mine:false},
+      {from:'Keyuan Liu',text:'Lecture guest confirmed, from Huawei Research Institute',mine:false},
+      {from:'Zhiyuan Miao',text:'So impressive! I have already signed up',mine:false},
     ]
   }
 ];
@@ -371,15 +371,15 @@ document.getElementById('heroName').textContent = club.name;
 document.getElementById('heroDesc').textContent = club.desc.slice(0, 60) + '…';
 document.getElementById('heroMemberCount').textContent = club.memberCount;
 document.getElementById('heroActivityCount').textContent = club.activities.length;
-document.getElementById('chatRoomTitle').textContent = club.name + ' 聊天室';
-document.getElementById('chatOnlineCount').textContent = Math.floor(Math.random()*8+3) + ' 人在线';
+document.getElementById('chatRoomTitle').textContent = club.name + ' Chat Room';
+document.getElementById('chatOnlineCount').textContent = Math.floor(Math.random()*8+3) + ' online';
 
 // join btn
 const joinKey = 'club_joined_' + club.id;
 const joinBtn = document.getElementById('joinBtn');
 function updateJoinBtn() {
   const joined = localStorage.getItem(joinKey);
-  joinBtn.textContent = joined ? '✓ 已加入' : '+ 加入社团';
+  joinBtn.textContent = joined ? '✓ Joined' : '+ Join Club';
   joinBtn.className = 'club-join-btn' + (joined ? ' joined' : '');
 }
 updateJoinBtn();
@@ -411,7 +411,7 @@ club.members.forEach(m => {
   const el = document.createElement('div');
   el.className = 'member-avatar';
   el.textContent = m;
-  el.setAttribute('data-name', m + '同学');
+  el.setAttribute('data-name', m + ' Student');
   membersRow.appendChild(el);
 });
 
@@ -440,12 +440,12 @@ function renderActivities() {
         </div>
         <div class="activity-desc">${act.desc}</div>
         <div class="activity-spots">
-          已报名 ${act.booked}/${act.spots} 人
+          Booked ${act.booked}/${act.spots} people
           <div class="spots-bar"><div class="spots-fill" style="width:${pct}%"></div></div>
         </div>
       </div>
       <button class="book-btn ${isBooked ? 'booked' : ''}" data-act-id="${act.id}">
-        ${isBooked ? '✓ 已预约' : '预约'}
+        ${isBooked ? '✓ Booked' : 'Book'}
       </button>
     </div>`;
   }).join('');
@@ -473,7 +473,7 @@ function renderForum() {
   const posts = getForumPosts();
   const forumList = document.getElementById('forumList');
   if (!posts.length) {
-    forumList.innerHTML = '<div class="empty-tip">还没有帖子，来发第一条吧</div>';
+    forumList.innerHTML = '<div class="empty-tip">No posts yet, be the first to post!</div>';
     return;
   }
   forumList.innerHTML = posts.slice().reverse().map((p, ri) => {
@@ -489,13 +489,13 @@ function renderForum() {
       <div class="forum-post-body">${escHtml(p.text)}</div>
       <div class="forum-post-actions">
         <button class="action-btn forum-like-btn" data-idx="${i}"><i class="far fa-heart"></i> ${p.likes||0}</button>
-        <button class="action-btn forum-cmt-btn" data-idx="${i}"><i class="far fa-comment"></i> ${(p.comments||[]).length} 评论</button>
+        <button class="action-btn forum-cmt-btn" data-idx="${i}"><i class="far fa-comment"></i> ${(p.comments||[]).length} Comments</button>
       </div>
       <div class="forum-comments" id="forum-cmt-${i}">
         ${commentsHtml}
         <div class="forum-comment-input-row">
-          <input class="forum-comment-input" placeholder="写评论…" data-idx="${i}">
-          <button class="btn btn-sm" data-cmt-idx="${i}">发送</button>
+          <input class="forum-comment-input" placeholder="Write comment…" data-idx="${i}">
+          <button class="btn btn-sm" data-cmt-idx="${i}">Send</button>
         </div>
       </div>
     </div>`;
@@ -525,7 +525,7 @@ function renderForum() {
       if (!text) return;
       const posts2 = getForumPosts();
       if (!posts2[idx].comments) posts2[idx].comments = [];
-      posts2[idx].comments.push({ author: '我', text });
+      posts2[idx].comments.push({ author: 'Me', text });
       saveForumPosts(posts2);
       renderForum();
       const box = document.getElementById('forum-cmt-' + idx);
@@ -540,7 +540,7 @@ document.getElementById('forumPostBtn').addEventListener('click', () => {
   const text = input.value.trim();
   if (!text) return;
   const posts = getForumPosts();
-  posts.push({ author: '我', text, time: new Date().toLocaleString('zh'), likes: 0, comments: [] });
+  posts.push({ author: 'Me', text, time: new Date().toLocaleString(), likes: 0, comments: [] });
   saveForumPosts(posts);
   input.value = '';
   renderForum();
@@ -569,9 +569,9 @@ if (localStorage.getItem(chatApprovedKey)) openChatRoom();
 
 chatApplyBtn.addEventListener('click', () => {
   chatApplyBtn.disabled = true;
-  chatStatus.textContent = '申请已提交，等待管理员审核…';
+  chatStatus.textContent = 'Application submitted, waiting for administrator review…';
   setTimeout(() => {
-    chatStatus.textContent = '✓ 申请已通过！正在进入聊天室…';
+    chatStatus.textContent = '✓ Application approved! Entering chat room…';
     setTimeout(() => {
       localStorage.setItem(chatApprovedKey, '1');
       openChatRoom();
@@ -587,7 +587,7 @@ function sendChatMsg() {
   const msgs = document.getElementById('chatMessages');
   const div = document.createElement('div');
   div.className = 'chat-msg chat-msg-mine';
-  div.innerHTML = `<div class="chat-msg-avatar">我</div><div class="chat-bubble chat-bubble-mine">${escHtml(text)}</div>`;
+  div.innerHTML = `<div class="chat-msg-avatar">Me</div><div class="chat-bubble chat-bubble-mine">${escHtml(text)}</div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
   chatInput.value = '';

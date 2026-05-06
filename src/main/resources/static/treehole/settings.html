@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的设置 — MUST树洞</title>
+  <title>My Settings — MUST Treehole</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -11,7 +11,7 @@
       max-width: 900px; margin: 32px auto; padding: 0 24px;
       display: grid; grid-template-columns: 260px 1fr; gap: 32px;
     }
-    /* ===== 左侧个人卡片 ===== */
+    /* Left Profile Card */
     .profile-card { display: flex; flex-direction: column; align-items: center; gap: 0; }
     .profile-avatar-wrap { position: relative; margin-bottom: 16px; }
     .profile-avatar {
@@ -23,7 +23,7 @@
       user-select: none;
     }
     .profile-avatar:hover::after {
-      content: "更换"; position: absolute; inset: 0; border-radius: 50%;
+      content: "Change"; position: absolute; inset: 0; border-radius: 50%;
       background: rgba(0,0,0,0.45); color: #fff; font-size: 0.85rem;
       display: flex; align-items: center; justify-content: center;
     }
@@ -46,7 +46,7 @@
     }
     .profile-meta-item i { width: 16px; text-align: center; }
 
-    /* ===== 右侧设置表单 ===== */
+    /* Right Settings Form */
     .settings-panel {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); overflow: hidden;
@@ -161,258 +161,258 @@
 <body>
 <nav class="navbar">
   <div class="nav-logo">
-    <i class="fas fa-tree"></i> Azurecanvas-树洞
+    <i class="fas fa-tree"></i> Azurecanvas-Treehole
     <span class="badge">MUST</span>
   </div>
   <div class="nav-actions" style="margin-left:auto">
     <button class="btn" onclick="window.location.href='index.html'">
-      <i class="fas fa-arrow-left"></i> 返回主页
+      <i class="fas fa-arrow-left"></i> Back to Home
     </button>
   </div>
 </nav>
 
 <div class="settings-layout">
-  <!-- 左侧个人卡片 -->
+  <!-- Left Profile Card -->
   <div class="profile-card">
     <div class="profile-avatar-wrap">
-      <div class="profile-avatar" id="previewAvatar">我</div>
+      <div class="profile-avatar" id="previewAvatar">Me</div>
     </div>
-    <div class="profile-name" id="previewName">我的树洞</div>
-    <div class="profile-bio-display" id="previewBio">这个人很神秘，什么都没留下</div>
+    <div class="profile-name" id="previewName">My Treehole</div>
+    <div class="profile-bio-display" id="previewBio">This person is mysterious, left nothing behind</div>
     <div class="profile-stats">
       <div class="stat-item">
         <div class="stat-num" id="statPosts">0</div>
-        <div class="stat-label">帖子</div>
+        <div class="stat-label">Posts</div>
       </div>
       <div class="stat-item">
         <div class="stat-num" id="statFollowing">0</div>
-        <div class="stat-label">关注</div>
+        <div class="stat-label">Following</div>
       </div>
       <div class="stat-item">
         <div class="stat-num" id="statLikes">0</div>
-        <div class="stat-label">获赞</div>
+        <div class="stat-label">Likes</div>
       </div>
     </div>
     <div class="profile-meta-list" id="profileMetaList"></div>
   </div>
 
-  <!-- 右侧设置面板 -->
+  <!-- Right Settings Panel -->
   <div class="settings-panel">
     <div class="settings-tabs">
-      <div class="settings-tab active" data-tab="profile">个人资料</div>
-      <div class="settings-tab" data-tab="avatar">头像</div>
-      <div class="settings-tab" data-tab="account">账号</div>
-      <div class="settings-tab" data-tab="notify">通知</div>
-      <div class="settings-tab" data-tab="privacy">隐私</div>
-      <div class="settings-tab" data-tab="appearance">外观</div>
-      <div class="settings-tab" data-tab="general">通用</div>
+      <div class="settings-tab active" data-tab="profile">Profile</div>
+      <div class="settings-tab" data-tab="avatar">Avatar</div>
+      <div class="settings-tab" data-tab="account">Account</div>
+      <div class="settings-tab" data-tab="notify">Notifications</div>
+      <div class="settings-tab" data-tab="privacy">Privacy</div>
+      <div class="settings-tab" data-tab="appearance">Appearance</div>
+      <div class="settings-tab" data-tab="general">General</div>
     </div>
 
-    <!-- 个人资料 -->
+    <!-- Profile -->
     <div class="settings-section active" id="tab-profile">
       <div class="form-group">
-        <label class="form-label">昵称</label>
-        <input class="form-input" id="inputNickname" type="text" maxlength="16" placeholder="输入昵称">
-        <div class="form-hint">最多 16 个字符</div>
+        <label class="form-label">Nickname</label>
+        <input class="form-input" id="inputNickname" type="text" maxlength="16" placeholder="Enter nickname">
+        <div class="form-hint">Maximum 16 characters</div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">性别</label>
+          <label class="form-label">Gender</label>
           <select class="form-select" id="inputGender">
-            <option value="">不公开</option>
-            <option value="male">男</option>
-            <option value="female">女</option>
-            <option value="other">其他</option>
+            <option value="">Not Public</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">年龄</label>
-          <input class="form-input" id="inputAge" type="number" min="1" max="120" placeholder="年龄">
+          <label class="form-label">Age</label>
+          <input class="form-input" id="inputAge" type="number" min="1" max="120" placeholder="Age">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">个性签名</label>
-        <textarea class="form-textarea" id="inputBio" maxlength="100" placeholder="介绍一下自己…"></textarea>
-        <div class="form-hint">最多 100 个字符</div>
+        <label class="form-label">Bio</label>
+        <textarea class="form-textarea" id="inputBio" maxlength="100" placeholder="Tell us about yourself…"></textarea>
+        <div class="form-hint">Maximum 100 characters</div>
       </div>
       <div class="form-group">
-        <label class="form-label">所在地</label>
-        <input class="form-input" id="inputLocation" type="text" maxlength="30" placeholder="城市 / 学校">
+        <label class="form-label">Location</label>
+        <input class="form-input" id="inputLocation" type="text" maxlength="30" placeholder="City / School">
       </div>
     </div>
 
-    <!-- 头像设置 -->
+    <!-- Avatar Settings -->
     <div class="settings-section" id="tab-avatar">
       <div class="form-group">
-        <label class="form-label">头像字母</label>
-        <input class="form-input" id="inputAvatarLetter" type="text" maxlength="1" placeholder="单个字符">
-        <div class="form-hint">显示在头像圆圈中的字符</div>
+        <label class="form-label">Avatar Letter</label>
+        <input class="form-input" id="inputAvatarLetter" type="text" maxlength="1" placeholder="Single character">
+        <div class="form-hint">Character displayed in the avatar circle</div>
       </div>
       <div class="form-group">
-        <label class="form-label">头像颜色</label>
+        <label class="form-label">Avatar Color</label>
         <div class="color-picker-row" id="avatarColorPicker"></div>
       </div>
     </div>
 
-    <!-- 账号 -->
+    <!-- Account -->
     <div class="settings-section" id="tab-account">
       <div class="form-group">
-        <label class="form-label">用户 ID</label>
+        <label class="form-label">User ID</label>
         <input class="form-input" id="inputUserId" type="text" readonly style="color:var(--text-muted)">
-        <div class="form-hint">用户 ID 不可修改</div>
+        <div class="form-hint">User ID cannot be modified</div>
       </div>
       <div class="form-group" style="padding:16px;background:var(--bg-subtle);border-radius:var(--radius);border:1px solid var(--border-muted)">
         <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.7;">
           <i class="fas fa-shield-alt" style="margin-right:6px;"></i>
-          所有数据存储在本地浏览器，不会上传至服务器。清除浏览器缓存将导致数据丢失。
+          All data is stored locally in the browser and will not be uploaded to the server. Clearing browser cache will result in data loss.
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">危险操作</label>
+        <label class="form-label">Dangerous Actions</label>
         <button class="btn" id="clearDataBtn" style="color:#c00;border-color:#c00;width:100%;justify-content:center;">
-          <i class="fas fa-trash-alt"></i> 清除所有本地数据
+          <i class="fas fa-trash-alt"></i> Clear All Local Data
         </button>
-        <div class="form-hint">清除后数据不可恢复，页面将自动刷新</div>
+        <div class="form-hint">Data cannot be recovered after clearing, page will auto-refresh</div>
       </div>
     </div>
 
-    <!-- 通知 -->
+    <!-- Notifications -->
     <div class="settings-section" id="tab-notify">
       <div class="form-group">
-        <label class="form-label">消息通知</label>
+        <label class="form-label">Message Notifications</label>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-comment-dots"></i> 评论回复通知</span>
+          <span class="settings-toggle-label"><i class="fas fa-comment-dots"></i> Comment Reply Notifications</span>
           <label class="toggle-switch"><input type="checkbox" id="notifyComment" checked><span class="toggle-slider"></span></label>
         </div>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-envelope"></i> 私信通知</span>
+          <span class="settings-toggle-label"><i class="fas fa-envelope"></i> Message Notifications</span>
           <label class="toggle-switch"><input type="checkbox" id="notifyMsg" checked><span class="toggle-slider"></span></label>
         </div>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-bookmark"></i> 收藏通知</span>
+          <span class="settings-toggle-label"><i class="fas fa-bookmark"></i> Favorite Notifications</span>
           <label class="toggle-switch"><input type="checkbox" id="notifyCollect" checked><span class="toggle-slider"></span></label>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">免打扰时段</label>
+        <label class="form-label">Do Not Disturb Period</label>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label" style="font-weight:400;font-size:0.82rem;">开始时间</label>
+            <label class="form-label" style="font-weight:400;font-size:0.82rem;">Start Time</label>
             <input class="form-input" id="dndStart" type="time" value="22:00">
           </div>
           <div class="form-group">
-            <label class="form-label" style="font-weight:400;font-size:0.82rem;">结束时间</label>
+            <label class="form-label" style="font-weight:400;font-size:0.82rem;">End Time</label>
             <input class="form-input" id="dndEnd" type="time" value="08:00">
           </div>
         </div>
-        <div class="form-hint">免打扰时段内不显示通知气泡</div>
+        <div class="form-hint">Notifications will not be displayed during the DND period</div>
       </div>
     </div>
 
-    <!-- 隐私 -->
+    <!-- Privacy -->
     <div class="settings-section" id="tab-privacy">
       <div class="form-group">
-        <label class="form-label">隐私设置</label>
+        <label class="form-label">Privacy Settings</label>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-eye-slash"></i> 不让他人看到我的关注列表</span>
+          <span class="settings-toggle-label"><i class="fas fa-eye-slash"></i> Hide My Following List from Others</span>
           <label class="toggle-switch"><input type="checkbox" id="privacyFollowing"><span class="toggle-slider"></span></label>
         </div>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-lock"></i> 仅关注者可私信我</span>
+          <span class="settings-toggle-label"><i class="fas fa-lock"></i> Only Followers Can Message Me</span>
           <label class="toggle-switch"><input type="checkbox" id="privacyMsg"><span class="toggle-slider"></span></label>
         </div>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-ban"></i> 屏蔽陌生人评论</span>
+          <span class="settings-toggle-label"><i class="fas fa-ban"></i> Block Stranger Comments</span>
           <label class="toggle-switch"><input type="checkbox" id="privacyComment"><span class="toggle-slider"></span></label>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">黑名单管理</label>
+        <label class="form-label">Blocklist Management</label>
         <div style="padding:12px;background:var(--bg-subtle);border-radius:var(--radius);border:1px solid var(--border-muted);font-size:0.88rem;color:var(--text-muted);">
-          <i class="fas fa-info-circle" style="margin-right:6px;"></i>暂无黑名单用户
+          <i class="fas fa-info-circle" style="margin-right:6px;"></i>No blocked users yet
         </div>
       </div>
     </div>
 
-    <!-- 外观 -->
+    <!-- Appearance -->
     <div class="settings-section" id="tab-appearance">
       <div class="form-group">
-        <label class="form-label">主题模式</label>
+        <label class="form-label">Theme Mode</label>
         <div class="theme-options">
           <div class="theme-option active" data-theme="light">
             <div class="theme-preview light-preview"></div>
-            <span>浅色</span>
+            <span>Light</span>
           </div>
           <div class="theme-option" data-theme="dark">
             <div class="theme-preview dark-preview"></div>
-            <span>深色</span>
+            <span>Dark</span>
           </div>
           <div class="theme-option" data-theme="auto">
             <div class="theme-preview auto-preview"></div>
-            <span>跟随系统</span>
+            <span>Follow System</span>
           </div>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">字体大小</label>
+        <label class="form-label">Font Size</label>
         <div class="font-size-row">
-          <span style="font-size:0.8rem;color:var(--text-muted);">小</span>
+          <span style="font-size:0.8rem;color:var(--text-muted);">Small</span>
           <input type="range" id="fontSizeRange" min="14" max="20" value="17" style="flex:1;">
-          <span style="font-size:0.8rem;color:var(--text-muted);">大</span>
+          <span style="font-size:0.8rem;color:var(--text-muted);">Large</span>
           <span id="fontSizeVal" style="font-size:0.82rem;color:var(--text-muted);min-width:32px;text-align:right;">17px</span>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">语言</label>
+        <label class="form-label">Language</label>
         <select class="form-select" id="inputLang">
-          <option value="zh">简体中文</option>
-          <option value="zh-tw">繁體中文</option>
+          <option value="zh">Simplified Chinese</option>
+          <option value="zh-tw">Traditional Chinese</option>
           <option value="en">English</option>
         </select>
       </div>
     </div>
 
-    <!-- 通用 -->
+    <!-- General -->
     <div class="settings-section" id="tab-general">
       <div class="form-group">
-        <label class="form-label">内容偏好</label>
+        <label class="form-label">Content Preferences</label>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-eye-slash"></i> 隐藏低质量评论</span>
+          <span class="settings-toggle-label"><i class="fas fa-eye-slash"></i> Hide Low-Quality Comments</span>
           <label class="toggle-switch"><input type="checkbox" id="hideJunk" checked><span class="toggle-slider"></span></label>
         </div>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-image"></i> 自动加载图片</span>
+          <span class="settings-toggle-label"><i class="fas fa-image"></i> Auto-Load Images</span>
           <label class="toggle-switch"><input type="checkbox" id="autoImg" checked><span class="toggle-slider"></span></label>
         </div>
         <div class="settings-toggle-row">
-          <span class="settings-toggle-label"><i class="fas fa-history"></i> 保存浏览历史</span>
+          <span class="settings-toggle-label"><i class="fas fa-history"></i> Save Browsing History</span>
           <label class="toggle-switch"><input type="checkbox" id="saveHistory" checked><span class="toggle-slider"></span></label>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">关于</label>
+        <label class="form-label">About</label>
         <div style="padding:14px;background:var(--bg-subtle);border-radius:var(--radius);border:1px solid var(--border-muted);font-size:0.88rem;line-height:1.8;color:var(--text-muted);">
-          <div><strong style="color:var(--text);">MUST 树洞</strong> · AzureCanvas</div>
-          <div>版本 v1.5.0</div>
-          <div><i class="fas fa-shield-alt" style="margin-right:4px;"></i>数据本地存储，保护你的隐私</div>
+          <div><strong style="color:var(--text);">MUST Treehole</strong> · AzureCanvas</div>
+          <div>Version v1.5.0</div>
+          <div><i class="fas fa-shield-alt" style="margin-right:4px;"></i>Data stored locally, protecting your privacy</div>
         </div>
       </div>
     </div>
 
     <div class="settings-footer">
       <button class="btn logout-btn" id="logoutBtn">
-        <i class="fas fa-sign-out-alt"></i> 退出登录
+        <i class="fas fa-sign-out-alt"></i> Logout
       </button>
       <div style="flex:1"></div>
-      <button class="btn" onclick="window.location.href='index.html'">取消</button>
+      <button class="btn" onclick="window.location.href='index.html'">Cancel</button>
       <button class="btn btn-primary" id="saveSettingsBtn">
-        <i class="fas fa-save"></i> 保存设置
+        <i class="fas fa-save"></i> Save Settings
       </button>
     </div>
   </div>
 </div>
 
-<div class="save-toast" id="saveToast">设置已保存 ✓</div>
+<div class="save-toast" id="saveToast">Settings saved ✓</div>
 
 <script src="../js/notifications.js"></script>
 <script>
@@ -424,27 +424,27 @@ document.addEventListener("DOMContentLoaded", () => {
   Store.init();
   const u = Store.currentUser;
 
-  // 从 API 获取最新用户信息（包括头像）
+  // Fetch latest user info from API (including avatar)
   (async function fetchAndApplyUserInfo() {
     try {
       const res = await fetch("/api/users/me", { credentials: "include" });
       if (res.ok) {
         const apiUser = await res.json();
 
-        // 处理头像 URL：支持 avatar 字段（UUID 格式）
+        // Process avatar URL: supports avatar field (UUID format)
         let avatarUrl = null;
         if (apiUser.avatar || apiUser.avatarUrl) {
           const rawAvatar = apiUser.avatar || apiUser.avatarUrl;
-          // 如果已经是完整 URL，直接使用
+          // If already a complete URL, use directly
           if (rawAvatar.startsWith('http://') || rawAvatar.startsWith('https://') || rawAvatar.startsWith('/')) {
             avatarUrl = rawAvatar;
           } else {
-            // 假设是 UUID 格式，转换为 /resources/{uuid}
+            // Assume UUID format, convert to /resources/{uuid}
             avatarUrl = '/resources/' + rawAvatar;
           }
         }
 
-        // 更新 Store 中的用户信息
+        // Update user info in Store
         Store.updateUser({
           id: apiUser.userId || apiUser.id,
           nickname: apiUser.username || apiUser.nickname || u.nickname,
@@ -453,24 +453,24 @@ document.addEventListener("DOMContentLoaded", () => {
           uuid: apiUser.userId || apiUser.id
         });
 
-        // 如果有头像 URL，更新预览头像的显示
+        // If avatar URL exists, update preview avatar display
         if (avatarUrl) {
           const previewAvatarEl = document.getElementById("previewAvatar");
-          previewAvatarEl.innerHTML = `<img src="${avatarUrl}" alt="头像" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.parentElement.textContent='${Store.currentUser.avatarLetter || '我'}';this.parentElement.style.background='${u.avatarColor || '#555'}'">`;
+          previewAvatarEl.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.parentElement.textContent='${Store.currentUser.avatarLetter || 'U'}';this.parentElement.style.background='${u.avatarColor || '#555'}'">`;
           previewAvatarEl.style.background = "transparent";
         }
       }
     } catch (e) {
-      console.warn("获取用户信息失败:", e);
+      console.warn("Failed to fetch user info:", e);
     }
 
-    // 初始化表单和预览
+    // Initialize form and preview
     initFormAndPreview();
   })();
 
   function initFormAndPreview() {
 
-  // 填充表单
+  // Fill form
   document.getElementById("inputNickname").value = u.nickname || "";
   document.getElementById("inputGender").value = u.gender || "";
   document.getElementById("inputAge").value = u.age || "";
@@ -479,13 +479,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("inputAvatarLetter").value = u.avatarLetter || "";
   document.getElementById("inputUserId").value = u.id || "me";
 
-  // 统计
+  // Stats
   const myPosts = Store.posts.filter(p => p.authorId === u.id);
   document.getElementById("statPosts").textContent = myPosts.length;
   document.getElementById("statFollowing").textContent = Store.getFollowedUsers().length;
   document.getElementById("statLikes").textContent = myPosts.reduce((s, p) => s + (p.likes || 0), 0);
 
-  // 颜色选择器
+  // Color picker
   const COLORS = ["#333","#555","#777","#2d6a4f","#1d3557","#6d2b3d","#7b4f12","#444"];
   const colorPicker = document.getElementById("avatarColorPicker");
   colorPicker.innerHTML = COLORS.map(c => `
@@ -499,13 +499,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 实时预览
+  // Live preview
   function updatePreview() {
     const letter = document.getElementById("inputAvatarLetter").value.trim().slice(0,1)
-      || document.getElementById("inputNickname").value.trim().slice(0,1) || "我";
+      || document.getElementById("inputNickname").value.trim().slice(0,1) || "U";
     const color = colorPicker.querySelector(".color-dot.selected")?.dataset.color || u.avatarColor || "#555";
-    const name = document.getElementById("inputNickname").value.trim() || "我的树洞";
-    const bio = document.getElementById("inputBio").value.trim() || "这个人很神秘，什么都没留下";
+    const name = document.getElementById("inputNickname").value.trim() || "My Treehole";
+    const bio = document.getElementById("inputBio").value.trim() || "This person is mysterious and left nothing";
     const gender = document.getElementById("inputGender").value;
     const age = document.getElementById("inputAge").value;
     const location = document.getElementById("inputLocation").value.trim();
@@ -516,8 +516,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("previewBio").textContent = bio;
 
     const metaItems = [];
-    if (gender) metaItems.push(`<div class="profile-meta-item"><i class="fas fa-${gender==="male"?"mars":gender==="female"?"venus":"genderless"}"></i> ${gender==="male"?"男":gender==="female"?"女":"其他"}</div>`);
-    if (age) metaItems.push(`<div class="profile-meta-item"><i class="fas fa-birthday-cake"></i> ${age} 岁</div>`);
+    if (gender) metaItems.push(`<div class="profile-meta-item"><i class="fas fa-${gender==="male"?"mars":gender==="female"?"venus":"genderless"}"></i> ${gender==="male"?"Male":gender==="female"?"Female":"Other"}</div>`);
+    if (age) metaItems.push(`<div class="profile-meta-item"><i class="fas fa-birthday-cake"></i> ${age} years old</div>`);
     if (location) metaItems.push(`<div class="profile-meta-item"><i class="fas fa-map-marker-alt"></i> ${location}</div>`);
     document.getElementById("profileMetaList").innerHTML = metaItems.join("");
   }
@@ -530,7 +530,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   } // end initFormAndPreview
 
-  // Tab 切换
+  // Tab switching
   document.querySelectorAll(".settings-tab").forEach(tab => {
     tab.addEventListener("click", () => {
       document.querySelectorAll(".settings-tab").forEach(t => t.classList.remove("active"));
@@ -540,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 外观：主题切换
+  // Appearance: theme switching
   document.querySelectorAll(".theme-option").forEach(opt => {
     opt.addEventListener("click", () => {
       document.querySelectorAll(".theme-option").forEach(o => o.classList.remove("active"));
@@ -552,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector(`.theme-option[data-theme="${savedTheme}"]`)?.classList.add("active");
   document.querySelector(`.theme-option:not([data-theme="${savedTheme}"])`)?.classList.remove("active");
 
-  // 外观：字体大小
+  // Appearance: font size
   const fontRange = document.getElementById("fontSizeRange");
   const fontVal = document.getElementById("fontSizeVal");
   const savedFont = localStorage.getItem("th_font_size") || "17";
@@ -563,28 +563,28 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("th_font_size", fontRange.value);
   });
 
-  // 账号：清除数据
+  // Account: clear data
   document.getElementById("clearDataBtn").addEventListener("click", () => {
-    if (confirm("确定要清除所有本地数据吗？此操作不可恢复！")) {
+    if (confirm("Are you sure you want to clear all local data? This action cannot be undone!")) {
       localStorage.clear();
       sessionStorage.clear();
       location.reload();
     }
   });
 
-  // 退出登录
+  // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
-    if (confirm("确定要退出登录吗？")) {
+    if (confirm("Are you sure you want to logout?")) {
       localStorage.removeItem("th_user");
       sessionStorage.clear();
       window.location.href = "index.html";
     }
   });
 
-  // 保存
+  // Save
   document.getElementById("saveSettingsBtn").addEventListener("click", () => {
     const nickname = document.getElementById("inputNickname").value.trim();
-    if (!nickname) { window.notify.show.show("昵称不能为空", 'error'); return; }
+    if (!nickname) { window.notify.show.show("Nickname cannot be empty", 'error'); return; }
     const avatarLetter = document.getElementById("inputAvatarLetter").value.trim().slice(0,1) || nickname.slice(0,1);
     const avatarColor = colorPicker.querySelector(".color-dot.selected")?.dataset.color || u.avatarColor || "#555";
     Store.updateUser({
@@ -594,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bio: document.getElementById("inputBio").value.trim(),
       location: document.getElementById("inputLocation").value.trim(),
     });
-    // 保存通知/隐私/通用开关
+    // Save notification/privacy/general toggles
     const prefs = {
       notifyComment: document.getElementById("notifyComment").checked,
       notifyMsg: document.getElementById("notifyMsg").checked,
@@ -615,7 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => toast.classList.remove("show"), 2000);
   });
 
-  // 加载已保存的偏好设置
+  // Load saved preferences
   try {
     const prefs = JSON.parse(localStorage.getItem("th_prefs") || "{}");
     if (prefs.notifyComment !== undefined) document.getElementById("notifyComment").checked = prefs.notifyComment;

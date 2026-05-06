@@ -58,12 +58,18 @@ public class EsItemServiceImpl implements EsItemService {
 
         try {
             NativeQuery query = NativeQuery.builder()
-                    .withQuery(q -> q.multiMatch(m -> m.fields("title", "description").query(keyword)))
+                    .withQuery(q -> q.multiMatch(m -> m
+                            .fields("title", "description", "titleEn", "descriptionEn", "titleZh", "descriptionZh")
+                            .query(keyword)))
                     .withPageable(PageRequest.of(page, size))
                     .withHighlightQuery(new HighlightQuery(
                             new Highlight(List.of(
                                     new HighlightField("title"),
-                                    new HighlightField("description"))),
+                                    new HighlightField("description"),
+                                    new HighlightField("titleEn"),
+                                    new HighlightField("descriptionEn"),
+                                    new HighlightField("titleZh"),
+                                    new HighlightField("descriptionZh"))),
                             EsItem.class))
                     .build();
 
@@ -161,7 +167,7 @@ public class EsItemServiceImpl implements EsItemService {
 
                 List<EsItem> esItems = itemPage.getContent().stream()
                         .filter(item -> item.getUpdatedAt() != null &&
-                                        item.getUpdatedAt().isAfter(syncSince))
+                                item.getUpdatedAt().isAfter(syncSince))
                         .map(this::convertToEsItem)
                         .collect(Collectors.toList());
 
@@ -217,6 +223,10 @@ public class EsItemServiceImpl implements EsItemService {
         esItem.setId(item.getItemId().toString());
         esItem.setTitle(item.getTitle());
         esItem.setDescription(item.getDescription());
+        esItem.setTitleEn(item.getTitle());
+        esItem.setDescriptionEn(item.getDescription());
+        esItem.setTitleZh(item.getTitle());
+        esItem.setDescriptionZh(item.getDescription());
         esItem.setPrice(item.getPrice());
         esItem.setCategory(item.getCategory());
         esItem.setStatus(item.getStatus());
@@ -238,34 +248,66 @@ public class EsItemServiceImpl implements EsItemService {
 
     private static class EmptySearchHits<T> implements SearchHits<T> {
         @Override
-        public long getTotalHits() { return 0; }
+        public long getTotalHits() {
+            return 0;
+        }
+
         @Override
         public org.springframework.data.elasticsearch.core.TotalHitsRelation getTotalHitsRelation() {
             return org.springframework.data.elasticsearch.core.TotalHitsRelation.EQUAL_TO;
         }
+
         @Override
-        public float getMaxScore() { return 0f; }
+        public float getMaxScore() {
+            return 0f;
+        }
+
         @Override
-        public org.springframework.data.elasticsearch.core.suggest.response.Suggest getSuggest() { return null; }
+        public org.springframework.data.elasticsearch.core.suggest.response.Suggest getSuggest() {
+            return null;
+        }
+
         @Override
         public List<org.springframework.data.elasticsearch.core.SearchHit<T>> getSearchHits() {
             return List.of();
         }
+
         @Override
         public org.springframework.data.elasticsearch.core.SearchHit<T> getSearchHit(int index) {
             throw new IndexOutOfBoundsException();
         }
-        public List<T> getSearchHitsContents() { return List.of(); }
+
+        public List<T> getSearchHitsContents() {
+            return List.of();
+        }
+
         @Override
-        public boolean hasSearchHits() { return false; }
+        public boolean hasSearchHits() {
+            return false;
+        }
+
         @Override
-        public org.springframework.data.elasticsearch.core.AggregationsContainer<?> getAggregations() { return null; }
-        public <A> A getAggregation(String name, Class<A> aClass) { return null; }
+        public org.springframework.data.elasticsearch.core.AggregationsContainer<?> getAggregations() {
+            return null;
+        }
+
+        public <A> A getAggregation(String name, Class<A> aClass) {
+            return null;
+        }
+
         @Override
-        public org.springframework.data.elasticsearch.core.SearchShardStatistics getSearchShardStatistics() { return null; }
+        public org.springframework.data.elasticsearch.core.SearchShardStatistics getSearchShardStatistics() {
+            return null;
+        }
+
         @Override
-        public String getPointInTimeId() { return null; }
+        public String getPointInTimeId() {
+            return null;
+        }
+
         @Override
-        public java.time.Duration getExecutionDuration() { return java.time.Duration.ZERO; }
+        public java.time.Duration getExecutionDuration() {
+            return java.time.Duration.ZERO;
+        }
     }
 }

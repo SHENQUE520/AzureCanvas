@@ -58,14 +58,21 @@ public class EsStoryMapServiceImpl implements EsStoryMapService {
         try {
             NativeQuery query = NativeQuery.builder()
                     .withQuery(q -> q.multiMatch(m -> m
-                            .fields("title", "description", "location")
+                            .fields("title", "description", "location", "titleEn", "descriptionEn", "locationEn",
+                                    "titleZh", "descriptionZh", "locationZh")
                             .query(keyword)))
                     .withPageable(PageRequest.of(page, size))
                     .withHighlightQuery(new HighlightQuery(
                             new Highlight(List.of(
                                     new HighlightField("title"),
                                     new HighlightField("description"),
-                                    new HighlightField("location"))),
+                                    new HighlightField("location"),
+                                    new HighlightField("titleEn"),
+                                    new HighlightField("descriptionEn"),
+                                    new HighlightField("locationEn"),
+                                    new HighlightField("titleZh"),
+                                    new HighlightField("descriptionZh"),
+                                    new HighlightField("locationZh"))),
                             EsStoryMap.class))
                     .build();
 
@@ -149,7 +156,7 @@ public class EsStoryMapServiceImpl implements EsStoryMapService {
 
             List<EsStoryMap> esItems = allStoryMaps.stream()
                     .filter(storyMap -> storyMap.getUpdatedAt() != null &&
-                                        storyMap.getUpdatedAt().isAfter(syncSince))
+                            storyMap.getUpdatedAt().isAfter(syncSince))
                     .map(this::convertStoryMapToEsStoryMap)
                     .collect(Collectors.toList());
 
@@ -178,6 +185,12 @@ public class EsStoryMapServiceImpl implements EsStoryMapService {
         esItem.setTitle(storyMap.getTitle());
         esItem.setDescription(storyMap.getContent());
         esItem.setLocation(storyMap.getLocationTitle());
+        esItem.setTitleEn(storyMap.getTitle());
+        esItem.setDescriptionEn(storyMap.getContent());
+        esItem.setLocationEn(storyMap.getLocationTitle());
+        esItem.setTitleZh(storyMap.getTitle());
+        esItem.setDescriptionZh(storyMap.getContent());
+        esItem.setLocationZh(storyMap.getLocationTitle());
         esItem.setLat(storyMap.getLat().doubleValue());
         esItem.setLng(storyMap.getLng().doubleValue());
         esItem.setLikes(storyMap.getLikesCount());
@@ -190,13 +203,15 @@ public class EsStoryMapServiceImpl implements EsStoryMapService {
 
     @Override
     public List<EsStoryMap> getAllStoryMaps(int page, int size) {
-        if (esStoryMapRepository == null) return new ArrayList<>();
+        if (esStoryMapRepository == null)
+            return new ArrayList<>();
         return esStoryMapRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
     private int syncBatchWithRetry(List<EsStoryMap> items) {
-        if (esStoryMapRepository == null) return 0;
-        
+        if (esStoryMapRepository == null)
+            return 0;
+
         int retryCount = 0;
         while (retryCount < MAX_RETRIES) {
             try {

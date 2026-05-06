@@ -148,7 +148,7 @@ renderFollowing(followingData);
 // 从API加载关注列表
 (async function() {
     try {
-        var response = await fetch('/api/users/me/following?page=1&limit=100', {
+        var response = await fetch('https://api.szsummer.com/api/users/me/following?page=1&limit=100', {
             method: 'GET',
             credentials: 'include'
         });

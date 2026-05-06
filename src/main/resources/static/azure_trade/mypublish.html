@@ -268,7 +268,7 @@ function renderPublished(filter) {
 async function offShelfItem(itemId) {
     if (!confirm('确定要下架该商品吗？')) return;
     try {
-        var res = await fetch('/api/market/items/' + itemId + '/off', { method: 'PUT', credentials: 'include' });
+        var res = await fetch('https://api.szsummer.com/api/market/items/' + itemId + '/off', { method: 'PUT', credentials: 'include' });
         if (res.ok) {
             showToast('已下架');
             var item = pubItems.find(function(i) { return i.id === itemId; });
@@ -286,7 +286,7 @@ async function offShelfItem(itemId) {
 async function deleteItem(itemId) {
     if (!confirm('确定要删除该商品吗？删除后不可恢复。')) return;
     try {
-        var res = await fetch('/api/market/items/' + itemId, { method: 'DELETE', credentials: 'include' });
+        var res = await fetch('https://api.szsummer.com/api/market/items/' + itemId, { method: 'DELETE', credentials: 'include' });
         if (res.ok) {
             showToast('已删除');
             pubItems = pubItems.filter(function(i) { return i.id !== itemId; });
@@ -335,7 +335,7 @@ editForm.addEventListener('submit', async function(e) {
         status: 'available'
     };
     try {
-        var res = await fetch('/api/market/items/' + itemId, {
+        var res = await fetch('https://api.szsummer.com/api/market/items/' + itemId, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -367,7 +367,7 @@ renderPublished('all');
 // 从API加载我发布的商品
 (async function() {
     try {
-        var userRes = await fetch('/api/users/me', { credentials: 'include' });
+        var userRes = await fetch('https://api.szsummer.com/api/users/me', { credentials: 'include' });
         if (userRes.ok) {
             var user = await userRes.json();
             currentUsername = user.username || '';
@@ -376,7 +376,7 @@ renderPublished('all');
             return;
         }
 
-        var res = await fetch('/api/market/users/me/items', { credentials: 'include' });
+        var res = await fetch('https://api.szsummer.com/api/market/users/me/items', { credentials: 'include' });
         if (res.ok) {
             var items = await res.json();
             if (items && items.length > 0) {
@@ -468,7 +468,7 @@ var logoutBtn = document.getElementById('logout-btn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async function () {
         try {
-            await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            await fetch('https://api.szsummer.com/api/auth/logout', { method: 'POST', credentials: 'include' });
         } catch (e) {}
         window.location.href = '/login?redirect=/azure_trade/trade';
     });

@@ -1,10 +1,10 @@
 /**
- * store.js — 数据层
- * 管理所有持久化数据：帖子、用户、关注、私信、通知
- * 通过 window.Store 暴露给其他模块
+ * store.js — Data Layer
+ * Manages all persistent data: posts, users, follows, messages, notifications
+ * Exposed to other modules via window.Store
  */
 window.Store = (function () {
-  // localStorage 键名
+  // localStorage key names
   const KEYS = {
     posts: "th_posts_v3",
     user: "th_user",
@@ -13,72 +13,72 @@ window.Store = (function () {
     notifications: "th_notifications",
   };
 
-  // ===== 内部状态 =====
+  // ===== Internal State =====
   let posts = [];
   let currentUser = null;
-  let follows = new Set(); // 关注的 authorId 集合
+  let follows = new Set(); // Set of followed authorIds
   let messages = {};       // { threadId: { withUser, messages[] } }
-  let notifications = [];  // 通知列表
+  let notifications = [];  // Notification list
 
-  // ===== 默认 Mock 数据 =====
+  // ===== Default Mock Data =====
   function getMockPosts() {
     return [
       {
-        id: "p1", author: "匿名小树", authorId: "u_tree",
-        avatarLetter: "匿", timestamp: Date.now() - 3600000 * 5,
-        content: "有人知道图书馆三楼靠窗的座位现在需要预约吗？📚",
+        id: "p1", author: "Anonymous Tree", authorId: "u_tree",
+        avatarLetter: "A", timestamp: Date.now() - 3600000 * 5,
+        content: "Does anyone know if the window seats on the third floor of the library need to be reserved now? 📚",
         category: "question", images: [], likes: 12, liked: false, collected: false,
         comments: [
-          { id: "c1", author: "热心同学", authorId: "u_hot", text: "需要预约，上周就开始啦", timestamp: Date.now() - 800000, replyTo: null },
-          { id: "c2", author: "图书管理员", authorId: "u_lib", text: "是的，用校园卡app", timestamp: Date.now() - 400000, replyTo: null }
+          { id: "c1", author: "Helpful Classmate", authorId: "u_hot", text: "Yes, you need to reserve, it started last week", timestamp: Date.now() - 800000, replyTo: null },
+          { id: "c2", author: "Librarian", authorId: "u_lib", text: "Yes, use the campus card app", timestamp: Date.now() - 400000, replyTo: null }
         ]
       },
       {
-        id: "p2", author: "毕业倒计时", authorId: "u_grad",
-        avatarLetter: "毕", timestamp: Date.now() - 86400000,
-        content: "今天拍毕业照，把四年的记忆留在这里🎓 谢谢树洞。",
+        id: "p2", author: "Graduation Countdown", authorId: "u_grad",
+        avatarLetter: "G", timestamp: Date.now() - 86400000,
+        content: "Taking graduation photos today, keeping four years of memories here 🎓 Thanks, Treehole.",
         category: "emotion", images: [], likes: 45, liked: false, collected: true,
         comments: [
-          { id: "c3", author: "学妹", authorId: "u_junior", text: "学长学姐前程似锦！", timestamp: Date.now() - 4000000, replyTo: null }
+          { id: "c3", author: "Junior", authorId: "u_junior", text: "Wishing seniors a bright future!", timestamp: Date.now() - 4000000, replyTo: null }
         ]
       },
       {
-        id: "p3", author: "食堂观察员", authorId: "u_food",
-        avatarLetter: "食", timestamp: Date.now() - 7200000,
-        content: "二食堂新出的麻辣香锅绝了！🌶️ 但是排队有点长。",
+        id: "p3", author: "Canteen Observer", authorId: "u_food",
+        avatarLetter: "C", timestamp: Date.now() - 7200000,
+        content: "The new spicy hot pot at Canteen 2 is amazing! 🌶️ But the queue is a bit long.",
         category: "life", images: [], likes: 28, liked: true, collected: false,
         comments: []
       }
     ];
   }
 
-  // ===== 初始化 =====
+  // ===== Initialization =====
   function init() {
-    // 加载帖子
+    // Load posts
     try { posts = JSON.parse(localStorage.getItem(KEYS.posts)) || getMockPosts(); }
     catch (e) { posts = getMockPosts(); }
 
-    // 加载当前用户（默认匿名状态，但会尝试通过 API 刷新）
+    // Load current user (default anonymous state, but will try to refresh via API)
     try { currentUser = JSON.parse(localStorage.getItem(KEYS.user)); }
     catch (e) { currentUser = null; }
     if (!currentUser) {
-      currentUser = { id: null, nickname: "未登录用户", avatarLetter: "匿", avatarColor: "#555" };
+      currentUser = { id: null, nickname: "Not Logged In", avatarLetter: "N", avatarColor: "#555" };
     }
 
-    // 加载关注列表
+    // Load follows
     try { follows = new Set(JSON.parse(localStorage.getItem(KEYS.follows)) || []); }
     catch (e) { follows = new Set(); }
 
-    // 加载私信
+    // Load messages
     try { messages = JSON.parse(localStorage.getItem(KEYS.messages)) || {}; }
     catch (e) { messages = {}; }
 
-    // 加载通知
+    // Load notifications
     try { notifications = JSON.parse(localStorage.getItem(KEYS.notifications)) || []; }
     catch (e) { notifications = []; }
   }
 
-  // ===== 持久化 =====
+  // ===== Persistence =====
   function save() {
     localStorage.setItem(KEYS.posts, JSON.stringify(posts));
     localStorage.setItem(KEYS.user, JSON.stringify(currentUser));
@@ -87,9 +87,9 @@ window.Store = (function () {
     localStorage.setItem(KEYS.notifications, JSON.stringify(notifications));
   }
 
-  // ===== 帖子操作 =====
+  // ===== Post Operations =====
 
-  /** 新增帖子 */
+  /** Add new post */
   function addPost(content, category, images) {
     const post = {
       id: "post_" + Date.now(),
@@ -106,7 +106,7 @@ window.Store = (function () {
     return post;
   }
 
-  /** 切换点赞 */
+  /** Toggle like */
   function toggleLike(postId) {
     const post = posts.find(p => p.id === postId);
     if (!post) return;
@@ -115,7 +115,7 @@ window.Store = (function () {
     save();
   }
 
-  /** 切换收藏 */
+  /** Toggle collect */
   function toggleCollect(postId) {
     const post = posts.find(p => p.id === postId);
     if (!post) return;
@@ -123,7 +123,7 @@ window.Store = (function () {
     save();
   }
 
-  /** 添加评论（支持回复） */
+  /** Add comment (supports reply) */
   function addComment(postId, text, replyTo) {
     const post = posts.find(p => p.id === postId);
     if (!post) return null;
@@ -136,17 +136,17 @@ window.Store = (function () {
       replyTo: replyTo || null  // { id, author, authorId }
     };
     post.comments.push(comment);
-    // 生成回复通知
+    // Generate reply notification
     if (replyTo && replyTo.authorId !== currentUser.id) {
-      addNotification("reply", `${currentUser.nickname} 回复了你：${text.slice(0, 20)}`, postId);
+      addNotification("reply", `${currentUser.nickname} replied to you: ${text.slice(0, 20)}`, postId);
     }
     save();
     return comment;
   }
 
-  // ===== 关注操作 =====
+  // ===== Follow Operations =====
 
-  /** 从 API 获取我的关注列表 */
+  /** Fetch my following list from API */
   async function fetchFollowingFromApi() {
     try {
       const res = await fetch("https://api.szsummer.com/api/users/me", { credentials: "include" });
@@ -159,7 +159,7 @@ window.Store = (function () {
       if (!followRes.ok) return [];
       const followingList = await followRes.json();
 
-      // 更新本地关注集合
+      // Update local follow set
       follows = new Set(followingList.map(u => u.userId || u.id));
       save();
       return followingList;
@@ -169,10 +169,10 @@ window.Store = (function () {
     }
   }
 
-  /** 切换关注状态，返回新状态（调用后端API）*/
+  /** Toggle follow status, return new status (calls backend API) */
   async function toggleFollow(authorId) {
     try {
-      const res = await fetch(`/api/users/${authorId}/follow`, {
+      const res = await fetch(`https://api.szsummer.com/api/users/${authorId}/follow`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" }
@@ -182,13 +182,13 @@ window.Store = (function () {
         save();
         return true;
       } else if (res.status === 400) {
-        // 已关注，尝试取消关注
+        // Already following, try to unfollow
         return await unfollowUser(authorId);
       }
     } catch (e) {
       console.warn("toggleFollow API failed, using local:", e);
     }
-    // 回退到本地操作
+    // Fallback to local operation
     if (follows.has(authorId)) {
       follows.delete(authorId);
     } else {
@@ -198,10 +198,10 @@ window.Store = (function () {
     return follows.has(authorId);
   }
 
-  /** 取消关注用户 */
+  /** Unfollow user */
   async function unfollowUser(authorId) {
     try {
-      const res = await fetch(`/api/users/${authorId}/follow`, {
+      const res = await fetch(`https://api.szsummer.com/api/users/${authorId}/follow`, {
         method: "DELETE",
         credentials: "include"
       });
@@ -218,14 +218,14 @@ window.Store = (function () {
     return false;
   }
 
-  /** 是否已关注（优先本地缓存） */
+  /** Is following (prefer local cache) */
   function isFollowing(authorId) {
     return follows.has(authorId);
   }
 
-  // ===== 私信操作 =====
+  // ===== Message Operations =====
 
-  /** 获取或创建私信会话 */
+  /** Get or create message thread */
   function getOrCreateThread(withUser) {
     const threadId = "thread_" + withUser.id;
     if (!messages[threadId]) {
@@ -234,7 +234,7 @@ window.Store = (function () {
     return messages[threadId];
   }
 
-  /** 发送私信 */
+  /** Send message */
   function sendMessage(toUserId, toNickname, toAvatarLetter, text, type) {
     const withUser = { id: toUserId, nickname: toNickname, avatarLetter: toAvatarLetter };
     const thread = getOrCreateThread(withUser);
@@ -249,14 +249,14 @@ window.Store = (function () {
     return thread;
   }
 
-  /** 获取私信会话 */
+  /** Get message thread */
   function getThread(toUserId) {
     return messages["thread_" + toUserId] || null;
   }
 
-  // ===== 通知操作 =====
+  // ===== Notification Operations =====
 
-  /** 添加通知 */
+  /** Add notification */
   function addNotification(type, content, postId) {
     notifications.unshift({
       id: "notif_" + Date.now(),
@@ -267,7 +267,7 @@ window.Store = (function () {
     save();
   }
 
-  /** 标记所有通知已读 */
+  /** Mark all notifications as read */
   function markAllRead(type) {
     notifications.forEach(n => {
       if (!type || n.type === type) n.read = true;
@@ -275,22 +275,22 @@ window.Store = (function () {
     save();
   }
 
-  /** 未读通知数 */
+  /** Unread notification count */
   function unreadCount(type) {
     return notifications.filter(n => !n.read && (!type || n.type === type)).length;
   }
 
-  // ===== 用户设置 =====
+  // ===== User Settings =====
 
-  /** 更新当前用户信息 */
+  /** Update current user info */
   function updateUser(fields) {
     Object.assign(currentUser, fields);
     save();
   }
 
-  // ===== 查询 =====
+  // ===== Queries =====
 
-  /** 按分类+关键词过滤帖子 */
+  /** Filter posts by category + keyword */
   function getFilteredPosts(category, query) {
     let result = [...posts].sort((a, b) => b.timestamp - a.timestamp);
     if (category && category !== "all") {
@@ -305,11 +305,11 @@ window.Store = (function () {
     return result;
   }
 
-  /** 使用ES搜索帖子 */
+  /** Search posts using ES */
   async function searchPostsWithES(keyword, category) {
     try {
-      // 调用后端ES API
-      const response = await fetch(`/api/treeholes/search?keyword=${encodeURIComponent(keyword)}&category=${encodeURIComponent(category || 'all')}`, {
+      // Call backend ES API
+      const response = await fetch(`https://api.szsummer.com/api/treeholes/search?keyword=${encodeURIComponent(keyword)}&category=${encodeURIComponent(category || 'all')}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -319,12 +319,12 @@ window.Store = (function () {
 
       if (response.ok) {
         const data = await response.json();
-        // 转换为前端需要的格式
+        // Convert to frontend format
         return data.map(item => ({
           id: item.id,
-          author: item.author || '匿名用户',
+          author: item.author || 'Anonymous User',
           authorId: item.authorId || 'anonymous',
-          avatarLetter: item.avatarLetter || '匿',
+          avatarLetter: item.avatarLetter || 'A',
           timestamp: item.timestamp || Date.now(),
           content: item.content || '',
           category: item.category || 'all',
@@ -335,23 +335,23 @@ window.Store = (function () {
           comments: item.comments || []
         }));
       } else {
-        // API调用失败，使用本地搜索
-        console.warn('ES API调用失败，使用本地搜索');
+        // API call failed, use local search
+        console.warn('ES API call failed, using local search');
         return getFilteredPosts(category, keyword);
       }
     } catch (error) {
-      // 网络错误，使用本地搜索
-      console.warn('网络错误，使用本地搜索:', error);
+      // Network error, use local search
+      console.warn('Network error, using local search:', error);
       return getFilteredPosts(category, keyword);
     }
   }
 
-  /** 根据 id 查找帖子 */
+  /** Find post by id */
   function getPost(id) {
     return posts.find(p => p.id === id) || null;
   }
 
-  /** 获取已关注用户信息（从帖子中提取） */
+  /** Get followed user info (extracted from posts) */
   function getFollowedUsers() {
     const result = [];
     const seen = new Set();
@@ -361,33 +361,33 @@ window.Store = (function () {
       const userPosts = posts.filter(p => p.authorId === id);
       if (userPosts.length > 0) {
         const p = userPosts[0];
-        result.push({ id, nickname: p.author, avatarLetter: p.avatarLetter || "匿", postCount: userPosts.length });
+        result.push({ id, nickname: p.author, avatarLetter: p.avatarLetter || "A", postCount: userPosts.length });
       } else {
-        result.push({ id, nickname: "匿名用户", avatarLetter: "匿", postCount: 0 });
+        result.push({ id, nickname: "Anonymous User", avatarLetter: "A", postCount: 0 });
       }
     }
     return result;
   }
 
-  /** 获取已收藏帖子 */
+  /** Get collected posts */
   function getCollectedPosts() {
     return posts.filter(p => p.collected);
   }
 
-  /** 从 API 获取所有帖子 */
+  /** Fetch all posts from API */
   async function fetchPostsFromApi() {
     try {
-      const res = await fetch("/api/treeholes/posts", { credentials: "include" });
+      const res = await fetch("https://api.szsummer.com/api/treeholes/posts", { credentials: "include" });
       if (!res.ok) throw new Error("HTTP " + res.status);
       const apiPosts = await res.json();
       apiPosts.forEach(p => {
         p.id = p.id || p.postId || "post_" + p.id;
-        p.author = p.author || "匿名用户";
-        p.avatarLetter = p.avatarLetter || (p.author ? p.author.substring(0, 1) : "匿");
+        p.author = p.author || "Anonymous User";
+        p.avatarLetter = p.avatarLetter || (p.author ? p.author.substring(0, 1) : "A");
         p.avatarUrl = p.avatarUrl || null;
         p.images = p.imagesList || [];
         p.timestamp = p.createdAt ? new Date(p.createdAt).getTime() : Date.now();
-        // 重要：将API的likeCount映射到前端的likes字段
+        // Important: map API's likeCount to frontend's likes field
         p.likes = (p.likeCount !== undefined && p.likeCount !== null) ? p.likeCount : 0;
         p.liked = false;
         p.collected = false;
@@ -398,7 +398,7 @@ window.Store = (function () {
       return posts;
     } catch (e) {
       console.warn("fetchPostsFromApi failed, using local data:", e);
-      // API失败时使用本地数据
+      // Use local data when API fails
       if (posts.length === 0) {
         posts = getMockPosts();
         save();
@@ -407,10 +407,10 @@ window.Store = (function () {
     }
   }
 
-  /** 从 API 获取单个帖子详情 */
+  /** Fetch single post details from API */
   async function fetchPostFromApi(postId) {
     try {
-      const res = await fetch("/api/treeholes/posts/" + postId, { credentials: "include" });
+      const res = await fetch("https://api.szsummer.com/api/treeholes/posts/" + postId, { credentials: "include" });
       if (!res.ok) return null;
       const p = await res.json();
       p.id = p.id || p.postId || "post_" + p.id;
@@ -419,7 +419,7 @@ window.Store = (function () {
       p.avatarUrl = p.avatarUrl || null;
       p.images = p.imagesList || [];
       p.timestamp = p.createdAt ? new Date(p.createdAt).getTime() : Date.now();
-      // 重要：将API的likeCount映射到前端的likes字段
+      // Important: map API's likeCount to frontend's likes field
       p.likes = (p.likeCount !== undefined && p.likeCount !== null) ? p.likeCount : 0;
       p.liked = false;
       p.collected = false;
@@ -434,10 +434,10 @@ window.Store = (function () {
     }
   }
 
-  /** 从 API 获取帖子的评论 */
+  /** Fetch post comments from API */
   async function fetchCommentsFromApi(postId) {
     try {
-      const res = await fetch("/api/treeholes/posts/" + postId, { credentials: "include" });
+      const res = await fetch("https://api.szsummer.com/api/treeholes/posts/" + postId, { credentials: "include" });
       if (!res.ok) return [];
       const data = await res.json();
       return data.comments || [];
@@ -448,20 +448,20 @@ window.Store = (function () {
   }
 
   /**
-   * 为评论列表补充用户信息（递归处理 children）
-   * @param {Array} comments 评论数组
+   * Enrich comment list with user info (recursively processes children)
+   * @param {Array} comments comment array
    */
   async function enrichCommentsWithUserInfo(comments) {
     if (!comments || !comments.length) return [];
     
-    // 递归处理函数
+    // Recursive processing function
     const processComments = (list) => {
       list.forEach(c => {
-        // 确保 id 是字符串
+        // Ensure id is a string
         c.id = String(c.id || c.commentId);
         
-        // 如果有 userId 但没有作者名，可以考虑在这里补充（但目前后端 buildCommentTreeWithUser 应该已经补充了）
-        // 这里主要确保 avatar (UUID) 的存在，如果后端没返回，我们可以通过 c.userId 或 c.authorId 映射
+        // If userId exists but no author name, could supplement here (but backend buildCommentTreeWithUser should already do this)
+        // Mainly ensure avatar (UUID) exists, if backend didn't return, we can map via c.userId or c.authorId
         
         if (c.children && c.children.length) {
           processComments(c.children);
@@ -473,7 +473,7 @@ window.Store = (function () {
     return comments;
   }
 
-  // ===== 公开 API =====
+  // ===== Public API =====
   return {
     init, save,
     get posts() { return posts; },

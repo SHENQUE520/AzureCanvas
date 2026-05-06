@@ -1,5 +1,7 @@
 package org.neonangellock.azurecanvas.model.es;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -8,11 +10,23 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.math.BigDecimal;
 
 @Document(indexName = "items")
+@Getter
+@Setter
 public class EsItem {
 
     @Id
     private String id;
+    @Field(type = FieldType.Text, analyzer = "english")
+    private String titleEn;
 
+    @Field(type = FieldType.Text, analyzer = "english")
+    private String descriptionEn;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String titleZh;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String descriptionZh;
     @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String title;
 
@@ -50,33 +64,6 @@ public class EsItem {
     private String createdAt;
 
     // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-    public Integer getViews() { return views; }
-    public void setViews(Integer views) { this.views = views; }
-    public Byte getQuality() { return quality; }
-    public void setQuality(Byte quality) { this.quality = quality; }
-    public boolean isUrgent() { return isUrgent; }
-    public void setUrgent(boolean urgent) { isUrgent = urgent; }
-    public boolean isFreeShipping() { return isFreeShipping; }
-
-    public boolean isCanInspect() { return canInspect; }
-    public void setCanInspect(boolean canInspect) { this.canInspect = canInspect; }
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-
     public void setFreeShipping(boolean freeShipping) {
         isFreeShipping = freeShipping;
     }

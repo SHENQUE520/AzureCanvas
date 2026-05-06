@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent — 树洞</title>
+  <title>Agent — Treehole</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -425,7 +425,7 @@
       .agent-sidebar { display: none; }
     }
 
-    /* ===== 图片预览栏 ===== */
+    /* Image Preview Bar */
     .image-preview-bar {
       display: flex;
       align-items: center;
@@ -484,7 +484,7 @@
       to { transform: scale(1); opacity: 1; }
     }
 
-    /* ===== 模型选择器（输入栏上方）===== */
+    /* Model Selector (above input bar) */
     .input-model-selector {
       display: flex;
       align-items: center;
@@ -537,7 +537,7 @@
       opacity: 0.7;
     }
 
-    /* ===== AI 加载发光动画 ===== */
+    /* AI Loading Glow Animation */
     .ai-loading-wrapper {
       display: flex;
       align-items: center;
@@ -639,12 +639,12 @@
 <body>
 <nav class="navbar">
   <div class="nav-logo">
-    <i class="fas fa-tree"></i> Azurecanvas-树洞
+    <i class="fas fa-tree"></i> Azurecanvas-Treehole
     <span class="badge">MUST</span>
   </div>
   <div class="nav-actions" style="margin-left:auto">
     <button class="btn" onclick="window.location.href='index.html'">
-      <i class="fas fa-arrow-left"></i> 返回主页
+      <i class="fas fa-arrow-left"></i> Go Back To Home
     </button>
   </div>
 </nav>
@@ -652,77 +652,77 @@
 <div class="agent-layout">
   <div class="agent-sidebar">
     <div class="agent-sidebar-header">
-      <span class="agent-sidebar-title">对话历史</span>
-      <button class="new-chat-btn" id="newChatBtn" title="新建对话"><i class="fas fa-plus"></i></button>
+      <span class="agent-sidebar-title">History Chat</span>
+      <button class="new-chat-btn" id="newChatBtn" title="New Chat"><i class="fas fa-plus"></i></button>
     </div>
     <div class="chat-list" id="chatList">
       <div class="chat-list-item active">
         <i class="fas fa-comment-dots"></i>
-        <span class="chat-list-item-text">新对话</span>
-        <span class="chat-list-item-time">刚刚</span>
+        <span class="chat-list-item-text">New Chat</span>
+        <span class="chat-list-item-time">Just A Moment</span>
       </div>
     </div>
     <div class="agent-sidebar-footer">
       <i class="fas fa-robot"></i>
-      MUST 树洞 AI 助手
+      Treehole AI Helper
     </div>
   </div>
 
   <div class="agent-main">
     <div class="agent-topbar">
-      <span class="agent-topbar-title" id="chatTitle">新对话</span>
+      <span class="agent-topbar-title" id="chatTitle">New Chat</span>
       <div class="agent-topbar-actions"></div>
     </div>
 
     <div class="agent-messages" id="agentMessages">
       <div class="agent-welcome" id="agentWelcome">
         <div class="agent-welcome-icon"><i class="fas fa-robot"></i></div>
-        <h2>你好，我是 MUST 树洞 Agent</h2>
-        <p>我可以帮你解答校园问题、倾听烦恼、提供建议</p>
+        <h2>Hello, I'm Treehole Agent</h2>
+        <p>I can help you answer campus questions, listen to your worries, and offer advice.</p>
         <div class="suggestion-grid">
-          <div class="suggestion-card" data-prompt="图书馆怎么预约座位？">
-            <div class="suggestion-card-title">📚 图书馆预约</div>
-            <div class="suggestion-card-sub">怎么预约图书馆座位？</div>
+          <div class="suggestion-card" data-prompt="How do I reserve a seat at the library?">
+            <div class="suggestion-card-title">📚 Library Reservations</div>
+            <div class="suggestion-card-sub">How do I reserve a seat at the library?</div>
           </div>
-          <div class="suggestion-card" data-prompt="最近压力很大，有什么解压方法推荐吗？">
-            <div class="suggestion-card-title">💆 解压建议</div>
-            <div class="suggestion-card-sub">最近压力很大怎么办？</div>
+          <div class="suggestion-card" data-prompt="I've been under a lot of stress lately. Do you have any recommendations for stress relief methods?">
+            <div class="suggestion-card-title">💆 Stress Relief</div>
+            <div class="suggestion-card-sub">I've been under a lot of stress lately. Any recommendations?</div>
           </div>
-          <div class="suggestion-card" data-prompt="帮我写一篇关于校园生活的树洞帖子">
-            <div class="suggestion-card-title">✍️ 帮我写帖子</div>
-            <div class="suggestion-card-sub">生成一条树洞内容</div>
+          <div class="suggestion-card" data-prompt="Please help me write a confessional post about campus life.">
+            <div class="suggestion-card-title">✍️ Help Me Write a Post</div>
+            <div class="suggestion-card-sub">Generate a treehole post</div>
           </div>
-          <div class="suggestion-card" data-prompt="期末复习有什么高效方法？">
-            <div class="suggestion-card-title">🎓 学习方法</div>
-            <div class="suggestion-card-sub">期末复习高效技巧</div>
+          <div class="suggestion-card" data-prompt="What are some efficient methods for final exam review?">
+            <div class="suggestion-card-title">🎓 Study Methods</div>
+            <div class="suggestion-card-sub">Efficient techniques for final exam review</div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="agent-input-area">
-      <!-- 模型选择器 -->
+      <!-- Model Selector -->
       <div class="input-model-selector">
-        <span class="input-model-label">模型</span>
+        <span class="input-model-label">Models</span>
         <div class="model-chip-group" id="modelChipGroup"></div>
       </div>
 
-      <!-- 图片预览栏 -->
+      <!-- Image Preview Bar -->
       <div class="image-preview-bar" id="imagePreviewBar"></div>
 
       <div class="agent-input-box">
-        <textarea class="agent-textarea" id="agentInput" placeholder="向 MUST Agent 提问…" rows="1"></textarea>
+        <textarea class="agent-textarea" id="agentInput" placeholder="Ask Agent Questions…" rows="1"></textarea>
         <div class="agent-input-footer">
           <div class="agent-input-tools">
-            <button class="agent-tool-btn" id="uploadImageBtn" title="上传图片"><i class="far fa-image"></i></button>
+            <button class="agent-tool-btn" id="uploadImageBtn" title="Image Upload"><i class="far fa-image"></i></button>
             <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
-            <button class="agent-tool-btn" title="表情"><i class="far fa-smile"></i></button>
-            <button class="agent-tool-btn" title="清空对话" id="clearChatBtn"><i class="fas fa-trash-alt"></i></button>
+            <button class="agent-tool-btn" title="Emoji"><i class="far fa-smile"></i></button>
+            <button class="agent-tool-btn" title="Clear Chat" id="clearChatBtn"><i class="fas fa-trash-alt"></i></button>
           </div>
           <button class="agent-send-btn" id="agentSendBtn" disabled><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
-      <div class="agent-input-hint">AzureCanvas Agent 仅供参考，不代表官方意见</div>
+      <div class="agent-input-hint">DISCLAIMER: AzureCanvas Agent is an independent AI chatbot platform and is not affiliated with, endorsed by, or in any way officially connected with OpenAI or ChatGPT</div>
     </div>
   </div>
 </div>
@@ -734,14 +734,13 @@
   };
 
   const AVAILABLE_MODELS = [
-    { id: 'qwen:4b', name: 'qwen 4B', desc: '轻量快速', type: 'ollama' },
-    { id: 'deepseek-v3.1:671b-cloud', name: 'deepseek-v3.1 671B', desc: '强推理', type: 'ollama' },
-    { id: 'deepseek-chat', name: 'DeepSeek 官方 API', desc: '智能对话', type: 'deepseek' }
+    { id: 'qwen:4b', name: 'qwen 4B', desc: 'Light', type: 'ollama' },
+    { id: 'deepseek-chat', name: 'DeepSeek Official', desc: 'Intelligent', type: 'deepseek' }
   ];
 
   const STORAGE_KEY = 'must-treehole-sessions';
   const MODEL_STORAGE_KEY = 'must-agent-model';
-  const SYSTEM_PROMPT = '你是 树洞 AI 助手，语气温暖、友好。你帮助用户解答校园问题、倾听烦恼、提供建议。请自然地回复用户的问题。';
+  const SYSTEM_PROMPT = 'You are the Confessions AI Assistant, speaking in a warm and friendly tone. You help users answer campus questions, listen to their troubles, and offer advice. Please respond to users\' questions naturally.';
   const MAX_IMAGES = 6;
   const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
   const KNOWLEDGE_API_BASE = window.location.origin + '/api/knowledge';
@@ -783,7 +782,7 @@
     modelChipGroup.querySelectorAll('.model-chip').forEach(c => {
       c.classList.toggle('active', c.dataset.model === modelId);
     });
-    console.log(`[Agent] 切换模型 → ${modelId}`);
+    console.log(`[Agent] Switch Model → ${modelId}`);
   }
 
   function loadSessions() {
@@ -798,18 +797,18 @@
         renderCurrentSession();
       }
     } catch (e) {
-      console.error('加载会话失败:', e);
+      console.error('Loading Conversation Error:', e);
       sessions = [];
       createNewSession();
     }
   }
 
   function saveSessions() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); } catch (e) { console.error('保存会话失败:', e); }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); } catch (e) { console.error('Chat Save Failed:', e); }
   }
 
   function createNewSession() {
-    const session = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title: '新对话', messages: [], createdAt: Date.now() };
+    const session = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title: 'New chat', messages: [], createdAt: Date.now() };
     sessions.unshift(session);
     currentSessionId = session.id;
     saveSessions();
@@ -823,7 +822,7 @@
 
   function deleteSession(sessionId, event) {
     event.stopPropagation();
-    if (sessions.length <= 1) { alert('至少保留一个会话'); return; }
+    if (sessions.length <= 1) { window.notify.show.show('At least one session must be retained.'); return; }
     sessions = sessions.filter(s => s.id !== sessionId);
     if (currentSessionId === sessionId) currentSessionId = sessions[0].id;
     saveSessions();
@@ -863,15 +862,15 @@
 
   function formatTime(timestamp) {
     const d = new Date(timestamp), diff = Date.now() - timestamp;
-    if (diff < 60000) return '刚刚';
-    if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
-    if (d.toDateString() === new Date().toDateString()) return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-    return d.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return Math.floor(diff / 60000) + ' min ago';
+    if (d.toDateString() === new Date().toDateString()) return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
   }
 
   function formatContent(text) { return escapeHtml(text).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); }
 
-  /* ===== 图片预览栏管理 ===== */
+  /* Image Preview Bar Management */
   function renderImagePreview() {
     imagePreviewBar.innerHTML = '';
     if (pendingImages.length > 0) {
@@ -879,7 +878,7 @@
       pendingImages.forEach((imgData, idx) => {
         const item = document.createElement('div');
         item.className = 'image-preview-item';
-        item.innerHTML = `<img src="${imgData.preview}" alt="预览"><button class="preview-delete" data-idx="${idx}"><i class="fas fa-times"></i></button>`;
+        item.innerHTML = `<img src="${imgData.preview}" alt="Preview"><button class="preview-delete" data-idx="${idx}"><i class="fas fa-times"></i></button>`;
         item.querySelector('.preview-delete').addEventListener('click', (e) => { e.stopPropagation(); removePendingImage(idx); });
         imagePreviewBar.appendChild(item);
       });
@@ -890,9 +889,18 @@
   }
 
   function addPendingImage(file) {
-    if (pendingImages.length >= MAX_IMAGES) { alert(`最多添加 ${MAX_IMAGES} 张图片`); return; }
-    if (!file.type.startsWith('image/')) { alert('请选择图片文件'); return; }
-    if (file.size > MAX_IMAGE_SIZE) { alert('单张图片不能超过 10MB'); return; }
+    if (pendingImages.length >= MAX_IMAGES) {
+      window.notify.show.show(`You can add a maximum of ${MAX_IMAGES} images.`);
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      window.notify.show.show('Please select image file');
+      return;
+    }
+    if (file.size > MAX_IMAGE_SIZE) {
+      window.notify.show.show('A single image cannot exceed 10MB.');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = ev => { pendingImages.push({ file, preview: ev.target.result, base64: ev.target.result }); renderImagePreview(); };
     reader.readAsDataURL(file);
@@ -901,7 +909,7 @@
   function removePendingImage(idx) { pendingImages.splice(idx, 1); renderImagePreview(); }
   function clearPendingImages() { pendingImages = []; renderImagePreview(); }
 
-  /* ===== AI 加载动画 ===== */
+  /* AI Loading Animation */
   function showAILoading() {
     hideAILoading();
     const wrapper = document.createElement('div');
@@ -914,31 +922,31 @@
 
   function hideAILoading() { const el = document.getElementById('aiLoadingIndicator'); if (el) el.remove(); }
 
-  /* ===== 知识库搜索功能 ===== */
+  /* Knowledge Base Search */
   async function searchKnowledgeBase(keyword) {
     try {
       const response = await fetch(`${KNOWLEDGE_API_BASE}/search?keyword=${encodeURIComponent(keyword)}&maxResults=3`);
       if (!response.ok) {
-        console.warn('[Agent] 知识库搜索请求失败:', response.status);
+        console.warn('[Agent] Knowledge base search request failed:', response.status);
         return '';
       }
       const data = await response.json();
       if (data.success && data.hasContext && data.context) {
-        console.log('[Agent] ✅ 找到相关知识库内容');
+        console.log('[Agent] ✅ Found relevant knowledge base content');
         return data.context;
       }
       return '';
     } catch (error) {
-      console.warn('[Agent] 知识库搜索异常:', error);
+      console.warn('[Agent] Knowledge base search exception:', error);
       return '';
     }
   }
 
-  /* ===== Ollama 消息发送 ===== */
+  /* Ollama Message Sending */
   async function sendOllamaMessage(systemPrompt, text, session) {
     const ollamaMessages = [{ role: 'system', content: systemPrompt }];
     session.messages.forEach(m => {
-      if (m.role === 'user') ollamaMessages.push({ role: 'user', content: m.content || '[图片]' });
+      if (m.role === 'user') ollamaMessages.push({ role: 'user', content: m.content || '[Image]' });
       else ollamaMessages.push({ role: 'assistant', content: m.content });
     });
 
@@ -994,11 +1002,11 @@
     saveSessions();
   }
 
-  /* ===== DeepSeek 消息发送 ===== */
+  /* DeepSeek Message Sending */
   async function sendDeepSeekMessage(systemPrompt, text, session) {
     const messages = [{ role: 'system', content: systemPrompt }];
     session.messages.forEach(m => {
-      if (m.role === 'user') messages.push({ role: 'user', content: m.content || '[图片]' });
+      if (m.role === 'user') messages.push({ role: 'user', content: m.content || '[Image]' });
       else messages.push({ role: 'assistant', content: m.content });
     });
 
@@ -1007,9 +1015,9 @@
       stream: true
     };
 
-    console.log('[Agent] 🚀 正在调用 DeepSeek API...');
-    console.log('[Agent] 📤 请求URL:', `${KNOWLEDGE_API_BASE}/deepseek/chat`);
-    console.log('[Agent] 📝 消息数量:', messages.length);
+    console.log('[Agent] 🚀 Calling DeepSeek API...');
+    console.log('[Agent] 📤 Request URL:', `${KNOWLEDGE_API_BASE}/deepseek/chat`);
+    console.log('[Agent] 📝 Message count:', messages.length);
 
     try {
       const response = await fetch(`${KNOWLEDGE_API_BASE}/deepseek/chat`, {
@@ -1019,12 +1027,12 @@
         body: JSON.stringify(requestBody)
       });
 
-      console.log('[Agent] 📥 响应状态:', response.status);
+      console.log('[Agent] 📥 Response status:', response.status);
       console.log('[Agent] 📋 Content-Type:', response.headers.get('content-type'));
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('[Agent] ❌ DeepSeek API 错误:', errorText);
+        console.error('[Agent] ❌ DeepSeek API Error:', errorText);
         throw new Error(`DeepSeek API ${response.status}: ${errorText}`);
       }
 
@@ -1038,12 +1046,12 @@
       let buffer = '';
       let chunkCount = 0;
 
-      console.log('[Agent] ⏳ 开始读取流数据...');
+      console.log('[Agent] ⏳ Starting stream read...');
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
-          console.log('[Agent] ✅ 流读取完成');
+          console.log('[Agent] ✅ Stream read complete');
           break;
         }
 
@@ -1061,23 +1069,23 @@
 
           if (!trimmedLine) continue;
 
-          console.log(`[Agent] 🔍 处理行:`, trimmedLine.length > 80 ? trimmedLine.substring(0, 80) + '...' : trimmedLine);
+          console.log(`[Agent] 🔍 Processing line:`, trimmedLine.length > 80 ? trimmedLine.substring(0, 80) + '...' : trimmedLine);
 
           if (trimmedLine === 'data:[DONE]' || trimmedLine === 'data: [DONE]') {
-            console.log('[Agent] 🏁 收到结束标记');
+            console.log('[Agent] 🏁 Received end marker');
             continue;
           }
 
           if (trimmedLine.startsWith('data:')) {
             const jsonStr = trimmedLine.substring(5).trim();
-            console.log('[Agent] 📄 JSON数据:', jsonStr.length > 80 ? jsonStr.substring(0, 80) + '...' : jsonStr);
+            console.log('[Agent] 📄 JSON data:', jsonStr.length > 80 ? jsonStr.substring(0, 80) + '...' : jsonStr);
 
             try {
               const data = JSON.parse(jsonStr);
 
               if (data.error) {
-                console.error('[Agent] ❌ API返回错误:', data.error);
-                aiReply += `\n\n❌ 错误: ${data.error}`;
+                console.error('[Agent] ❌ API returned error:', data.error);
+                aiReply += `\n\n❌ Error: ${data.error}`;
                 updateMessage(tempId, aiReply);
                 continue;
               }
@@ -1086,34 +1094,34 @@
                 const delta = data.choices[0].delta.content;
                 aiReply += delta;
                 updateMessage(tempId, aiReply);
-                console.log('[Agent] ✍️ 累积回复长度:', aiReply.length);
+                console.log('[Agent] ✍️ Cumulative reply length:', aiReply.length);
               }
             } catch (parseError) {
-              console.warn('[Agent] ⚠️ JSON解析失败:', parseError.message, '| 原始数据:', jsonStr);
+              console.warn('[Agent] ⚠️ JSON parse failed:', parseError.message, '| Raw data:', jsonStr);
             }
           }
         }
       }
 
       if (buffer.trim()) {
-        console.log('[Agent] 📝 处理剩余缓冲区:', buffer);
+        console.log('[Agent] 📝 Processing remaining buffer:', buffer);
       }
 
       session.messages.push({ role: 'assistant', content: aiReply });
       saveSessions();
-      console.log('[Agent] ✅ DeepSeek 响应完成，总长度:', aiReply.length, '字符');
+      console.log('[Agent] ✅ DeepSeek response complete, total length:', aiReply.length, 'characters');
     } catch (err) {
-      console.error('[Agent] ❌ DeepSeek 请求异常:', err);
+      console.error('[Agent] ❌ DeepSeek request exception:', err);
       hideAILoading();
       if (err.name !== 'AbortError') {
-        session.messages.push({ role: 'assistant', content: '抱歉，连接失败，请稍后再试~' });
-        appendMessage('assistant', '抱歉，连接失败，请稍后再试~');
+        session.messages.push({ role: 'assistant', content: 'Sorry, connection failed, please try again later.' });
+        appendMessage('assistant', 'Sorry, connection failed, please try again later.');
         saveSessions();
       }
     }
   }
 
-  /* ===== 消息发送与流式接收 ===== */
+  /* Message Sending and Streaming Reception */
   async function sendMessage() {
     const text = agentInput.value.trim();
     if ((!text && pendingImages.length === 0) || isTyping) return;
@@ -1151,11 +1159,9 @@
       let enhancedSystemPrompt = SYSTEM_PROMPT;
 
       if (text && text.trim()) {
-        console.log('[Agent] 正在搜索知识库...');
         const knowledgeContext = await searchKnowledgeBase(text);
         if (knowledgeContext) {
           enhancedSystemPrompt += knowledgeContext;
-          console.log('[Agent] 已将知识库内容注入到系统提示中');
         }
       }
 
@@ -1170,8 +1176,8 @@
     } catch (err) {
       hideAILoading();
       if (err.name !== 'AbortError') {
-        session.messages.push({ role: 'assistant', content: '抱歉，连接失败，请稍后再试~' });
-        appendMessage('assistant', '抱歉，连接失败，请稍后再试~');
+        session.messages.push({ role: 'assistant', content: 'Sorry, connection failed, please try again later.' });
+        appendMessage('assistant', 'Sorry, connection failed, please try again later.');
         saveSessions();
       }
     } finally {
@@ -1186,9 +1192,9 @@
     const group = document.createElement('div');
     group.className = `msg-group ${isUser ? 'user-group' : ''}`;
     const avatarClass = isUser ? 'user-avatar-icon' : 'agent-avatar-icon';
-    const avatarContent = isUser ? '我' : '<i class="fas fa-robot"></i>';
+    const avatarContent = isUser ? 'Me' : '<i class="fas fa-robot"></i>';
     const bubbleClass = isUser ? 'msg-bubble-user' : 'msg-bubble-agent';
-    const name = isUser ? '你' : '树洞 AI';
+    const name = isUser ? 'You' : 'Treehole AI';
     group.innerHTML = `<div class="msg-group-avatar ${avatarClass}">${avatarContent}</div><div class="msg-group-body"><div class="msg-group-name">${name}</div><div class="${bubbleClass}" ${messageId ? `id="${messageId}"` : ''}>${formatContent(content)}</div></div>`;
     agentMessages.appendChild(group);
     if (scroll) agentMessages.scrollTop = agentMessages.scrollHeight;
@@ -1199,14 +1205,14 @@
     const group = document.createElement('div');
     group.className = `msg-group ${isUser ? 'user-group' : ''}`;
     const avatarClass = isUser ? 'user-avatar-icon' : 'agent-avatar-icon';
-    const avatarContent = isUser ? '我' : '<i class="fas fa-robot"></i>';
+    const avatarContent = isUser ? 'Me' : '<i class="fas fa-robot"></i>';
     const bubbleClass = isUser ? 'msg-bubble-user' : 'msg-bubble-agent';
-    const name = isUser ? '你' : '树洞 AI';
+    const name = isUser ? 'You' : 'Treehole AI';
     let bodyHtml = `<div class="msg-group-name">${name}</div><div class="${bubbleClass}">`;
     if (text) bodyHtml += formatContent(text);
     if (imageUrls && imageUrls.length > 0) {
       bodyHtml += `<div class="msg-image-grid">`;
-      imageUrls.forEach(url => { bodyHtml += `<img src="${url}" alt="图片">`; });
+      imageUrls.forEach(url => { bodyHtml += `<img src="${url}" alt="Picture">`; });
       bodyHtml += `</div>`;
     }
     bodyHtml += `</div>`;
@@ -1220,7 +1226,7 @@
     if (el) { el.innerHTML = formatContent(content); agentMessages.scrollTop = agentMessages.scrollHeight; }
   }
 
-  /* ===== 事件绑定 ===== */
+  /* Event Binding */
   agentInput.addEventListener('input', () => {
     agentSendBtn.disabled = !agentInput.value.trim() && pendingImages.length === 0 || isTyping;
     agentInput.style.height = 'auto';
@@ -1240,7 +1246,7 @@
   document.getElementById('clearChatBtn').addEventListener('click', () => {
     if (isTyping) return;
     const s = getCurrentSession();
-    if (s) { s.messages = []; s.title = '新对话'; saveSessions(); renderCurrentSession(); renderChatList(); }
+    if (s) { s.messages = []; s.title = 'New Chat'; saveSessions(); renderCurrentSession(); renderChatList(); }
     clearPendingImages();
   });
 

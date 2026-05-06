@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的收藏 — MUST树洞</title>
+  <title>My Favorites — MUST Treehole</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -33,7 +33,7 @@
     .fav-empty { text-align: center; color: var(--text-muted); padding: 60px 20px; font-size: 1rem; }
     .fav-empty i { font-size: 2.4rem; display: block; margin-bottom: 12px; }
 
-    /* 关注列表 */
+    /* Following List */
     .following-card {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 16px 20px;
@@ -58,7 +58,7 @@
     }
     .unfollow-btn:hover { background: #fff0f0; border-color: #e00; color: #e00; }
 
-    /* 通知列表 */
+    /* Notification List */
     .notif-item {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 14px 18px;
@@ -82,7 +82,7 @@
       background: var(--bg-inset); color: var(--text-muted); border: 1px solid var(--border-muted);
     }
 
-    /* 私信列表 */
+    /* Message Thread List */
     .msg-thread-item {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 14px 18px;
@@ -123,12 +123,12 @@
 <body>
 <nav class="navbar">
   <div class="nav-logo">
-    <i class="fas fa-tree"></i> Azurecanvas-树洞
+    <i class="fas fa-tree"></i> Azurecanvas-Treehole
     <span class="badge">MUST</span>
   </div>
   <div class="nav-actions" style="margin-left:auto">
     <button class="btn" onclick="window.location.href='index.html'">
-      <i class="fas fa-arrow-left"></i> 返回主页
+      <i class="fas fa-arrow-left"></i> Back to Home
     </button>
   </div>
 </nav>
@@ -136,25 +136,25 @@
 <div class="fav-layout">
   <div class="fav-tabs">
     <div class="fav-tab active" data-tab="favorites">
-      <i class="fas fa-bookmark"></i> 我的收藏
+      <i class="fas fa-bookmark"></i> My Favorites
     </div>
     <div class="fav-tab" data-tab="likes">
-      <i class="fas fa-heart"></i> 我的喜欢
+      <i class="fas fa-heart"></i> My Likes
     </div>
     <div class="fav-tab" data-tab="following">
-      <i class="fas fa-user-check"></i> 我的关注
+      <i class="fas fa-user-check"></i> Following
     </div>
     <div class="fav-tab" data-tab="comments">
-      <i class="fas fa-comment-dots"></i> 评论回复
+      <i class="fas fa-comment-dots"></i> Comment Replies
       <span class="tab-badge" id="commentBadge" style="display:none">0</span>
     </div>
     <div class="fav-tab" data-tab="messages">
-      <i class="fas fa-envelope"></i> 私信回复
+      <i class="fas fa-envelope"></i> Message Replies
       <span class="tab-badge" id="msgBadge" style="display:none">0</span>
     </div>
   </div>
 
-  <!-- 我的收藏 -->
+  <!-- My Favorites -->
   <div class="fav-section active" id="tab-favorites">
     <div class="section-toolbar">
       <span class="section-count" id="favCount"></span>
@@ -162,7 +162,7 @@
     <div id="favList"></div>
   </div>
 
-  <!-- 我的喜欢 -->
+  <!-- My Likes -->
   <div class="fav-section" id="tab-likes">
     <div class="section-toolbar">
       <span class="section-count" id="likesCount"></span>
@@ -170,7 +170,7 @@
     <div id="likesList"></div>
   </div>
 
-  <!-- 我的关注 -->
+  <!-- Following -->
   <div class="fav-section" id="tab-following">
     <div class="section-toolbar">
       <span class="section-count" id="followingCount"></span>
@@ -178,16 +178,16 @@
     <div id="followingList"></div>
   </div>
 
-  <!-- 评论回复 -->
+  <!-- Comment Replies -->
   <div class="fav-section" id="tab-comments">
     <div class="section-toolbar">
       <span class="section-count" id="commentsCount"></span>
-      <button class="mark-all-read" id="markCommentsRead">全部标为已读</button>
+      <button class="mark-all-read" id="markCommentsRead">Mark All as Read</button>
     </div>
     <div id="commentsList"></div>
   </div>
 
-  <!-- 私信回复 -->
+  <!-- Message Replies -->
   <div class="fav-section" id="tab-messages">
     <div class="section-toolbar">
       <span class="section-count" id="messagesCount"></span>
@@ -221,9 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function formatTime(ts) {
     const diff = Date.now() - ts;
-    if (diff < 60000) return "刚刚";
-    if (diff < 3600000) return Math.floor(diff / 60000) + "分钟前";
-    if (diff < 86400000) return Math.floor(diff / 3600000) + "小时前";
+    if (diff < 60000) return "Just now";
+    if (diff < 3600000) return Math.floor(diff / 60000) + "m ago";
+    if (diff < 86400000) return Math.floor(diff / 3600000) + "h ago";
     const d = new Date(ts);
     return `${d.getMonth()+1}/${d.getDate()}`;
   }
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `
       <div class="post-card" style="cursor:default">
         <div class="post-header">
-          <div class="avatar">${Render.escapeHtml(post.avatarLetter || "匿")}</div>
+          <div class="avatar">${Render.escapeHtml(post.avatarLetter || "A")}</div>
           <div class="post-meta">
             <span class="post-author">${Render.escapeHtml(post.author)}</span>
             <span class="post-time">${formatTime(post.timestamp)}</span>
@@ -252,85 +252,85 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>`;
   }
 
-  // ===== 我的收藏 =====
+  // ===== My Collections =====
   (function() {
     const posts = Store.getCollectedPosts();
-    document.getElementById("favCount").textContent = `共 ${posts.length} 条`;
+    document.getElementById("favCount").textContent = `Total ${posts.length} posts`;
     const listEl = document.getElementById("favList");
     if (posts.length === 0) {
-      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-bookmark"></i>还没有收藏任何帖子</div>`;
+      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-bookmark"></i>No posts collected yet</div>`;
       return;
     }
     listEl.innerHTML = posts.map(post => renderPostCard(post,
-      `<button class="action-btn collected" data-id="${post.id}"><i class="fas fa-bookmark"></i> 取消收藏</button>`
+      `<button class="action-btn collected" data-id="${post.id}"><i class="fas fa-bookmark"></i> Remove</button>`
     )).join("");
     listEl.querySelectorAll("[data-id]").forEach(btn => {
       btn.addEventListener("click", () => {
         Store.toggleCollect(btn.dataset.id);
         btn.closest(".post-card").style.opacity = "0.4";
-        btn.innerHTML = "已取消";
+        btn.innerHTML = "Removed";
         btn.disabled = true;
       });
     });
   })();
 
-  // ===== 我的喜欢 =====
+  // ===== My Likes =====
   (function() {
     const posts = Store.posts.filter(p => p.liked);
-    document.getElementById("likesCount").textContent = `共 ${posts.length} 条`;
+    document.getElementById("likesCount").textContent = `Total ${posts.length} posts`;
     const listEl = document.getElementById("likesList");
     if (posts.length === 0) {
-      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-heart"></i>还没有点赞任何帖子</div>`;
+      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-heart"></i>No posts liked yet</div>`;
       return;
     }
     listEl.innerHTML = posts.map(post => renderPostCard(post,
-      `<button class="action-btn liked" data-like-id="${post.id}"><i class="fas fa-heart"></i> 取消点赞</button>`
+      `<button class="action-btn liked" data-like-id="${post.id}"><i class="fas fa-heart"></i> Unlike</button>`
     )).join("");
     listEl.querySelectorAll("[data-like-id]").forEach(btn => {
       btn.addEventListener("click", () => {
         Store.toggleLike(btn.dataset.likeId);
         btn.closest(".post-card").style.opacity = "0.4";
-        btn.innerHTML = "已取消";
+        btn.innerHTML = "Removed";
         btn.disabled = true;
       });
     });
   })();
 
-  // ===== 我的关注 =====
+  // ===== My Following =====
   (async function() {
     const listEl = document.getElementById("followingList");
     const users = await Store.fetchFollowingFromApi();
-    document.getElementById("followingCount").textContent = `共 ${users.length} 人`;
+    document.getElementById("followingCount").textContent = `Total ${users.length} users`;
     if (users.length === 0) {
-      listEl.innerHTML = `<div class="fav-empty"><i class="fas fa-user-friends"></i>还没有关注任何人</div>`;
+      listEl.innerHTML = `<div class="fav-empty"><i class="fas fa-user-friends"></i>Not following anyone yet</div>`;
       return;
     }
     listEl.innerHTML = users.map(u => `
       <div class="following-card">
-        <div class="following-card-avatar" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%); color: #fff;">${Render.escapeHtml(u.username ? u.username.substring(0, 1) : (u.avatarLetter || "匿"))}</div>
+        <div class="following-card-avatar" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%); color: #fff;">${Render.escapeHtml(u.username ? u.username.substring(0, 1) : (u.avatarLetter || "U"))}</div>
         <div class="following-card-info">
-          <div class="following-card-name">${Render.escapeHtml(u.username || u.nickname || "用户")}</div>
+          <div class="following-card-name">${Render.escapeHtml(u.username || u.nickname || "User")}</div>
           <div class="following-card-meta">ID: ${u.userId || u.id}</div>
         </div>
-        <button class="unfollow-btn" data-uid="${u.userId || u.id}">取消关注</button>
+        <button class="unfollow-btn" data-uid="${u.userId || u.id}">Unfollow</button>
       </div>`).join("");
     listEl.querySelectorAll(".unfollow-btn").forEach(btn => {
       btn.addEventListener("click", async () => {
         await Store.unfollowUser(btn.dataset.uid);
         const card = btn.closest(".following-card");
         card.style.opacity = "0.4";
-        btn.textContent = "已取消";
+        btn.textContent = "Removed";
         btn.disabled = true;
       });
     });
   })();
 
-  // ===== 评论回复 =====
+  // ===== Comment Replies =====
   (function() {
     const notifications = Store.notifications.filter(n => n.type === "reply");
     const unread = notifications.filter(n => !n.read).length;
     const countEl = document.getElementById("commentsCount");
-    countEl.textContent = `共 ${notifications.length} 条${unread > 0 ? `，${unread} 条未读` : ""}`;
+    countEl.textContent = `Total ${notifications.length} notifications${unread > 0 ? `, ${unread} unread` : ""}`;
     const badge = document.getElementById("commentBadge");
     if (unread > 0) {
       badge.style.display = "inline-block";
@@ -338,18 +338,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const listEl = document.getElementById("commentsList");
     if (notifications.length === 0) {
-      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-comment-dots"></i>暂无评论回复</div>`;
+      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-comment-dots"></i>No comment replies yet</div>`;
     } else {
       listEl.innerHTML = notifications.map(n => `
         <div class="notif-item ${n.read ? "" : "unread"}">
           <div class="notif-header">
             <div class="notif-icon"><i class="fas fa-comment-dots"></i></div>
-            <span class="notif-type-tag">评论回复</span>
+            <span class="notif-type-tag">Comment Reply</span>
             ${!n.read ? '<span class="notif-dot"></span>' : ""}
             <span class="notif-meta">${formatTime(n.timestamp)}</span>
           </div>
           <div class="notif-content">${Render.escapeHtml(n.content)}</div>
-          ${n.postId ? `<button class="notif-link" data-post-id="${n.postId}">查看原帖 →</button>` : ""}
+          ${n.postId ? `<button class="notif-link" data-post-id="${n.postId}">View Post →</button>` : ""}
         </div>`).join("");
     }
     document.getElementById("markCommentsRead").addEventListener("click", () => {
@@ -359,18 +359,18 @@ document.addEventListener("DOMContentLoaded", () => {
         el.classList.remove("unread");
         el.querySelector(".notif-dot")?.remove();
       });
-      countEl.textContent = `共 ${notifications.length} 条`;
+      countEl.textContent = `Total ${notifications.length} notifications`;
     });
   })();
 
-  // ===== 私信回复 =====
+  // ===== Message Replies =====
   (function() {
     const threads = Object.values(Store.messages);
     const msgBadge = document.getElementById("msgBadge");
-    document.getElementById("messagesCount").textContent = `共 ${threads.length} 个会话`;
+    document.getElementById("messagesCount").textContent = `Total ${threads.length} conversations`;
     const listEl = document.getElementById("messagesList");
     if (threads.length === 0) {
-      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-envelope"></i>暂无私信记录</div>`;
+      listEl.innerHTML = `<div class="fav-empty"><i class="far fa-envelope"></i>No message history yet</div>`;
       msgBadge.style.display = "none";
       return;
     }
@@ -389,14 +389,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const last = msgs.length > 0 ? msgs[msgs.length - 1] : null;
       const hasNew = last && last.from !== myId;
       return `
-        <div class="msg-thread-item" data-uid="${t.withUser.id}" data-name="${Render.escapeHtml(t.withUser.nickname)}" data-avatar="${Render.escapeHtml(t.withUser.avatarLetter || "匿")}">
+        <div class="msg-thread-item" data-uid="${t.withUser.id}" data-name="${Render.escapeHtml(t.withUser.nickname)}" data-avatar="${Render.escapeHtml(t.withUser.avatarLetter || "U")}">
           <div class="msg-thread-avatar">
-            ${Render.escapeHtml(t.withUser.avatarLetter || "匿")}
+            ${Render.escapeHtml(t.withUser.avatarLetter || "U")}
             ${hasNew ? '<span class="msg-thread-unread-dot"></span>' : ""}
           </div>
           <div class="msg-thread-info">
             <div class="msg-thread-name">${Render.escapeHtml(t.withUser.nickname)}</div>
-            <div class="msg-thread-preview">${last ? Render.escapeHtml(last.text.slice(0, 30)) : "暂无消息"}</div>
+            <div class="msg-thread-preview">${last ? Render.escapeHtml(last.text.slice(0, 30)) : "No messages yet"}</div>
           </div>
           <div class="msg-thread-time">${last ? formatTime(last.timestamp) : ""}</div>
         </div>`;

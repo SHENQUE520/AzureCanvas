@@ -20,7 +20,6 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
     const restoreBackupAudio = new Audio('../audios/login/restoring_from_backup.ogg');
     const initializingAudio = new Audio('../audios/login/Initializing_10s.ogg');
     const initiatingSimAudio = new Audio('../audios/login/Initiating_the_simulation.ogg');
-    const activatingUserAudio = new Audio('../audios/login/activating_user_40s.ogg');
 
     let isRegisterMode = false;
     let selectedAvatarFile = null;
@@ -130,7 +129,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
                     password: password
                 })
             });
-
+            showAvatarDialog(username);
             const data = await response.json();
 
             if (data.success) {
@@ -264,8 +263,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
             });
 
             // Fade out the "Access Granted" overlay
-            gsap.to(statusOverlay, { 
-                opacity: 0, 
+            gsap.to(statusOverlay, {
+                opacity: 0,
                 duration: 1,
                 delay: 1
             });
@@ -288,8 +287,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
             });
             document.body.appendChild(whiteOverlay);
 
-            await gsap.to(whiteOverlay, { 
-                opacity: 1, 
+            await gsap.to(whiteOverlay, {
+                opacity: 1,
                 duration: 0.6,
                 ease: 'power1.in'
             });
@@ -300,6 +299,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         }
 
         // Phase 2: Initializing Profile (2D DOM Update) - Only for Registration
+        await new Promise(r => setTimeout(r, 2500));
         await restoreBackupAudio.play();
 
         // Animated text swap
@@ -361,27 +361,18 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         const activatingScreen = document.getElementById('activating-screen');
         activatingScreen.style.display = 'flex';
         gsap.to(activatingScreen, { opacity: 1, duration: 0.3 });
+
+        // Play the final audio and wait for it to complete
         await initiatingSimAudio.play();
-        await new Promise(r => setTimeout(r, 4000));
 
-        // Phase 5: Final Portal
-        // Fade out white screen as we enter the portal
-        gsap.to(activatingScreen, { opacity: 0, duration: 0.3, onComplete: () => { activatingScreen.style.display = 'none'; } });
-
-        gsap.to({ speed: originalSpeed }, {
-            speed: 30,
-            duration: 1,
-            onUpdate: function() {
-                tunnel.cameraSpeed = this.targets()[0].speed;
-            }
+        // Wait for the audio to finish (approximately 4 seconds based on previous logic)
+        await new Promise(r => {
+            initiatingSimAudio.onended = r;
+            setTimeout(r, 4500); // Fallback
         });
-        gsap.to(tunnel.camera, { fov: 10, duration: 1, onUpdate: () => tunnel.camera.updateProjectionMatrix() });
 
-        // Hide status text for the final 40s sequence
-        gsap.to(statusOverlay, { opacity: 0, duration: 1 });
-
-        await activatingUserAudio.play();
-        startFinalPortalTransition(tunnel);
+        // Redirect to the system
+        window.location.href = '../islands/index.html';
     }
 
     function addHexagonsToTunnel(tunnel) {

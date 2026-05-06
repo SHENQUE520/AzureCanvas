@@ -71,12 +71,17 @@ public class EsTreeHoleServiceImpl implements EsTreeHoleService {
 
         try {
             NativeQuery query = NativeQuery.builder()
-                    .withQuery(q -> q.multiMatch(m -> m.fields("title", "content").query(keyword)))
+                    .withQuery(q -> q.multiMatch(m -> m
+                            .fields("title", "content", "titleEn", "contentEn", "titleZh", "contentZh").query(keyword)))
                     .withPageable(PageRequest.of(page, size))
                     .withHighlightQuery(new HighlightQuery(
                             new Highlight(List.of(
                                     new HighlightField("title"),
-                                    new HighlightField("content"))),
+                                    new HighlightField("content"),
+                                    new HighlightField("titleEn"),
+                                    new HighlightField("contentEn"),
+                                    new HighlightField("titleZh"),
+                                    new HighlightField("contentZh"))),
                             EsTreeHole.class))
                     .build();
 
@@ -120,7 +125,8 @@ public class EsTreeHoleServiceImpl implements EsTreeHoleService {
                 totalSynced += synced;
 
                 if (log.isDebugEnabled()) {
-                    log.debug("[ES-Sync][{}] 批次 {}/{} 同步完成，本批 {} 条", taskId, (i / SYNC_BATCH_SIZE) + 1, (totalPosts + SYNC_BATCH_SIZE - 1) / SYNC_BATCH_SIZE, synced);
+                    log.debug("[ES-Sync][{}] 批次 {}/{} 同步完成，本批 {} 条", taskId, (i / SYNC_BATCH_SIZE) + 1,
+                            (totalPosts + SYNC_BATCH_SIZE - 1) / SYNC_BATCH_SIZE, synced);
                 }
             }
 
@@ -168,7 +174,7 @@ public class EsTreeHoleServiceImpl implements EsTreeHoleService {
 
             List<EsTreeHole> esItems = allPosts.stream()
                     .filter(post -> post.getUpdatedAt() != null &&
-                                    post.getUpdatedAt().after(syncSince))
+                            post.getUpdatedAt().after(syncSince))
                     .map(this::convertToEsTreeHole)
                     .collect(Collectors.toList());
 
@@ -226,7 +232,8 @@ public class EsTreeHoleServiceImpl implements EsTreeHoleService {
     public Map<String, Object> getSyncStatus() {
         Map<String, Object> status = new java.util.LinkedHashMap<>();
         status.put("lastFullSyncTime", lastFullSyncTime != null ? lastFullSyncTime.toInstant().toString() : "从未同步");
-        status.put("lastIncrementalSyncTime", lastIncrementalSyncTime != null ? lastIncrementalSyncTime.toInstant().toString() : "从未同步");
+        status.put("lastIncrementalSyncTime",
+                lastIncrementalSyncTime != null ? lastIncrementalSyncTime.toInstant().toString() : "从未同步");
         status.put("isSyncing", isSyncing);
         status.put("totalSyncCount", totalSyncCount.get());
         status.put("totalErrorCount", totalErrorCount.get());
@@ -243,6 +250,10 @@ public class EsTreeHoleServiceImpl implements EsTreeHoleService {
         esTreeHole.setBoardName(post.getCategory() != null ? post.getCategory() : "树洞");
         esTreeHole.setTitle(post.getTitle() != null ? post.getTitle() : "");
         esTreeHole.setContent(post.getContent());
+        esTreeHole.setTitleEn(post.getTitle() != null ? post.getTitle() : "");
+        esTreeHole.setContentEn(post.getContent());
+        esTreeHole.setTitleZh(post.getTitle() != null ? post.getTitle() : "");
+        esTreeHole.setContentZh(post.getContent());
         return esTreeHole;
     }
 
@@ -252,36 +263,66 @@ public class EsTreeHoleServiceImpl implements EsTreeHoleService {
 
     private static class EmptyTreeHoleSearchHits implements SearchHits<EsTreeHole> {
         @Override
-        public long getTotalHits() { return 0; }
+        public long getTotalHits() {
+            return 0;
+        }
+
         @Override
         public org.springframework.data.elasticsearch.core.TotalHitsRelation getTotalHitsRelation() {
             return org.springframework.data.elasticsearch.core.TotalHitsRelation.EQUAL_TO;
         }
+
         @Override
-        public float getMaxScore() { return 0f; }
+        public float getMaxScore() {
+            return 0f;
+        }
+
         @Override
-        public org.springframework.data.elasticsearch.core.suggest.response.Suggest getSuggest() { return null; }
+        public org.springframework.data.elasticsearch.core.suggest.response.Suggest getSuggest() {
+            return null;
+        }
+
         @Override
         public List<org.springframework.data.elasticsearch.core.SearchHit<EsTreeHole>> getSearchHits() {
             return List.of();
         }
+
         @Override
         public org.springframework.data.elasticsearch.core.SearchHit<EsTreeHole> getSearchHit(int index) {
             throw new IndexOutOfBoundsException();
         }
 
-        public List<EsTreeHole> getSearchHitsContents() { return List.of(); }
-        @Override
-        public boolean hasSearchHits() { return false; }
-        @Override
-        public org.springframework.data.elasticsearch.core.AggregationsContainer<?> getAggregations() { return null; }
+        public List<EsTreeHole> getSearchHitsContents() {
+            return List.of();
+        }
 
-        public <A> A getAggregation(String name, Class<A> aClass) { return null; }
         @Override
-        public org.springframework.data.elasticsearch.core.SearchShardStatistics getSearchShardStatistics() { return null; }
+        public boolean hasSearchHits() {
+            return false;
+        }
+
         @Override
-        public String getPointInTimeId() { return null; }
+        public org.springframework.data.elasticsearch.core.AggregationsContainer<?> getAggregations() {
+            return null;
+        }
+
+        public <A> A getAggregation(String name, Class<A> aClass) {
+            return null;
+        }
+
         @Override
-        public java.time.Duration getExecutionDuration() { return java.time.Duration.ZERO; }
+        public org.springframework.data.elasticsearch.core.SearchShardStatistics getSearchShardStatistics() {
+            return null;
+        }
+
+        @Override
+        public String getPointInTimeId() {
+            return null;
+        }
+
+        @Override
+        public java.time.Duration getExecutionDuration() {
+            return java.time.Duration.ZERO;
+        }
     }
 }

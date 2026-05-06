@@ -18,6 +18,23 @@ public class EsStoryMap {
 
     @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String description;
+    @Field(type = FieldType.Text, analyzer = "english")
+    private String titleEn;
+
+    @Field(type = FieldType.Text, analyzer = "english")
+    private String descriptionEn;
+
+    @Field(type = FieldType.Text, analyzer = "english")
+    private String locationEn;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String titleZh;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String descriptionZh;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String locationZh;
 
     @Field(type = FieldType.Keyword)
     private String category;

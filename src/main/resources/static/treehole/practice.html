@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>实践咨询 - MUST树洞</title>
+<title>Practice Info - MUST Treehole</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -265,10 +265,10 @@
 
 <nav class="navbar">
   <div class="nav-logo">
-    <button class="btn btn-sm" onclick="history.back()"><i class="fas fa-arrow-left"></i> 返回</button>
+    <button class="btn btn-sm" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back</button>
   </div>
   <div class="nav-search-center">
-    <div style="font-size:1.1rem;font-weight:700;color:var(--text)">实践咨询</div>
+    <div style="font-size:1.1rem;font-weight:700;color:var(--text)">Practice Info</div>
   </div>
   <div class="nav-actions">
     <button class="btn btn-sm" id="nightToggle"><i class="fas fa-moon"></i></button>
@@ -276,60 +276,60 @@
 </nav>
 
 <div class="practice-tabs">
-  <button class="practice-tab" data-tab="group">课堂小组</button>
-  <button class="practice-tab" data-tab="competition">竞赛</button>
-  <button class="practice-tab" data-tab="internship">实习</button>
+  <button class="practice-tab" data-tab="group">Class Group</button>
+  <button class="practice-tab" data-tab="competition">Competition</button>
+  <button class="practice-tab" data-tab="internship">Internship</button>
 </div>
 
 <div class="practice-page-wrap">
 <div class="tab-panel" id="panel-group">
   <div id="recruit-group"></div>
-  <div class="section-title"><i class="fas fa-fire"></i> 热门课堂小组</div>
+  <div class="section-title"><i class="fas fa-fire"></i> Popular Class Groups</div>
   <div id="list-group"></div>
 </div>
 
 <div class="tab-panel" id="panel-competition">
   <div id="recruit-competition"></div>
-  <div class="section-title"><i class="fas fa-fire"></i> 热门竞赛</div>
+  <div class="section-title"><i class="fas fa-fire"></i> Popular Competitions</div>
   <div id="list-competition"></div>
 </div>
 
 <div class="tab-panel" id="panel-internship">
   <div id="recruit-internship"></div>
-  <div class="section-title"><i class="fas fa-fire"></i> 热门实习</div>
+  <div class="section-title"><i class="fas fa-fire"></i> Popular Internships</div>
   <div id="list-internship"></div>
 </div>
 </div>
 
 <div class="modal-overlay" id="recruitModal">
   <div class="modal-box">
-    <div class="modal-title" id="modalTitle">寻找队友</div>
+    <div class="modal-title" id="modalTitle">Find Teammates</div>
     <form id="recruitForm" novalidate>
       <div class="form-group">
-        <label class="form-label" for="fieldMajor">学院 / 专业</label>
-        <input class="form-input" id="fieldMajor" type="text" placeholder="例如：计算机学院 软件工程" required>
+        <label class="form-label" for="fieldMajor">College / Major</label>
+        <input class="form-input" id="fieldMajor" type="text" placeholder="e.g. Computer Science, Software Engineering" required>
       </div>
       <div class="form-group">
-        <label class="form-label" for="fieldGrade">年级</label>
+        <label class="form-label" for="fieldGrade">Grade</label>
         <select class="form-select" id="fieldGrade">
-          <option value="大一">大一</option>
-          <option value="大二">大二</option>
-          <option value="大三">大三</option>
-          <option value="大四">大四</option>
-          <option value="研究生">研究生</option>
+          <option value="Freshman">Freshman</option>
+          <option value="Sophomore">Sophomore</option>
+          <option value="Junior">Junior</option>
+          <option value="Senior">Senior</option>
+          <option value="Graduate">Graduate</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label" for="fieldSkills">擅长优势</label>
-        <textarea class="form-textarea" id="fieldSkills" placeholder="例如：擅长编程、数据分析、文案写作…"></textarea>
+        <label class="form-label" for="fieldSkills">Skills & Strengths</label>
+        <textarea class="form-textarea" id="fieldSkills" placeholder="e.g. Programming, data analysis, copywriting..."></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label" for="fieldIntro">自我介绍</label>
-        <textarea class="form-textarea" id="fieldIntro" placeholder="简单介绍一下自己…"></textarea>
+        <label class="form-label" for="fieldIntro">Self Introduction</label>
+        <textarea class="form-textarea" id="fieldIntro" placeholder="Briefly introduce yourself..."></textarea>
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn" id="modalCancel">取消</button>
-        <button type="submit" class="btn btn-primary">发布招募</button>
+        <button type="button" class="btn" id="modalCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Post Recruitment</button>
       </div>
     </form>
   </div>
@@ -341,40 +341,40 @@
 
   var DATA = {
     group: [
-      { id: 'g1', title: '数据结构课程设计', heat: 342, desc: '需要3-4人小组完成链表与树的综合项目', deadline: '2026-05-20', tags: ['计算机','编程'] },
-      { id: 'g2', title: '市场营销案例分析', heat: 289, desc: '分析真实企业营销策略，撰写报告', deadline: '2026-05-18', tags: ['商科','分析'] },
-      { id: 'g3', title: '英语演讲比赛备赛', heat: 201, desc: '校级英语演讲，需要搭档练习', deadline: '2026-05-15', tags: ['英语','演讲'] },
-      { id: 'g4', title: '物理实验报告合作', heat: 178, desc: '大学物理实验数据分析与报告撰写', deadline: '2026-05-25', tags: ['理工','实验'] }
+      { id: 'g1', title: 'Data Structures Course Project', heat: 342, desc: 'Need 3-4 person team for linked list and tree comprehensive project', deadline: '2026-05-20', tags: ['CS','Programming'] },
+      { id: 'g2', title: 'Marketing Case Analysis', heat: 289, desc: 'Analyze real enterprise marketing strategy, write report', deadline: '2026-05-18', tags: ['Business','Analysis'] },
+      { id: 'g3', title: 'English Speech Contest Prep', heat: 201, desc: 'University-level English speech, need partner for practice', deadline: '2026-05-15', tags: ['English','Speech'] },
+      { id: 'g4', title: 'Physics Lab Report Collaboration', heat: 178, desc: 'University physics experiment data analysis and report writing', deadline: '2026-05-25', tags: ['Science','Lab'] }
     ],
     competition: [
-      { id: 'c1', title: '全国大学生数学建模竞赛', heat: 521, desc: '三人一组，解决实际数学建模问题，含丰厚奖金', deadline: '2026-09-01', tags: ['数学','建模','奖金'] },
-      { id: 'c2', title: '蓝桥杯程序设计大赛', heat: 445, desc: '个人或组队参赛，算法与编程能力竞技', deadline: '2026-06-15', tags: ['编程','算法'] },
-      { id: 'c3', title: '互联网+创新创业大赛', heat: 398, desc: '创业项目路演，校级选拔赛报名中', deadline: '2026-05-30', tags: ['创业','创新'] },
-      { id: 'c4', title: '全国英语演讲比赛', heat: 267, desc: '校内选拔，优胜者代表学校参加全国赛', deadline: '2026-05-10', tags: ['英语','演讲'] }
+      { id: 'c1', title: 'National College Student Mathematical Modeling Contest', heat: 521, desc: 'Three-person team, solve practical mathematical modeling problems, with rich prizes', deadline: '2026-09-01', tags: ['Math','Modeling','Prizes'] },
+      { id: 'c2', title: 'Lanqiao Cup Programming Contest', heat: 445, desc: 'Individual or team participation, algorithm and programming skills competition', deadline: '2026-06-15', tags: ['Programming','Algorithm'] },
+      { id: 'c3', title: 'Internet+ Innovation & Entrepreneurship Contest', heat: 398, desc: 'Startup project roadshow, university-level selection registration open', deadline: '2026-05-30', tags: ['Entrepreneurship','Innovation'] },
+      { id: 'c4', title: 'National English Speech Contest', heat: 267, desc: 'Campus selection, winners represent university in national competition', deadline: '2026-05-10', tags: ['English','Speech'] }
     ],
     internship: [
-      { id: 'i1', title: '腾讯暑期实习生招募', heat: 634, desc: '产品、技术、运营方向，提供住宿补贴', deadline: '2026-05-31', tags: ['互联网','技术','暑期'] },
-      { id: 'i2', title: '华为校园招聘实习', heat: 589, desc: '硬件/软件工程师实习，转正机会大', deadline: '2026-05-25', tags: ['硬件','软件'] },
-      { id: 'i3', title: '字节跳动Data实习', heat: 512, desc: '数据分析方向，需要Python/SQL基础', deadline: '2026-05-20', tags: ['数据','分析'] },
-      { id: 'i4', title: '本地政府机关实习', heat: 234, desc: '行政管理方向，积累政务经验', deadline: '2026-06-01', tags: ['政务','行政'] }
+      { id: 'i1', title: 'Tencent Summer Intern Recruitment', heat: 634, desc: 'Product, technology, operations directions, accommodation subsidy provided', deadline: '2026-05-31', tags: ['Internet','Tech','Summer'] },
+      { id: 'i2', title: 'Huawei Campus Recruitment Internship', heat: 589, desc: 'Hardware/software engineer internship, high chance of full-time conversion', deadline: '2026-05-25', tags: ['Hardware','Software'] },
+      { id: 'i3', title: 'ByteDance Data Internship', heat: 512, desc: 'Data analysis direction, requires Python/SQL basics', deadline: '2026-05-20', tags: ['Data','Analysis'] },
+      { id: 'i4', title: 'Local Government Internship', heat: 234, desc: 'Administrative management direction, gain government experience', deadline: '2026-06-01', tags: ['Government','Admin'] }
     ]
   };
 
   var SAMPLE_TEAMS = {
     group: [
-      { id: 'sg1', name: '李明 · 大三', major: '信息工程学院 计算机科学', grade: '大三', skills: '擅长算法设计、C++编程', intro: '希望找到认真负责的队友一起完成课设，有相关经验优先。' },
-      { id: 'sg2', name: '王芳 · 大二', major: '商学院 市场营销', grade: '大二', skills: '擅长PPT制作、数据分析', intro: '寻找有商科背景的同学合作案例分析，欢迎联系！' },
-      { id: 'sg3', name: '张伟 · 大一', major: '外国语学院 英语', grade: '大一', skills: '英语口语流利、逻辑清晰', intro: '备战演讲比赛，需要一位搭档互相练习，每天可安排1小时。' }
+      { id: 'sg1', name: 'Li Ming · Junior', major: 'Information Engineering, Computer Science', grade: 'Junior', skills: 'Proficient in algorithm design, C++ programming', intro: 'Looking for responsible teammates to complete course project together, relevant experience preferred.' },
+      { id: 'sg2', name: 'Wang Fang · Sophomore', major: 'Business School, Marketing', grade: 'Sophomore', skills: 'Proficient in PPT creation, data analysis', intro: 'Looking for classmates with business background to cooperate on case analysis, welcome to contact!' },
+      { id: 'sg3', name: 'Zhang Wei · Freshman', major: 'Foreign Languages College, English', grade: 'Freshman', skills: 'Fluent in English speaking, clear logic', intro: 'Preparing for speech contest, need a partner to practice with each other, can arrange 1 hour daily.' }
     ],
     competition: [
-      { id: 'sc1', name: '陈浩 · 大三', major: '数学学院 应用数学', grade: '大三', skills: '数学建模经验丰富，熟悉MATLAB', intro: '参加过省级建模竞赛，寻找编程能力强的队友组队冲国奖。' },
-      { id: 'sc2', name: '刘洋 · 大二', major: '计算机学院 软件工程', grade: '大二', skills: '算法竞赛经验，LeetCode 1800+', intro: '蓝桥杯备赛中，寻找志同道合的队友一起刷题备赛。' },
-      { id: 'sc3', name: '赵敏 · 大三', major: '创业学院 工商管理', grade: '大三', skills: '商业计划书撰写、路演经验', intro: '互联网+项目已有初步方案，需要技术方向同学加入。' }
+      { id: 'sc1', name: 'Chen Hao · Junior', major: 'Mathematics College, Applied Mathematics', grade: 'Junior', skills: 'Experienced in mathematical modeling, familiar with MATLAB', intro: 'Participated in provincial modeling competition, looking for teammates with strong programming skills to compete for national awards.' },
+      { id: 'sc2', name: 'Liu Yang · Sophomore', major: 'Computer College, Software Engineering', grade: 'Sophomore', skills: 'Algorithm competition experience, LeetCode 1800+', intro: 'Preparing for Lanqiao Cup, looking for like-minded teammates to practice coding together.' },
+      { id: 'sc3', name: 'Zhao Min · Junior', major: 'Entrepreneurship College, Business Administration', grade: 'Junior', skills: 'Business plan writing, roadshow experience', intro: 'Internet+ project already has initial plan, need technical direction teammate to join.' }
     ],
     internship: [
-      { id: 'si1', name: '孙磊 · 大三', major: '计算机学院 人工智能', grade: '大三', skills: 'Python/Java开发，有项目经验', intro: '正在准备腾讯实习面试，寻找一起内推、互相模拟面试的伙伴。' },
-      { id: 'si2', name: '周婷 · 大四', major: '电子工程学院 通信工程', grade: '大四', skills: '嵌入式开发、硬件调试', intro: '华为实习意向，有相关经验，欢迎一起准备笔试。' },
-      { id: 'si3', name: '吴杰 · 研究生', major: '数据科学学院 统计学', grade: '研究生', skills: 'Python/SQL/数据可视化', intro: '字节数据实习备战，寻找一起刷SQL题和案例分析的同学。' }
+      { id: 'si1', name: 'Sun Lei · Junior', major: 'Computer College, Artificial Intelligence', grade: 'Junior', skills: 'Python/Java development, project experience', intro: 'Preparing for Tencent internship interview, looking for partners to refer each other and conduct mock interviews.' },
+      { id: 'si2', name: 'Zhou Ting · Senior', major: 'Electronic Engineering College, Communication Engineering', grade: 'Senior', skills: 'Embedded development, hardware debugging', intro: 'Huawei internship intention, have relevant experience, welcome to prepare for written test together.' },
+      { id: 'si3', name: 'Wu Jie · Graduate', major: 'Data Science College, Statistics', grade: 'Graduate', skills: 'Python/SQL/Data visualization', intro: 'ByteDance data internship preparation, looking for classmates to practice SQL questions and case analysis together.' }
     ]
   };
 
@@ -439,8 +439,8 @@
         '</div>' +
         '<div class="item-desc">' + esc(item.desc) + '</div>' +
         '<div class="item-footer">' +
-          '<span class="deadline-label"><i class="fas fa-calendar-alt"></i> 截止 ' + esc(item.deadline) + '</span>' +
-          '<button class="btn btn-primary btn-sm" data-title="' + esc(item.title) + '">寻找队友</button>' +
+          '<span class="deadline-label"><i class="fas fa-calendar-alt"></i> Deadline ' + esc(item.deadline) + '</span>' +
+          '<button class="btn btn-primary btn-sm" data-title="' + esc(item.title) + '">Find Teammates</button>' +
         '</div>';
       container.appendChild(card);
     });
@@ -457,7 +457,7 @@
     var stored = getStoredTeams(tab);
     if (stored.length === 0) { container.innerHTML = ''; return; }
 
-    var html = '<div class="recruit-square"><div class="recruit-square-title"><i class="fas fa-users"></i> 招募广场</div>';
+    var html = '<div class="recruit-square"><div class="recruit-square-title"><i class="fas fa-users"></i> Recruitment Square</div>';
 
     stored.forEach(function (team) { html += buildTeamCard(team, true); });
     SAMPLE_TEAMS[tab].forEach(function (team) { html += buildTeamCard(team, false); });
@@ -469,7 +469,7 @@
       btn.addEventListener('click', function () {
         var id = btn.dataset.applyId;
         localStorage.setItem('practice_applied_' + id, '1');
-        btn.parentElement.innerHTML = '<span class="applied-label">申请已发送 ✓</span>';
+        btn.parentElement.innerHTML = '<span class="applied-label">Application Sent ✓</span>';
       });
     });
   }
@@ -477,14 +477,14 @@
   function buildTeamCard(team, isMine) {
     var applied = !isMine && localStorage.getItem('practice_applied_' + team.id) === '1';
     var action = isMine
-      ? '<button class="btn btn-sm" onclick="alert(\'管理功能开发中\')">管理</button>'
+      ? '<button class="btn btn-sm" onclick="alert(\'Management feature in development\')">Manage</button>'
       : (applied
-          ? '<span class="applied-label">申请已发送 ✓</span>'
-          : '<button class="btn btn-primary btn-sm" data-apply-id="' + esc(team.id) + '">申请加入</button>');
+          ? '<span class="applied-label">Application Sent ✓</span>'
+          : '<button class="btn btn-primary btn-sm" data-apply-id="' + esc(team.id) + '">Apply</button>');
     return '<div class="team-card">' +
       '<div class="team-card-header">' +
         '<span class="team-card-name">' + esc(team.name || (team.major + ' · ' + team.grade)) + '</span>' +
-        '<span class="team-card-badge' + (isMine ? ' mine' : '') + '">' + (isMine ? '我的团队 · 队长' : '招募中') + '</span>' +
+        '<span class="team-card-badge' + (isMine ? ' mine' : '') + '">' + (isMine ? 'My Team · Leader' : 'Recruiting') + '</span>' +
       '</div>' +
       '<div class="team-card-meta"><i class="fas fa-graduation-cap"></i> ' + esc(team.major) + ' &nbsp;|&nbsp; ' + esc(team.grade) + '</div>' +
       (team.skills ? '<div class="team-card-skills"><i class="fas fa-star"></i> ' + esc(team.skills) + '</div>' : '') +
@@ -496,7 +496,7 @@
   // Modal
   function openModal(title) {
     currentItemTitle = title;
-    document.getElementById('modalTitle').textContent = '寻找队友 - ' + title;
+    document.getElementById('modalTitle').textContent = 'Find Teammates - ' + title;
     document.getElementById('recruitForm').reset();
     document.getElementById('recruitModal').classList.add('open');
   }

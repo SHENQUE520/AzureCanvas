@@ -1,27 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== 0. 进入动画（仅首次访问显示）+ 欢迎弹窗 =====
-  const splash = document.getElementById("splashScreen");
+  // ===== 0. Loading Screen =====
+  const loadingScreen = document.getElementById("loadingScreen");
   const welcomeModal = document.getElementById("welcomeModal");
   const isFirstVisit = !localStorage.getItem("th_visited");
+  const loadingBar = document.getElementById("loadingBar");
+  const loadingStatus = document.getElementById("loadingStatus");
+  const loadingWelcome = document.getElementById("loadingWelcome");
 
-  if (!isFirstVisit) {
-    // 非首次：直接隐藏 splash，不播放动画
-    splash.style.display = "none";
-  } else {
-    // 首次：播放银河穿梭动画
-    localStorage.setItem("th_visited", "1");
-    startGalaxy();
+  // Start particle background
+  startLoadingParticles();
+
+  // Simulate loading progress
+  const steps = [
+    { pct: 20, text: "Initializing data…" },
+    { pct: 50, text: "Loading posts…" },
+    { pct: 75, text: "Rendering interface…" },
+    { pct: 95, text: "Almost done…" },
+  ];
+  let stepIdx = 0;
+  const stepTimer = setInterval(() => {
+    if (stepIdx < steps.length) {
+      loadingBar.style.width = steps[stepIdx].pct + "%";
+      loadingStatus.textContent = steps[stepIdx].text;
+      stepIdx++;
+    } else {
+      clearInterval(stepTimer);
+    }
+  }, 320);
+
+  function finishLoading() {
+    clearInterval(stepTimer);
+    loadingBar.style.width = "100%";
+    loadingStatus.style.opacity = "0";
+    loadingWelcome.classList.add("show");
     setTimeout(() => {
-      splash.classList.add("fade-out");
+      if (window._stopLoadingParticles) window._stopLoadingParticles();
+      loadingScreen.classList.add("fade-out");
       setTimeout(() => {
-        splash.style.display = "none";
-        welcomeModal.classList.add("open");
-      }, 800);
-    }, 2800);
+        loadingScreen.style.display = "none";
+        if (isFirstVisit) {
+          localStorage.setItem("th_visited", "1");
+          welcomeModal.classList.add("open");
+        }
+      }, 700);
+    }, 900);
   }
 
-  function startGalaxy() {
-    const canvas = document.getElementById("galaxyCanvas");
+  // Minimum display 1.6s, then wait for page ready
+  setTimeout(finishLoading, 1600);
+
+  function startLoadingParticles() {
+    const canvas = document.getElementById("loadingCanvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let W = canvas.width = window.innerWidth;
@@ -31,104 +60,85 @@ document.addEventListener("DOMContentLoaded", () => {
       H = canvas.height = window.innerHeight;
     });
 
-    // 星星
-    const STAR_COUNT = 320;
+    const STAR_COUNT = 260;
     const stars = Array.from({ length: STAR_COUNT }, () => ({
       x: Math.random() * W, y: Math.random() * H,
-      z: Math.random() * W,
-      pz: 0
+      z: Math.random() * W, pz: 0
     }));
     stars.forEach(s => s.pz = s.z);
 
-    // 流星
     const meteors = [];
-    function spawnMeteor() {
+    const meteorTimer = setInterval(() => {
       meteors.push({
         x: Math.random() * W, y: Math.random() * H * 0.5,
-        vx: 6 + Math.random() * 6, vy: 3 + Math.random() * 3,
-        len: 80 + Math.random() * 120, life: 1
+        vx: 5 + Math.random() * 5, vy: 2 + Math.random() * 3,
+        len: 80 + Math.random() * 100, life: 1
       });
-    }
-    setInterval(spawnMeteor, 900);
+    }, 1000);
 
+    let running = true;
     let frame = 0;
     function draw() {
-      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      if (!running) return;
+      ctx.fillStyle = "rgba(13,17,23,0.2)";
       ctx.fillRect(0, 0, W, H);
+      const cx = W / 2, cy = H / 2, speed = 5;
 
-      const cx = W / 2, cy = H / 2;
-      const speed = 6;
-
-      // 星场穿梭
       stars.forEach(s => {
-        s.pz = s.z;
-        s.z -= speed;
+        s.pz = s.z; s.z -= speed;
         if (s.z <= 0) { s.x = Math.random() * W; s.y = Math.random() * H; s.z = W; s.pz = W; }
-
         const sx = (s.x - cx) * (W / s.z) + cx;
         const sy = (s.y - cy) * (W / s.z) + cy;
         const px = (s.x - cx) * (W / s.pz) + cx;
         const py = (s.y - cy) * (W / s.pz) + cy;
-        const size = Math.max(0.3, (1 - s.z / W) * 2.5);
         const bright = 1 - s.z / W;
-
-        ctx.beginPath();
-        ctx.moveTo(px, py);
-        ctx.lineTo(sx, sy);
-        ctx.strokeStyle = `rgba(${180 + Math.floor(bright * 75)},${200 + Math.floor(bright * 55)},255,${bright})`;
-        ctx.lineWidth = size;
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(sx, sy);
+        ctx.strokeStyle = `rgba(${180 + Math.floor(bright*75)},${200 + Math.floor(bright*55)},255,${bright})`;
+        ctx.lineWidth = Math.max(0.3, bright * 2); ctx.stroke();
       });
 
-      // 流星
       for (let i = meteors.length - 1; i >= 0; i--) {
         const m = meteors[i];
-        m.x += m.vx; m.y += m.vy; m.life -= 0.018;
-        if (m.life <= 0 || m.x > W + 200 || m.y > H + 200) { meteors.splice(i, 1); continue; }
-        const grad = ctx.createLinearGradient(m.x - m.vx * (m.len / 8), m.y - m.vy * (m.len / 8), m.x, m.y);
-        grad.addColorStop(0, `rgba(255,255,255,0)`);
-        grad.addColorStop(1, `rgba(200,230,255,${m.life * 0.9})`);
-        ctx.beginPath();
-        ctx.moveTo(m.x - m.vx * (m.len / 8), m.y - m.vy * (m.len / 8));
-        ctx.lineTo(m.x, m.y);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+        m.x += m.vx; m.y += m.vy; m.life -= 0.02;
+        if (m.life <= 0 || m.x > W + 200) { meteors.splice(i, 1); continue; }
+        const grad = ctx.createLinearGradient(m.x - m.vx * 10, m.y - m.vy * 10, m.x, m.y);
+        grad.addColorStop(0, "rgba(255,255,255,0)");
+        grad.addColorStop(1, `rgba(168,216,255,${m.life * 0.85})`);
+        ctx.beginPath(); ctx.moveTo(m.x - m.vx * 10, m.y - m.vy * 10); ctx.lineTo(m.x, m.y);
+        ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.stroke();
       }
 
-      // 星云光晕
-      if (frame % 2 === 0) {
-        const gx = cx + Math.sin(frame * 0.008) * 120;
-        const gy = cy + Math.cos(frame * 0.006) * 80;
-        const nebula = ctx.createRadialGradient(gx, gy, 0, gx, gy, 260);
-        nebula.addColorStop(0, "rgba(80,60,160,0.06)");
-        nebula.addColorStop(0.5, "rgba(40,80,180,0.03)");
+      if (frame % 3 === 0) {
+        const gx = cx + Math.sin(frame * 0.007) * 100;
+        const gy = cy + Math.cos(frame * 0.005) * 70;
+        const nebula = ctx.createRadialGradient(gx, gy, 0, gx, gy, 240);
+        nebula.addColorStop(0, "rgba(80,60,160,0.05)");
         nebula.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = nebula;
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = nebula; ctx.fillRect(0, 0, W, H);
       }
-
       frame++;
       requestAnimationFrame(draw);
     }
     draw();
+
+    window._stopLoadingParticles = () => {
+      running = false;
+      clearInterval(meteorTimer);
+    };
   }
 
   document.getElementById("welcomeCloseBtn").addEventListener("click", () => {
     welcomeModal.classList.remove("open");
   });
 
-  // ===== 1. 初始化数据层 =====
+  // ===== 1. Initialize Data Layer =====
   Store.init();
 
-  // 从 API 加载关注列表
-  Store.fetchFollowingFromApi().catch(() => {});
-
-  // ===== 2. 初始化各功能模块 =====
+  // ===== 2. Initialize Feature Modules =====
   UserModule.init();
   MessageModule.init();
 
-  // ===== 3. 缓存 DOM =====
+  // ===== 3. Cache DOM =====
   const homeView = document.getElementById("homeView");
   const detailView = document.getElementById("detailView");
   const messageView = document.getElementById("messageView");
@@ -142,13 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const commentInput = document.getElementById("commentInput");
   const submitCommentBtn = document.getElementById("submitCommentBtn");
 
-  // ===== 4. 全局状态 =====
+  // ===== 4. Global State =====
   window._curCategory = "all";
   window._curQuery = "";
   let currentPostId = null;
   let replyingTo = null;
 
-  // ===== 5. 视图路由 =====
+  // ===== 5. View Routing =====
 
   async function showHome() {
     homeView.classList.remove("hidden");
@@ -167,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     messageView.classList.remove("active");
     Render.renderDetailPost(detailPostBody, detailActions, post, openMessage);
 
-    // 获取评论者的用户信息（替换"匿名用户"为真实用户名）
+    // Get commenter user info (replace "Anonymous User" with real username)
     if (post.comments && post.comments.length > 0) {
       post.comments = await Store.enrichCommentsWithUserInfo(post.comments);
     }
@@ -184,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
     messageView.classList.add("active");
   }
 
-  // ===== 热搜榜 =====
+  // ===== Hot Search List =====
   function renderHotSearch() {
     const el = document.getElementById("hotSearchList");
     if (!el) return;
@@ -193,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .map(p => ({ id: p.id, text: p.content.slice(0, 22), heat: (p.likes || 0) * 3 + (p.comments ? p.comments.length : 0) * 5 }))
         .sort((a, b) => b.heat - a.heat)
         .slice(0, 10);
-    const heatLabels = ["沸", "热", "热", "热", "热"];
+    const heatLabels = ["Hot", "Trending", "Trending", "Trending", "Trending"];
     el.innerHTML = ranked.map((item, i) => `
       <div class="hot-item" data-id="${item.id}">
         <span class="hot-rank ${i === 0 ? "top1" : i === 1 ? "top2" : i === 2 ? "top3" : ""}">${i + 1}</span>
@@ -205,23 +215,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ===== 6. Feed 刷新（仅真实帖子，不自动轮询）=====
+  // ===== 6. Feed Refresh (Real Posts Only, No Auto Polling) =====
 
   async function refreshFeed() {
     let posts;
 
     if (window._curQuery) {
-      // 显示加载状态
-      feedContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;"><i class="fas fa-spinner fa-spin"></i> 搜索中...</div>';
+      // Show loading state
+      feedContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
       if (emptyFeedMsg) emptyFeedMsg.style.display = "none";
 
-      // 使用ES API搜索
+      // Use ES API to search
       posts = await Store.searchPostsWithES(window._curQuery, window._curCategory);
 
-      searchResultsBar.textContent = `搜索「${window._curQuery}」，找到 ${posts.length} 条结果`;
+      searchResultsBar.textContent = `Search "${window._curQuery}", found ${posts.length} results`;
       searchResultsBar.classList.add("visible");
     } else {
-      // 从 API 获取帖子
+      // Get posts from API
       await Store.fetchPostsFromApi();
       posts = Store.getFilteredPosts(window._curCategory, window._curQuery);
       searchResultsBar.classList.remove("visible");
@@ -232,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHotSearch();
   }
 
-  // ===== 7. 帖子卡片入场动画 =====
+  // ===== 7. Post Card Entry Animation =====
   function animateNewCards() {
     const cards = feedContainer.querySelectorAll(".post-card:not(.animated)");
     cards.forEach((card, i) => {
@@ -250,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ===== 8. 新帖子实时插入（仅真实用户发布触发）=====
+  // ===== 8. Real-time New Post Insertion (Triggered Only by Real User Posts) =====
   document.addEventListener("th:postAdded", e => {
     const post = e.detail;
     if (!post) { refreshFeed(); return; }
@@ -267,13 +277,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const isMe = post.authorId === Store.currentUser.id;
     card.innerHTML = `
       <div class="post-header">
-        <div class="avatar" style="cursor:pointer" data-author-id="${post.authorId}">${Render.escapeHtml(post.avatarLetter || "匿")}</div>
+        <div class="avatar" style="cursor:pointer" data-author-id="${post.authorId}">${Render.escapeHtml(post.avatarLetter || "Anon")}</div>
         <div class="post-meta" style="flex:1">
           <span class="post-author">${Render.escapeHtml(post.author)}</span>
-          <span class="post-time">刚刚</span>
+          <span class="post-time">Just now</span>
         </div>
-        ${!isMe ? `<button class="follow-btn-card" data-author-id="${post.authorId}" data-author="${Render.escapeHtml(post.author)}" data-avatar="${Render.escapeHtml(post.avatarLetter || "匿")}">
-          ${Store.isFollowing(post.authorId) ? '<i class="fas fa-check"></i> 已关注' : '<i class="fas fa-plus"></i> 关注'}
+        ${!isMe ? `<button class="follow-btn-card" data-author-id="${post.authorId}" data-author="${Render.escapeHtml(post.author)}" data-avatar="${Render.escapeHtml(post.avatarLetter || "Anon")}">
+          ${Store.isFollowing(post.authorId) ? '<i class="fas fa-check"></i> Following' : '<i class="fas fa-plus"></i> Follow'}
         </button>` : ""}
       </div>
       <div class="post-body">${Render.escapeHtml(post.content)}</div>
@@ -286,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <i class="far fa-comment"></i> 0
         </button>
         <button class="action-btn" data-action="collect" data-id="${post.id}">
-          <i class="far fa-bookmark"></i> 收藏
+          <i class="far fa-bookmark"></i> Collect
         </button>
       </div>`;
 
@@ -314,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHotSearch();
   });
 
-  // ===== 9. 评论回复 =====
+  // ===== 9. Comment Replies =====
 
   function onReply(comment) {
     replyingTo = comment;
@@ -326,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hint = document.getElementById("replyHint");
     if (!hint) return;
     if (replyingTo) {
-      hint.textContent = `回复 @${replyingTo.author}`;
+      hint.textContent = `Reply to @${replyingTo.author}`;
       hint.style.display = "inline-flex";
     } else {
       hint.style.display = "none";
@@ -355,9 +365,9 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         const err = await res.json();
         if (err.message === "NOT_LOGGED_IN") {
-          window.notify.show.show("请先登录后再评论", 'error');
+          window.notify.show.show("Please log in before commenting", 'error');
         } else {
-          window.notify.show.show("评论失败: " + (err.message || res.status), 'error');
+          window.notify.show.show("Comment failed: " + (err.message || res.status), 'error');
         }
       }
     } catch (e) {
@@ -370,7 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") { replyingTo = null; updateReplyHint(); }
   });
 
-  // ===== 10. 导航栏搜索 =====
+  // ===== 10. Navbar Search =====
   let searchTimer = null;
   document.getElementById("searchInput").addEventListener("input", e => {
     clearTimeout(searchTimer);
@@ -380,14 +390,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
   });
 
-  // 搜索按钮点击事件
+  // Search button click event
   document.getElementById("searchButton").addEventListener("click", async e => {
     e.preventDefault();
     window._curQuery = document.getElementById("searchInput").value.trim();
     await refreshFeed();
   });
 
-  // 搜索输入框回车事件
+  // Search input enter key event
   document.getElementById("searchInput").addEventListener("keypress", async e => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -396,7 +406,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ===== 11. 左侧分类筛选 =====
+  // ===== 11. Left Category Filter =====
   document.querySelectorAll(".sidebar-item[data-category]").forEach(item => {
     item.addEventListener("click", async () => {
       document.querySelectorAll(".sidebar-item[data-category]").forEach(i => i.classList.remove("active"));
@@ -406,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ===== 12. 通知栏点击 → 跳转收藏页对应 tab =====
+  // ===== 12. Notification Bar Click → Navigate to Favorites Tab =====
   document.getElementById("notifyRepliesBtn").addEventListener("click", () => {
     window.location.href = "favorites.html#comments";
   });
@@ -415,17 +425,17 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "favorites.html#messages";
   });
 
-  // ===== 我的关注 =====
+  // ===== My Following =====
   document.getElementById("myFollowingBtn").addEventListener("click", () => {
     window.location.href = "favorites.html#following";
   });
 
-  // ===== 我的收藏 =====
+  // ===== My Favorites =====
   document.getElementById("myFavoritesBtn").addEventListener("click", () => {
     window.location.href = "favorites.html";
   });
 
-  // ===== 关注按钮 & 作者气泡 =====
+  // ===== Follow Button & Author Popover =====
   window.bindFollowBtns = function (root) {
     (root || document).querySelectorAll(".follow-btn-card").forEach(btn => {
       btn.addEventListener("click", async e => {
@@ -433,15 +443,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const uid = btn.dataset.authorId;
         const following = await Store.toggleFollow(uid);
         btn.innerHTML = following
-            ? '<i class="fas fa-check"></i> 已关注'
-            : '<i class="fas fa-plus"></i> 关注';
+            ? '<i class="fas fa-check"></i> Following'
+            : '<i class="fas fa-plus"></i> Follow';
         btn.classList.toggle("following", following);
-        // 同步气泡内按钮
+        // Sync button in popover
         const card = btn.closest(".post-card");
         if (card) {
           const apBtn = card.querySelector(".ap-follow-btn");
           if (apBtn) {
-            apBtn.textContent = following ? "已关注" : "+ 关注";
+            apBtn.textContent = following ? "Following" : "+ Follow";
             apBtn.classList.toggle("following", following);
           }
         }
@@ -453,22 +463,22 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         const uid = btn.dataset.authorId;
         const following = await Store.toggleFollow(uid);
-        btn.textContent = following ? "已关注" : "+ 关注";
+        btn.textContent = following ? "Following" : "+ Follow";
         btn.classList.toggle("following", following);
         const card = btn.closest(".post-card");
         if (card) {
           const fbBtn = card.querySelector(".follow-btn-card");
           if (fbBtn) {
             fbBtn.innerHTML = following
-                ? '<i class="fas fa-check"></i> 已关注'
-                : '<i class="fas fa-plus"></i> 关注';
+                ? '<i class="fas fa-check"></i> Following'
+                : '<i class="fas fa-plus"></i> Follow';
             fbBtn.classList.toggle("following", following);
           }
         }
       });
     });
 
-    // 头像悬停气泡
+    // Avatar hover popover
     (root || document).querySelectorAll(".avatar-popover-wrap").forEach(wrap => {
       const avatar = wrap.querySelector(".avatar");
       const popover = wrap.querySelector(".author-popover");
@@ -486,9 +496,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   document.getElementById("backBtn").addEventListener("click", showHome);
 
-  // ===== 14. 跨模块事件监听 =====
+  // ===== 14. Cross-Module Event Listeners =====
 
-  // 检查从 publish.html 带回的新帖子
+  // Check for new posts brought back from publish.html
   const newPostRaw = sessionStorage.getItem("th_new_post");
   if (newPostRaw) {
     sessionStorage.removeItem("th_new_post");
@@ -500,7 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (e) { }
   }
 
-  // 检查从 favorites.html 带回的私信跳转
+  // Check for chat navigation brought back from favorites.html
   const openChatRaw = sessionStorage.getItem("th_open_chat");
   if (openChatRaw) {
     sessionStorage.removeItem("th_open_chat");
@@ -515,15 +525,15 @@ document.addEventListener("DOMContentLoaded", () => {
     else showHome();
   });
 
-  // 点击遮罩关闭欢迎弹窗
+  // Click overlay to close welcome modal
   welcomeModal.addEventListener("click", e => { if (e.target === welcomeModal) welcomeModal.classList.remove("open"); });
 
-  // ===== 15. 用户设置面板 =====
+  // ===== 15. User Settings Panel =====
   document.getElementById("userAvatarBtn").addEventListener("click", () => {
     window.location.href = "settings.html";
   }, true);
 
-  // ===== 16. 初始渲染 =====
+  // ===== 16. Initial Render =====
   (async function () {
     await refreshFeed();
     Render.updateNotifBadges();

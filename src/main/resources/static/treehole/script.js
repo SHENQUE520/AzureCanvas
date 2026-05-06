@@ -46,28 +46,28 @@
     }
     posts = [
       {
-        id: "p1", author: "匿名小树", avatarLetter: "匿",
+        id: "p1", author: "Anonymous Tree", avatarLetter: "A",
         timestamp: Date.now() - 3600000 * 5,
-        content: "有人知道图书馆三楼靠窗的座位现在需要预约吗？📚",
+        content: "Does anyone know if the window seats on the third floor of the library need to be reserved now? 📚",
         category: "question", images: [], likes: 12, liked: false, collected: false,
         comments: [
-          { id: "c1", author: "热心同学", text: "需要预约，上周就开始啦", timestamp: Date.now() - 800000 },
-          { id: "c2", author: "图书管理员", text: "是的，用校园卡app", timestamp: Date.now() - 400000 }
+          { id: "c1", author: "Helpful Classmate", text: "Yes, you need to reserve, it started last week", timestamp: Date.now() - 800000 },
+          { id: "c2", author: "Librarian", text: "Yes, use the campus card app", timestamp: Date.now() - 400000 }
         ]
       },
       {
-        id: "p2", author: "毕业倒计时", avatarLetter: "毕",
+        id: "p2", author: "Graduation Countdown", avatarLetter: "G",
         timestamp: Date.now() - 86400000,
-        content: "今天拍毕业照，把四年的记忆留在这里🎓 谢谢树洞。",
+        content: "Taking graduation photos today, keeping four years of memories here 🎓 Thanks, Treehole.",
         category: "emotion", images: [], likes: 45, liked: false, collected: true,
         comments: [
-          { id: "c3", author: "学妹", text: "学长学姐前程似锦！", timestamp: Date.now() - 4000000 }
+          { id: "c3", author: "Junior", text: "Wishing seniors a bright future!", timestamp: Date.now() - 4000000 }
         ]
       },
       {
-        id: "p3", author: "食堂观察员", avatarLetter: "食",
+        id: "p3", author: "Canteen Observer", avatarLetter: "C",
         timestamp: Date.now() - 7200000,
-        content: "二食堂新出的麻辣香锅绝了！🌶️ 但是排队有点长。",
+        content: "The new spicy hot pot at Canteen 2 is amazing! 🌶️ But the queue is a bit long.",
         category: "life", images: [], likes: 28, liked: true, collected: false,
         comments: []
       }
@@ -82,9 +82,9 @@
   // ===== 工具函数 =====
   function formatTime(ts) {
     const diff = Date.now() - ts;
-    if (diff < 60000) return "刚刚";
-    if (diff < 3600000) return Math.floor(diff / 60000) + "分钟前";
-    if (diff < 86400000) return Math.floor(diff / 3600000) + "小时前";
+    if (diff < 60000) return "Just now";
+    if (diff < 3600000) return Math.floor(diff / 60000) + "m ago";
+    if (diff < 86400000) return Math.floor(diff / 3600000) + "h ago";
     const d = new Date(ts);
     return `${d.getMonth() + 1}/${d.getDate()}`;
   }
@@ -112,7 +112,7 @@
     const filtered = getFilteredPosts();
 
     if (searchQuery) {
-      searchResultsBar.textContent = `搜索「${searchQuery}」，找到 ${filtered.length} 条结果`;
+      searchResultsBar.textContent = `Search "${searchQuery}", found ${filtered.length} results`;
       searchResultsBar.classList.add("visible");
     } else {
       searchResultsBar.classList.remove("visible");
@@ -132,7 +132,7 @@
       return `
         <div class="post-card" data-id="${post.id}">
           <div class="post-header">
-            <div class="avatar">${post.avatarLetter || "匿"}</div>
+            <div class="avatar">${post.avatarLetter || "A"}</div>
             <div class="post-meta">
               <span class="post-author">${escapeHtml(post.author)}</span>
               <span class="post-time">${formatTime(post.timestamp)}</span>
@@ -148,7 +148,7 @@
               <i class="far fa-comment"></i> ${post.comments ? post.comments.length : 0}
             </button>
             <button class="action-btn ${post.collected ? "collected" : ""}" data-action="collect" data-id="${post.id}">
-              <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "已收藏" : "收藏"}
+              <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "Collected" : "Collect"}
             </button>
           </div>
         </div>
@@ -189,7 +189,7 @@
 
     detailPostBody.innerHTML = `
       <div class="post-header">
-        <div class="avatar">${post.avatarLetter || "匿"}</div>
+        <div class="avatar">${post.avatarLetter || "A"}</div>
         <div class="post-meta">
           <span class="post-author">${escapeHtml(post.author)}</span>
           <span class="post-time">${formatTime(post.timestamp)}</span>
@@ -201,10 +201,10 @@
 
     detailActions.innerHTML = `
       <button class="action-btn ${post.liked ? "liked" : ""}" id="detailLikeBtn">
-        <i class="${post.liked ? "fas" : "far"} fa-heart"></i> ${post.likes || 0} 点赞
+        <i class="${post.liked ? "fas" : "far"} fa-heart"></i> ${post.likes || 0} Likes
       </button>
       <button class="action-btn ${post.collected ? "collected" : ""}" id="detailCollectBtn">
-        <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "已收藏" : "收藏"}
+        <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "Collected" : "Collect"}
       </button>
     `;
 
@@ -221,9 +221,9 @@
   }
 
   function renderComments(post) {
-    commentCountEl.textContent = `评论 (${post.comments ? post.comments.length : 0})`;
+    commentCountEl.textContent = `Comments (${post.comments ? post.comments.length : 0})`;
     if (!post.comments || post.comments.length === 0) {
-      commentsList.innerHTML = `<div class="empty-tip" style="padding:20px 0;">暂无评论，抢沙发</div>`;
+      commentsList.innerHTML = `<div class="empty-tip" style="padding:20px 0;">No comments yet, be the first!</div>`;
       return;
     }
     commentsList.innerHTML = post.comments.map(c => `
@@ -267,7 +267,7 @@
     if (!post.comments) post.comments = [];
     post.comments.push({
       id: "cmt_" + Date.now(),
-      author: "匿名用户",
+      author: "Anonymous User",
       text,
       timestamp: Date.now()
     });
@@ -292,11 +292,11 @@
 
   function publishPost() {
     const content = postTextInput.value.trim();
-    if (!content) { window.notify.show.show("内容不能为空", 'error'); return; }
+    if (!content) { window.notify.show.show("Content cannot be empty", 'error'); return; }
     posts.unshift({
       id: "post_" + Date.now(),
-      author: "树洞小枝",
-      avatarLetter: "新",
+      author: "Treehole Branch",
+      avatarLetter: "N",
       timestamp: Date.now(),
       content,
       category: postCategorySelect.value || "all",

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>发布树洞 · 校园</title>
+  <title>Publish Post · Campus</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,7 +32,7 @@
       min-height: 100vh;
     }
 
-    /* ===== 导航栏 ===== */
+    /* Navbar */
     .navbar {
       background: var(--bg);
       border-bottom: 1px solid var(--border);
@@ -68,19 +68,19 @@
     }
     .nav-back:hover { background: var(--hover-bg); }
 
-    /* ===== 主体布局（贴吧风格：左主右侧） ===== */
+    /* Main Layout (Forum Style: Left Main, Right Sidebar) */
     .publish-layout {
       max-width: 100%; padding: 28px 32px;
       display: grid; grid-template-columns: 1fr 320px; gap: 24px;
     }
 
-    /* ===== 左侧主编辑区 ===== */
+    /* Left Main Editor */
     .editor-panel {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); overflow: hidden;
     }
 
-    /* 顶部标题栏（贴吧风格） */
+    /* Top Title Bar (Forum Style) */
     .editor-topbar {
       background: var(--bg-inset); border-bottom: 1px solid var(--border);
       padding: 14px 20px; display: flex; align-items: center; gap: 12px;
@@ -91,7 +91,7 @@
     }
     .editor-topbar-title i { color: var(--text-muted); }
 
-    /* 分类选择行（贴吧风格标签） */
+    /* Category Selection Row (Forum Style Tags) */
     .category-bar {
       padding: 14px 20px; border-bottom: 1px solid var(--border-muted);
       display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
@@ -111,7 +111,7 @@
       background: var(--text); color: #fff; border-color: var(--text);
     }
 
-    /* 标题输入 */
+    /* Title Input */
     .title-input-wrap { padding: 16px 20px 0; }
     .title-input {
       width: 100%; padding: 10px 14px;
@@ -123,7 +123,7 @@
     .title-input:focus { background: var(--bg); border-color: #888; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
     .title-input::placeholder { color: var(--text-light); font-weight: 400; }
 
-    /* 工具栏（贴吧风格） */
+    /* Toolbar (Forum Style) */
     .toolbar {
       padding: 10px 20px; border-bottom: 1px solid var(--border-muted);
       display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
@@ -138,7 +138,7 @@
     .tb-btn:hover { background: var(--hover-bg); color: var(--text); border-color: var(--border); }
     .tb-sep { width: 1px; height: 20px; background: var(--border-muted); margin: 0 4px; }
 
-    /* 正文编辑区 */
+    /* Body Textarea */
     .body-textarea {
       width: 100%; min-height: 320px; padding: 16px 20px;
       border: none; outline: none; resize: none;
@@ -148,7 +148,7 @@
     }
     .body-textarea::placeholder { color: var(--text-light); }
 
-    /* 图片预览区 */
+    /* Image Preview Area */
     .image-preview-area {
       display: flex; flex-wrap: wrap; gap: 10px;
       padding: 12px 20px; min-height: 0;
@@ -166,7 +166,7 @@
       align-items: center; justify-content: center;
     }
 
-    /* 表情选择器 */
+    /* Emoji Picker */
     .emoji-picker {
       display: none; grid-template-columns: repeat(10, 1fr); gap: 4px;
       padding: 12px 20px; border-top: 1px solid var(--border-muted);
@@ -179,7 +179,7 @@
     }
     .emoji-picker span:hover { background: var(--hover-bg); }
 
-    /* 底部操作栏 */
+    /* Bottom Action Bar */
     .editor-footer {
       padding: 14px 20px; display: flex; align-items: center;
       justify-content: space-between; gap: 12px;
@@ -206,7 +206,7 @@
     .btn-primary:hover { background: #333; border-color: #333; }
     .btn-lg { padding: 10px 32px; font-size: 1rem; }
 
-    /* ===== 右侧栏 ===== */
+    /* Right Sidebar */
     .right-panel { display: flex; flex-direction: column; gap: 18px; }
 
     .panel-card {
@@ -221,7 +221,7 @@
     }
     .panel-card-body { padding: 14px 16px; }
 
-    /* 发布规则列表 */
+    /* Publishing Rules List */
     .rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
     .rule-list li {
       display: flex; align-items: flex-start; gap: 10px;
@@ -235,7 +235,7 @@
       flex-shrink: 0; margin-top: 1px;
     }
 
-    /* 热门话题 */
+    /* Trending Topics */
     .topic-list { display: flex; flex-direction: column; gap: 0; }
     .topic-item {
       display: flex; align-items: center; gap: 10px;
@@ -252,13 +252,13 @@
     .topic-name { flex: 1; font-size: 0.9rem; color: var(--text); }
     .topic-heat { font-size: 0.78rem; color: var(--text-light); }
 
-    /* 字数统计 */
+    /* Character Count */
     .char-count {
       font-size: 0.82rem; color: var(--text-light);
       text-align: right; padding: 6px 20px 0;
     }
 
-    /* 成功提示 */
+    /* Success Toast */
     .toast {
       display: none; position: fixed; bottom: 32px; left: 50%;
       transform: translateX(-50%);
@@ -282,74 +282,74 @@
 </head>
 <body>
 
-<!-- 导航栏 -->
+<!-- Navbar -->
 <nav class="navbar">
   <a class="nav-logo" href="index.html">
-    <i class="fas fa-tree"></i> 树洞
-    <span class="badge">校园版</span>
+    <i class="fas fa-tree"></i> Treehole
+    <span class="badge">Campus</span>
   </a>
   <div class="nav-breadcrumb">
     <span class="sep">/</span>
-    <span class="current">发布树洞</span>
+    <span class="current">Publish Post</span>
   </div>
   <a class="nav-back" href="index.html">
-    <i class="fas fa-arrow-left"></i> 返回广场
+    <i class="fas fa-arrow-left"></i> Back to Square
   </a>
 </nav>
 
-<!-- 主体 -->
+<!-- Main -->
 <div class="publish-layout">
 
-  <!-- 左侧编辑区 -->
+  <!-- Left Editor -->
   <div class="editor-panel">
 
-    <!-- 顶部标题栏 -->
+    <!-- Top Title Bar -->
     <div class="editor-topbar">
       <div class="editor-topbar-title">
-        <i class="far fa-edit"></i> 写树洞
+        <i class="far fa-edit"></i> Write Post
       </div>
     </div>
 
-    <!-- 分类选择 -->
+    <!-- Category Selection -->
     <div class="category-bar">
-      <span class="category-label">发布到：</span>
+      <span class="category-label">Publish to:</span>
       <div class="category-tags">
-        <div class="cat-tag active" data-cat="all">全部</div>
-        <div class="cat-tag" data-cat="study">📚 学习</div>
-        <div class="cat-tag" data-cat="life">☕ 生活</div>
-        <div class="cat-tag" data-cat="emotion">❤️ 情感</div>
-        <div class="cat-tag" data-cat="question">❓ 求助</div>
-        <div class="cat-tag" data-cat="share">🔗 分享</div>
+        <div class="cat-tag active" data-cat="all">All</div>
+        <div class="cat-tag" data-cat="study">📚 Study</div>
+        <div class="cat-tag" data-cat="life">☕ Life</div>
+        <div class="cat-tag" data-cat="emotion">❤️ Emotion</div>
+        <div class="cat-tag" data-cat="question">❓ Help</div>
+        <div class="cat-tag" data-cat="share">🔗 Share</div>
       </div>
     </div>
 
-    <!-- 标题 -->
+    <!-- Title -->
     <div class="title-input-wrap">
-      <input type="text" class="title-input" id="postTitle" placeholder="填写标题，让更多人看到（选填）" maxlength="60">
+      <input type="text" class="title-input" id="postTitle" placeholder="Add a title to reach more people (optional)" maxlength="60">
     </div>
 
-    <!-- 工具栏 -->
+    <!-- Toolbar -->
     <div class="toolbar">
-      <label class="tb-btn" for="imageUploadInput" title="插入图片">
-        <i class="far fa-image"></i> 图片
+      <label class="tb-btn" for="imageUploadInput" title="Insert Image">
+        <i class="far fa-image"></i> Image
       </label>
       <input type="file" id="imageUploadInput" accept="image/*" multiple style="display:none">
-      <button class="tb-btn" id="emojiToggleBtn" type="button" title="表情">
-        <i class="far fa-smile"></i> 表情
+      <button class="tb-btn" id="emojiToggleBtn" type="button" title="Emoji">
+        <i class="far fa-smile"></i> Emoji
       </button>
       <div class="tb-sep"></div>
-      <button class="tb-btn" type="button" onclick="insertText('**', '**')" title="加粗">
+      <button class="tb-btn" type="button" onclick="insertText('**', '**')" title="Bold">
         <i class="fas fa-bold"></i>
       </button>
-      <button class="tb-btn" type="button" onclick="insertText('_', '_')" title="斜体">
+      <button class="tb-btn" type="button" onclick="insertText('_', '_')" title="Italic">
         <i class="fas fa-italic"></i>
       </button>
-      <button class="tb-btn" type="button" onclick="insertText('\n> ', '')" title="引用">
+      <button class="tb-btn" type="button" onclick="insertText('\n> ', '')" title="Quote">
         <i class="fas fa-quote-left"></i>
       </button>
     </div>
 
-    <!-- 表情选择器 -->
+    <!-- Emoji Picker -->
     <div class="emoji-picker" id="emojiPicker">
       <span>😊</span><span>😂</span><span>🥺</span><span>😎</span><span>😍</span>
       <span>😭</span><span>🤔</span><span>👍</span><span>❤️</span><span>🔥</span>
@@ -357,93 +357,93 @@
       <span>✨</span><span>😅</span><span>🙏</span><span>💪</span><span>🎉</span>
     </div>
 
-    <!-- 正文 -->
+    <!-- Body -->
     <textarea class="body-textarea" id="postTextInput"
-      placeholder="说点什么… 分享你的故事&#10;&#10;支持换行，尽情倾诉"></textarea>
+      placeholder="What's on your mind? Share your story&#10;&#10;Supports line breaks, express freely"></textarea>
     <div class="char-count"><span id="charCount">0</span> / 2000</div>
 
-    <!-- 图片预览 -->
+    <!-- Image Preview -->
     <div class="image-preview-area" id="imagePreviewContainer"></div>
 
-    <!-- 底部操作 -->
+    <!-- Bottom Actions -->
     <div class="editor-footer">
       <div class="footer-left">
       </div>
       <div class="footer-right">
-        <a class="btn" href="index.html">取消</a>
+        <a class="btn" href="index.html">Cancel</a>
         <button class="btn btn-primary btn-lg" id="submitPostBtn">
-          <i class="fas fa-paper-plane"></i> 发布树洞
+          <i class="fas fa-paper-plane"></i> Publish Post
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 右侧栏 -->
+  <!-- Right Sidebar -->
   <div class="right-panel">
 
-    <!-- 发布规则 -->
+    <!-- Publishing Rules -->
     <div class="panel-card">
-      <div class="panel-card-title"><i class="fas fa-shield-alt"></i> 发布规范</div>
+      <div class="panel-card-title"><i class="fas fa-shield-alt"></i> Publishing Guidelines</div>
       <div class="panel-card-body">
         <ul class="rule-list">
-          <li><span class="rule-num">1</span>内容真实，请勿发布虚假信息</li>
-          <li><span class="rule-num">2</span>禁止发布违法、歧视或骚扰内容</li>
-          <li><span class="rule-num">3</span>学术讨论请注明来源，尊重版权</li>
-          <li><span class="rule-num">4</span>情感倾诉请保护他人隐私</li>
-          <li><span class="rule-num">5</span>违规内容将被删除，账号可能被封禁</li>
+          <li><span class="rule-num">1</span>Content must be authentic, no false information</li>
+          <li><span class="rule-num">2</span>No illegal, discriminatory, or harassing content</li>
+          <li><span class="rule-num">3</span>Academic discussions should cite sources, respect copyright</li>
+          <li><span class="rule-num">4</span>Protect others' privacy when sharing personal stories</li>
+          <li><span class="rule-num">5</span>Violating content will be removed, accounts may be banned</li>
         </ul>
       </div>
     </div>
 
-    <!-- 热门话题 -->
+    <!-- Trending Topics -->
     <div class="panel-card">
-      <div class="panel-card-title"><i class="fas fa-fire"></i> 热门话题</div>
+      <div class="panel-card-title"><i class="fas fa-fire"></i> Trending Topics</div>
       <div class="panel-card-body" style="padding: 0 16px;">
         <div class="topic-list">
-          <div class="topic-item" onclick="insertTopic('#期末复习#')">
+          <div class="topic-item" onclick="insertTopic('#FinalsPrep#')">
             <span class="topic-rank top">1</span>
-            <span class="topic-name">#期末复习#</span>
-            <span class="topic-heat">2.4k 讨论</span>
+            <span class="topic-name">#FinalsPrep#</span>
+            <span class="topic-heat">2.4k discussions</span>
           </div>
-          <div class="topic-item" onclick="insertTopic('#图书馆占座#')">
+          <div class="topic-item" onclick="insertTopic('#LibrarySeatHogging#')">
             <span class="topic-rank top">2</span>
-            <span class="topic-name">#图书馆占座#</span>
-            <span class="topic-heat">1.8k 讨论</span>
+            <span class="topic-name">#LibrarySeatHogging#</span>
+            <span class="topic-heat">1.8k discussions</span>
           </div>
-          <div class="topic-item" onclick="insertTopic('#食堂新菜#')">
+          <div class="topic-item" onclick="insertTopic('#CafeteriaNewDishes#')">
             <span class="topic-rank top">3</span>
-            <span class="topic-name">#食堂新菜#</span>
-            <span class="topic-heat">1.2k 讨论</span>
+            <span class="topic-name">#CafeteriaNewDishes#</span>
+            <span class="topic-heat">1.2k discussions</span>
           </div>
-          <div class="topic-item" onclick="insertTopic('#校园恋爱#')">
+          <div class="topic-item" onclick="insertTopic('#CampusRomance#')">
             <span class="topic-rank">4</span>
-            <span class="topic-name">#校园恋爱#</span>
-            <span class="topic-heat">980 讨论</span>
+            <span class="topic-name">#CampusRomance#</span>
+            <span class="topic-heat">980 discussions</span>
           </div>
-          <div class="topic-item" onclick="insertTopic('#毕业季#')">
+          <div class="topic-item" onclick="insertTopic('#GraduationSeason#')">
             <span class="topic-rank">5</span>
-            <span class="topic-name">#毕业季#</span>
-            <span class="topic-heat">760 讨论</span>
+            <span class="topic-name">#GraduationSeason#</span>
+            <span class="topic-heat">760 discussions</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 快速提示 -->
+    <!-- Quick Tips -->
     <div class="panel-card">
-      <div class="panel-card-title"><i class="fas fa-lightbulb"></i> 小贴士</div>
+      <div class="panel-card-title"><i class="fas fa-lightbulb"></i> Tips</div>
       <div class="panel-card-body" style="font-size:0.9rem; color:var(--text-muted); line-height:1.7;">
-        点击热门话题可快速插入标签<br>
-        图片最多上传 9 张<br>
-        标题选填，正文必填
+        Click trending topics to quickly insert tags<br>
+        Upload up to 9 images<br>
+        Title is optional, body is required
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- 成功提示 -->
-<div class="toast" id="toast">发布成功！正在跳转…</div>
+<!-- Success Toast -->
+<div class="toast" id="toast">Published successfully! Redirecting…</div>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="../js/frameworks/tailwind.js"></script>
 <script src="store.js"></script>
@@ -466,14 +466,14 @@
   const emojiPicker = document.getElementById("emojiPicker");
   const emojiToggleBtn = document.getElementById("emojiToggleBtn");
 
-  // 字数统计
+  // Character count
   textarea.addEventListener("input", () => {
     const len = textarea.value.length;
     charCount.textContent = len;
     if (len > 2000) textarea.value = textarea.value.slice(0, 2000);
   });
 
-  // 分类标签切换
+  // Category tag toggle
   document.querySelectorAll(".cat-tag").forEach(tag => {
     tag.addEventListener("click", () => {
       document.querySelectorAll(".cat-tag").forEach(t => t.classList.remove("active"));
@@ -482,7 +482,7 @@
     });
   });
 
-  // 图片上传
+  // Image upload
   imageInput.addEventListener("change", e => {
     Array.from(e.target.files).forEach(file => {
       if (selectedImages.length >= 9) return;
@@ -512,7 +512,7 @@
     renderPreviews();
   };
 
-  // 表情切换
+  // Emoji toggle
   emojiToggleBtn.addEventListener("click", () => {
     emojiPicker.classList.toggle("open");
   });
@@ -529,12 +529,12 @@
     });
   });
 
-  // 插入文本工具
+  // Insert text utility
   window.insertText = function(before, after) {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const val = textarea.value;
-    const selected = val.slice(start, end) || "文字";
+    const selected = val.slice(start, end) || "Text";
     textarea.value = val.slice(0, start) + before + selected + after + val.slice(end);
     textarea.focus();
     textarea.selectionStart = start + before.length;
@@ -542,7 +542,7 @@
     charCount.textContent = textarea.value.length;
   };
 
-  // 插入话题标签
+  // Insert topic tag
   window.insertTopic = function(topic) {
     const pos = textarea.selectionStart;
     const val = textarea.value;
@@ -552,22 +552,22 @@
     charCount.textContent = textarea.value.length;
   };
 
-  // 辅助函数：延迟
+  // Helper: delay
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // 提交
+  // Submit
   document.getElementById("submitPostBtn").addEventListener("click", async () => {
     const title = document.getElementById("postTitle").value.trim();
     const content = textarea.value.trim();
 
     if (!content) {
-      window.notify.show.show("正文不能为空", 'error');
+      window.notify.show.show("Content cannot be empty", 'error');
       return;
     }
 
     const submitBtn = document.getElementById("submitPostBtn");
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
 
     try {
       let imageUuids = [];
@@ -581,7 +581,7 @@
             'X-XSRF-TOKEN': window.getCsrfToken()
           }
         });
-        if (!uploadRes.ok) throw new Error("图片上传失败");
+        if (!uploadRes.ok) throw new Error("Image upload failed");
         imageUuids = await uploadRes.json();
       }
 
@@ -600,7 +600,7 @@
         })
       });
 
-      if (!postRes.ok) throw new Error("帖子发布失败");
+      if (!postRes.ok) throw new Error("Post publishing failed");
       const savedPost = await postRes.json();
 
       // 2. 如果有图片，关联图片
@@ -619,9 +619,9 @@
         });
 
         if (!bindRes.ok) {
-          console.warn("图片关联失败，但帖子已发布");
+          console.warn("Image binding failed, but post was published");
         } else {
-          // 关联成功，手动补充图片列表供首页展示
+          // Binding successful, manually supplement image list for homepage display
           savedPost.imagesList = imageUuids.map(uuid => `/resources/${uuid}`);
         }
       }
@@ -629,7 +629,7 @@
       const toast = document.getElementById("toast");
       toast.classList.add("show");
       
-      // 保存到 sessionStorage 供首页刷新显示（可选）
+      // Save to sessionStorage for homepage refresh display (optional)
       sessionStorage.setItem("th_new_post", JSON.stringify(savedPost));
 
       setTimeout(() => { window.location.href = "index.html"; }, 1200);
@@ -638,7 +638,7 @@
       window.notify.show.show(err.message, 'error');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布树洞';
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Post';
     }
   });
 </script>

@@ -1,63 +1,63 @@
 /**
- * render.js — 渲染层
- * 负责将数据渲染为 HTML，通过 window.Render 暴露
- * 依赖：store.js（Store）
+ * render.js — Rendering Layer
+ * Responsible for rendering data as HTML, exposed via window.Render
+ * Dependencies: store.js (Store)
  */
 window.Render = (function () {
 
-  // ===== 工具函数 =====
+  // ===== Utility Functions =====
 
-  /** 相对时间格式化 */
+  /** Relative time formatting */
   function formatTime(ts) {
     const diff = Date.now() - ts;
-    if (diff < 60000) return "刚刚";
-    if (diff < 3600000) return Math.floor(diff / 60000) + "分钟前";
-    if (diff < 86400000) return Math.floor(diff / 3600000) + "小时前";
+    if (diff < 60000) return "Just now";
+    if (diff < 3600000) return Math.floor(diff / 60000) + "m ago";
+    if (diff < 86400000) return Math.floor(diff / 3600000) + "h ago";
     const d = new Date(ts);
     return `${d.getMonth() + 1}/${d.getDate()}`;
   }
 
-  /** HTML 转义，防止 XSS */
+  /** HTML escaping to prevent XSS */
   function escapeHtml(text) {
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
   }
 
-  /** 渲染用户头像：有 avatarUrl 则用图片，否则粉紫渐变+首字母 */
+  /** Render user avatar: use image if avatarUrl exists, otherwise pink-purple gradient + first letter */
   function renderAvatar(avatarUrl, avatarLetter, extraClass, userId) {
-    const letter = avatarLetter || "匿";
+    const letter = avatarLetter || "Anon";
     const cls = extraClass ? " " + extraClass : "";
     const userIdAttr = userId ? ` data-user-id="${userId}"` : "";
     const escapedLetter = escapeHtml(letter);
     
-    // 统一头像占位图逻辑：使用单引号属性以防在 onerror 中注入时导致 HTML 解析崩溃
+    // Unified avatar placeholder logic: use single-quote attributes to prevent HTML parsing crashes when injecting via onerror
     const fallbackHtml = `<div class='avatar avatar-gradient${cls}'${userIdAttr.replace(/"/g, "'")}>${escapedLetter}</div>`;
 
     if (avatarUrl) {
-      // 确保 URL 完整
+      // Ensure URL is complete
       let fullUrl = avatarUrl;
       if (!avatarUrl.startsWith('http') && !avatarUrl.startsWith('/')) {
         fullUrl = '/resources/' + avatarUrl;
       }
-      // 使用双引号包裹属性，内部使用转义后的单引号 fallbackHtml
+      // Use double quotes for attributes, internally use escaped single-quote fallbackHtml
       return `<img src="${fullUrl}" alt="" class="avatar-img${cls}"${userIdAttr} onerror="this.onerror=null; this.outerHTML='${fallbackHtml.replace(/'/g, "\\'")}'">`;
     }
     return fallbackHtml;
   }
 
-  /** 高亮关键字 */
+  /** Highlight keywords */
   function highlightKeyword(text, keyword) {
     if (!keyword || !text) return escapeHtml(text);
-    // 检查text是否已经包含后端返回的高亮标签
+    // Check if text already contains backend-highlighted tags
     if (text.includes('<em>')) {
-      return text; // 已经包含高亮标签，直接返回
+      return text; // Already contains highlight tags, return as is
     }
-    // 检查text是否已经包含前端高亮标签
+    // Check if text already contains frontend highlight tags
     if (text.includes('<span class="text-red-500 font-bold">')) {
-      return text; // 已经包含高亮标签，直接返回
+      return text; // Already contains highlight tags, return as is
     }
-    // 将关键词分解为单个字符，分别标红
+    // Split keywords into individual characters and highlight each
     var chars = keyword.split('');
     var result = escapeHtml(text);
     chars.forEach(function (char) {
@@ -69,14 +69,14 @@ window.Render = (function () {
     return result;
   }
 
-  // ===== 帖子流渲染 =====
+  // ===== Post Feed Rendering =====
 
   /**
-   * 渲染主页帖子流
-   * @param {HTMLElement} container - 帖子容器
-   * @param {HTMLElement} emptyEl - 空状态提示元素
-   * @param {Array} posts - 帖子数组
-   * @param {Function} onCardClick - 点击卡片回调(postId)
+   * Render homepage post feed
+   * @param {HTMLElement} container - Post container
+   * @param {HTMLElement} emptyEl - Empty state prompt element
+   * @param {Array} posts - Post array
+   * @param {Function} onCardClick - Click card callback (postId)
    */
   function renderFeed(container, emptyEl, posts, onCardClick) {
     if (!posts || posts.length === 0) {
@@ -95,8 +95,8 @@ window.Render = (function () {
       const following = Store.isFollowing(post.authorId);
       const followBtn = isMe ? "" : `
         <button class="follow-btn-card ${following ? "following" : ""}" data-author-id="${post.authorId}"
-          data-author="${escapeHtml(post.author)}" data-avatar="${escapeHtml(post.avatarLetter || "匿")}">
-          ${following ? '<i class="fas fa-check"></i> 已关注' : '<i class="fas fa-plus"></i> 关注'}
+          data-author="${escapeHtml(post.author)}" data-avatar="${escapeHtml(post.avatarLetter || "Anon")}">
+          ${following ? '<i class="fas fa-check"></i> Following' : '<i class="fas fa-plus"></i> Follow'}
         </button>`;
       const userPosts = Store.posts.filter(p => p.authorId === post.authorId).length;
       return `
@@ -107,9 +107,9 @@ window.Render = (function () {
               <div class="author-popover">
                 ${renderAvatar(post.avatarUrl, post.avatarLetter, "ap-avatar", post.authorId)}
                 <div class="ap-name">${escapeHtml(post.author)}</div>
-                <div class="ap-meta">${userPosts} 条帖子</div>
+                <div class="ap-meta">${userPosts} posts</div>
                 ${!isMe ? `<button class="ap-follow-btn ${following ? "following" : ""}" data-author-id="${post.authorId}">
-                  ${following ? "已关注" : "+ 关注"}
+                  ${following ? "Following" : "+ Follow"}
                 </button>` : ""}
               </div>
             </div>
@@ -129,7 +129,7 @@ window.Render = (function () {
               <i class="far fa-comment"></i> ${commentCount}
             </button>
             <button class="action-btn ${post.collected ? "collected" : ""}" data-action="collect" data-id="${post.id}">
-              <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "已收藏" : "收藏"}
+              <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "Collected" : "Collect"}
             </button>
           </div>
         </div>`;
@@ -149,18 +149,18 @@ window.Render = (function () {
       });
     });
 
-    // 关注按钮 & 气泡由 main.js bindFollowBtns 处理
+    // Follow button & popover handled by main.js bindFollowBtns
     if (window.bindFollowBtns) window.bindFollowBtns(container);
   }
 
-  // ===== 详情页渲染 =====
+  // ===== Detail Page Rendering =====
 
   /**
-   * 渲染帖子详情（帖子主体部分）
-   * @param {HTMLElement} bodyEl - 帖子主体容器
-   * @param {HTMLElement} actionsEl - 操作栏容器
-   * @param {Object} post - 帖子对象
-   * @param {Function} onFollowClick - 关注/私信按钮回调
+   * Render post detail (post body section)
+   * @param {HTMLElement} bodyEl - Post body container
+   * @param {HTMLElement} actionsEl - Action bar container
+   * @param {Object} post - Post object
+   * @param {Function} onFollowClick - Follow/message button callback
    */
   function renderDetailPost(bodyEl, actionsEl, post, onFollowClick) {
     const images = post.imagesList || post.images || [];
@@ -171,18 +171,18 @@ window.Render = (function () {
     const isMe = post.authorId === Store.currentUser.id;
     const following = Store.isFollowing(post.authorId);
 
-    // 关注/私信按钮（自己的帖子不显示）
+    // Follow/message buttons (not shown on own posts)
     const followBtn = isMe ? "" : following
-        ? `<button class="btn btn-sm" id="detailMsgBtn" data-author-id="${post.authorId}" data-author="${escapeHtml(post.author)}" data-avatar="${escapeHtml(post.avatarLetter || "匿")}">
-           <i class="far fa-comment-dots"></i> 私信
+        ? `<button class="btn btn-sm" id="detailMsgBtn" data-author-id="${post.authorId}" data-author="${escapeHtml(post.author)}" data-avatar="${escapeHtml(post.avatarLetter || "Anon")}">
+           <i class="far fa-comment-dots"></i> Message
          </button>`
         : `<button class="btn btn-sm" id="detailFollowBtn" data-author-id="${post.authorId}">
-           <i class="fas fa-plus"></i> 关注
+           <i class="fas fa-plus"></i> Follow
          </button>`;
 
     bodyEl.innerHTML = `
       <div class="post-header">
-        <div id="detailAvatar" data-user-id="${post.authorId}" style="cursor:pointer" title="点击跳转资料页">
+        <div id="detailAvatar" data-user-id="${post.authorId}" style="cursor:pointer" title="Click to go to profile page">
           ${renderAvatar(post.avatarUrl, post.avatarLetter, "detail-avatar", post.authorId)}
         </div>
         <div class="post-meta" style="flex:1">
@@ -197,14 +197,14 @@ window.Render = (function () {
 
     actionsEl.innerHTML = `
       <button class="action-btn ${post.liked ? "liked" : ""}" id="detailLikeBtn">
-        <i class="${post.liked ? "fas" : "far"} fa-heart"></i> ${post.likes || 0} 点赞
+        <i class="${post.liked ? "fas" : "far"} fa-heart"></i> ${post.likes || 0} Likes
       </button>
       <button class="action-btn ${post.collected ? "collected" : ""}" id="detailCollectBtn">
-        <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "已收藏" : "收藏"}
+        <i class="${post.collected ? "fas" : "far"} fa-bookmark"></i> ${post.collected ? "Collected" : "Collect"}
       </button>
     `;
 
-    // 绑定点赞/收藏
+    // Bind like/collect
     document.getElementById("detailLikeBtn").addEventListener("click", () => {
       Store.toggleLike(post.id);
       renderDetailPost(bodyEl, actionsEl, Store.getPost(post.id), onFollowClick);
@@ -214,7 +214,7 @@ window.Render = (function () {
       renderDetailPost(bodyEl, actionsEl, Store.getPost(post.id), onFollowClick);
     });
 
-    // 绑定关注按钮
+    // Bind follow button
     const followBtnEl = document.getElementById("detailFollowBtn");
     if (followBtnEl) {
       followBtnEl.addEventListener("click", () => {
@@ -224,7 +224,7 @@ window.Render = (function () {
       });
     }
 
-    // 绑定私信按钮
+    // Bind message button
     const msgBtnEl = document.getElementById("detailMsgBtn");
     if (msgBtnEl) {
       msgBtnEl.addEventListener("click", () => {
@@ -232,11 +232,11 @@ window.Render = (function () {
       });
     }
 
-    // 点击头像跳转资料页
+    // Click avatar to navigate to profile page
     const avatarEl = document.getElementById("detailAvatar");
     if (avatarEl) {
       avatarEl.style.cursor = 'pointer';
-      // 移除旧事件监听器并添加新的
+      // Remove old event listener and add new one
       const newAvatarEl = avatarEl.cloneNode(true);
       avatarEl.parentNode.replaceChild(newAvatarEl, avatarEl);
       
@@ -254,7 +254,7 @@ window.Render = (function () {
     }
   }
 
-  // ===== 评论渲染 =====
+  // ===== Comment Rendering =====
 
   function countComments(comments) {
     if (!comments || comments.length === 0) return 0;
@@ -268,18 +268,18 @@ window.Render = (function () {
 
   function renderCommentNode(c, depth, onReply) {
     const replyTag = c.parentId
-        ? `<span class="reply-tag">回复 #${c.parentId}</span> `
+        ? `<span class="reply-tag">Reply to #${c.parentId}</span> `
         : "";
-    const authorName = c.authorName || c.author || "匿名用户";
+    const authorName = c.authorName || c.author || "Anonymous User";
     
-    // 处理头像：如果存在 avatar (UUID)，转换为 /resources/{uuid}
+    // Process avatar: if avatar (UUID) exists, convert to /resources/{uuid}
     let avatarUrl = c.avatarUrl || null;
     if (c.avatar && !avatarUrl) {
       avatarUrl = '/resources/' + c.avatar;
     }
     
-    const avatarLetter = c.avatarLetter || (authorName ? authorName.substring(0, 1) : "匿");
-    // 获取评论者的用户 UUID（支持多种字段名）
+    const avatarLetter = c.avatarLetter || (authorName ? authorName.substring(0, 1) : "Anon");
+    // Get commenter user UUID (supports multiple field names)
     const userId = c.authorId || c.userId || c.userUuid || null;
     const time = c.createdAt
         ? formatTime(new Date(c.createdAt).getTime())
@@ -294,7 +294,7 @@ window.Render = (function () {
           ${renderAvatar(avatarUrl, avatarLetter, "comment-avatar", userId)}
           <span class="comment-author">${escapeHtml(authorName)}</span>
           <span class="comment-time">${time}</span>
-          <button class="reply-btn" data-cmt-id="${c.id}">回复</button>
+          <button class="reply-btn" data-cmt-id="${c.id}">Reply</button>
         </div>
         <div class="comment-text">${replyTag}${escapeHtml(text)}</div>
         ${children}
@@ -302,22 +302,22 @@ window.Render = (function () {
   }
 
   /**
-   * 渲染评论列表（支持多级嵌套）
-   * @param {HTMLElement} listEl - 评论列表容器
-   * @param {HTMLElement} countEl - 评论数标题元素
-   * @param {Object} post - 帖子对象
-   * @param {Function} onReply - 回复回调(comment)
+   * Render comment list (supports multi-level nesting)
+   * @param {HTMLElement} listEl - Comment list container
+   * @param {HTMLElement} countEl - Comment count title element
+   * @param {Object} post - Post object
+   * @param {Function} onReply - Reply callback (comment)
    */
   function renderComments(listEl, countEl, post, onReply) {
     const totalCount = countComments(post.comments);
-    if (countEl) countEl.textContent = `评论 (${totalCount})`;
+    if (countEl) countEl.textContent = `Comments (${totalCount})`;
     if (!post.comments || post.comments.length === 0) {
-      listEl.innerHTML = `<div class="empty-tip" style="padding:16px 0;">暂无评论，抢沙发</div>`;
+      listEl.innerHTML = `<div class="empty-tip" style="padding:16px 0;">No comments yet, be the first</div>`;
       return;
     }
     listEl.innerHTML = post.comments.map(c => renderCommentNode(c, 0, onReply)).join("");
 
-    // 绑定回复按钮事件
+    // Bind reply button events
     listEl.querySelectorAll(".reply-btn").forEach(btn => {
       btn.addEventListener("click", e => {
         e.stopPropagation();
@@ -336,66 +336,66 @@ window.Render = (function () {
       });
     });
 
-    // 绑定评论区头像点击事件（实现跳转功能）
+    // Bind comment avatar click events (for navigation)
     bindCommentAvatarClickEvents(listEl);
   }
 
   /**
-   * 绑定评论区头像的点击事件
-   * 点击他人头像 → 跳转到 seller-profile.html?id=user_uuid
-   * 点击自己头像 → 跳转到 profile.html
+   * Bind click events on comment avatars
+   * Click other's avatar → navigate to seller-profile.html?id=user_uuid
+   * Click own avatar → navigate to profile.html
    */
   function bindCommentAvatarClickEvents(container) {
-    // 查找所有评论头像元素（包括 div.avatar 和 img.avatar-img）
+    // Find all comment avatar elements (including div.avatar and img.avatar-img)
     const avatarDivs = container.querySelectorAll('div.comment-avatar[data-user-id]');
     const avatarImgs = container.querySelectorAll('img.comment-avatar[data-user-id]');
     const allAvatars = [...avatarDivs, ...avatarImgs];
 
     if (allAvatars.length === 0) {
-      console.log('[DEBUG] 未找到评论头像元素，跳过事件绑定');
+      console.log('[DEBUG] No comment avatar elements found, skipping event binding');
       return;
     }
 
-    console.log(`[DEBUG] 找到 ${allAvatars.length} 个评论头像，开始绑定点击事件`);
+    console.log(`[DEBUG] Found ${allAvatars.length} comment avatars, starting to bind click events`);
 
     allAvatars.forEach(avatar => {
-      // 添加鼠标样式
+      // Add cursor style
       avatar.style.cursor = 'pointer';
 
-      // 移除旧事件监听器（通过克隆节点方式）
+      // Remove old event listeners (via node cloning)
       const newAvatar = avatar.cloneNode(true);
       avatar.parentNode.replaceChild(newAvatar, avatar);
 
-      // 添加新的点击事件
+      // Add new click event
       newAvatar.addEventListener('click', function(e) {
         e.stopPropagation();
 
         const clickedUserId = this.dataset.userId;
 
         if (!clickedUserId) {
-          console.warn('[DEBUG] 头像缺少 data-user-id 属性');
+          console.warn('[DEBUG] Avatar missing data-user-id attribute');
           return;
         }
 
-        // 统一获取当前用户 UUID
+        // Unified current user UUID retrieval
         const currentUserId = Store.currentUser && (Store.currentUser.uuid || Store.currentUser.id || Store.currentUser.userId);
-        console.log(`[DEBUG] 点击头像，用户ID: ${clickedUserId}, 当前用户ID: ${currentUserId}`);
+        console.log(`[DEBUG] Clicked avatar, user ID: ${clickedUserId}, current user ID: ${currentUserId}`);
 
-        // 判断是否是自己的头像
+        // Check if it's own avatar
         if (clickedUserId === String(currentUserId)) {
-          console.log('[DEBUG] 点击自己头像，跳转到 profile.html');
+          console.log('[DEBUG] Clicked own avatar, navigating to profile.html');
           window.location.href = '../azure_trade/profile.html';
         } else {
-          console.log(`[DEBUG] 点击他人头像，跳转到 seller-profile.html?id=${clickedUserId}`);
+          console.log(`[DEBUG] Clicked other avatar, navigating to seller-profile.html?id=${clickedUserId}`);
           window.location.href = '../azure_trade/seller-profile.html?id=' + encodeURIComponent(clickedUserId);
         }
       });
     });
 
-    console.log('[DEBUG] 评论头像点击事件绑定完成');
+    console.log('[DEBUG] Comment avatar click event binding completed');
   }
 
-  // ===== 通知徽章更新 =====
+  // ===== Notification Badge Updates =====
 
   function setBadge(el, count) {
     if (!el) return;
@@ -404,12 +404,12 @@ window.Render = (function () {
     el.textContent = count > 99 ? "…" : count;
   }
 
-  /** 更新左侧栏通知徽章数字 */
+  /** Update left sidebar notification badge numbers */
   function updateNotifBadges() {
     const replyCount = Store.unreadCount("reply");
     setBadge(document.getElementById("replyBadge"), replyCount);
 
-    // 私信：有对方最后发言的会话数
+    // Messages: number of conversations where the other party last spoke
     const myId = Store.currentUser.id;
     const msgCount = Object.values(Store.messages).filter(t => {
       const msgs = t.messages;
@@ -417,11 +417,11 @@ window.Render = (function () {
     }).length;
     setBadge(document.getElementById("msgBadge"), msgCount);
 
-    // 收藏：已收藏帖子数
+    // Collections: number of collected posts
     const collectCount = Store.getCollectedPosts().length;
     setBadge(document.getElementById("collectBadge"), collectCount);
   }
 
-  // ===== 公开 API =====
+  // ===== Public API =====
   return { formatTime, escapeHtml, renderAvatar, renderFeed, renderDetailPost, renderComments, updateNotifBadges, bindCommentAvatarClickEvents };
 })();

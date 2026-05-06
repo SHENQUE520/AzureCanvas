@@ -1,37 +1,37 @@
 /**
- * message.js — 私信模块
- * 私聊页面、快捷回复、表情包发送
- * 参考抖音私信界面：自己消息靠右，对方消息靠左
- * 通过 window.MessageModule 暴露
- * 依赖：store.js（Store）、render.js（Render）
+ * message.js — Private Message Module
+ * Chat page, quick replies, emoji sending
+ * Reference Douyin chat interface: own messages on the right, other's messages on the left
+ * Exposed via window.MessageModule
+ * Dependencies: store.js (Store), render.js (Render)
  */
 window.MessageModule = (function () {
 
-  // 当前私聊对象
+  // Current chat target
   let chatTarget = null; // { id, nickname, avatarLetter }
 
-  // 快捷回复预设（日常用语）
+  // Quick reply presets (daily expressions)
   const QUICK_REPLIES = [
-    "好的👍", "收到！", "哈哈哈", "在吗？",
-    "谢谢你", "辛苦了", "加油！", "晚点回复你"
+    "OK👍", "Got it!", "Hahaha", "Are you there?",
+    "Thank you", "Thanks for your hard work", "Go for it!", "Reply you later"
   ];
 
-  // 自定义快捷回复（从 localStorage 读取）
+  // Custom quick replies (read from localStorage)
   let customReplies = [];
 
-  // 表情包列表（文字表情包）
+  // Emoji sticker list (text emojis)
   const EMOJI_STICKERS = [
     "😂", "🥺", "😭", "🤣", "😍", "🙃", "😤", "🥳",
     "👀", "💀", "🫡", "🤡", "😴", "🤯", "🫶", "✌️",
     "🐶", "🐱", "🐸", "🦆", "🐼", "🦊", "🐧", "🦁"
   ];
 
-  // 自动回复设置
+  // Auto reply settings
   let autoReplyEnabled = false;
-  let autoReplyText = "你好！我现在不在，稍后回复你 😊";
+  let autoReplyText = "Hi! I'm not available right now, will reply to you later 😊";
 
   function init() {
-    // 加载自定义快捷回复
+    // Load custom quick replies
     try { customReplies = JSON.parse(localStorage.getItem("th_custom_replies")) || []; }
     catch (e) { customReplies = []; }
     try {
@@ -40,39 +40,39 @@ window.MessageModule = (function () {
       autoReplyText = ar.text || autoReplyText;
     } catch(e) {}
 
-    // 发送按钮
+    // Send button
     document.getElementById("msgSendBtn").addEventListener("click", sendMsg);
 
-    // 输入框回车发送
+    // Input enter key to send
     document.getElementById("msgInput").addEventListener("keydown", e => {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
     });
 
-    // 快捷回复面板切换
+    // Quick reply panel toggle
     document.getElementById("msgQuickBtn").addEventListener("click", e => {
       e.stopPropagation();
       document.getElementById("quickReplyPanel").classList.toggle("open");
       document.getElementById("msgEmojiPanel").classList.remove("open");
     });
 
-    // 表情包面板切换
+    // Emoji panel toggle
     document.getElementById("msgEmojiBtn").addEventListener("click", e => {
       e.stopPropagation();
       document.getElementById("msgEmojiPanel").classList.toggle("open");
       document.getElementById("quickReplyPanel").classList.remove("open");
     });
 
-    // 返回按钮
+    // Back button
     document.getElementById("msgBackBtn").addEventListener("click", () => {
       document.dispatchEvent(new CustomEvent("th:closeMessage"));
     });
 
-    // 渲染表情包面板
+    // Render emoji panel
     renderEmojiPanel();
   }
 
   /**
-   * 打开与某用户的私聊
+   * Open a private chat with a user
    * @param {string} userId
    * @param {string} nickname
    * @param {string} avatarLetter
@@ -80,16 +80,16 @@ window.MessageModule = (function () {
   function openChat(userId, nickname, avatarLetter) {
     chatTarget = { id: userId, nickname, avatarLetter };
     document.getElementById("msgTargetName").textContent = nickname;
-    document.getElementById("msgTargetAvatar").textContent = avatarLetter || "匿";
+    document.getElementById("msgTargetAvatar").textContent = avatarLetter || "Anon";
     renderChat();
     renderQuickReplies();
-    // 显示私信视图
+    // Show message view
     document.getElementById("messageView").classList.add("active");
     document.getElementById("homeView").classList.add("hidden");
     document.getElementById("detailView").classList.remove("active");
   }
 
-  /** 发送消息 */
+  /** Send message */
   function sendMsg(text, type) {
     if (!chatTarget) return;
     const input = document.getElementById("msgInput");
@@ -100,16 +100,16 @@ window.MessageModule = (function () {
     renderChat();
     document.getElementById("quickReplyPanel").classList.remove("open");
     document.getElementById("msgEmojiPanel").classList.remove("open");
-    // 自动回复
+    // Auto reply
     if (autoReplyEnabled && autoReplyText) {
       setTimeout(() => {
-        Store.sendMessage(chatTarget.id, chatTarget.nickname, chatTarget.avatarLetter, "[自动回复] " + autoReplyText, "text");
+        Store.sendMessage(chatTarget.id, chatTarget.nickname, chatTarget.avatarLetter, "[Auto Reply] " + autoReplyText, "text");
         renderChat();
       }, 800);
     }
   }
 
-  /** 渲染聊天气泡 */
+  /** Render chat bubbles */
   function renderChat() {
     if (!chatTarget) return;
     const thread = Store.getThread(chatTarget.id);
@@ -118,14 +118,14 @@ window.MessageModule = (function () {
     const myId = Store.currentUser.id;
 
     if (msgs.length === 0) {
-      listEl.innerHTML = `<div class="msg-empty">发送第一条消息吧 👋</div>`;
+      listEl.innerHTML = `<div class="msg-empty">Send the first message 👋</div>`;
     } else {
       listEl.innerHTML = msgs.map(m => {
         const isMine = m.from === myId;
         const bubbleClass = isMine ? "bubble-mine" : "bubble-theirs";
         const avatarText = isMine
-          ? Render.escapeHtml(Store.currentUser.avatarLetter || "我")
-          : Render.escapeHtml(chatTarget.avatarLetter || "匿");
+          ? Render.escapeHtml(Store.currentUser.avatarLetter || "Me")
+          : Render.escapeHtml(chatTarget.avatarLetter || "Anon");
         const timeStr = Render.formatTime(m.timestamp);
         return `
           <div class="msg-row ${isMine ? "msg-row-mine" : "msg-row-theirs"}">
@@ -139,30 +139,30 @@ window.MessageModule = (function () {
       }).join("");
     }
 
-    // 滚动到底部
+    // Scroll to bottom
     listEl.scrollTop = listEl.scrollHeight;
   }
 
-  /** 渲染快捷回复面板 */
+  /** Render quick reply panel */
   function renderQuickReplies() {
     const panel = document.getElementById("quickReplyPanel");
     const allReplies = [...QUICK_REPLIES, ...customReplies];
     panel.innerHTML = `
-      <div class="quick-reply-title">快捷回复</div>
+      <div class="quick-reply-title">Quick Replies</div>
       <div class="quick-reply-list">
         ${allReplies.map(r => `<button class="quick-reply-item">${Render.escapeHtml(r)}</button>`).join("")}
       </div>
       <div class="quick-reply-add">
-        <input type="text" id="customReplyInput" placeholder="添加自定义快捷回复…" maxlength="20">
-        <button class="btn btn-sm" id="addCustomReplyBtn">添加</button>
+        <input type="text" id="customReplyInput" placeholder="Add custom quick reply…" maxlength="20">
+        <button class="btn btn-sm" id="addCustomReplyBtn">Add</button>
       </div>
       <div class="auto-reply-bar">
-        <span class="auto-reply-label">自动回复</span>
+        <span class="auto-reply-label">Auto Reply</span>
         <label class="toggle-switch">
           <input type="checkbox" id="autoReplyToggle" ${autoReplyEnabled ? "checked" : ""}>
           <span class="toggle-slider"></span>
         </label>
-        <input class="auto-reply-input" id="autoReplyInput" type="text" value="${Render.escapeHtml(autoReplyText)}" placeholder="自动回复内容…" maxlength="40">
+        <input class="auto-reply-input" id="autoReplyInput" type="text" value="${Render.escapeHtml(autoReplyText)}" placeholder="Auto reply content…" maxlength="40">
       </div>
     `;
     document.getElementById("addCustomReplyBtn").addEventListener("click", () => {
@@ -187,11 +187,11 @@ window.MessageModule = (function () {
     });
   }
 
-  /** 渲染表情包面板 */
+  /** Render emoji panel */
   function renderEmojiPanel() {
     const panel = document.getElementById("msgEmojiPanel");
     panel.innerHTML = `
-      <div class="quick-reply-title">表情包</div>
+      <div class="quick-reply-title">Emoji Stickers</div>
       <div class="emoji-sticker-grid">
         ${EMOJI_STICKERS.map(e => `<span class="emoji-sticker">${e}</span>`).join("")}
       </div>

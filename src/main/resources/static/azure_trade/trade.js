@@ -70,7 +70,7 @@ async function fetchItemsFromApi(page, category, search) {
         if (category) params.set('category', category);
         if (search) params.set('search', search);
         
-        var response = await fetch('/api/market/items?' + params.toString(), {
+        var response = await fetch('https://api.szsummer.com/api/market/items?' + params.toString(), {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' }
@@ -306,7 +306,7 @@ function renderCards(list) {
 async function searchItemsES(keyword, page, limit) {
     try {
         var params = new URLSearchParams({ keyword: keyword, page: page || 1, limit: limit || 20 });
-        var response = await fetch('/api/market/search/es?' + params.toString(), {
+        var response = await fetch('https://api.szsummer.com/api/market/search/es?' + params.toString(), {
             method: 'GET',
             credentials: 'include'
         });
@@ -697,7 +697,7 @@ updateDropdownCounts();
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('/api/users/me', {
+        const response = await fetch('https://api.szsummer.com/api/users/me', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
@@ -807,7 +807,7 @@ const associateImagesWithRetry = async (itemId, imageUuids, maxRetries = 3, inte
                 await sleep(interval);
             }
             
-            const res = await fetch(`/api/market/item/${itemId}/images`, {
+            const res = await fetch(`https://api.szsummer.com/api/market/item/${itemId}/images`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -887,7 +887,7 @@ const submit_logic = function () {
                 const imageData = new FormData();
                 selectedImageFiles.forEach(f => imageData.append('files', f));
 
-                const uploadRes = await fetch('/api/v1/images/upload', {
+                const uploadRes = await fetch('https://api.szsummer.com/api/v1/images/upload', {
                     method: 'POST',
                     body: imageData
                 });
@@ -900,7 +900,7 @@ const submit_logic = function () {
             }
 
             // 2. 创建商品
-            const itemRes = await fetch('/api/market/items', {
+            const itemRes = await fetch('https://api.szsummer.com/api/market/items', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -980,7 +980,7 @@ const submit_logic = function () {
  */
 async function favoriteItem(itemId) {
     try {
-        var response = await fetch('/api/market/items/favorite?itemId=' + encodeURIComponent(itemId), {
+        var response = await fetch('https://api.szsummer.com/api/market/items/favorite?itemId=' + encodeURIComponent(itemId), {
             method: 'POST',
             credentials: 'include'
         });
@@ -997,7 +997,7 @@ async function favoriteItem(itemId) {
  */
 async function getFavoriteItems() {
     try {
-        var response = await fetch('/api/market/items/favorites', {
+        var response = await fetch('https://api.szsummer.com/api/market/items/favorites', {
             method: 'GET',
             credentials: 'include'
         });
@@ -1015,7 +1015,7 @@ async function getFavoriteItems() {
  */
 async function getCategories() {
     try {
-        var response = await fetch('/api/market/categories', {
+        var response = await fetch('https://api.szsummer.com/api/market/categories', {
             method: 'GET',
             credentials: 'include'
         });
@@ -1036,7 +1036,7 @@ async function getCategories() {
  */
 async function contactSeller(sellerId, message, itemId) {
     try {
-        var response = await fetch('/api/market/' + encodeURIComponent(sellerId) + '/contact', {
+        var response = await fetch('https://api.szsummer.com/api/market/' + encodeURIComponent(sellerId) + '/contact', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -1057,7 +1057,7 @@ async function contactSeller(sellerId, message, itemId) {
  */
 async function deleteItem(itemId) {
     try {
-        var response = await fetch('/api/market/items/' + encodeURIComponent(itemId), {
+        var response = await fetch('https://api.szsummer.com/api/market/items/' + encodeURIComponent(itemId), {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -1081,7 +1081,7 @@ async function getMyItems(status, page, limit) {
         if (status) params.set('status', status);
         if (page) params.set('page', page);
         if (limit) params.set('limit', limit);
-        var response = await fetch('/api/market/users/me/items?' + params.toString(), {
+        var response = await fetch('https://api.szsummer.com/api/market/users/me/items?' + params.toString(), {
             method: 'GET',
             credentials: 'include'
         });

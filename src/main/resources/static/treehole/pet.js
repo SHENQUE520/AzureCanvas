@@ -1,8 +1,8 @@
-// pet.js — 树洞宠物 3D 模块（Three.js r128）
+// pet.js — Treehole Pet 3D Module (Three.js r128)
 (function () {
   'use strict';
 
-  // ===== 状态 =====
+  // ===== State =====
   const STATE_KEY = 'th_pet_state';
   function loadState() {
     try { return JSON.parse(localStorage.getItem(STATE_KEY) || 'null'); } catch { return null; }
@@ -11,7 +11,7 @@
     localStorage.setItem(STATE_KEY, JSON.stringify(petState));
   }
 
-  const DEFAULT_STATE = { type: 'cat', name: '小橘', hunger: 80, mood: 80, sleeping: false, lastSave: Date.now() };
+  const DEFAULT_STATE = { type: 'cat', name: 'Little Orange', hunger: 80, mood: 80, sleeping: false, lastSave: Date.now() };
   let petState = Object.assign({}, DEFAULT_STATE, loadState() || {});
 
   // decay since last visit
@@ -325,8 +325,8 @@
     moodIconEl.textContent  = moodEmoji(petState.mood);
     hungerIconEl.textContent = hungerEmoji(petState.hunger);
     sleepBtn.innerHTML = petState.sleeping
-      ? '<i class="fas fa-sun"></i> 唤醒'
-      : '<i class="fas fa-moon"></i> 休息';
+      ? '<i class="fas fa-sun"></i> Wake Up'
+      : '<i class="fas fa-moon"></i> Rest';
   }
   updateUI();
 
@@ -347,55 +347,55 @@
 
   // ===== Pet responses =====
   const CAT_REPLIES = [
-    '喵~ 你今天过得怎么样？', '喵喵！我刚才在晒太阳~', '呼噜呼噜…好舒服',
-    '喵？你在说什么呀', '我想吃小鱼干！', '陪我玩嘛~', '喵！今天天气真好',
-    '我刚才梦到了一只蝴蝶', '你摸摸我嘛~', '喵呜~ 我有点困了'
+    'Meow~ How was your day?', 'Meow meow! I was sunbathing~', 'Purr purr… so comfortable',
+    'Meow? What are you saying?', 'I want dried fish!', 'Play with me~', 'Meow! The weather is so nice today',
+    'I just dreamed about a butterfly', 'Pet me~', 'Meow~ I\'m a bit sleepy'
   ];
   const DOG_REPLIES = [
-    '汪！你回来啦！', '汪汪！我好开心！', '我想出去玩！', '汪~ 你今天怎么样？',
-    '我刚才追了一只松鼠！', '汪汪汪！陪我玩！', '我想吃骨头！',
-    '你是最棒的主人！', '汪！我爱你！', '我刚才睡了一觉，好舒服~'
+    'Woof! You\'re back!', 'Woof woof! I\'m so happy!', 'I want to go out and play!', 'Woof~ How was your day?',
+    'I just chased a squirrel!', 'Woof woof woof! Play with me!', 'I want bones!',
+    'You\'re the best owner!', 'Woof! I love you!', 'I just took a nap, so comfortable~'
   ];
 
   function petReply(userMsg) {
     const replies = petState.type === 'cat' ? CAT_REPLIES : DOG_REPLIES;
     const lower = userMsg.toLowerCase();
-    if (lower.includes('饿') || lower.includes('吃')) {
-      return petState.type === 'cat' ? '喵！我也饿了，快给我吃的！' : '汪！我也想吃东西！';
+    if (lower.includes('hungry') || lower.includes('eat') || lower.includes('饿') || lower.includes('吃') || lower.includes('food') || lower.includes('feed')) {
+      return petState.type === 'cat' ? 'Meow! I\'m hungry too, feed me!' : 'Woof! I want to eat too!';
     }
-    if (lower.includes('玩') || lower.includes('游戏')) {
-      return petState.type === 'cat' ? '喵~ 我们来玩毛线球吧！' : '汪汪！我最喜欢玩了！';
+    if (lower.includes('play') || lower.includes('game') || lower.includes('玩') || lower.includes('游戏') || lower.includes('fun')) {
+      return petState.type === 'cat' ? 'Meow~ Let\'s play with yarn!' : 'Woof woof! I love playing!';
     }
-    if (lower.includes('睡') || lower.includes('困')) {
-      return petState.type === 'cat' ? '呼噜呼噜…我也想睡觉~' : '汪~ 我也有点困了';
+    if (lower.includes('sleep') || lower.includes('tired') || lower.includes('睡') || lower.includes('困') || lower.includes('rest')) {
+      return petState.type === 'cat' ? 'Purr purr… I want to sleep too~' : 'Woof~ I\'m a bit sleepy too';
     }
-    if (lower.includes('爱') || lower.includes('喜欢')) {
-      return petState.type === 'cat' ? '喵呜~ 我也喜欢你！' : '汪汪！我最爱你了！';
+    if (lower.includes('love') || lower.includes('like') || lower.includes('爱') || lower.includes('喜欢') || lower.includes('cute')) {
+      return petState.type === 'cat' ? 'Meow~ I like you too!' : 'Woof woof! I love you the most!';
     }
-    if (lower.includes('难过') || lower.includes('伤心') || lower.includes('烦')) {
-      return petState.type === 'cat' ? '喵~ 别难过，我陪着你呢' : '汪！我来陪你！别伤心！';
+    if (lower.includes('sad') || lower.includes('upset') || lower.includes('难过') || lower.includes('伤心') || lower.includes('烦') || lower.includes('cry')) {
+      return petState.type === 'cat' ? 'Meow~ Don\'t be sad, I\'m here with you' : 'Woof! I\'m here to keep you company! Don\'t be sad!';
     }
     return replies[Math.floor(Math.random() * replies.length)];
   }
 
   // ===== Action buttons =====
   feedBtn.addEventListener('click', () => {
-    if (petState.sleeping) { showSpeech('Zzz…正在睡觉，别打扰~'); return; }
+    if (petState.sleeping) { showSpeech('Zzz… Sleeping, don\'t disturb~'); return; }
     petState.hunger = Math.min(100, petState.hunger + 25);
     petState.mood   = Math.min(100, petState.mood + 5);
     petAnim = 'eat'; animTimer = 2.5;
-    const msg = petState.type === 'cat' ? '喵！好好吃！谢谢主人~' : '汪！骨头！我最爱了！';
+    const msg = petState.type === 'cat' ? 'Meow! So delicious! Thank you~' : 'Woof! Bones! My favorite!';
     showSpeech(msg);
     addChatMsg('pet', msg);
     updateUI(); saveState();
   });
 
   playBtn.addEventListener('click', () => {
-    if (petState.sleeping) { showSpeech('Zzz…正在睡觉，别打扰~'); return; }
+    if (petState.sleeping) { showSpeech('Zzz… Sleeping, don\'t disturb~'); return; }
     petState.mood   = Math.min(100, petState.mood + 20);
     petState.hunger = Math.max(0, petState.hunger - 8);
     petAnim = 'happy'; animTimer = 3;
-    const msg = petState.type === 'cat' ? '喵！好开心！再玩一会儿~' : '汪汪！太好玩了！';
+    const msg = petState.type === 'cat' ? 'Meow! So happy! Let\'s play more~' : 'Woof woof! So much fun!';
     showSpeech(msg);
     addChatMsg('pet', msg);
     updateUI(); saveState();
@@ -405,11 +405,11 @@
     petState.sleeping = !petState.sleeping;
     if (petState.sleeping) {
       petAnim = 'idle';
-      showSpeech('Zzz…晚安~');
-      addChatMsg('pet', 'Zzz…晚安~');
+      showSpeech('Zzz… Good night~');
+      addChatMsg('pet', 'Zzz… Good night~');
     } else {
       petAnim = 'happy'; animTimer = 2;
-      const msg = petState.type === 'cat' ? '喵！睡醒了，精神好多了~' : '汪！睡好了！我们去玩吧！';
+      const msg = petState.type === 'cat' ? 'Meow! Woke up, feeling great~' : 'Woof! Slept well! Let\'s go play!';
       showSpeech(msg);
       addChatMsg('pet', msg);
     }
@@ -420,24 +420,24 @@
   catBtn.addEventListener('click', () => {
     if (petState.type === 'cat') return;
     petState.type = 'cat';
-    petState.name = '小橘';
+    petState.name = 'Little Orange';
     catBtn.classList.add('active');
     dogBtn.classList.remove('active');
     spawnPet();
-    showSpeech('喵！我是小橘，请多关照~');
-    addChatMsg('pet', '喵！我是小橘，请多关照~');
+    showSpeech('Meow! I\'m Little Orange, nice to meet you~');
+    addChatMsg('pet', 'Meow! I\'m Little Orange, nice to meet you~');
     updateUI(); saveState();
   });
 
   dogBtn.addEventListener('click', () => {
     if (petState.type === 'dog') return;
     petState.type = 'dog';
-    petState.name = '小黄';
+    petState.name = 'Little Yellow';
     dogBtn.classList.add('active');
     catBtn.classList.remove('active');
     spawnPet();
-    showSpeech('汪！我是小黄，我们做朋友吧！');
-    addChatMsg('pet', '汪！我是小黄，我们做朋友吧！');
+    showSpeech('Woof! I\'m Little Yellow, let\'s be friends!');
+    addChatMsg('pet', 'Woof! I\'m Little Yellow, let\'s be friends!');
     updateUI(); saveState();
   });
 
@@ -476,15 +476,15 @@
     // random idle speech
     if (!petState.sleeping && Math.random() < 0.15) {
       const idle = petState.type === 'cat'
-        ? ['喵~', '呼噜呼噜…', '喵？', '我想晒太阳~']
-        : ['汪！', '汪汪~', '汪？', '我想出去玩！'];
+        ? ['Meow~', 'Purr purr…', 'Meow?', 'I want to sunbathe~']
+        : ['Woof!', 'Woof woof~', 'Woof?', 'I want to go out and play!'];
       showSpeech(idle[Math.floor(Math.random() * idle.length)]);
     }
   }, 30000);
 
   // initial greeting
   setTimeout(() => {
-    const greet = petState.type === 'cat' ? `喵！${petState.name}在这里~` : `汪！${petState.name}来啦！`;
+    const greet = petState.type === 'cat' ? `Meow! ${petState.name} is here~` : `Woof! ${petState.name} is here!`;
     showSpeech(greet);
     addChatMsg('pet', greet);
   }, 800);

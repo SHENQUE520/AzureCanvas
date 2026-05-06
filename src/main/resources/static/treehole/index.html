@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AZURECANVAS-树洞</title>
+  <title>AZURECANVAS-Treehole</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,248 +12,327 @@
 <body>
 
   <!-- ===== 进入动画 ===== -->
-  <div id="splashScreen" class="splash-screen">
-    <canvas id="galaxyCanvas"></canvas>
-    <div class="splash-content">
-      <div class="splash-title">MUST 树洞</div>
-      <div class="splash-sub">AzureCanvas</div>
-      <div class="splash-dots"><span></span><span></span><span></span></div>
+  <div id="loadingScreen" class="loading-screen">
+    <canvas id="loadingCanvas"></canvas>
+    <div class="loading-content">
+      <div class="loading-logo">
+        <i class="fas fa-tree"></i>
+      </div>
+      <div class="loading-title">MUST Treehole</div>
+      <div class="loading-sub">AzureCanvas</div>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar" id="loadingBar"></div>
+      </div>
+      <div class="loading-status" id="loadingStatus">Loading…</div>
+      <div class="loading-welcome" id="loadingWelcome">Welcome back 🌳</div>
     </div>
   </div>
 
-  <!-- ===== 欢迎弹窗 ===== -->
+  <!-- ===== 欢迎弹窗（首次访问）===== -->
   <div id="welcomeModal" class="modal-overlay">
     <div class="welcome-card">
       <div class="welcome-tree">🌳</div>
-      <h2 class="welcome-title">欢迎回到 MUST 树洞</h2>
-      <p class="welcome-sub">在这里，你可以分享一切心声</p>
-      <button class="btn btn-primary welcome-btn" id="welcomeCloseBtn">进入树洞</button>
+      <h2 class="welcome-title">Welcome back to MUST Treehole</h2>
+      <p class="welcome-sub">Here, you can anonymously share all your thoughts</p>
+      <button class="btn btn-primary welcome-btn" id="welcomeCloseBtn">Enter Treehole</button>
     </div>
   </div>
 
   <!-- ===== 导航栏 ===== -->
   <nav class="navbar">
     <div class="nav-logo">
-      <i class="fas fa-tree"></i> Azurecanvas-树洞
-      <span class="badge">MUST</span>
-    </div>
+        <i class="fas fa-tree"></i> Azurecanvas-Treehole
+        <span class="badge">MUST</span>
+      </div>
 
-    <!-- 搜索栏（居中） -->
-    <div class="nav-search-center">
-      <theme-button value="light" id="btn" size="3"></theme-button>
-      <div class="nav-search">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" placeholder="搜索帖子内容或作者…" autocomplete="off">
-        <button class="search-button" id="searchButton">
-          <i class="fas fa-search"></i>
+      <!-- Search Bar (Centered) -->
+      <div class="nav-search-center">
+        <theme-button value="light" id="btn" size="3"></theme-button>
+        <div class="nav-search">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search posts or authors…" autocomplete="off">
+          <button class="search-button" id="searchButton">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Publish Button → Go to Publish Page -->
+        <button class="btn btn-primary" id="newPostBtn" onclick="window.location.href='publish.html'">
+          <i class="fas fa-plus"></i> Publish
         </button>
+        <!-- Top-right User Avatar -->
+        <div class="user-badge-wrap">
+          <button class="user-avatar-btn" id="userAvatarBtn" title="My Settings">Me</button>
+        </div>
       </div>
-    </div>
-
-    <div class="nav-actions">
-      <!-- 发布按钮 → 跳转发布页 -->
-      <button class="btn btn-primary" id="newPostBtn" onclick="window.location.href='publish.html'">
-        <i class="fas fa-plus"></i> 发布
-      </button>
-      <!-- 右上角用户头像 -->
-      <div class="user-badge-wrap">
-        <button class="user-avatar-btn" id="userAvatarBtn" title="我的设置">我</button>
-      </div>
-    </div>
   </nav>
 
   <!-- ===== 主布局 ===== -->
   <div class="app-layout">
 
-    <!-- 左侧分类栏 -->
+    <!-- Left Sidebar -->
     <aside class="left-sidebar">
-      <!-- 内容分类 -->
+      <!-- Content Categories -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">分类</div>
+        <div class="sidebar-section-title">Categories</div>
         <div class="sidebar-item active" data-category="all">
-          <i class="fas fa-home"></i> 全部
+          <i class="fas fa-home"></i> All
         </div>
         <div class="sidebar-item" data-category="study">
-          <i class="fas fa-book"></i> 学习
+          <i class="fas fa-book"></i> Study
         </div>
         <div class="sidebar-item" data-category="life">
-          <i class="fas fa-coffee"></i> 生活
+          <i class="fas fa-coffee"></i> Life
         </div>
         <div class="sidebar-item" data-category="emotion">
-          <i class="fas fa-heart"></i> 情感
+          <i class="fas fa-heart"></i> Emotion
         </div>
         <div class="sidebar-item" data-category="question">
-          <i class="fas fa-question-circle"></i> 求助
+          <i class="fas fa-question-circle"></i> Help
         </div>
         <div class="sidebar-item" data-category="share">
-          <i class="fas fa-share-alt"></i> 分享
+          <i class="fas fa-share-alt"></i> Share
         </div>
       </div>
 
-      <!-- 消息通知 -->
+      <!-- Notifications -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">消息</div>
+        <div class="sidebar-section-title">Messages</div>
         <div class="sidebar-item" id="notifyRepliesBtn">
-          <i class="fas fa-comment-dots"></i> 评论回复
+          <i class="fas fa-comment-dots"></i> Replies
           <span class="sidebar-badge red-badge" id="replyBadge" style="display:none">0</span>
         </div>
         <div class="sidebar-item" id="notifyMsgBtn">
-          <i class="fas fa-envelope"></i> 私信消息
+          <i class="fas fa-envelope"></i> Messages
           <span class="sidebar-badge red-badge" id="msgBadge" style="display:none">0</span>
         </div>
         <div class="sidebar-item" id="myFollowingBtn">
-          <i class="fas fa-user-check"></i> 我的关注
+          <i class="fas fa-user-check"></i> Following
         </div>
         <div class="sidebar-item" id="myFavoritesBtn">
-          <i class="fas fa-bookmark"></i> 我的收藏
+          <i class="fas fa-bookmark"></i> Favorites
           <span class="sidebar-badge red-badge" id="collectBadge" style="display:none">0</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Changelog</div>
+        <div class="sidebar-item" style="flex-direction:column;align-items:flex-start;gap:2px;cursor:default">
+          <div style="font-size:0.72rem;color:var(--text-light)">2026-05-04 · v1.5.0</div>
+          <div style="font-size:0.88rem">Added clubs, practice, and pet features</div>
+        </div>
+        <div class="sidebar-item" style="flex-direction:column;align-items:flex-start;gap:2px;cursor:default">
+          <div style="font-size:0.72rem;color:var(--text-light)">2026-04-20 · v1.4.5</div>
+          <div style="font-size:0.88rem">Improved loading speed &amp; fixed messages</div>
+        </div>
+        <div class="sidebar-item" style="flex-direction:column;align-items:flex-start;gap:2px;cursor:default">
+          <div style="font-size:0.72rem;color:var(--text-light)">2026-04-01 · v1.4.2</div>
+          <div style="font-size:0.88rem">Database update &amp; Bug fixes</div>
+        </div>
+        <div class="sidebar-item" style="flex-direction:column;align-items:flex-start;gap:2px;cursor:default;border-bottom:none">
+          <div style="font-size:0.72rem;color:var(--text-light)">2026-03-15 · v1.4.0</div>
+          <div style="font-size:0.88rem">Added low-quality comment hiding option</div>
         </div>
       </div>
     </aside>
 
-    <!-- 主内容区 -->
+    <!-- Main Content -->
     <main class="main-content">
 
-      <!-- 搜索结果提示条 -->
+      <!-- Search Results Bar -->
       <div class="search-results-bar" id="searchResultsBar"></div>
 
-      <!-- ===== 主页视图 ===== -->
+      <!-- Home View -->
       <div id="homeView">
-        <!-- GitHub 风格 home 输入栏 -->
-        <div class="home-input-bar" id="homeInputBar" onclick="window.location.href='publish.html'"
-          style="cursor:pointer">
-          <div class="avatar-sm"><i class="fas fa-user"></i></div>
-          <span class="home-input-placeholder">有什么想说的？分享你的故事…</span>
+        <div class="home-input-bar" id="homeInputBar" onclick="window.location.href='publish.html'" style="cursor:pointer">
+          <div class="avatar-sm" id="homeAvatarSm"><i class="fas fa-user"></i></div>
+          <span class="home-input-placeholder">What's on your mind? Share anonymously…</span>
           <button class="btn btn-sm agent-btn" onclick="event.stopPropagation();window.location.href='agent.html'">
             <i class="fas fa-robot"></i> Agent
           </button>
-          <button class="btn btn-sm" onclick="event.stopPropagation();window.location.href='publish.html'">发布</button>
+          <button class="btn btn-sm" onclick="event.stopPropagation();window.location.href='publish.html'">Publish</button>
         </div>
 
-        <div class="feed-header">
-          <i class="fas fa-circle" style="font-size:0.45rem; color:#aaa; margin-right:4px;"></i>
-          实时涌动
+        <!-- Treehole Square -->
+        <div class="home-section-card" id="feedSectionCard">
+          <div class="home-section-header">
+            <span class="home-section-title"><i class="fas fa-tree"></i> Treehole Square</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button class="home-section-action-btn" id="feedRefreshBtn" title="Refresh"><i class="fas fa-sync-alt"></i> Refresh</button>
+              <button class="home-section-action-btn" id="feedExpandBtn" ><i class="fas fa-chevron-down"></i> Expand</button>
+            </div>
+          </div>
+          <div id="postsFeedContainer"></div>
+          <div id="emptyFeedMsg" class="empty-tip" style="display:none">
+            <i class="far fa-comment-dots" style="font-size:2rem; display:block; margin-bottom:8px;"></i>
+            No posts yet. Be the first to publish!
+          </div>
         </div>
 
-        <div id="postsFeedContainer"></div>
-        <div id="emptyFeedMsg" class="empty-tip" style="display:none">
-          <i class="far fa-comment-dots" style="font-size:2rem; display:block; margin-bottom:8px;"></i>
-          还没有树洞，发布第一条吧
+        <div class="home-section-card">
+          <div class="home-section-header">
+            <span class="home-section-title"><i class="fas fa-users"></i> Campus Clubs</span>
+            <a class="home-section-more" href="club.html">All <i class="fas fa-chevron-right"></i></a>
+          </div>
+          <div class="club-grid" id="clubGrid">
+            <a class="club-cell" href="club.html?id=0"><div class="club-emblem">🏛️</div><div class="club-name">Student Union</div></a>
+            <a class="club-cell" href="club.html?id=1"><div class="club-emblem">🏸</div><div class="club-name">Badminton Club</div></a>
+            <a class="club-cell" href="club.html?id=2"><div class="club-emblem">🏓</div><div class="club-name">Table Tennis Club</div></a>
+            <a class="club-cell" href="club.html?id=3"><div class="club-emblem">📜</div><div class="club-name">Chinese Culture Club</div></a>
+            <a class="club-cell" href="club.html?id=4"><div class="club-emblem">🏕️</div><div class="club-name">Outdoor Adventure Assoc.</div></a>
+            <a class="club-cell" href="club.html?id=5"><div class="club-emblem">💃</div><div class="club-name">Dance Alliance</div></a>
+            <a class="club-cell" href="club.html?id=6"><div class="club-emblem">🎵</div><div class="club-name">Music Society</div></a>
+            <a class="club-cell" href="club.html?id=7"><div class="club-emblem">⚡</div><div class="club-name">IEEE</div></a>
+            <a class="club-cell club-cell-more" id="clubMoreCell" href="javascript:void(0)"><div class="club-emblem" id="clubMoreEmblem">➕</div><div class="club-name" id="clubMoreLabel">More Clubs</div></a>
+          </div>
+        </div>
+
+        <div class="home-section-card">
+          <div class="home-section-header">
+            <span class="home-section-title"><i class="fas fa-briefcase"></i> Practice &amp; Consulting</span>
+            <a class="home-section-more" href="practice.html">All <i class="fas fa-chevron-right"></i></a>
+          </div>
+          <div class="practice-hot-preview">
+            <a class="practice-preview-item" href="practice.html?tab=group">
+              <div class="practice-preview-icon">👥</div>
+              <div class="practice-preview-info">
+                <div class="practice-preview-label">Study Groups</div>
+                <div class="practice-preview-sub">Find like-minded teammates</div>
+              </div>
+              <span class="practice-preview-badge">Hot</span>
+            </a>
+            <a class="practice-preview-item" href="practice.html?tab=competition">
+              <div class="practice-preview-icon">🏆</div>
+              <div class="practice-preview-info">
+                <div class="practice-preview-label">Competitions</div>
+                <div class="practice-preview-sub">Math modeling, coding contests, etc.</div>
+              </div>
+              <span class="practice-preview-badge">Hot</span>
+            </a>
+            <a class="practice-preview-item" href="practice.html?tab=internship">
+              <div class="practice-preview-icon">💼</div>
+              <div class="practice-preview-info">
+                <div class="practice-preview-label">Internships</div>
+                <div class="practice-preview-sub">Corporate internship opportunities</div>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
-
-      <!-- ===== 帖子详情视图 ===== -->
+      <!-- Post Detail View -->
       <div id="detailView" class="detail-view">
         <div class="back-btn" id="backBtn">
-          <i class="fas fa-arrow-left"></i> 返回
+          <i class="fas fa-arrow-left"></i> Back
         </div>
         <div class="detail-card">
-          <!-- 帖子主体（作者、内容、图片） -->
+          <!-- Post Body (Author, Content, Images) -->
           <div class="detail-post-body" id="detailPostBody"></div>
-          <!-- 点赞/收藏操作栏 -->
+          <!-- Like/Collect Actions -->
           <div class="detail-actions" id="detailActions"></div>
-          <!-- 评论区 -->
+          <!-- Comments Section -->
           <div class="comment-section">
-            <div class="comment-section-title" id="commentCount">评论</div>
+            <div class="comment-section-title" id="commentCount">Comments</div>
             <div class="comment-input-row">
-              <!-- 回复提示标签 -->
+              <!-- Reply Hint Label -->
               <span class="reply-hint" id="replyHint" style="display:none"></span>
-              <textarea class="comment-input" id="commentInput" placeholder="写下你的评论… (Enter 发送，Esc 取消回复)"
+              <textarea class="comment-input" id="commentInput" placeholder="Write your comment… (Enter to send, Esc to cancel)"
                 rows="1"></textarea>
-              <button class="btn btn-primary btn-sm" id="submitCommentBtn">发送</button>
+              <button class="btn btn-primary btn-sm" id="submitCommentBtn">Send</button>
             </div>
             <div id="commentsList"></div>
           </div>
         </div>
       </div>
 
-      <!-- ===== 私信视图 ===== -->
+      <!-- Message View -->
       <div id="messageView" class="message-view">
-        <!-- 私信顶栏 -->
+        <!-- Message Header -->
         <div class="msg-header">
           <button class="back-btn" id="msgBackBtn" style="margin-bottom:0">
-            <i class="fas fa-arrow-left"></i> 返回
+            <i class="fas fa-arrow-left"></i> Back
           </button>
           <div class="msg-target-info">
-            <div class="msg-avatar" id="msgTargetAvatar">匿</div>
-            <span id="msgTargetName">用户</span>
+            <div class="msg-avatar" id="msgTargetAvatar">Anon</div>
+            <span id="msgTargetName">User</span>
           </div>
         </div>
 
-        <!-- 消息列表 -->
+        <!-- Message List -->
         <div class="msg-list" id="msgList">
-          <div class="msg-empty">发送第一条消息吧 👋</div>
+          <div class="msg-empty">Send the first message 👋</div>
         </div>
 
-        <!-- 快捷回复面板（底部抽屉） -->
+        <!-- Quick Reply Panel -->
         <div class="quick-reply-panel" id="quickReplyPanel"></div>
 
-        <!-- 表情包面板 -->
+        <!-- Emoji Panel -->
         <div class="quick-reply-panel" id="msgEmojiPanel"></div>
 
-        <!-- 输入栏 -->
+        <!-- Input Bar -->
         <div class="msg-input-bar">
-          <button class="tool-btn" id="msgEmojiBtn" title="表情包">
+          <button class="tool-btn" id="msgEmojiBtn" title="Emoji">
             <i class="far fa-smile"></i>
           </button>
-          <button class="tool-btn" id="msgQuickBtn" title="快捷回复">
+          <button class="tool-btn" id="msgQuickBtn" title="Quick Reply">
             <i class="fas fa-bolt"></i>
           </button>
-          <textarea class="msg-input" id="msgInput" placeholder="发送消息…" rows="1"></textarea>
-          <button class="btn btn-primary btn-sm" id="msgSendBtn">发送</button>
+          <textarea class="msg-input" id="msgInput" placeholder="Send a message…" rows="1"></textarea>
+          <button class="btn btn-primary btn-sm" id="msgSendBtn">Send</button>
         </div>
       </div>
 
     </main>
 
-    <!-- 右侧栏 -->
+    <!-- Right Sidebar -->
     <aside class="right-sidebar">
       <div class="widget pet-widget">
         <div class="widget-title pet-widget-title">
-          <i class="fas fa-paw" style="color:#e05c00;margin-right:5px;"></i>树洞宠物
+          <i class="fas fa-paw" style="color:#e05c00;margin-right:5px;"></i>Treehole Pet
           <div class="pet-type-toggle">
-            <button class="pet-type-btn active" id="petCatBtn" title="猫猫">🐱</button>
-            <button class="pet-type-btn" id="petDogBtn" title="狗狗">🐶</button>
+            <button class="pet-type-btn active" id="petCatBtn" title="Cat">🐱</button>
+            <button class="pet-type-btn" id="petDogBtn" title="Dog">🐶</button>
           </div>
         </div>
         <div class="pet-canvas-wrap">
           <canvas id="petCanvas"></canvas>
           <div class="pet-mood-bar">
-            <span class="pet-name" id="petName">小橘</span>
+            <span class="pet-name" id="petName">Mochi</span>
             <div class="pet-mood-icons">
-              <span title="心情" id="petMoodIcon">😊</span>
-              <span title="饱食度" id="petHungerIcon">🍖</span>
+              <span title="Mood" id="petMoodIcon">😊</span>
+              <span title="Hunger" id="petHungerIcon">🍖</span>
             </div>
           </div>
           <div class="pet-speech-bubble" id="petSpeech"></div>
         </div>
         <div class="pet-actions">
-          <button class="pet-action-btn" id="petFeedBtn" title="喂食"><i class="fas fa-drumstick-bite"></i> 喂食</button>
-          <button class="pet-action-btn" id="petPlayBtn" title="玩耍"><i class="fas fa-gamepad"></i> 玩耍</button>
-          <button class="pet-action-btn" id="petSleepBtn" title="休息"><i class="fas fa-moon"></i> 休息</button>
+          <button class="pet-action-btn" id="petFeedBtn" title="Feed"><i class="fas fa-drumstick-bite"></i> Feed</button>
+          <button class="pet-action-btn" id="petPlayBtn" title="Play"><i class="fas fa-gamepad"></i> Play</button>
+          <button class="pet-action-btn" id="petSleepBtn" title="Rest"><i class="fas fa-moon"></i> Rest</button>
         </div>
         <div class="pet-chat-area">
           <div class="pet-chat-log" id="petChatLog"></div>
           <div class="pet-chat-input-row">
-            <input class="pet-chat-input" id="petChatInput" placeholder="和宠物说说话…" autocomplete="off">
-            <button class="btn btn-sm btn-primary" id="petChatSend">发送</button>
+            <input class="pet-chat-input" id="petChatInput" placeholder="Talk to your pet…" autocomplete="off">
+            <button class="btn btn-sm btn-primary" id="petChatSend">Send</button>
           </div>
         </div>
       </div>
-      <!-- 热搜榜 -->
+      <!-- Trending -->
       <div class="widget">
-        <div class="widget-title hot-title"><i class="fas fa-fire" style="color:#e05c00;margin-right:5px;"></i>热搜榜</div>
+        <div class="widget-title hot-title"><i class="fas fa-fire" style="color:#e05c00;margin-right:5px;"></i>Trending</div>
         <div id="hotSearchList"></div>
       </div>
       <div class="widget">
-        <div class="widget-title">更新日志</div>
+        <div class="widget-title">Changelog</div>
         <div class="widget-item">
           <div class="widget-item-meta">3 weeks ago · v1.4.2</div>
-          数据库更新 &amp; Bug修复
+          Database update &amp; Bug fixes
         </div>
         <div class="widget-item">
           <div class="widget-item-meta">13 hours ago</div>
-          新增「低质量评论隐藏」选项
+          Added low-quality comment hiding option
         </div>
 
       </div>
@@ -261,7 +340,7 @@
 
   </div>
 
-  <!-- ===== 脚本加载（顺序：数据层→渲染层→功能模块→入口）===== -->
+  <!-- Script Loading (Order: Data Layer → Render Layer → Modules → Entry) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="importmap">
     {
@@ -288,6 +367,54 @@
   <script src="daynight.changer.js"></script>
   <script src="../js/security.util.js"></script>
   <script src="../js/app/treehole/daynight.changer.js"></script>
+  <script>
+    // Club Grid Expansion Logic
+    (function () {
+      const EXTRA_CLUBS = [
+        { id: 8,  emoji: '📷', name: 'Photography Club' },
+        { id: 9,  emoji: '🎨', name: 'Art Club' },
+        { id: 10, emoji: '♟️', name: 'Board Games Club' },
+        { id: 11, emoji: '🤖', name: 'Robotics Club' },
+        { id: 12, emoji: '🌱', name: 'Environmental Assoc.' },
+        { id: 13, emoji: '📚', name: 'Book Club' },
+      ];
+
+      const grid = document.getElementById('clubGrid');
+      const moreCell = document.getElementById('clubMoreCell');
+      const moreEmblem = document.getElementById('clubMoreEmblem');
+      const moreLabel = document.getElementById('clubMoreLabel');
+      if (!grid || !moreCell) return;
+
+      let expanded = false;
+
+      moreCell.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!expanded) {
+          // first click: expand all clubs
+          expanded = true;
+          // remove the more cell temporarily
+          grid.removeChild(moreCell);
+          // insert extra clubs
+          EXTRA_CLUBS.forEach((c, idx) => {
+            const a = document.createElement('a');
+            a.className = 'club-cell club-cell-extra';
+            a.style.animationDelay = (idx * 40) + 'ms';
+            a.href = 'club.html?id=' + c.id;
+            a.innerHTML = `<div class="club-emblem">${c.emoji}</div><div class="club-name">${c.name}</div>`;
+            grid.appendChild(a);
+          });
+          // re-add more cell as "Club Overview"
+          moreEmblem.textContent = '🏠';
+          moreLabel.textContent = 'Club Overview';
+          moreCell.href = 'club.html';
+          grid.appendChild(moreCell);
+        } else {
+          // second click: navigate
+          window.location.href = 'club.html';
+        }
+      });
+    })();
+  </script>
 </body>
 
 </html>
