@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品详情 - AzureTrade</title>
+    <title>Product Details - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,7 +17,7 @@
         }
     </script>
     <style>
-        /* 优雅的自定义滚动条，专为中间的描述区域设计 */
+        /* Custom scrollbar for the description area */
         .custom-scrollbar::-webkit-scrollbar {
             width: 5px;
         }
@@ -32,11 +32,11 @@
             background: #d1d5db;
         }
         
-        /* 隐藏整个页面的主滚动条 */
+        /* Hide the main page scrollbar */
         .hide-main-scrollbar::-webkit-scrollbar { display: none; }
         .hide-main-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* AI 发光动画 */
+        /* AI glow animation */
         @keyframes ai-pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4); }
             50% { box-shadow: 0 0 0 6px rgba(147, 51, 234, 0); }
@@ -44,7 +44,7 @@
         .ai-btn-glow {
             animation: ai-pulse 2s infinite;
         }
-        /* ===== AI 易物匹配专属样式 ===== */
+        /* ===== AI Barter Match styles ===== */
         .radar-sweep {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             border-radius: 50%;
@@ -68,21 +68,21 @@
     <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
             <div class="flex items-center space-x-2 shrink-0 cursor-pointer" onclick="window.location.href='trade.html'">
-                <div class="bg-gradient-to-br from-purple-600 to-indigo-600 text-white text-xl font-black px-3 py-1 rounded-xl shadow-md">闲置</div>
+                <div class="bg-gradient-to-br from-purple-600 to-indigo-600 text-white text-xl font-black px-3 py-1 rounded-xl shadow-md">Trade</div>
                 <span class="text-purple-700 text-xl font-bold tracking-wide">AzureTrade</span>
             </div>
             <div class="flex-1 max-w-xl mx-8">
                 <div class="flex bg-gray-100 rounded-full overflow-hidden focus-within:ring-2 focus-within:ring-purple-200 transition-all">
-                    <input type="text" placeholder="搜索校园闲置好物..."
+                    <input type="text" placeholder="Search for campus deals..."
                            class="flex-1 bg-transparent border-none px-6 py-2.5 text-sm focus:outline-none text-gray-700">
                     <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 text-sm font-bold transition rounded-r-full">
-                        搜索
+                        Search
                     </button>
                 </div>
             </div>
             <div class="flex items-center space-x-5 shrink-0">
-                <a href="trade.html" class="text-sm font-medium text-gray-500 hover:text-purple-600 transition">返回大厅</a>
-                <a href="profile.html" class="text-sm font-medium text-gray-500 hover:text-purple-600 transition">我的空间</a>
+                <a href="trade.html" class="text-sm font-medium text-gray-500 hover:text-purple-600 transition">Back to Market</a>
+                <a href="profile.html" class="text-sm font-medium text-gray-500 hover:text-purple-600 transition">My Profile</a>
             </div>
         </div>
     </header>
@@ -116,8 +116,8 @@
                     <div class="flex items-center space-x-3">
                         <div id="seller-avatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-sm">L</div>
                         <div>
-                            <p id="seller-name" class="text-sm font-bold text-gray-800">票务小铺</p>
-                            <p id="seller-stats" class="text-[11px] text-gray-500 mt-0.5">信用极好 · 已认证学生</p>
+                            <p id="seller-name" class="text-sm font-bold text-gray-800">Ticket Shop</p>
+                            <p id="seller-stats" class="text-[11px] text-gray-500 mt-0.5">Excellent credit · Verified student</p>
                         </div>
                     </div>
                     <div class="text-gray-400 mr-2">
@@ -131,22 +131,22 @@
                         <span id="product-price" class="text-5xl font-black tracking-tight ml-1">361</span>
                     </div>
                     <div class="flex space-x-4 text-sm text-gray-400 font-medium">
-                        <div class="flex flex-col items-center"><span id="product-wants" class="text-gray-800 font-bold">5</span><span>想要</span></div>
+                        <div class="flex flex-col items-center"><span id="product-wants" class="text-gray-800 font-bold">5</span><span>Wants</span></div>
                         <div class="w-px h-8 bg-gray-200"></div>
-                        <div class="flex flex-col items-center"><span id="product-views" class="text-gray-800 font-bold">183</span><span>浏览</span></div>
+                        <div class="flex flex-col items-center"><span id="product-views" class="text-gray-800 font-bold">183</span><span>Views</span></div>
                     </div>
                 </div>
 
                 <div class="shrink-0">
                     <h1 id="product-title" class="text-xl lg:text-2xl font-extrabold text-gray-900 leading-snug mb-3">
-                        原价出 山花地 孙睿扬 王宁 内场svip全票<br>序号前100 进场确认
+                        Original Price - Concert SVIP Full Ticket<br>Sequence #1-100 Entry Confirmed
                     </h1>
                     
                     <div id="product-tags" class="flex flex-wrap gap-2 mb-2">
-                        <span class="text-xs bg-orange-50 border border-orange-100 text-orange-600 px-2.5 py-1 rounded-lg font-bold">演出票务</span>
-                        <span class="text-xs bg-purple-50 border border-purple-100 text-purple-600 px-2.5 py-1 rounded-lg font-bold">内场票</span>
-                        <span class="text-xs bg-green-50 border border-green-100 text-green-600 px-2.5 py-1 rounded-lg font-bold">✅ 可验票</span>
-                        <span class="text-xs bg-blue-50 border border-blue-100 text-blue-600 px-2.5 py-1 rounded-lg font-bold">🛡️ 担保交易</span>
+                        <span class="text-xs bg-orange-50 border border-orange-100 text-orange-600 px-2.5 py-1 rounded-lg font-bold">Event Tickets</span>
+                        <span class="text-xs bg-purple-50 border border-purple-100 text-purple-600 px-2.5 py-1 rounded-lg font-bold">VIP Ticket</span>
+                        <span class="text-xs bg-green-50 border border-green-100 text-green-600 px-2.5 py-1 rounded-lg font-bold">✅ Verifiable</span>
+                        <span class="text-xs bg-blue-50 border border-blue-100 text-blue-600 px-2.5 py-1 rounded-lg font-bold">🛡️ Secure Trade</span>
                     </div>
                 </div>
 
@@ -155,31 +155,31 @@
                     
                     <h3 class="text-sm font-bold text-purple-800 mb-3 flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
-                        宝贝详情
+                        Item Details
                     </h3>
                     
-                    <div id="product-desc" class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap relative z-10">原价出，未使用，包装完好。
-可以当面验货，确认后交易。
-有问题可以随时聊，秒回。
+                    <div id="product-desc" class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap relative z-10">Selling at original price, unused, packaging intact.
+Can inspect in person, trade after confirmation.
+Feel free to message anytime, fast replies.
 
-【注意事项】
-1. 账号内有订单则为代拍成功，代拍费不退。
-2. 上号后账号正常使用，不会顶号。
-3. 开票前自己定闹铃上号查看订单并及时付款。</div>
+[Notes]
+1. If there's an order in the account, the proxy purchase was successful. Proxy fee is non-refundable.
+2. Account works normally after login, no conflicts.
+3. Set your own alarm before ticket release to check orders and pay promptly.</div>
 
                     <div class="mt-8 bg-gradient-to-br from-white to-purple-50/80 rounded-xl p-4 border border-purple-200/60 shadow-sm relative z-10">
                         <div class="flex items-center justify-between">
                             <h4 class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 flex items-center gap-1.5">
-                                ✨ AI 智能导购助手
+                                ✨ AI Shopping Assistant
                             </h4>
                             <button id="ai-analyze-btn" class="ai-btn-glow px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-full transition shadow-md">
-                                一键评测商品
+                                Analyze Item
                             </button>
                         </div>
                         
                         <div id="ai-loading" class="hidden mt-4 text-center py-4">
                             <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600 mb-2"></div>
-                            <p class="text-sm text-purple-600 font-medium animate-pulse">Gemini 正在全网检索并为您深度分析...</p>
+                            <p class="text-sm text-purple-600 font-medium animate-pulse">Gemini is analyzing this item for you...</p>
                         </div>
 
                         <div id="ai-result" class="hidden mt-5 space-y-5">
@@ -190,7 +190,7 @@
                                     <span class="text-3xl leading-none mt-1 shadow-sm">✨</span>
                                     <div>
                                         <h5 class="text-teal-100 text-xs font-bold tracking-widest mb-1.5 uppercase flex items-center gap-1">
-                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></div> AI 综合鉴定结论
+                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></div> AI Assessment
                                         </h5>
                                         <p id="ai-summary" class="text-base md:text-lg font-bold text-white leading-relaxed text-shadow-sm tracking-wide"></p>
                                     </div>
@@ -201,7 +201,7 @@
                                 <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-gray-100 shadow-sm border-l-[5px] border-l-emerald-400 relative overflow-hidden group hover:bg-white transition-all duration-300">
                                     <h5 class="text-sm font-black text-emerald-800 mb-3 flex items-center gap-2">
                                         <span class="bg-emerald-100 text-emerald-600 p-1.5 rounded-lg leading-none"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></span>
-                                        亮点与优势
+                                        Highlights
                                     </h5>
                                     <ul id="ai-pros" class="text-sm text-gray-700 space-y-2.5 list-none">
                                         </ul>
@@ -210,7 +210,7 @@
                                 <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-gray-100 shadow-sm border-l-[5px] border-l-orange-400 relative overflow-hidden group hover:bg-white transition-all duration-300">
                                     <h5 class="text-sm font-black text-orange-800 mb-3 flex items-center gap-2">
                                         <span class="bg-orange-100 text-orange-600 p-1.5 rounded-lg leading-none"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></span>
-                                        风险与避坑
+                                        Risks & Cautions
                                     </h5>
                                     <ul id="ai-cautions" class="text-sm text-gray-700 space-y-2.5 list-none">
                                         </ul>
@@ -226,7 +226,7 @@
                                     <div class="flex items-center justify-between">
                                         <h5 class="text-sm font-extrabold text-amber-800 flex items-center gap-2 tracking-wide">
                                             <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                                            全网价格雷达
+                                            Price Radar
                                         </h5>
                                         <div id="ai-price-verdict" class="px-3 py-1.5 bg-white text-amber-600 text-xs font-black rounded-full shadow-sm border border-amber-100 flex items-center justify-center min-w-[80px]"></div>
                                     </div>
@@ -238,13 +238,13 @@
                                             <div id="price-bar-fill" class="absolute top-1/2 left-0 h-3 bg-gradient-to-r from-emerald-400 via-yellow-400 to-amber-500 rounded-full -translate-y-1/2 transition-all duration-1000 ease-out" style="width: 0%;"></div>
 
                                             <div id="marker-avg" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center items-center z-10 transition-all duration-1000 ease-out" style="left: 0%;">
-                                                <div class="absolute bottom-full mb-2.5 text-xs text-gray-500 font-bold whitespace-nowrap bg-white/95 px-2 py-0.5 rounded shadow-sm border border-gray-100">均价 ¥<span id="text-avg">--</span></div>
+                                                <div class="absolute bottom-full mb-2.5 text-xs text-gray-500 font-bold whitespace-nowrap bg-white/95 px-2 py-0.5 rounded shadow-sm border border-gray-100">Avg ¥<span id="text-avg">--</span></div>
                                                 <div class="w-1.5 h-6 bg-gray-400 rounded-sm shadow-sm relative z-10"></div>
                                             </div>
 
                                             <div id="marker-current" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center items-center z-20 transition-all duration-1000 delay-300 ease-out" style="left: 0%; opacity: 0;">
                                                 <div class="w-5 h-5 bg-white rounded-full border-[4px] border-amber-500 shadow-md relative z-20"></div>
-                                                <div class="absolute top-full mt-2.5 text-xs text-amber-700 font-black whitespace-nowrap bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 shadow-sm">当前 ¥<span id="text-current">--</span></div>
+                                                <div class="absolute top-full mt-2.5 text-xs text-amber-700 font-black whitespace-nowrap bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 shadow-sm">Current ¥<span id="text-current">--</span></div>
                                             </div>
                                         </div>
 
@@ -259,7 +259,7 @@
                             <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-blue-100 shadow-sm border-l-[5px] border-l-blue-400 relative overflow-hidden" id="inspection-card">
                                 <h5 class="text-sm font-black text-blue-800 mb-3 flex items-center gap-2">
                                     <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg leading-none"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
-                                    面交 / 验货核对清单
+                                    In-person / Inspection Checklist
                                 </h5>
                                 <ol id="ai-inspection" class="text-sm text-gray-700 space-y-2.5 pl-8 list-decimal font-medium marker:text-blue-500 marker:font-bold"></ol>
                             </div>
@@ -273,19 +273,19 @@
                 <div class="flex items-center gap-3 w-full">
                     <button id="chat-btn" class="flex-[1.2] flex items-center justify-center space-x-1.5 bg-purple-50 border-2 border-purple-100 text-purple-600 hover:bg-purple-100 hover:border-purple-200 font-bold py-3.5 rounded-2xl transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                        <span>聊一聊</span>
+                        <span>Chat</span>
                     </button>
                     <button id="buy-btn" onclick="openPayModal()" class="flex-[2] bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 border-2 border-transparent rounded-2xl shadow-md transform transition active:scale-[0.98]">
-                        立即购买
+                        Buy Now
                     </button>
                     <button id="fav-btn" class="flex-[0.8] flex items-center justify-center flex-col gap-0.5 bg-gray-50 border-2 border-transparent text-gray-500 hover:text-purple-500 hover:bg-purple-50 font-bold py-2 rounded-2xl transition group" onclick="toggleFav()">
                         <span id="fav-icon" class="text-xl leading-none group-hover:scale-110 transition-transform">☆</span>
-                        <span class="text-[10px]">收藏</span>
+                        <span class="text-[10px]">Save</span>
                     </button>
                 </div>
                 <button onclick="openBarterModal()" class="w-full ai-btn-glow bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md border border-purple-500">
                     <svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                    AI 智能易物匹配
+                    AI Smart Barter Match
                 </button>
             </div>
                 
@@ -295,38 +295,38 @@
         <div class="mt-8 bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 md:p-8 max-w-4xl mx-auto">
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-xl font-black text-gray-800 flex items-center gap-2">
-                    <span class="text-2xl">💬</span> 留言问答 
+                    <span class="text-2xl">💬</span> Comments & Q&A
                     <span id="comment-count" class="text-base font-bold text-gray-400 bg-gray-100 px-3 py-0.5 rounded-full ml-2">3</span>
                 </h2>
             </div>
 
             <div class="flex items-start gap-4 mb-8 pb-8 border-b border-gray-100">
-                <div id="comment-avatar" class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-black text-lg flex-shrink-0 shadow-inner">我</div>
+                <div id="comment-avatar" class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-black text-lg flex-shrink-0 shadow-inner">Me</div>
                 <div class="flex-1 relative">
-                    <textarea id="comment-input" rows="3" placeholder="向卖家提问，或者留下你的看法..."
+                    <textarea id="comment-input" rows="3" placeholder="Ask the seller a question, or leave your thoughts..."
                         class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm focus:bg-white focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none resize-none transition placeholder-gray-400"></textarea>
                     <button id="submit-comment-btn" class="absolute bottom-3 right-3 px-5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold rounded-xl transition shadow-sm">
-                        发送
+                        Send
                     </button>
                 </div>
             </div>
 
             <div id="comment-list" class="space-y-6">
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm flex-shrink-0">快</div>
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm flex-shrink-0">H</div>
                     <div class="flex-1 bg-gray-50 rounded-2xl rounded-tl-none p-4">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-sm font-bold text-gray-800">快乐同学</span>
-                            <span class="text-xs text-gray-400">2天前</span>
+                            <span class="text-sm font-bold text-gray-800">HappyStudent</span>
+                            <span class="text-xs text-gray-400">2 days ago</span>
                         </div>
-                        <p class="text-sm text-gray-700 leading-relaxed">请问这个还在吗？可以校内面交吗？</p>
+                        <p class="text-sm text-gray-700 leading-relaxed">Is this still available? Can we meet on campus?</p>
                         <div class="flex items-center gap-5 mt-3">
                             <button class="comment-like-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-purple-600 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
                                 <span>3</span>
                             </button>
                             <button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition">
-                                <span>回复</span>
+                                <span>Reply</span>
                             </button>
                         </div>
                     </div>
@@ -337,19 +337,19 @@
                     <div class="flex-1 bg-gray-50 rounded-2xl rounded-tl-none p-4">
                         <div class="flex items-center justify-between mb-1">
                             <div class="flex items-center gap-2">
-                                <span class="text-sm font-bold text-gray-800 cursor-pointer hover:text-purple-600 transition seller-comment-name">票务小铺</span>
-                                <span class="bg-purple-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow-sm">卖家</span>
+                                <span class="text-sm font-bold text-gray-800 cursor-pointer hover:text-purple-600 transition seller-comment-name">Ticket Shop</span>
+                                <span class="bg-purple-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow-sm">Seller</span>
                             </div>
-                            <span class="text-xs text-gray-400">1天前</span>
+                            <span class="text-xs text-gray-400">1 day ago</span>
                         </div>
-                        <p class="text-sm text-gray-700 leading-relaxed">在的亲，可以面交～西区门口都行，聊一聊约个时间吧 😊</p>
+                        <p class="text-sm text-gray-700 leading-relaxed">Yes it's available! We can meet at the west gate or anywhere on campus. Let's chat and set up a time 😊</p>
                         <div class="flex items-center gap-5 mt-3">
                             <button class="comment-like-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-purple-600 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
                                 <span>0</span>
                             </button>
                             <button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition">
-                                <span>回复</span>
+                                <span>Reply</span>
                             </button>
                         </div>
                     </div>
@@ -359,46 +359,62 @@
         </div>
     </main>
 
+    <script src="api-config.js"></script>
     <script src="../js/app/product.js"></script>
     <script>
-    // ===== ✨ AI 智能导购助手 (通用大模型/模拟版) =====
+    var API = window.API_BASE || '';
+    // ===== ✨ AI Shopping Assistant (LLM / Demo Mode) =====
     const AI_CONFIG = {
-        url: "https://api.deepseek.com/v1/chat/completions", 
-        key: "worker", // ⚠️ 留空时会自动开启“本地模拟演示模式”
+        url: "https://api.deepseek.com/v1/chat/completions",
+        key: "worker", // Leave empty to enable local demo mode
         model: "deepseek-chat"
     };
 
-    async function fetchAIAnalysis(prompt) {
-        // 写死链接使用固定AI分析数据
+    async function fetchAIAnalysis(title, price, desc) {
+        // Fixed link uses static AI analysis data
         var params = new URLSearchParams(window.location.search);
         if (params.get('fixed') === '1') {
             await new Promise(r => setTimeout(r, 1200));
             return {
-                summary: "信用卖家，值得入手！",
-                pros: ["原价转让", "支持面交验票"],
-                cautions: ["代拍有风险", "建议设置闹钟"],
-                inspection: ["当面验票核实", "登录确认订单"],
+                summary: "Worth buying!",
+                pros: ["Original price", "In-person verification"],
+                cautions: ["Proxy purchase risk", "Set alarm reminder"],
+                inspection: ["Verify ticket in person", "Confirm order on login"],
                 price_comparison: {
-                    verdict: "👍 价格合理",
+                    verdict: "👍 Fair Price",
                     current_price: 361,
                     avg_price: 380,
-                    summary: "当前售价低于平台同款均价，性价比高"
+                    summary: "Listed below platform average, good value"
                 }
             };
         }
 
         if (!AI_CONFIG.key) {
             await new Promise(r => setTimeout(r, 1500));
+            var currentP = parseInt(document.getElementById('product-price')?.innerText.replace(/,/g, '') || '100');
+            var avgP = Math.round(currentP * (1.03 + Math.random() * 0.12));
+            var diff = avgP - currentP;
+            var verdict, priceSummary;
+            if (diff > avgP * 0.05) {
+                verdict = "👍 Fair Price";
+                priceSummary = "Listed below platform average, good value";
+            } else if (diff < -avgP * 0.05) {
+                verdict = "⚠️ High";
+                priceSummary = "Listed above platform average, consider negotiating";
+            } else {
+                verdict = "👌 Average";
+                priceSummary = "Listed at roughly the same as platform average";
+            }
             return {
-                summary: "信用卖家，值得入手！",
-                pros: ["原价转让", "支持面交验票"],
-                cautions: ["代拍有风险", "建议设置闹钟"],
-                inspection: ["当面验票核实", "登录确认订单"],
+                summary: "Trusted seller, worth buying!",
+                pros: ["Original price", "In-person verification"],
+                cautions: ["Proxy purchase risk", "Set alarm reminder"],
+                inspection: ["Verify ticket in person", "Confirm order on login"],
                 price_comparison: {
-                    verdict: "👍 价格合理",
-                    current_price: 361,
-                    avg_price: 380,
-                    summary: "当前售价低于平台同款均价，性价比高"
+                    verdict: verdict,
+                    current_price: currentP,
+                    avg_price: avgP,
+                    summary: priceSummary
                 }
             };
         }
@@ -406,8 +422,14 @@
         const payload = {
             model: AI_CONFIG.model,
             messages: [
-                { role: "system", content: "你是一个二手交易鉴定师。请根据商品信息分析，必须严格返回一段合法的JSON格式字符串。字段包含: summary(字符串), pros(字符串数组), cautions(字符串数组), suggestedMessage(字符串), price_comparison(对象包含verdict, current_price, avg_price, summary)。" },
-                { role: "user", content: "你是一个二手交易鉴定师。请根据商品信息分析，严格返回JSON。要求：summary(5字内总结，如\"值得入手\")，pros(2个短语，每句不超6字，不跟summary重复)，cautions(2个短语，每句不超6字)，inspection(2条验货要点，每句不超8字；低于20元或虚拟商品返回空数组)，price_comparison(verdict:4字内，current_price，avg_price，summary:15字内)。所有内容无重复。" }
+                { role: "system", content: "You are a second-hand trading appraiser. Analyze the product info and return a valid JSON string. Fields: summary(string), pros(string array), cautions(string array), suggestedMessage(string), price_comparison(object with verdict, current_price, avg_price, summary)." },
+                { role: "user", content: `Analyze the following second-hand item, return strict JSON.
+
+                Item title: ${title}
+                Item price: ¥${price}
+                Item description: ${desc}
+
+                Requirements: summary(max 5 words), pros(2 short phrases, max 6 words each), cautions(2 short phrases, max 6 words each), inspection(2 inspection points, max 8 words each; return empty array if under $20 or virtual item), price_comparison(verdict: max 4 words, current_price use current price, avg_price based on your knowledge give reasonable average, summary: max 15 words).` }
             ],
             response_format: { type: "json_object" }
         };
@@ -418,7 +440,7 @@
             body: JSON.stringify(payload)
         });
         
-        if (!response.ok) throw new Error('WORKER 返回错误');
+        if (!response.ok) throw new Error('Worker returned error');
         const result = await response.json();
         
         let content = result.choices[0].message.content;
@@ -440,20 +462,20 @@
         loading.classList.remove('hidden');
 
         if (!AI_CONFIG.key) {
-            loading.querySelector('p').innerText = "未检测到 API Key，正在为您演示本地智能分析效果...";
+            loading.querySelector('p').innerText = "No API Key detected, showing local demo analysis...";
         } else {
-            loading.querySelector('p').innerText = "AI 正在全网检索并为您深度分析...";
+            loading.querySelector('p').innerText = "AI is searching and analyzing for you...";
         }
 
-        const prompt = `分析以下闲置商品：\n标题：${title}\n价格：¥${price}\n描述：${desc}`;
+        const prompt = `Analyze this second-hand item:\nTitle: ${title}\nPrice: ¥${price}\nDescription: ${desc}`;
 
         try {
-            const data = await fetchAIAnalysis(prompt);
+            const data = await fetchAIAnalysis(title, price, desc);
             
-            // 填充数据
+            // Populate data
             document.getElementById('ai-summary').innerText = data.summary;
-            
-            // 列表带精美SVG图标渲染
+
+            // Render lists with SVG icons
             const prosList = document.getElementById('ai-pros');
             prosList.innerHTML = '';
             data.pros.forEach(pro => {
@@ -472,7 +494,7 @@
                 cautionsList.appendChild(li);
             });
 
-            // 验货清单
+            // Inspection checklist
             var inspectionList = document.getElementById('ai-inspection');
             if (inspectionList) {
                 inspectionList.innerHTML = '';
@@ -484,7 +506,7 @@
                 document.getElementById('inspection-card').style.display = (data.inspection && data.inspection.length > 0) ? '' : 'none';
             }
 
-            // 价格对比动态雷达渲染
+            // Price comparison radar
             if (data.price_comparison) {
                 const pc = data.price_comparison;
                 var verdictEl = document.getElementById('ai-price-verdict');
@@ -522,42 +544,45 @@
                 }
             }
 
-            // UI 切换：显示结果
+            // Show results
             loading.classList.add('hidden');
             resultDiv.classList.remove('hidden');
 
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
         } catch (error) {
-            console.error("AI 分析失败:", error);
-            loading.innerHTML = '<p class="text-sm text-red-500">哎呀，网络或接口出现问题，请稍后再试。</p>';
+            console.error("AI analysis failed:", error);
+            loading.innerHTML = '<p class="text-sm text-red-500">Oops, network or API issue. Please try again later.</p>';
             setTimeout(() => {
                 loading.classList.add('hidden');
-                loading.innerHTML = '<div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600 mb-2"></div><p class="text-sm text-purple-600 font-medium animate-pulse">AI 正在全网检索并为您深度分析...</p>';
+                loading.innerHTML = '<div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600 mb-2"></div><p class="text-sm text-purple-600 font-medium animate-pulse">AI is searching and analyzing for you...</p>';
                 btn.classList.remove('hidden');
             }, 3000);
         }
     });
 
-    // ===== 原有基础功能逻辑 =====
+    // ===== Core product logic =====
     var currentProduct = null;
     var currentSellerId = null;
 
     async function loadProductDetail(itemId) {
         try {
-            var response = await fetch('/api/market/items/' + itemId, {
+            var response = await fetch(API + '/api/market/items/' + itemId, {
                 method: 'GET',
-                credentials: 'include'
+                credentials: API ? 'omit' : 'include'
             });
 
-            if (!response.ok) return;
+            if (!response.ok) {
+                loadFromSessionStorage();
+                return;
+            }
 
             var product = await response.json();
             currentProduct = product;
             currentSellerId = product.sellerId;
 
-            document.getElementById('product-title').textContent = product.title || '商品详情';
-            document.getElementById('product-desc').textContent = product.description || '暂无描述';
+            document.getElementById('product-title').textContent = product.title || 'Product Details';
+            document.getElementById('product-desc').textContent = product.description || 'No description available';
             document.getElementById('product-price').textContent = typeof product.price === 'number' ? product.price.toFixed(0) : product.price;
             document.getElementById('product-wants').textContent = product.wants || 0;
             document.getElementById('product-views').textContent = product.views || 0;
@@ -576,17 +601,51 @@
                 renderCategoryTag(product.category);
             }
 
-            // 记录浏览量
-            fetch('/api/market/items/' + itemId + '/view', { method: 'POST', credentials: 'include' })
+            fetch(API + '/api/market/items/' + itemId + '/view', { method: 'POST', credentials: API ? 'omit' : 'include' })
                 .then(function(r) { return r.json(); })
                 .then(function(d) { if (d.views) document.getElementById('product-views').textContent = d.views; })
                 .catch(function() {});
 
-            // 加载评论
             loadComments(itemId);
 
         } catch (error) {
             console.error('Error loading product:', error);
+            loadFromSessionStorage();
+        }
+    }
+
+    function loadFromSessionStorage() {
+        try {
+            var stored = sessionStorage.getItem('viewProduct');
+            if (!stored) return;
+            var item = JSON.parse(stored);
+            document.getElementById('product-title').textContent = item.title || 'Product Details';
+            document.getElementById('product-price').textContent = item.price || 0;
+            document.getElementById('product-wants').textContent = item.wants || 0;
+            document.getElementById('product-views').textContent = item.views || Math.floor(Math.random() * 200 + 50);
+            if (item.seller) {
+                document.getElementById('seller-name').textContent = item.seller;
+                document.getElementById('seller-avatar').textContent = item.seller.charAt(0);
+                syncSellerInComments();
+            }
+            if (item.desc) {
+                document.getElementById('product-desc').textContent = item.desc;
+            } else if (item.description) {
+                document.getElementById('product-desc').textContent = item.description;
+            } else {
+                document.getElementById('product-desc').textContent = item.title + '\nGood condition, works perfectly.\nIn-person inspection available, feel free to message.';
+            }
+            if (item.tags && item.tags.length > 0) {
+                var tagsHtml = item.tags.map(function(t) {
+                    return '<span class="text-xs bg-purple-50 border border-purple-100 text-purple-600 px-2.5 py-1 rounded-lg font-bold">' + t + '</span>';
+                }).join('');
+                document.getElementById('product-tags').innerHTML = tagsHtml;
+            }
+            if (item.images && item.images.length > 0) {
+                renderImageGallery(item.images);
+            }
+        } catch (e) {
+            console.error('Failed to load cached product:', e);
         }
     }
 
@@ -597,13 +656,15 @@
 
         var normalizedImages = images.map(function(img) {
             if (!img) return img;
-            if (img.startsWith('http') || img.startsWith('/')) return img;
-            return '/resources/' + img;
+            if (img.startsWith('http')) return img;
+            if (img.startsWith('/')) return API + img;
+            if (img.startsWith('images/')) return img;
+            return API + '/resources/' + img;
         });
 
         if (normalizedImages.length === 0) return;
 
-        productImage.innerHTML = '<img src="' + normalizedImages[0] + '" alt="商品图片" class="w-full h-full object-contain">';
+        productImage.innerHTML = '<img src="' + normalizedImages[0] + '" alt="Product image" class="w-full h-full object-contain">';
         productImage.className = 'w-full h-full bg-white flex items-center justify-center transition-all duration-500';
 
         normalizedImages.forEach(function(imgUrl, index) {
@@ -616,7 +677,7 @@
                 thumb.classList.add('border-purple-500', '-translate-y-1');
             }
 
-            thumb.innerHTML = '<img src="' + imgUrl + '" alt="缩略图' + (index + 1) + '" class="w-full h-full object-cover">';
+            thumb.innerHTML = '<img src="' + imgUrl + '" alt="Thumbnail ' + (index + 1) + '" class="w-full h-full object-cover">';
             thumb.addEventListener('click', function() { switchToImageByUrl(imgUrl, index); });
             thumbnailContainer.appendChild(thumb);
         });
@@ -640,7 +701,7 @@
 
         productImage.style.opacity = 0;
         setTimeout(function() {
-            productImage.innerHTML = '<img src="' + imgUrl + '" alt="商品图片" class="w-full h-full object-contain">';
+            productImage.innerHTML = '<img src="' + imgUrl + '" alt="Product image" class="w-full h-full object-contain">';
             productImage.style.opacity = 1;
         }, 150);
     }
@@ -664,24 +725,24 @@
     var isFixed = params.get('fixed') === '1';
 
     if (isFixed) {
-        document.getElementById('product-title').innerHTML = '原价出 山花地 孙睿扬 王宁 内场svip全票<br>序号前100 进场确认';
+        document.getElementById('product-title').innerHTML = 'Original Price - Concert SVIP Full Ticket<br>Sequence #1-100 Entry Confirmed';
         document.getElementById('product-price').textContent = '361';
-        document.getElementById('product-desc').textContent = '原价出，未使用，包装完好。\n可以当面验货，确认后交易。\n有问题可以随时聊，秒回。\n\n【注意事项】\n1. 账号内有订单则为代拍成功，代拍费不退。\n2. 上号后账号正常使用，不会顶号。\n3. 开票前自己定闹铃上号查看订单并及时付款。';
+        document.getElementById('product-desc').textContent = 'Selling at original price, unused, packaging intact.\nCan inspect in person, trade after confirmation.\nFeel free to message anytime, fast replies.\n\n[Notes]\n1. If there\'s an order in the account, the proxy purchase was successful. Proxy fee is non-refundable.\n2. Account works normally after login, no conflicts.\n3. Set your own alarm before ticket release to check orders and pay promptly.';
         document.getElementById('product-wants').textContent = '100';
         document.getElementById('product-views').textContent = '378';
-        document.getElementById('seller-name').textContent = '宿舍小铺';
-        document.getElementById('seller-avatar').textContent = '宿';
-        document.getElementById('seller-stats').textContent = '信用良好 · 校内';
+        document.getElementById('seller-name').textContent = 'DormShop';
+        document.getElementById('seller-avatar').textContent = 'D';
+        document.getElementById('seller-stats').textContent = 'Good credit · On campus';
         document.getElementById('product-tags').innerHTML =
-            '<span class="text-xs bg-orange-50 border border-orange-100 text-orange-600 px-2.5 py-1 rounded-lg font-bold">闲置好物</span>' +
-            '<span class="text-xs bg-purple-50 border border-purple-100 text-purple-600 px-2.5 py-1 rounded-lg font-bold">正品保证</span>' +
-            '<span class="text-xs bg-green-50 border border-green-100 text-green-600 px-2.5 py-1 rounded-lg font-bold">包邮</span>';
+            '<span class="text-xs bg-orange-50 border border-orange-100 text-orange-600 px-2.5 py-1 rounded-lg font-bold">Pre-owned</span>' +
+            '<span class="text-xs bg-purple-50 border border-purple-100 text-purple-600 px-2.5 py-1 rounded-lg font-bold">Authentic</span>' +
+            '<span class="text-xs bg-green-50 border border-green-100 text-green-600 px-2.5 py-1 rounded-lg font-bold">Free Shipping</span>';
         var fixedImages = [
             'images/shanhuadi.jpg'
         ];
         var productImage = document.getElementById('product-image');
         productImage.className = 'w-full h-full transition-all duration-500';
-        productImage.innerHTML = '<img src="' + fixedImages[0] + '" class="w-full h-full object-cover" alt="演出票务">';
+        productImage.innerHTML = '<img src="' + fixedImages[0] + '" class="w-full h-full object-cover" alt="Concert Ticket">';
         var thumbContainer = document.getElementById('thumbnail-container');
         thumbContainer.innerHTML =
             '<div class="thumbnail w-16 h-16 rounded-2xl overflow-hidden border-2 border-purple-500 cursor-pointer shadow-sm transition transform hover:-translate-y-1" data-index="0"><img src="' + fixedImages[0] + '" class="w-full h-full object-cover"></div>';
@@ -718,16 +779,16 @@
             return;
         }
         
-        fetch('/api/market/items/favorite?itemId=' + encodeURIComponent(pid), {
+        fetch(API + '/api/market/items/favorite?itemId=' + encodeURIComponent(pid), {
             method: 'POST',
-            credentials: 'include'
-        }).catch(function(err) { console.warn('收藏API调用失败:', err); });
+            credentials: API ? 'omit' : 'include'
+        }).catch(function(err) { console.warn('Favorites API call failed:', err); });
 
         var titleEl = document.getElementById('product-title');
         var priceEl = document.getElementById('product-price');
         var item = {
             id: pid,
-            title: titleEl ? titleEl.textContent.trim() : '未知商品',
+            title: titleEl ? titleEl.textContent.trim() : 'Unknown Item',
             price: priceEl ? parseInt(priceEl.textContent.replace(/[^\d]/g, '')) || 0 : 0,
             emoji: '📦',
             time: Date.now()
@@ -770,35 +831,35 @@
         if (sellerEl) { navigateToSeller(); return; }
     });
 
-    // 🏆 [已修复] 安全获取卖家名称跳转
+    // Seller profile navigation
     document.getElementById('seller-card').addEventListener('click', function() {
         if (currentSellerId) {
             window.location.href = 'seller-profile.html?id=' + currentSellerId;
         } else {
             var sellerNameEl = document.getElementById('seller-name');
-            var sellerName = sellerNameEl ? sellerNameEl.textContent : '卖家';
+            var sellerName = sellerNameEl ? sellerNameEl.textContent : 'Seller';
             window.location.href = 'seller-profile.html?seller=' + encodeURIComponent(sellerName);
         }
     });
 
-    // 🏆 [已修复] 聊一聊逻辑安全获取卖家名称
+    // Chat button logic
     document.getElementById('chat-btn').addEventListener('click', function() {
         var wantsEl = document.getElementById('product-wants');
         if (wantsEl) {
             var num = parseInt(wantsEl.textContent) || 0;
             wantsEl.textContent = (num + 1);
         }
-        
+
         var sellerNameEl = document.getElementById('seller-name');
-        var sellerName = sellerNameEl ? sellerNameEl.textContent : '卖家';
-        
+        var sellerName = sellerNameEl ? sellerNameEl.textContent : 'Seller';
+
         if (currentSellerId && pid) {
-            fetch('/api/market/' + encodeURIComponent(currentSellerId) + '/contact', {
+            fetch(API + '/api/market/' + encodeURIComponent(currentSellerId) + '/contact', {
                 method: 'POST',
-                credentials: 'include',
+                credentials: API ? 'omit' : 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: '你好，我对这个商品感兴趣', itemId: pid })
-            }).catch(function(err) { console.warn('联系卖家API调用失败:', err); });
+                body: JSON.stringify({ message: 'Hi, I\'m interested in this item', itemId: pid })
+            }).catch(function(err) { console.warn('Contact seller API failed:', err); });
         }
 
         setTimeout(function() {
@@ -806,7 +867,7 @@
         }, 300);
     });
 
-    // === 图片画廊逻辑 ===
+    // === Image gallery logic ===
     var thumbnails = document.querySelectorAll('.thumbnail');
     var productImage = document.getElementById('product-image');
     var currentIndex = 0;
@@ -876,7 +937,7 @@
         else if (e.key === 'ArrowRight') { e.preventDefault(); navigateImage(1); }
     });
 
-    // === 评论区交互 ===
+    // === Comments interaction ===
     function updateCommentCount() {
         var commentList = document.getElementById('comment-list');
         var count = commentList ? commentList.querySelectorAll(':scope > .flex').length : 0;
@@ -888,7 +949,7 @@
 
     async function loadComments(itemId) {
         try {
-            var res = await fetch('/api/market/items/' + itemId + '/comments', { credentials: 'include' });
+            var res = await fetch(API + '/api/market/items/' + itemId + '/comments', { credentials: API ? 'omit' : 'include' });
             if (!res.ok) return;
             var comments = await res.json();
             var commentList = document.getElementById('comment-list');
@@ -897,23 +958,23 @@
             comments.forEach(function(c) {
                 var avatarHtml;
                 if (c.avatar) {
-                    avatarHtml = '<img src="/resources/' + c.avatar + '" class="w-10 h-10 rounded-full object-cover">';
+                    avatarHtml = '<img src="' + API + '/resources/' + c.avatar + '" class="w-10 h-10 rounded-full object-cover">';
                 } else {
                     avatarHtml = (c.username || 'A').charAt(0).toUpperCase();
                 }
-                var time = c.createdAt ? new Date(c.createdAt).toLocaleString('zh-CN') : '';
+                var time = c.createdAt ? new Date(c.createdAt).toLocaleString('en-US') : '';
                 var html =
                     '<div class="flex items-start gap-4" data-comment-id="' + c.commentId + '">' +
                         '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm overflow-hidden">' + avatarHtml + '</div>' +
                         '<div class="flex-1 bg-gray-50 rounded-2xl rounded-tl-none p-4">' +
                             '<div class="flex items-center justify-between mb-1">' +
-                                '<span class="text-sm font-bold text-gray-800">' + (c.username || '匿名') + '</span>' +
+                                '<span class="text-sm font-bold text-gray-800">' + (c.username || 'Anonymous') + '</span>' +
                                 '<span class="text-xs text-purple-400">' + time + '</span>' +
                             '</div>' +
                             '<p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">' + (c.content || '') + '</p>' +
                             '<div class="flex items-center gap-5 mt-3">' +
                                 '<button class="comment-like-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-purple-600 transition" data-cid="' + c.commentId + '"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg><span>' + (c.likes || 0) + '</span></button>' +
-                                '<button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition"><span>回复</span></button>' +
+                                '<button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition"><span>Reply</span></button>' +
                             '</div>' +
                         '</div>' +
                     '</div>';
@@ -921,7 +982,7 @@
             });
             updateCommentCount();
         } catch (err) {
-            console.error('加载评论失败:', err);
+            console.error('Failed to load comments:', err);
         }
     }
 
@@ -932,16 +993,16 @@
 
         var profile = {};
         try { profile = JSON.parse(localStorage.getItem('userProfile') || '{}'); } catch(e) {}
-        var userName = profile.username || '匿名用户';
+        var userName = profile.username || 'Anonymous';
         var userInitial = userName.charAt(0);
 
-        // 尝试通过API提交评论
+        // Submit comment via API
         var itemId = new URLSearchParams(window.location.search).get('id');
         if (itemId) {
-            fetch('/api/market/items/' + itemId + '/comments', {
+            fetch(API + '/api/market/items/' + itemId + '/comments', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
+                credentials: API ? 'omit' : 'include',
                 body: JSON.stringify({ content: text })
             }).catch(function() {});
         }
@@ -952,12 +1013,12 @@
                 '<div class="flex-1 bg-gray-50 rounded-2xl rounded-tl-none p-4">' +
                     '<div class="flex items-center justify-between mb-1">' +
                         '<span class="text-sm font-bold text-gray-800">' + userName + '</span>' +
-                        '<span class="text-xs text-purple-400">刚刚</span>' +
+                        '<span class="text-xs text-purple-400">Just now</span>' +
                     '</div>' +
                     '<p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p>' +
                     '<div class="flex items-center gap-5 mt-3">' +
                         '<button class="comment-like-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-purple-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg><span>0</span></button>' +
-                        '<button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition"><span>回复</span></button>' +
+                        '<button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition"><span>Reply</span></button>' +
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -974,7 +1035,7 @@
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitComment(); }
     });
 
-    // 🏆 [已修复] 评论区点赞按钮逻辑
+    // Comment like button logic
     document.getElementById('comment-list').addEventListener('click', function(e) {
         var likeBtn = e.target.closest('.comment-like-btn');
         if (likeBtn) {
@@ -990,7 +1051,7 @@
                 numSpan.textContent = num + 1;
                 var cid = likeBtn.getAttribute('data-cid');
                 if (cid) {
-                    fetch('/api/market/items/comments/' + cid + '/like', { method: 'POST', credentials: 'include' }).catch(function() {});
+                    fetch(API + '/api/market/items/comments/' + cid + '/like', { method: 'POST', credentials: API ? 'omit' : 'include' }).catch(function() {});
                 }
             }
         }
@@ -1011,8 +1072,8 @@
             var replyBox = document.createElement('div');
             replyBox.className = 'reply-input-box mt-3 ml-14 flex gap-2';
             replyBox.innerHTML =
-                '<input type="text" class="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none" placeholder="回复 ' + targetName + '...">' +
-                '<button class="reply-submit-btn px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold rounded-xl transition">发送</button>';
+                '<input type="text" class="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none" placeholder="Reply to ' + targetName + '...">' +
+                '<button class="reply-submit-btn px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold rounded-xl transition">Send</button>';
 
             commentBlock.appendChild(replyBox);
             replyBox.querySelector('input').focus();
@@ -1033,7 +1094,7 @@
 
         var profile = {};
         try { profile = JSON.parse(localStorage.getItem('userProfile') || '{}'); } catch(e) {}
-        var userName = profile.username || '匿名用户';
+        var userName = profile.username || 'Anonymous';
         var userInitial = userName.charAt(0);
 
         var replyHTML =
@@ -1041,13 +1102,13 @@
                 '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm">' + userInitial + '</div>' +
                 '<div class="flex-1 bg-gray-50 rounded-2xl rounded-tl-none p-4">' +
                     '<div class="flex items-center justify-between mb-1">' +
-                        '<span class="text-sm font-bold text-gray-800">' + userName + ' <span class="text-gray-400 font-normal">回复</span> ' + targetName + '</span>' +
-                        '<span class="text-xs text-purple-400">刚刚</span>' +
+                        '<span class="text-sm font-bold text-gray-800">' + userName + ' <span class="text-gray-400 font-normal">replied to</span> ' + targetName + '</span>' +
+                        '<span class="text-xs text-purple-400">Just now</span>' +
                     '</div>' +
                     '<p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p>' +
                     '<div class="flex items-center gap-5 mt-3">' +
                         '<button class="comment-like-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-purple-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg><span>0</span></button>' +
-                        '<button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition"><span>回复</span></button>' +
+                        '<button class="comment-reply-btn flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition"><span>Reply</span></button>' +
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -1089,7 +1150,7 @@
     <div id="payModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm transition-opacity">
         <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden relative">
             <div id="pay-confirm" class="p-6">
-                <h3 class="text-lg font-black text-gray-800 mb-4 text-center">确认支付</h3>
+                <h3 class="text-lg font-black text-gray-800 mb-4 text-center">Confirm Payment</h3>
                 <div class="bg-gray-50 rounded-xl p-4 mb-5">
                     <p id="pay-title" class="text-sm font-bold text-gray-800 mb-2 leading-snug"></p>
                     <div class="flex items-baseline text-orange-500">
@@ -1098,18 +1159,18 @@
                     </div>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="closePayModal()" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition text-sm">取消</button>
-                    <button onclick="confirmPay()" class="flex-[2] py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition shadow-md text-sm">立即支付</button>
+                    <button onclick="closePayModal()" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition text-sm">Cancel</button>
+                    <button onclick="confirmPay()" class="flex-[2] py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition shadow-md text-sm">Pay Now</button>
                 </div>
             </div>
             <div id="pay-processing" class="hidden p-8 text-center">
                 <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-purple-200 border-t-purple-600 mb-4"></div>
-                <p class="text-sm font-bold text-gray-600">支付处理中...</p>
+                <p class="text-sm font-bold text-gray-600">Processing payment...</p>
             </div>
             <div id="pay-success" class="hidden p-8 text-center">
                 <div class="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border-4 border-green-100">✓</div>
-                <p class="text-lg font-black text-gray-800 mb-1">支付成功</p>
-                <p class="text-sm text-gray-500">订单已生成，请等待卖家确认</p>
+                <p class="text-lg font-black text-gray-800 mb-1">Payment Successful</p>
+                <p class="text-sm text-gray-500">Order created, waiting for seller confirmation</p>
             </div>
         </div>
     </div>
@@ -1128,23 +1189,23 @@
                     <div class="absolute top-4 left-10 text-2xl opacity-0 animate-[ping_2s_ease-in-out_infinite]">💻</div>
                     <div class="absolute bottom-10 right-4 text-2xl opacity-0 animate-[ping_2.5s_ease-in-out_infinite]">📱</div>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">AI 正在检索您的闲置库</h3>
-                <div id="scanText" class="text-brand font-medium text-sm h-6">正在生成全网行情比对分析...</div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">AI is scanning your inventory</h3>
+                <div id="scanText" class="text-brand font-medium text-sm h-6">Generating market comparison analysis...</div>
                 <div class="w-64 h-1.5 bg-gray-200 rounded-full mt-6 overflow-hidden">
                     <div id="scanProgressBar" class="h-full bg-brand w-0 transition-all duration-[2500ms] ease-out"></div>
                 </div>
             </div>
             
             <div id="view-proposal" class="hidden flex-1 flex-col p-6 sm:p-8 fade-in custom-scrollbar overflow-y-auto">
-                <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand to-pink-500 mb-6 text-center">💡 匹配方案与行情分析</h2>
+                <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand to-pink-500 mb-6 text-center">💡 Match Proposal & Market Analysis</h2>
                 
                 <div class="w-full flex items-center justify-between relative z-10 mb-6">
                     <div class="flex-1 flex flex-col items-center bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm relative">
-                        <div class="absolute -top-3 bg-purple-100 text-purple-700 text-[10px] font-bold px-3 py-1 rounded-full border border-purple-200 tracking-wider">您付出 (闲置)</div>
-                        <div id="myOfferIcon" class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-2 border border-gray-100 shadow-sm">💻</div>
+                        <div class="absolute -top-3 bg-purple-100 text-purple-700 text-[10px] font-bold px-3 py-1 rounded-full border border-purple-200 tracking-wider">You Offer (Idle)</div>
+                        <div id="myOfferIcon" class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-2 border border-gray-100 shadow-sm overflow-hidden">💻</div>
                         <div class="text-center">
                             <h4 id="myOfferName" class="font-bold text-gray-800 text-sm mb-0.5 truncate w-24">...</h4>
-                            <p id="myOfferValue" class="text-xs text-gray-500 font-mono">AI估价: ¥--</p>
+                            <p id="myOfferValue" class="text-xs text-gray-500 font-mono">AI Value: ¥--</p>
                         </div>
                     </div>
                     <div class="mx-3 flex flex-col items-center z-20">
@@ -1160,11 +1221,11 @@
                         </div>
                     </div>
                     <div class="flex-1 flex flex-col items-center bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm relative">
-                        <div class="absolute -top-3 bg-gray-200 text-gray-600 text-[10px] font-bold px-3 py-1 rounded-full border border-gray-300 tracking-wider">您获得 (目标)</div>
-                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-2 border border-gray-100 shadow-sm">🎧</div>
+                        <div class="absolute -top-3 bg-gray-200 text-gray-600 text-[10px] font-bold px-3 py-1 rounded-full border border-gray-300 tracking-wider">You Get (Target)</div>
+                        <div id="targetOfferIcon" class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-2 border border-gray-100 shadow-sm overflow-hidden">🎧</div>
                         <div class="text-center">
-                            <h4 id="targetItemName" class="font-bold text-gray-800 text-sm mb-0.5 truncate w-24">目标商品</h4>
-                            <p id="targetItemPrice" class="text-xs text-gray-500 font-mono">标价: ¥--</p>
+                            <h4 id="targetItemName" class="font-bold text-gray-800 text-sm mb-0.5 truncate w-24">Target Item</h4>
+                            <p id="targetItemPrice" class="text-xs text-gray-500 font-mono">Price: ¥--</p>
                         </div>
                     </div>
                 </div>
@@ -1174,27 +1235,27 @@
                 <div class="flex items-center gap-3 mb-3 w-full">
                     <button id="refreshMatchBtn" onclick="refreshMatch()" class="flex-1 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-600 border border-purple-200 font-bold rounded-xl transition-colors text-sm flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0115.36-4.36M20 15a9 9 0 01-15.36 4.36"></path></svg>
-                        换一换
+                        Shuffle
                     </button>
                     <button id="crossCategoryBtn" onclick="toggleCrossCategory()" class="flex-1 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-500 border border-gray-200 font-bold rounded-xl transition-colors text-sm flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                        跨类型交换
+                        Cross-Category
                     </button>
                 </div>
 
                 <div class="mt-auto w-full flex gap-3 pt-2">
-                    <button onclick="closeBarterModal()" class="flex-1 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors text-sm">取消</button>
+                    <button onclick="closeBarterModal()" class="flex-1 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors text-sm">Cancel</button>
                     <button id="sendRequestBtn" onclick="sendRequest()" class="flex-[2] bg-gradient-to-r from-brand to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm ai-btn-glow">
-                        <span>🚀</span> 发送交换请求
+                        <span>🚀</span> Send Barter Request
                     </button>
                 </div>
             </div>
             
             <div id="view-success" class="hidden flex-1 flex-col items-center justify-center p-8 fade-in">
                 <div class="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-5xl mb-6 shadow-sm border-4 border-green-100">✓</div>
-                <h2 class="text-2xl font-black text-gray-800 mb-2">易物请求已发送！</h2>
-                <p id="successDesc" class="text-gray-500 text-center mb-8 max-w-sm leading-relaxed">已向卖家发送估价报告。如果接受，系统将自动处理双向物流与差价。</p>
-                <button onclick="closeBarterModal()" class="bg-brand text-white font-bold px-8 py-3.5 rounded-xl hover:bg-purple-700 transition-colors shadow-md active:scale-[0.98]">返回商品页</button>
+                <h2 class="text-2xl font-black text-gray-800 mb-2">Barter Request Sent!</h2>
+                <p id="successDesc" class="text-gray-500 text-center mb-8 max-w-sm leading-relaxed">Valuation report sent to seller. If accepted, the system will handle two-way logistics and price difference automatically.</p>
+                <button onclick="closeBarterModal()" class="bg-brand text-white font-bold px-8 py-3.5 rounded-xl hover:bg-purple-700 transition-colors shadow-md active:scale-[0.98]">Back to Product</button>
             </div>
         </div>
     </div>
@@ -1234,200 +1295,208 @@
         }
 
         var BARTER_ITEMS = [
-            // ===== 数码 (30) =====
-            { title: 'iPad Air 4 64G', price: 2200, emoji: '📱', condition: '九成新', category: '数码' },
-            { title: 'AirPods Pro 2', price: 800, emoji: '🎧', condition: '九五新', category: '数码' },
-            { title: '机械键盘 Cherry MX3.0', price: 350, emoji: '⌨️', condition: '八成新', category: '数码' },
-            { title: 'Switch 续航版', price: 1100, emoji: '🎮', condition: '九成新', category: '数码' },
-            { title: 'Apple Watch S7', price: 1200, emoji: '⌚', condition: '九成新', category: '数码' },
-            { title: 'Kindle Paperwhite 5', price: 500, emoji: '📖', condition: '几乎全新', category: '数码' },
-            { title: '显示器 27寸 4K', price: 1500, emoji: '🖥️', condition: '九成新', category: '数码' },
-            { title: 'MacBook Pro 2020 M1', price: 4500, emoji: '💻', condition: '九成新', category: '数码' },
-            { title: 'iPhone 14 Pro 256G', price: 4800, emoji: '📱', condition: '九五新', category: '数码' },
-            { title: '相机 Sony A7M3', price: 4200, emoji: '📷', condition: '九成新', category: '数码' },
-            { title: 'iPad Pro 12.9 M2', price: 4400, emoji: '📟', condition: '几乎全新', category: '数码' },
-            { title: '戴尔U2723QE 4K显示器', price: 4300, emoji: '🖥️', condition: '九成新', category: '数码' },
-            { title: '罗技 MX Master 3S 鼠标', price: 400, emoji: '🖱️', condition: '九五新', category: '数码' },
-            { title: '三星 T7 1TB 移动硬盘', price: 450, emoji: '💾', condition: '九成新', category: '数码' },
-            { title: '华为 MatePad 11', price: 1800, emoji: '📟', condition: '九成新', category: '数码' },
-            { title: 'Sony WH-1000XM5', price: 1500, emoji: '🎧', condition: '九成新', category: '数码' },
-            { title: 'Bose QC45 头戴降噪', price: 1200, emoji: '🎧', condition: '九成新', category: '数码' },
-            { title: 'DJI Mini 3 无人机', price: 2500, emoji: '🚁', condition: '九五新', category: '数码' },
-            { title: 'GoPro Hero 11', price: 1800, emoji: '📹', condition: '九成新', category: '数码' },
-            { title: 'Marshall 蓝牙音箱', price: 800, emoji: '🔊', condition: '九成新', category: '数码' },
-            { title: 'iPhone 13 128G', price: 3200, emoji: '📱', condition: '九成新', category: '数码' },
-            { title: 'AirPods 3', price: 600, emoji: '🎧', condition: '九成新', category: '数码' },
-            { title: '小米平板5 Pro', price: 1600, emoji: '📟', condition: '九成新', category: '数码' },
-            { title: 'Switch OLED 白色', price: 1500, emoji: '🎮', condition: '九五新', category: '数码' },
-            { title: '索尼 PS5 光驱版', price: 3200, emoji: '🎮', condition: '九成新', category: '数码' },
-            { title: '佳能 EOS R50 微单', price: 3800, emoji: '📷', condition: '九五新', category: '数码' },
-            { title: '联想小新 Pro 16', price: 4200, emoji: '💻', condition: '九成新', category: '数码' },
-            { title: 'Apple Pencil 2代', price: 550, emoji: '✏️', condition: '九成新', category: '数码' },
-            { title: '漫步者 TWS1 Pro', price: 180, emoji: '🎧', condition: '九成新', category: '数码' },
-            { title: '小米手环7 Pro', price: 150, emoji: '⌚', condition: '九五新', category: '数码' },
-            // ===== 教材 (20) =====
-            { title: '高等数学教材', price: 15, emoji: '📚', condition: '八成新', category: '教材' },
-            { title: '考研英语真题', price: 20, emoji: '📝', condition: '几乎全新', category: '教材' },
-            { title: '四级词汇书', price: 8, emoji: '📖', condition: '七成新', category: '教材' },
-            { title: '线性代数教材', price: 12, emoji: '📐', condition: '八成新', category: '教材' },
-            { title: '概率论与数理统计', price: 10, emoji: '📊', condition: '七成新', category: '教材' },
-            { title: '考研政治肖秀荣', price: 25, emoji: '📋', condition: '几乎全新', category: '教材' },
-            { title: '张宇高数18讲', price: 30, emoji: '📘', condition: '九成新', category: '教材' },
-            { title: 'C语言程序设计', price: 18, emoji: '💻', condition: '八成新', category: '教材' },
-            { title: '数据结构与算法', price: 22, emoji: '📗', condition: '八成新', category: '教材' },
-            { title: '计算机网络教材', price: 16, emoji: '📕', condition: '七成新', category: '教材' },
-            { title: '操作系统概念', price: 20, emoji: '📙', condition: '八成新', category: '教材' },
-            { title: '大学物理实验', price: 10, emoji: '🔬', condition: '七成新', category: '教材' },
-            { title: '微观经济学', price: 18, emoji: '📈', condition: '八成新', category: '教材' },
-            { title: '马克思主义基本原理', price: 8, emoji: '📕', condition: '七成新', category: '教材' },
-            { title: '英语六级真题全套', price: 35, emoji: '📝', condition: '几乎全新', category: '教材' },
-            { title: '雅思词汇红宝书', price: 28, emoji: '📖', condition: '九成新', category: '教材' },
-            { title: 'Python编程入门', price: 25, emoji: '🐍', condition: '九成新', category: '教材' },
-            { title: '数据库系统概论', price: 15, emoji: '📊', condition: '八成新', category: '教材' },
-            { title: '编译原理 龙书', price: 30, emoji: '📘', condition: '八成新', category: '教材' },
-            { title: '软件工程导论', price: 12, emoji: '📗', condition: '七成新', category: '教材' },
-            // ===== 运动 (20) =====
-            { title: '羽毛球拍', price: 60, emoji: '🏸', condition: '八成新', category: '运动' },
-            { title: '瑜伽垫', price: 25, emoji: '🧘', condition: '九成新', category: '运动' },
-            { title: '哑铃 5kg×2', price: 50, emoji: '🏋️', condition: '八成新', category: '运动' },
-            { title: '篮球 Spalding', price: 80, emoji: '🏀', condition: '八成新', category: '运动' },
-            { title: '跑步鞋 Nike 42码', price: 200, emoji: '👟', condition: '九成新', category: '运动' },
-            { title: '泳镜 Speedo', price: 40, emoji: '🥽', condition: '全新', category: '运动' },
-            { title: '网球拍 Wilson', price: 150, emoji: '🎾', condition: '八成新', category: '运动' },
-            { title: '滑板 初学者', price: 120, emoji: '🛹', condition: '九成新', category: '运动' },
-            { title: '登山杖 碳纤维', price: 90, emoji: '🥾', condition: '九五新', category: '运动' },
-            { title: '自行车头盔', price: 70, emoji: '⛑️', condition: '全新', category: '运动' },
-            { title: '足球 Adidas', price: 65, emoji: '⚽', condition: '九成新', category: '运动' },
-            { title: '乒乓球拍 蝴蝶', price: 180, emoji: '🏓', condition: '九成新', category: '运动' },
-            { title: '跳绳 专业计数', price: 30, emoji: '🤸', condition: '全新', category: '运动' },
-            { title: '拉力带 阻力带套装', price: 35, emoji: '💪', condition: '全新', category: '运动' },
-            { title: '运动水壶 750ml', price: 25, emoji: '🥤', condition: '九成新', category: '运动' },
-            { title: '护膝 专业运动', price: 45, emoji: '🦵', condition: '全新', category: '运动' },
-            { title: '高尔夫推杆', price: 300, emoji: '⛳', condition: '八成新', category: '运动' },
-            { title: '露营帐篷 双人', price: 280, emoji: '⛺', condition: '九成新', category: '运动' },
-            { title: '折叠自行车', price: 450, emoji: '🚲', condition: '八成新', category: '运动' },
-            { title: '轮滑鞋 成人', price: 160, emoji: '⛸️', condition: '九成新', category: '运动' },
-            // ===== 日用 (20) =====
-            { title: '宿舍小台灯', price: 30, emoji: '💡', condition: '全新', category: '日用' },
-            { title: '收纳箱 大号', price: 20, emoji: '📦', condition: '九成新', category: '日用' },
-            { title: '电热水壶', price: 35, emoji: '🫖', condition: '八成新', category: '日用' },
-            { title: '小风扇 静音', price: 25, emoji: '🌀', condition: '九五新', category: '日用' },
-            { title: '衣架 20个装', price: 10, emoji: '👕', condition: '全新', category: '日用' },
-            { title: '保温杯 500ml', price: 30, emoji: '☕', condition: '九成新', category: '日用' },
-            { title: '加湿器 迷你', price: 45, emoji: '💧', condition: '九成新', category: '日用' },
-            { title: '化妆镜 LED', price: 35, emoji: '🪞', condition: '全新', category: '日用' },
-            { title: '电吹风 负离子', price: 80, emoji: '💨', condition: '九成新', category: '日用' },
-            { title: '床头置物架', price: 25, emoji: '🛏️', condition: '九成新', category: '日用' },
-            { title: '迷你冰箱 车载', price: 150, emoji: '🧊', condition: '九成新', category: '日用' },
-            { title: '挂烫机 便携', price: 60, emoji: '👔', condition: '八成新', category: '日用' },
-            { title: '多功能插排', price: 20, emoji: '🔌', condition: '全新', category: '日用' },
-            { title: '懒人沙发', price: 120, emoji: '🛋️', condition: '九成新', category: '日用' },
-            { title: '桌面收纳盒', price: 15, emoji: '🗃️', condition: '全新', category: '日用' },
-            { title: '蒸汽眼罩 30片', price: 40, emoji: '😴', condition: '全新', category: '日用' },
-            { title: '降噪耳塞 睡眠用', price: 20, emoji: '👂', condition: '全新', category: '日用' },
-            { title: '电动牙刷', price: 90, emoji: '🪥', condition: '九成新', category: '日用' },
-            { title: '空气净化器 小型', price: 200, emoji: '🌬️', condition: '九成新', category: '日用' },
-            { title: '暖手宝 充电', price: 35, emoji: '🔥', condition: '全新', category: '日用' },
-            // ===== 卡券/票务 (25) =====
-            { title: '星巴克中杯券×3', price: 45, emoji: '☕', condition: '电子券', category: '卡券' },
-            { title: '瑞幸9.9折扣券×5', price: 15, emoji: '🎫', condition: '电子券', category: '卡券' },
-            { title: '视频会员季卡', price: 30, emoji: '📺', condition: '电子券', category: '卡券' },
-            { title: '外卖红包 满减券', price: 5, emoji: '🍔', condition: '电子券', category: '卡券' },
-            { title: '网易云音乐年卡', price: 80, emoji: '🎵', condition: '电子券', category: '卡券' },
-            { title: '腾讯视频VIP年卡', price: 120, emoji: '📺', condition: '电子券', category: '卡券' },
-            { title: '演唱会门票 内场', price: 380, emoji: '🎤', condition: '电子券', category: '卡券' },
-            { title: '电影兑换券×5', price: 100, emoji: '🎬', condition: '电子券', category: '卡券' },
-            { title: '音乐节门票 两日通票', price: 450, emoji: '🎶', condition: '电子券', category: '卡券' },
-            { title: '话剧门票 前排', price: 280, emoji: '🎭', condition: '纸质票', category: '卡券' },
-            { title: '脱口秀门票 VIP', price: 320, emoji: '🎙️', condition: '电子券', category: '卡券' },
-            { title: '相声专场门票', price: 200, emoji: '😂', condition: '纸质票', category: '卡券' },
-            { title: '体育赛事门票 看台', price: 150, emoji: '🏟️', condition: '电子券', category: '卡券' },
-            { title: 'livehouse演出票', price: 260, emoji: '🎸', condition: '电子券', category: '卡券' },
-            { title: '演唱会看台票', price: 480, emoji: '🎤', condition: '电子券', category: '卡券' },
-            { title: '音乐会门票 A区', price: 350, emoji: '🎻', condition: '纸质票', category: '卡券' },
-            { title: '健身房月卡', price: 200, emoji: '🏋️', condition: '电子券', category: '卡券' },
-            { title: '游泳馆季卡', price: 300, emoji: '🏊', condition: '电子券', category: '卡券' },
-            { title: 'B站大会员年卡', price: 130, emoji: '📺', condition: '电子券', category: '卡券' },
-            { title: 'QQ音乐年卡', price: 90, emoji: '🎵', condition: '电子券', category: '卡券' },
-            { title: '喜马拉雅年卡', price: 110, emoji: '🎙️', condition: '电子券', category: '卡券' },
-            { title: '百度网盘超级会员年卡', price: 180, emoji: '☁️', condition: '电子券', category: '卡券' },
-            { title: 'WPS会员年卡', price: 100, emoji: '📄', condition: '电子券', category: '卡券' },
-            { title: '滴滴出行优惠券包', price: 50, emoji: '🚗', condition: '电子券', category: '卡券' },
-            { title: '必胜客优惠券套餐', price: 60, emoji: '🍕', condition: '电子券', category: '卡券' },
-            // ===== 服饰 (15) =====
-            { title: '优衣库羽绒服 M码', price: 200, emoji: '🧥', condition: '九成新', category: '服饰' },
-            { title: 'Nike Air Force 1 白', price: 350, emoji: '👟', condition: '九成新', category: '服饰' },
-            { title: '牛仔裤 Levis 501', price: 120, emoji: '👖', condition: '八成新', category: '服饰' },
-            { title: '卫衣 Champion', price: 100, emoji: '👕', condition: '九成新', category: '服饰' },
-            { title: '双肩包 Herschel', price: 180, emoji: '🎒', condition: '九成新', category: '服饰' },
-            { title: '棒球帽 NY', price: 60, emoji: '🧢', condition: '九五新', category: '服饰' },
-            { title: '围巾 羊毛', price: 80, emoji: '🧣', condition: '全新', category: '服饰' },
-            { title: '墨镜 Ray-Ban', price: 300, emoji: '🕶️', condition: '九成新', category: '服饰' },
-            { title: '手表 卡西欧', price: 250, emoji: '⌚', condition: '九成新', category: '服饰' },
-            { title: '帆布鞋 匡威', price: 150, emoji: '👟', condition: '八成新', category: '服饰' },
-            { title: '连衣裙 碎花', price: 80, emoji: '👗', condition: '九成新', category: '服饰' },
-            { title: '西装外套 修身', price: 200, emoji: '🤵', condition: '九成新', category: '服饰' },
-            { title: '运动裤 Adidas', price: 90, emoji: '👖', condition: '九成新', category: '服饰' },
-            { title: '皮带 真皮', price: 70, emoji: '👔', condition: '九成新', category: '服饰' },
-            { title: '拖鞋 居家棉', price: 20, emoji: '🩴', condition: '全新', category: '服饰' },
-            // ===== 美妆 (10) =====
-            { title: '口红 MAC 316', price: 120, emoji: '💄', condition: '几乎全新', category: '美妆' },
-            { title: '粉底液 雅诗兰黛', price: 200, emoji: '🧴', condition: '九成新', category: '美妆' },
-            { title: '眼影盘 Urban Decay', price: 150, emoji: '🎨', condition: '九成新', category: '美妆' },
-            { title: '香水 祖玛珑 30ml', price: 250, emoji: '🌸', condition: '九成新', category: '美妆' },
-            { title: '面膜 SK-II 5片', price: 300, emoji: '🧖', condition: '全新', category: '美妆' },
-            { title: '防晒霜 安耐晒', price: 100, emoji: '☀️', condition: '全新', category: '美妆' },
-            { title: '卷发棒 戴森', price: 400, emoji: '💇', condition: '九成新', category: '美妆' },
-            { title: '洗面奶 芙丽芳丝', price: 60, emoji: '🧼', condition: '全新', category: '美妆' },
-            { title: '美甲灯套装', price: 50, emoji: '💅', condition: '九成新', category: '美妆' },
-            { title: '化妆刷套装 12支', price: 80, emoji: '🖌️', condition: '全新', category: '美妆' },
-            // ===== 乐器 (10) =====
-            { title: '吉他 雅马哈 F310', price: 500, emoji: '🎸', condition: '九成新', category: '乐器' },
-            { title: '尤克里里 23寸', price: 120, emoji: '🪕', condition: '九成新', category: '乐器' },
-            { title: '电子琴 卡西欧', price: 400, emoji: '🎹', condition: '八成新', category: '乐器' },
-            { title: '口琴 天鹅24孔', price: 50, emoji: '🎵', condition: '九成新', category: '乐器' },
-            { title: '非洲鼓 丽江手鼓', price: 80, emoji: '🥁', condition: '九成新', category: '乐器' },
-            { title: '竹笛 专业演奏', price: 60, emoji: '🎶', condition: '九成新', category: '乐器' },
-            { title: '小提琴 初学者', price: 350, emoji: '🎻', condition: '八成新', category: '乐器' },
-            { title: '电吉他 芬达', price: 800, emoji: '🎸', condition: '九成新', category: '乐器' },
-            { title: '拇指琴 卡林巴', price: 40, emoji: '🎵', condition: '全新', category: '乐器' },
-            { title: '架子鼓 电子', price: 600, emoji: '🥁', condition: '九成新', category: '乐器' },
-            // ===== 家电 (10) =====
-            { title: '微波炉 美的', price: 200, emoji: '📡', condition: '八成新', category: '家电' },
-            { title: '电饭煲 小型', price: 80, emoji: '🍚', condition: '九成新', category: '家电' },
-            { title: '破壁机 九阳', price: 250, emoji: '🥤', condition: '九成新', category: '家电' },
-            { title: '空气炸锅', price: 150, emoji: '🍟', condition: '九成新', category: '家电' },
-            { title: '电烤箱 小型', price: 120, emoji: '🍞', condition: '八成新', category: '家电' },
-            { title: '咖啡机 胶囊式', price: 300, emoji: '☕', condition: '九成新', category: '家电' },
-            { title: '扫地机器人', price: 500, emoji: '🤖', condition: '九成新', category: '家电' },
-            { title: '投影仪 极米', price: 800, emoji: '📽️', condition: '九成新', category: '家电' },
-            { title: '吸尘器 手持', price: 350, emoji: '🧹', condition: '九成新', category: '家电' },
-            { title: '电火锅 分体式', price: 100, emoji: '🍲', condition: '九成新', category: '家电' },
-            // ===== 文创/手办 (10) =====
-            { title: '盲盒 泡泡玛特', price: 40, emoji: '🎁', condition: '全新', category: '文创' },
-            { title: '手办 海贼王路飞', price: 150, emoji: '🗿', condition: '全新', category: '文创' },
-            { title: '拼图 1000片 风景', price: 30, emoji: '🧩', condition: '全新', category: '文创' },
-            { title: '乐高 机械组', price: 300, emoji: '🧱', condition: '全新', category: '文创' },
-            { title: '手账本 Hobonichi', price: 120, emoji: '📓', condition: '全新', category: '文创' },
-            { title: '钢笔 百乐78G', price: 60, emoji: '🖊️', condition: '九成新', category: '文创' },
-            { title: '水彩颜料套装', price: 80, emoji: '🎨', condition: '九成新', category: '文创' },
-            { title: '素描本+铅笔套装', price: 35, emoji: '✏️', condition: '全新', category: '文创' },
-            { title: '高达模型 RG', price: 200, emoji: '🤖', condition: '全新', category: '文创' },
-            { title: '桌游 卡坦岛', price: 100, emoji: '🎲', condition: '九成新', category: '文创' },
+            // ===== Digital (30) =====
+            { title: 'iPad Air 4 64G', price: 2200, emoji: '📱', condition: '90% new', category: 'Digital' },
+            { title: 'AirPods Pro 2', price: 800, emoji: '🎧', condition: '95% new', category: 'Digital' },
+            { title: 'Mechanical Keyboard Cherry MX3.0', price: 350, emoji: '⌨️', condition: '80% new', category: 'Digital' },
+            { title: 'Switch Long Battery', price: 1100, emoji: '🎮', condition: '90% new', category: 'Digital' },
+            { title: 'Apple Watch S7', price: 1200, emoji: '⌚', condition: '90% new', category: 'Digital' },
+            { title: 'Kindle Paperwhite 5', price: 500, emoji: '📖', condition: 'Like new', category: 'Digital' },
+            { title: '27-inch 4K Monitor', price: 1500, emoji: '🖥️', condition: '90% new', category: 'Digital' },
+            { title: 'MacBook Pro 2020 M1', price: 4500, emoji: '💻', condition: '90% new', category: 'Digital' },
+            { title: 'iPhone 14 Pro 256G', price: 4800, emoji: '📱', condition: '95% new', category: 'Digital' },
+            { title: 'Sony A7M3 Camera', price: 4200, emoji: '📷', condition: '90% new', category: 'Digital' },
+            { title: 'iPad Pro 12.9 M2', price: 4400, emoji: '📟', condition: 'Like new', category: 'Digital' },
+            { title: 'Dell U2723QE 4K Monitor', price: 4300, emoji: '🖥️', condition: '90% new', category: 'Digital' },
+            { title: 'Logitech MX Master 3S Mouse', price: 400, emoji: '🖱️', condition: '95% new', category: 'Digital' },
+            { title: 'Samsung T7 1TB Portable SSD', price: 450, emoji: '💾', condition: '90% new', category: 'Digital' },
+            { title: 'Huawei MatePad 11', price: 1800, emoji: '📟', condition: '90% new', category: 'Digital' },
+            { title: 'Sony WH-1000XM5', price: 1500, emoji: '🎧', condition: '90% new', category: 'Digital' },
+            { title: 'Bose QC45 Over-ear ANC', price: 1200, emoji: '🎧', condition: '90% new', category: 'Digital' },
+            { title: 'DJI Mini 3 Drone', price: 2500, emoji: '🚁', condition: '95% new', category: 'Digital' },
+            { title: 'GoPro Hero 11', price: 1800, emoji: '📹', condition: '90% new', category: 'Digital' },
+            { title: 'Marshall Bluetooth Speaker', price: 800, emoji: '🔊', condition: '90% new', category: 'Digital' },
+            { title: 'iPhone 13 128G', price: 3200, emoji: '📱', condition: '90% new', category: 'Digital' },
+            { title: 'AirPods 3', price: 600, emoji: '🎧', condition: '90% new', category: 'Digital' },
+            { title: 'Xiaomi Pad 5 Pro', price: 1600, emoji: '📟', condition: '90% new', category: 'Digital' },
+            { title: 'Switch OLED White', price: 1500, emoji: '🎮', condition: '95% new', category: 'Digital' },
+            { title: 'Sony PS5 Disc Edition', price: 3200, emoji: '🎮', condition: '90% new', category: 'Digital' },
+            { title: 'Canon EOS R50 Mirrorless', price: 3800, emoji: '📷', condition: '95% new', category: 'Digital' },
+            { title: 'Lenovo Xiaoxin Pro 16', price: 4200, emoji: '💻', condition: '90% new', category: 'Digital' },
+            { title: 'Apple Pencil 2nd Gen', price: 550, emoji: '✏️', condition: '90% new', category: 'Digital' },
+            { title: 'Edifier TWS1 Pro', price: 180, emoji: '🎧', condition: '90% new', category: 'Digital' },
+            { title: 'Xiaomi Band 7 Pro', price: 150, emoji: '⌚', condition: '95% new', category: 'Digital' },
+            // ===== Textbooks (20) =====
+            { title: 'Advanced Mathematics Textbook', price: 15, emoji: '📚', condition: '80% new', category: 'Textbooks' },
+            { title: 'GRE English Practice Tests', price: 20, emoji: '📝', condition: 'Like new', category: 'Textbooks' },
+            { title: 'CET-4 Vocabulary Book', price: 8, emoji: '📖', condition: '70% new', category: 'Textbooks' },
+            { title: 'Linear Algebra Textbook', price: 12, emoji: '📐', condition: '80% new', category: 'Textbooks' },
+            { title: 'Probability & Statistics', price: 10, emoji: '📊', condition: '70% new', category: 'Textbooks' },
+            { title: 'GRE Politics Review Guide', price: 25, emoji: '📋', condition: 'Like new', category: 'Textbooks' },
+            { title: 'Advanced Calculus 18 Lectures', price: 30, emoji: '📘', condition: '90% new', category: 'Textbooks' },
+            { title: 'C Programming Language', price: 18, emoji: '💻', condition: '80% new', category: 'Textbooks' },
+            { title: 'Data Structures & Algorithms', price: 22, emoji: '📗', condition: '80% new', category: 'Textbooks' },
+            { title: 'Computer Networking Textbook', price: 16, emoji: '📕', condition: '70% new', category: 'Textbooks' },
+            { title: 'Operating System Concepts', price: 20, emoji: '📙', condition: '80% new', category: 'Textbooks' },
+            { title: 'College Physics Lab Manual', price: 10, emoji: '🔬', condition: '70% new', category: 'Textbooks' },
+            { title: 'Microeconomics', price: 18, emoji: '📈', condition: '80% new', category: 'Textbooks' },
+            { title: 'Principles of Marxism', price: 8, emoji: '📕', condition: '70% new', category: 'Textbooks' },
+            { title: 'CET-6 Complete Practice Tests', price: 35, emoji: '📝', condition: 'Like new', category: 'Textbooks' },
+            { title: 'IELTS Vocabulary Guide', price: 28, emoji: '📖', condition: '90% new', category: 'Textbooks' },
+            { title: 'Python Programming Intro', price: 25, emoji: '🐍', condition: '90% new', category: 'Textbooks' },
+            { title: 'Database Systems Fundamentals', price: 15, emoji: '📊', condition: '80% new', category: 'Textbooks' },
+            { title: 'Compilers: Dragon Book', price: 30, emoji: '📘', condition: '80% new', category: 'Textbooks' },
+            { title: 'Software Engineering Intro', price: 12, emoji: '📗', condition: '70% new', category: 'Textbooks' },
+            // ===== Sports (20) =====
+            { title: 'Badminton Racket', price: 60, emoji: '🏸', condition: '80% new', category: 'Sports' },
+            { title: 'Yoga Mat', price: 25, emoji: '🧘', condition: '90% new', category: 'Sports' },
+            { title: 'Dumbbells 5kg×2', price: 50, emoji: '🏋️', condition: '80% new', category: 'Sports' },
+            { title: 'Basketball Spalding', price: 80, emoji: '🏀', condition: '80% new', category: 'Sports' },
+            { title: 'Running Shoes Nike Size 9', price: 200, emoji: '👟', condition: '90% new', category: 'Sports' },
+            { title: 'Swim Goggles Speedo', price: 40, emoji: '🥽', condition: 'Brand new', category: 'Sports' },
+            { title: 'Tennis Racket Wilson', price: 150, emoji: '🎾', condition: '80% new', category: 'Sports' },
+            { title: 'Skateboard Beginner', price: 120, emoji: '🛹', condition: '90% new', category: 'Sports' },
+            { title: 'Trekking Pole Carbon Fiber', price: 90, emoji: '🥾', condition: '95% new', category: 'Sports' },
+            { title: 'Bike Helmet', price: 70, emoji: '⛑️', condition: 'Brand new', category: 'Sports' },
+            { title: 'Soccer Ball Adidas', price: 65, emoji: '⚽', condition: '90% new', category: 'Sports' },
+            { title: 'Table Tennis Paddle Butterfly', price: 180, emoji: '🏓', condition: '90% new', category: 'Sports' },
+            { title: 'Jump Rope Pro Counter', price: 30, emoji: '🤸', condition: 'Brand new', category: 'Sports' },
+            { title: 'Resistance Bands Set', price: 35, emoji: '💪', condition: 'Brand new', category: 'Sports' },
+            { title: 'Sports Water Bottle 750ml', price: 25, emoji: '🥤', condition: '90% new', category: 'Sports' },
+            { title: 'Knee Brace Pro Sports', price: 45, emoji: '🦵', condition: 'Brand new', category: 'Sports' },
+            { title: 'Golf Putter', price: 300, emoji: '⛳', condition: '80% new', category: 'Sports' },
+            { title: 'Camping Tent 2-Person', price: 280, emoji: '⛺', condition: '90% new', category: 'Sports' },
+            { title: 'Folding Bicycle', price: 450, emoji: '🚲', condition: '80% new', category: 'Sports' },
+            { title: 'Inline Skates Adult', price: 160, emoji: '⛸️', condition: '90% new', category: 'Sports' },
+            // ===== Daily (20) =====
+            { title: 'Dorm Desk Lamp', price: 30, emoji: '💡', condition: 'Brand new', category: 'Daily' },
+            { title: 'Storage Box Large', price: 20, emoji: '📦', condition: '90% new', category: 'Daily' },
+            { title: 'Electric Kettle', price: 35, emoji: '🫖', condition: '80% new', category: 'Daily' },
+            { title: 'Mini Fan Silent', price: 25, emoji: '🌀', condition: '95% new', category: 'Daily' },
+            { title: 'Hangers 20-Pack', price: 10, emoji: '👕', condition: 'Brand new', category: 'Daily' },
+            { title: 'Thermos Bottle 500ml', price: 30, emoji: '☕', condition: '90% new', category: 'Daily' },
+            { title: 'Mini Humidifier', price: 45, emoji: '💧', condition: '90% new', category: 'Daily' },
+            { title: 'LED Makeup Mirror', price: 35, emoji: '🪞', condition: 'Brand new', category: 'Daily' },
+            { title: 'Hair Dryer Ionic', price: 80, emoji: '💨', condition: '90% new', category: 'Daily' },
+            { title: 'Bedside Shelf', price: 25, emoji: '🛏️', condition: '90% new', category: 'Daily' },
+            { title: 'Mini Fridge Portable', price: 150, emoji: '🧊', condition: '90% new', category: 'Daily' },
+            { title: 'Garment Steamer Portable', price: 60, emoji: '👔', condition: '80% new', category: 'Daily' },
+            { title: 'Power Strip Multi-Outlet', price: 20, emoji: '🔌', condition: 'Brand new', category: 'Daily' },
+            { title: 'Bean Bag Chair', price: 120, emoji: '🛋️', condition: '90% new', category: 'Daily' },
+            { title: 'Desktop Organizer', price: 15, emoji: '🗃️', condition: 'Brand new', category: 'Daily' },
+            { title: 'Steam Eye Mask 30-Pack', price: 40, emoji: '😴', condition: 'Brand new', category: 'Daily' },
+            { title: 'Noise-Canceling Earplugs', price: 20, emoji: '👂', condition: 'Brand new', category: 'Daily' },
+            { title: 'Electric Toothbrush', price: 90, emoji: '🪥', condition: '90% new', category: 'Daily' },
+            { title: 'Air Purifier Small', price: 200, emoji: '🌬️', condition: '90% new', category: 'Daily' },
+            { title: 'Hand Warmer Rechargeable', price: 35, emoji: '🔥', condition: 'Brand new', category: 'Daily' },
+            // ===== Tickets/Vouchers (25) =====
+            { title: 'Starbucks Medium Cup ×3', price: 45, emoji: '☕', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Luckin Coffee Discount ×5', price: 15, emoji: '🎫', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Video Streaming Quarterly Pass', price: 30, emoji: '📺', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Food Delivery Coupon', price: 5, emoji: '🍔', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Music Streaming Annual Pass', price: 80, emoji: '🎵', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Video VIP Annual Pass', price: 120, emoji: '📺', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Concert Ticket Floor Seat', price: 380, emoji: '🎤', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Movie Voucher ×5', price: 100, emoji: '🎬', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Music Festival 2-Day Pass', price: 450, emoji: '🎶', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Theater Ticket Front Row', price: 280, emoji: '🎭', condition: 'Paper ticket', category: 'Tickets' },
+            { title: 'Stand-up Comedy VIP', price: 320, emoji: '🎙️', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Comedy Show Ticket', price: 200, emoji: '😂', condition: 'Paper ticket', category: 'Tickets' },
+            { title: 'Sports Event Grandstand', price: 150, emoji: '🏟️', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Livehouse Concert Ticket', price: 260, emoji: '🎸', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Concert Grandstand Ticket', price: 480, emoji: '🎤', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Orchestra Ticket Section A', price: 350, emoji: '🎻', condition: 'Paper ticket', category: 'Tickets' },
+            { title: 'Gym Monthly Pass', price: 200, emoji: '🏋️', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Swimming Pool Quarterly Pass', price: 300, emoji: '🏊', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Bilibili Premium Annual', price: 130, emoji: '📺', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'QQ Music Annual Pass', price: 90, emoji: '🎵', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Ximalaya Premium Annual', price: 110, emoji: '🎙️', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Cloud Storage Premium Annual', price: 180, emoji: '☁️', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'WPS Premium Annual', price: 100, emoji: '📄', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Ride-Hailing Coupon Pack', price: 50, emoji: '🚗', condition: 'E-voucher', category: 'Tickets' },
+            { title: 'Pizza Hut Coupon Bundle', price: 60, emoji: '🍕', condition: 'E-voucher', category: 'Tickets' },
+            // ===== Clothing (15) =====
+            { title: 'Uniqlo Down Jacket M', price: 200, emoji: '🧥', condition: '90% new', category: 'Clothing' },
+            { title: 'Nike Air Force 1 White', price: 350, emoji: '👟', condition: '90% new', category: 'Clothing' },
+            { title: 'Jeans Levis 501', price: 120, emoji: '👖', condition: '80% new', category: 'Clothing' },
+            { title: 'Hoodie Champion', price: 100, emoji: '👕', condition: '90% new', category: 'Clothing' },
+            { title: 'Backpack Herschel', price: 180, emoji: '🎒', condition: '90% new', category: 'Clothing' },
+            { title: 'Baseball Cap NY', price: 60, emoji: '🧢', condition: '95% new', category: 'Clothing' },
+            { title: 'Scarf Wool', price: 80, emoji: '🧣', condition: 'Brand new', category: 'Clothing' },
+            { title: 'Sunglasses Ray-Ban', price: 300, emoji: '🕶️', condition: '90% new', category: 'Clothing' },
+            { title: 'Watch Casio', price: 250, emoji: '⌚', condition: '90% new', category: 'Clothing' },
+            { title: 'Canvas Shoes Converse', price: 150, emoji: '👟', condition: '80% new', category: 'Clothing' },
+            { title: 'Floral Dress', price: 80, emoji: '👗', condition: '90% new', category: 'Clothing' },
+            { title: 'Blazer Slim Fit', price: 200, emoji: '🤵', condition: '90% new', category: 'Clothing' },
+            { title: 'Track Pants Adidas', price: 90, emoji: '👖', condition: '90% new', category: 'Clothing' },
+            { title: 'Belt Genuine Leather', price: 70, emoji: '👔', condition: '90% new', category: 'Clothing' },
+            { title: 'Slippers Cotton Home', price: 20, emoji: '🩴', condition: 'Brand new', category: 'Clothing' },
+            // ===== Beauty (10) =====
+            { title: 'Lipstick MAC 316', price: 120, emoji: '💄', condition: 'Like new', category: 'Beauty' },
+            { title: 'Foundation Estee Lauder', price: 200, emoji: '🧴', condition: '90% new', category: 'Beauty' },
+            { title: 'Eyeshadow Palette Urban Decay', price: 150, emoji: '🎨', condition: '90% new', category: 'Beauty' },
+            { title: 'Perfume Jo Malone 30ml', price: 250, emoji: '🌸', condition: '90% new', category: 'Beauty' },
+            { title: 'Face Mask SK-II 5-Pack', price: 300, emoji: '🧖', condition: 'Brand new', category: 'Beauty' },
+            { title: 'Sunscreen Anessa', price: 100, emoji: '☀️', condition: 'Brand new', category: 'Beauty' },
+            { title: 'Curling Iron Dyson', price: 400, emoji: '💇', condition: '90% new', category: 'Beauty' },
+            { title: 'Facial Cleanser Freeplus', price: 60, emoji: '🧼', condition: 'Brand new', category: 'Beauty' },
+            { title: 'Nail Lamp Kit', price: 50, emoji: '💅', condition: '90% new', category: 'Beauty' },
+            { title: 'Makeup Brush Set 12-Piece', price: 80, emoji: '🖌️', condition: 'Brand new', category: 'Beauty' },
+            // ===== Instruments (10) =====
+            { title: 'Guitar Yamaha F310', price: 500, emoji: '🎸', condition: '90% new', category: 'Instruments' },
+            { title: 'Ukulele 23-inch', price: 120, emoji: '🪕', condition: '90% new', category: 'Instruments' },
+            { title: 'Keyboard Casio', price: 400, emoji: '🎹', condition: '80% new', category: 'Instruments' },
+            { title: 'Harmonica Swan 24-Hole', price: 50, emoji: '🎵', condition: '90% new', category: 'Instruments' },
+            { title: 'Djembe Hand Drum', price: 80, emoji: '🥁', condition: '90% new', category: 'Instruments' },
+            { title: 'Bamboo Flute Professional', price: 60, emoji: '🎶', condition: '90% new', category: 'Instruments' },
+            { title: 'Violin Beginner', price: 350, emoji: '🎻', condition: '80% new', category: 'Instruments' },
+            { title: 'Electric Guitar Fender', price: 800, emoji: '🎸', condition: '90% new', category: 'Instruments' },
+            { title: 'Kalimba Thumb Piano', price: 40, emoji: '🎵', condition: 'Brand new', category: 'Instruments' },
+            { title: 'Electronic Drum Kit', price: 600, emoji: '🥁', condition: '90% new', category: 'Instruments' },
+            // ===== Appliances (10) =====
+            { title: 'Microwave Midea', price: 200, emoji: '📡', condition: '80% new', category: 'Appliances' },
+            { title: 'Rice Cooker Small', price: 80, emoji: '🍚', condition: '90% new', category: 'Appliances' },
+            { title: 'Blender Joyoung', price: 250, emoji: '🥤', condition: '90% new', category: 'Appliances' },
+            { title: 'Air Fryer', price: 150, emoji: '🍟', condition: '90% new', category: 'Appliances' },
+            { title: 'Toaster Oven Small', price: 120, emoji: '🍞', condition: '80% new', category: 'Appliances' },
+            { title: 'Coffee Machine Capsule', price: 300, emoji: '☕', condition: '90% new', category: 'Appliances' },
+            { title: 'Robot Vacuum', price: 500, emoji: '🤖', condition: '90% new', category: 'Appliances' },
+            { title: 'Projector XGIMI', price: 800, emoji: '📽️', condition: '90% new', category: 'Appliances' },
+            { title: 'Handheld Vacuum', price: 350, emoji: '🧹', condition: '90% new', category: 'Appliances' },
+            { title: 'Electric Hot Pot Detachable', price: 100, emoji: '🍲', condition: '90% new', category: 'Appliances' },
+            // ===== Collectibles/Figures (10) =====
+            { title: 'Blind Box Pop Mart', price: 40, emoji: '🎁', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'Figure One Piece Luffy', price: 150, emoji: '🗿', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'Jigsaw Puzzle 1000pc Landscape', price: 30, emoji: '🧩', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'LEGO Technic Set', price: 300, emoji: '🧱', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'Planner Hobonichi', price: 120, emoji: '📓', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'Fountain Pen Pilot 78G', price: 60, emoji: '🖊️', condition: '90% new', category: 'Collectibles' },
+            { title: 'Watercolor Paint Set', price: 80, emoji: '🎨', condition: '90% new', category: 'Collectibles' },
+            { title: 'Sketchbook + Pencil Set', price: 35, emoji: '✏️', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'Gundam Model RG', price: 200, emoji: '🤖', condition: 'Brand new', category: 'Collectibles' },
+            { title: 'Board Game Catan', price: 100, emoji: '🎲', condition: '90% new', category: 'Collectibles' },
         ];
 
         async function startScanning() {
             showModalView('view-scanning');
 
-            const targetTitle = document.getElementById('product-title')?.innerText.trim() || "当前商品";
+            const targetTitle = document.getElementById('product-title')?.innerText.trim() || "Current Item";
             const targetPriceStr = document.getElementById('product-price')?.innerText.replace(/,/g, '') || "361";
             const targetPrice = parseInt(targetPriceStr, 10) || 361;
 
             document.getElementById('targetItemName').innerText = targetTitle.split('\n')[0];
-            document.getElementById('targetItemPrice').innerText = `标价: ¥${targetPrice}`;
+            document.getElementById('targetItemPrice').innerText = `Price: $${targetPrice}`;
+
+            // Set target product real image
+            var targetIconEl = document.getElementById('targetOfferIcon');
+            var productImg = document.querySelector('#product-image img');
+            if (targetIconEl && productImg && productImg.src) {
+                targetIconEl.innerHTML = '<img src="' + productImg.src + '" class="w-full h-full object-cover">';
+            }
+
             document.getElementById('scanProgressBar').style.width = '100%';
 
-            const texts = ["正在扫描闲置库...", "匹配高净值物品...", "拉取全网二手数据...", "AI 分析匹配度..."];
+            const texts = ["Scanning inventory...", "Matching high-value items...", "Fetching market data...", "AI analyzing match rate..."];
             let i = 0;
             const textInterval = setInterval(() => {
                 i = (i + 1) % texts.length;
@@ -1441,17 +1510,17 @@
             var pool = myItems.length > 0 ? myItems : defaultItems;
 
             function guessCategory(title) {
-                if (/手机|数码|电脑|耳机|watch|板|盘|相机|键盘|鼠标|显示器|笔记本|iPad|iPhone|AirPods|Switch|Kindle|MacBook|Sony|戴尔|罗技|三星|华为|MatePad|移动硬盘|无人机|GoPro|Marshall|音箱|Bose|DJI|头戴|PS5|索尼|佳能|联想|Pencil|漫步者|小米手环/i.test(title)) return '数码';
-                if (/教材|书|真题|词汇|考研|四级|六级|笔记|试卷|高数|线代|概率论|政治|肖秀荣|张宇|C语言|程序设计|数据结构|算法|计算机网络|操作系统|物理实验|经济学|马克思|雅思|Python|数据库|编译原理|软件工程/i.test(title)) return '教材';
-                if (/运动|球|拍|瑜伽|健身|跑步|鞋|泳|哑铃|篮球|网球|滑板|登山|头盔|足球|乒乓|跳绳|拉力带|护膝|高尔夫|露营|帐篷|自行车|轮滑/i.test(title)) return '运动';
-                if (/台灯|日用|宿舍|收纳|杯|壶|风扇|衣架|保温杯|水壶|加湿器|化妆镜|吹风|冰箱|挂烫|插排|沙发|眼罩|耳塞|牙刷|净化器|暖手/i.test(title)) return '日用';
-                if (/券|卡|星巴克|瑞幸|视频会员|外卖|红包|折扣|年卡|门票|兑换券|音乐|VIP|票|演唱会|音乐节|话剧|脱口秀|相声|赛事|livehouse|音乐会|健身房|游泳馆|网盘|WPS|滴滴|必胜客|内场|看台|svip|全票/i.test(title)) return '卡券';
-                if (/服饰|衣|裤|裙|帽|包|围巾|墨镜|手表|卡西欧|连衣裙|西装|皮带|拖鞋|Nike|Adidas|Champion|Levis|匡威|Ray-Ban/i.test(title)) return '服饰';
-                if (/口红|粉底|眼影|香水|面膜|防晒|卷发|洗面奶|美甲|化妆刷|美妆|护肤/i.test(title)) return '美妆';
-                if (/吉他|尤克里里|电子琴|口琴|鼓|笛|小提琴|钢琴|乐器|卡林巴/i.test(title)) return '乐器';
-                if (/微波炉|电饭煲|破壁机|空气炸锅|烤箱|咖啡机|扫地机|投影仪|吸尘器|电火锅/i.test(title)) return '家电';
-                if (/盲盒|手办|拼图|乐高|手账|钢笔|水彩|素描|高达|桌游|文创|三国杀|卡牌|模型|积木|周边|公仔|玩具/i.test(title)) return '文创';
-                return '文创';
+                if (/phone|digital|computer|headphone|watch|tablet|disk|camera|keyboard|mouse|monitor|laptop|iPad|iPhone|AirPods|Switch|Kindle|MacBook|Sony|Dell|Logitech|Samsung|Huawei|MatePad|hard drive|drone|GoPro|Marshall|speaker|Bose|DJI|PS5|Canon|Lenovo|Pencil|Xiaomi|手机|数码|电脑|耳机|板|盘|相机|键盘|鼠标|显示器|笔记本|戴尔|罗技|三星|华为|移动硬盘|无人机|音箱|头戴|索尼|佳能|联想|漫步者|小米手环/i.test(title)) return 'Digital';
+                if (/textbook|book|test|vocab|exam|notes|quiz|math|algebra|probability|politics|programming|algorithm|network|operating system|physics|economics|marxism|IELTS|Python|database|compiler|software|教材|书|真题|词汇|考研|四级|六级|笔记|试卷|高数|线代|概率论|政治|肖秀荣|张宇|C语言|程序设计|数据结构|算法|计算机网络|操作系统|物理实验|经济学|马克思|雅思|数据库|编译原理|软件工程/i.test(title)) return 'Textbooks';
+                if (/sport|ball|racket|yoga|gym|running|shoe|swim|dumbbell|basketball|tennis|skateboard|trek|helmet|soccer|ping pong|jump rope|resistance|knee|golf|camping|tent|bicycle|skate|运动|球|拍|瑜伽|健身|跑步|鞋|泳|哑铃|篮球|网球|滑板|登山|头盔|足球|乒乓|跳绳|拉力带|护膝|高尔夫|露营|帐篷|自行车|轮滑/i.test(title)) return 'Sports';
+                if (/lamp|daily|dorm|storage|cup|kettle|fan|hanger|thermos|bottle|humidifier|mirror|dryer|fridge|steamer|power strip|chair|eye mask|earplug|toothbrush|purifier|warmer|台灯|日用|宿舍|收纳|杯|壶|风扇|衣架|保温杯|水壶|加湿器|化妆镜|吹风|冰箱|挂烫|插排|沙发|眼罩|耳塞|牙刷|净化器|暖手/i.test(title)) return 'Daily';
+                if (/voucher|card|starbucks|luckin|streaming|delivery|coupon|discount|annual|ticket|movie|music|VIP|concert|festival|theater|comedy|sports event|livehouse|orchestra|gym|swimming|pass|券|卡|星巴克|瑞幸|视频会员|外卖|红包|折扣|年卡|门票|兑换券|音乐|票|演唱会|音乐节|话剧|脱口秀|相声|赛事|音乐会|健身房|游泳馆|网盘|WPS|滴滴|必胜客|内场|看台|svip|全票/i.test(title)) return 'Tickets';
+                if (/clothing|jacket|pants|dress|hat|bag|scarf|sunglasses|watch|casio|blazer|belt|slipper|Nike|Adidas|Champion|Levis|Converse|Ray-Ban|服饰|衣|裤|裙|帽|包|围巾|墨镜|手表|卡西欧|连衣裙|西装|皮带|拖鞋|匡威/i.test(title)) return 'Clothing';
+                if (/lipstick|foundation|eyeshadow|perfume|mask|sunscreen|curling|cleanser|nail|makeup brush|beauty|skincare|口红|粉底|眼影|香水|面膜|防晒|卷发|洗面奶|美甲|化妆刷|美妆|护肤/i.test(title)) return 'Beauty';
+                if (/guitar|ukulele|keyboard|harmonica|drum|flute|violin|piano|instrument|kalimba|吉他|尤克里里|电子琴|口琴|鼓|笛|小提琴|钢琴|乐器|卡林巴/i.test(title)) return 'Instruments';
+                if (/microwave|rice cooker|blender|air fryer|oven|coffee machine|vacuum|projector|hot pot|微波炉|电饭煲|破壁机|空气炸锅|烤箱|咖啡机|扫地机|投影仪|吸尘器|电火锅/i.test(title)) return 'Appliances';
+                if (/blind box|figure|puzzle|lego|planner|fountain pen|watercolor|sketch|gundam|board game|盲盒|手办|拼图|乐高|手账|钢笔|水彩|素描|高达|桌游|文创|三国杀|卡牌|模型|积木|周边|公仔|玩具/i.test(title)) return 'Collectibles';
+                return 'Collectibles';
             }
 
             barterState.pool = pool;
@@ -1514,11 +1583,11 @@
                 return { picked, pickedPrice, priceDiff, matchPercent };
             }
             barterState.doMatch = doMatch;
-            // 优先调 AI
+            // Try AI first
             var aiResult = null;
             try {
                 var itemList = pool.map(function(item, idx) {
-                    return (idx + 1) + '. ' + item.title + ' - ¥' + item.price + ' (' + (item.condition || '') + ')';
+                    return (idx + 1) + '. ' + item.title + ' - $' + item.price + ' (' + (item.condition || '') + ')';
                 }).join('\n');
 
                 var aiResp = await fetch('https://rewind9085.3361948361.workers.dev/', {
@@ -1527,8 +1596,8 @@
                     body: JSON.stringify({
                         model: 'deepseek-chat',
                         messages: [
-                            { role: 'system', content: '选出最适合交换的一件闲置物品，返回JSON：{"selectedIndex":数字,"estimatedValue":数字,"matchPercentage":数字,"analysis":"一句话"}。差价≤500元且品类相同的优先。' },
-                            { role: 'user', content: '目标商品：' + targetTitle + ' ¥' + targetPrice + '\n闲置库：\n' + itemList }
+                            { role: 'system', content: 'Pick the best item for trade exchange, return JSON: {"selectedIndex":number,"estimatedValue":number,"matchPercentage":number,"analysis":"one sentence"}. Prioritize same category and price difference ≤500.' },
+                            { role: 'user', content: 'Target item: ' + targetTitle + ' $' + targetPrice + '\nInventory:\n' + itemList }
                         ],
                         response_format: { type: 'json_object' },
                         max_tokens: 200
@@ -1538,7 +1607,7 @@
                 var aiContent = aiData.choices[0].message.content.replace(/```json/g, '').replace(/```/g, '').trim();
                 aiResult = JSON.parse(aiContent);
             } catch(e) {
-                console.warn('AI 匹配失败，回退到写死数据', e);
+                console.warn('AI matching failed, falling back to local data', e);
             }
 
             if (aiResult && aiResult.selectedIndex) {
@@ -1555,14 +1624,14 @@
             if (!result.picked) {
                 clearInterval(textInterval);
                 if (barterState.allowCrossCategory) {
-                    document.getElementById('scanText').innerHTML = '<span class="text-orange-500">暂无匹配度≥80%的物品，请调整商品后重试</span>';
+                    document.getElementById('scanText').innerHTML = '<span class="text-orange-500">No items with match rate ≥80%. Please adjust and try again.</span>';
                 } else {
-                    document.getElementById('scanText').innerHTML = '<span class="text-orange-500">同类型暂无高匹配物品</span>';
+                    document.getElementById('scanText').innerHTML = '<span class="text-orange-500">No high-match items in same category</span>';
                     setTimeout(function() {
                         document.getElementById('scanText').innerHTML =
                             '<button onclick="barterState.allowCrossCategory=true;closeBarterModal();setTimeout(openBarterModal,300);" ' +
                             'class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold rounded-full transition shadow-md">' +
-                            '开启跨类型交换并重新匹配</button>';
+                            'Enable cross-category matching</button>';
                     }, 1200);
                 }
                 return;
@@ -1578,41 +1647,52 @@
             var offerPosition = Math.min(90, Math.max(10, Math.round((pickedPrice / 2000) * 100)));
             var diff = targetPrice - pickedPrice;
             var analysisText = '';
-            if (priceDiff < 100) analysisText = '双方价值非常接近，匹配度很高！';
-            else if (diff > 0) analysisText = `您的闲置估价 ¥${pickedPrice}，需补差价 ¥${diff}`;
-            else analysisText = `您的闲置估值 ¥${pickedPrice}，对方需补 ¥${Math.abs(diff)}`;
+            if (priceDiff < 100) analysisText = 'Values are very close, excellent match!';
+            else if (diff > 0) analysisText = `Your item is valued at $${pickedPrice}, you need to pay $${diff} difference`;
+            else analysisText = `Your item is valued at $${pickedPrice}, they need to pay $${Math.abs(diff)} difference`;
 
             setTimeout(() => {
                 clearInterval(textInterval);
-                document.getElementById('scanText').innerText = "✨ AI 分析完成！";
+                document.getElementById('scanText').innerText = "✨ AI analysis complete!";
 
                 document.getElementById('myOfferName').innerText = picked.title;
-                document.getElementById('myOfferIcon').innerText = picked.emoji || '📦';
-                document.getElementById('myOfferValue').innerText = `AI估价: ¥${pickedPrice}`;
+                var myIconEl = document.getElementById('myOfferIcon');
+                if (picked.images && picked.images.length > 0) {
+                    var imgUrl = picked.images[0];
+                    if (!imgUrl.startsWith('http')) {
+                        if (imgUrl.startsWith('/')) imgUrl = API + imgUrl;
+                        else if (imgUrl.startsWith('images/')) imgUrl = imgUrl;
+                        else imgUrl = API + '/resources/' + imgUrl;
+                    }
+                    myIconEl.innerHTML = '<img src="' + imgUrl + '" class="w-full h-full object-cover">';
+                } else {
+                    myIconEl.innerText = picked.emoji || '📦';
+                }
+                document.getElementById('myOfferValue').innerText = `AI Value: $${pickedPrice}`;
                 document.getElementById('matchPercentageText').innerHTML = `${matchPercent}<span class="text-[10px]">%</span>`;
 
                 const diffContainer = document.getElementById('priceDifferenceContainer');
                 const sendBtn = document.getElementById('sendRequestBtn');
                 let diffBadge = '', btnContent = '';
                 if (diff > 0) {
-                    diffBadge = `<span class="text-orange-600 font-bold bg-orange-100 px-3 py-1 rounded-md text-xs">⚠️ 需补差价: ¥${diff}</span>`;
-                    btnContent = `<span>🚀</span> 支付 ¥${diff} 发起请求`;
+                    diffBadge = `<span class="text-orange-600 font-bold bg-orange-100 px-3 py-1 rounded-md text-xs">⚠️ Difference: $${diff}</span>`;
+                    btnContent = `<span>🚀</span> Pay $${diff} & Send Request`;
                 } else if (diff < 0) {
-                    diffBadge = `<span class="text-green-600 font-bold bg-green-100 px-3 py-1 rounded-md text-xs">💰 对方补给您: ¥${Math.abs(diff)}</span>`;
-                    btnContent = `<span>🚀</span> 发送交换请求`;
+                    diffBadge = `<span class="text-green-600 font-bold bg-green-100 px-3 py-1 rounded-md text-xs">💰 They pay you: $${Math.abs(diff)}</span>`;
+                    btnContent = `<span>🚀</span> Send Trade Request`;
                 } else {
-                    diffBadge = `<span class="text-purple-600 font-bold bg-purple-100 px-3 py-1 rounded-md text-xs">⚖️ 价值对等，直接换</span>`;
-                    btnContent = `<span>🚀</span> 免费发送请求`;
+                    diffBadge = `<span class="text-purple-600 font-bold bg-purple-100 px-3 py-1 rounded-md text-xs">⚖️ Equal value, direct swap</span>`;
+                    btnContent = `<span>🚀</span> Send Free Request`;
                 }
 
                 diffContainer.innerHTML = `
                 <div class="bg-gray-50 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-sm w-full">
-                    <div class="flex justify-between items-center mb-4"><h5 class="text-xs sm:text-sm font-bold text-gray-700">AI 估值与全网水位</h5>${diffBadge}</div>
+                    <div class="flex justify-between items-center mb-4"><h5 class="text-xs sm:text-sm font-bold text-gray-700">AI Valuation & Market Analysis</h5>${diffBadge}</div>
                     <div class="space-y-4 mb-4">
-                        <div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">目标商品: ¥${targetPrice}</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-gray-800 rounded-full shadow -mt-1 -ml-1" style="left: ${targetPosition}%"></div></div></div>
-                        <div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">我方估价: ¥${pickedPrice}</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-purple-600 rounded-full shadow -mt-1 -ml-1" style="left: ${offerPosition}%"></div></div></div>
+                        <div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">Target item: $${targetPrice}</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-gray-800 rounded-full shadow -mt-1 -ml-1" style="left: ${targetPosition}%"></div></div></div>
+                        <div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">My item value: $${pickedPrice}</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-purple-600 rounded-full shadow -mt-1 -ml-1" style="left: ${offerPosition}%"></div></div></div>
                     </div>
-                    <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><p class="text-xs text-gray-600"><span class="font-bold text-purple-600">🤖 洞察：</span>${analysisText}</p></div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><p class="text-xs text-gray-600"><span class="font-bold text-purple-600">🤖 Insight:</span>${analysisText}</p></div>
                 </div>`;
                 sendBtn.innerHTML = btnContent;
                 window.currentMatchPercentage = matchPercent;
@@ -1657,8 +1737,8 @@
             var result = barterState.doMatch();
             if (!result.picked) {
                 var msg = barterState.allowCrossCategory
-                    ? '暂无匹配度≥80%的物品'
-                    : '同类型暂无更多匹配，可尝试开启跨类型';
+                    ? 'No items with match rate ≥80%'
+                    : 'No more matches in same category. Try enabling cross-category.';
                 var diffContainer = document.getElementById('priceDifferenceContainer');
                 diffContainer.innerHTML = '<div class="bg-orange-50 border border-orange-200 rounded-xl p-4 text-center"><p class="text-sm text-orange-700 font-medium">' + msg + '</p></div>';
                 return;
@@ -1671,38 +1751,49 @@
             barterState.usedItems.push(picked.title);
 
             document.getElementById('myOfferName').innerText = picked.title;
-            document.getElementById('myOfferIcon').innerText = picked.emoji || '📦';
-            document.getElementById('myOfferValue').innerText = 'AI估价: ¥' + pickedPrice;
+            var myIconEl2 = document.getElementById('myOfferIcon');
+            if (picked.images && picked.images.length > 0) {
+                var imgUrl2 = picked.images[0];
+                if (!imgUrl2.startsWith('http')) {
+                    if (imgUrl2.startsWith('/')) imgUrl2 = API + imgUrl2;
+                    else if (imgUrl2.startsWith('images/')) imgUrl2 = imgUrl2;
+                    else imgUrl2 = API + '/resources/' + imgUrl2;
+                }
+                myIconEl2.innerHTML = '<img src="' + imgUrl2 + '" class="w-full h-full object-cover">';
+            } else {
+                myIconEl2.innerText = picked.emoji || '📦';
+            }
+            document.getElementById('myOfferValue').innerText = 'AI Value: $' + pickedPrice;
             document.getElementById('matchPercentageText').innerHTML = matchPercent + '<span class="text-[10px]">%</span>';
 
             var diff = targetPrice - pickedPrice;
             var targetPosition = Math.min(90, Math.max(10, Math.round((targetPrice / 2000) * 100)));
             var offerPosition = Math.min(90, Math.max(10, Math.round((pickedPrice / 2000) * 100)));
             var analysisText = '';
-            if (priceDiff < 100) analysisText = '双方价值非常接近，匹配度很高！';
-            else if (diff > 0) analysisText = '您的闲置估价 ¥' + pickedPrice + '，需补差价 ¥' + diff;
-            else analysisText = '您的闲置估值 ¥' + pickedPrice + '，对方需补 ¥' + Math.abs(diff);
+            if (priceDiff < 100) analysisText = 'Values are very close, excellent match!';
+            else if (diff > 0) analysisText = 'Your item is valued at $' + pickedPrice + ', you need to pay $' + diff + ' difference';
+            else analysisText = 'Your item is valued at $' + pickedPrice + ', they need to pay $' + Math.abs(diff) + ' difference';
 
             var diffBadge = '', btnContent = '';
             if (diff > 0) {
-                diffBadge = '<span class="text-orange-600 font-bold bg-orange-100 px-3 py-1 rounded-md text-xs">⚠️ 需补差价: ¥' + diff + '</span>';
-                btnContent = '<span>🚀</span> 支付 ¥' + diff + ' 发起请求';
+                diffBadge = '<span class="text-orange-600 font-bold bg-orange-100 px-3 py-1 rounded-md text-xs">⚠️ Difference: $' + diff + '</span>';
+                btnContent = '<span>🚀</span> Pay $' + diff + ' & Send Request';
             } else if (diff < 0) {
-                diffBadge = '<span class="text-green-600 font-bold bg-green-100 px-3 py-1 rounded-md text-xs">💰 对方补给您: ¥' + Math.abs(diff) + '</span>';
-                btnContent = '<span>🚀</span> 发送交换请求';
+                diffBadge = '<span class="text-green-600 font-bold bg-green-100 px-3 py-1 rounded-md text-xs">💰 They pay you: $' + Math.abs(diff) + '</span>';
+                btnContent = '<span>🚀</span> Send Trade Request';
             } else {
-                diffBadge = '<span class="text-purple-600 font-bold bg-purple-100 px-3 py-1 rounded-md text-xs">⚖️ 价值对等，直接换</span>';
-                btnContent = '<span>🚀</span> 免费发送请求';
+                diffBadge = '<span class="text-purple-600 font-bold bg-purple-100 px-3 py-1 rounded-md text-xs">⚖️ Equal value, direct swap</span>';
+                btnContent = '<span>🚀</span> Send Free Request';
             }
 
             document.getElementById('priceDifferenceContainer').innerHTML =
                 '<div class="bg-gray-50 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-sm w-full">' +
-                    '<div class="flex justify-between items-center mb-4"><h5 class="text-xs sm:text-sm font-bold text-gray-700">AI 估值与全网水位</h5>' + diffBadge + '</div>' +
+                    '<div class="flex justify-between items-center mb-4"><h5 class="text-xs sm:text-sm font-bold text-gray-700">AI Valuation & Market Analysis</h5>' + diffBadge + '</div>' +
                     '<div class="space-y-4 mb-4">' +
-                        '<div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">目标商品: ¥' + targetPrice + '</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-gray-800 rounded-full shadow -mt-1 -ml-1" style="left: ' + targetPosition + '%"></div></div></div>' +
-                        '<div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">我方估价: ¥' + pickedPrice + '</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-purple-600 rounded-full shadow -mt-1 -ml-1" style="left: ' + offerPosition + '%"></div></div></div>' +
+                        '<div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">Target item: $' + targetPrice + '</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-gray-800 rounded-full shadow -mt-1 -ml-1" style="left: ' + targetPosition + '%"></div></div></div>' +
+                        '<div class="relative"><div class="flex justify-between text-xs mb-1.5"><span class="text-gray-500">My item value: $' + pickedPrice + '</span></div><div class="w-full bg-gray-200 rounded-full h-1.5 relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 opacity-40"></div><div class="absolute w-2 h-3.5 bg-purple-600 rounded-full shadow -mt-1 -ml-1" style="left: ' + offerPosition + '%"></div></div></div>' +
                     '</div>' +
-                    '<div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><p class="text-xs text-gray-600"><span class="font-bold text-purple-600">🤖 洞察：</span>' + analysisText + '</p></div>' +
+                    '<div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><p class="text-xs text-gray-600"><span class="font-bold text-purple-600">🤖 Insight:</span>' + analysisText + '</p></div>' +
                 '</div>';
             document.getElementById('sendRequestBtn').innerHTML = btnContent;
             window.currentMatchPercentage = matchPercent;

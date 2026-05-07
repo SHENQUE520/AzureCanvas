@@ -115,13 +115,13 @@ body.dark-mode {
 }
 
 .loading-label {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
 
 #loading-percentage {
-    font-size: 1.2rem;
+    font-size: 2.9rem;
 }
 
 .progress-bar-container {
@@ -142,7 +142,7 @@ body.dark-mode {
 
 #loading-status {
     color: rgba(120, 234, 255, 0.6);
-    font-size: 0.8rem;
+    font-size: 1.0rem;
     text-align: center;
 }
 

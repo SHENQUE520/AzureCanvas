@@ -3,11 +3,12 @@ package org.neonangellock.azurecanvas.controller;
 import org.neonangellock.azurecanvas.dto.ItemDTO;
 import org.neonangellock.azurecanvas.model.*;
 import org.neonangellock.azurecanvas.model.es.EsItem;
+import org.neonangellock.azurecanvas.repository.ItemCommentRepository;
+import org.neonangellock.azurecanvas.repository.ItemReviewRepository;
 import org.neonangellock.azurecanvas.service.EsItemService;
 import org.neonangellock.azurecanvas.service.IMarketService;
 import org.neonangellock.azurecanvas.service.ItemFavoriteService;
 import org.neonangellock.azurecanvas.service.UserService;
-import org.neonangellock.azurecanvas.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/market")
+@CrossOrigin(origins = "*")
 public class MarketController {
 
     @Autowired
@@ -406,5 +408,68 @@ public class MarketController {
         item.setViews(item.getViews() + 1);
         marketService.saveItem(item);
         return ResponseEntity.ok(Map.of("views", item.getViews()));
+    }
+
+    
+    // ========== 聊天消息 API ==========
+
+    private static final Map<String, List<Map<String, Object>>> chatMessages = new HashMap<>();
+    private static final Map<String, Map<String, Object>> chatConversations = new HashMap<>();
+
+    @PostMapping("/msg/send")
+    public ResponseEntity<Map<String, Object>> sendMessage(@RequestBody Map<String, Object> body) {
+        String from = (String) body.get("from");
+        String to = (String) body.get("to");
+        String text = (String) body.getOrDefault("text", "");
+        String image = (String) body.getOrDefault("image", null);
+        long timestamp = System.currentTimeMillis();
+
+        Map<String, Object> msg = new HashMap<>();
+        msg.put("sender", from);
+        msg.put("receiver", to);
+        msg.put("text", text);
+        msg.put("image", image);
+        msg.put("timestamp", timestamp);
+
+        String key = from.compareTo(to) < 0 ? from + "|" + to : to + "|" + from;
+        chatMessages.computeIfAbsent(key, k -> new ArrayList<>()).add(msg);
+
+        String lastMsg = text.isEmpty() ? (image != null ? "[Image]" : "") : text;
+        chatConversations.put(from + "|" + to, Map.of("partner", to, "lastMsg", lastMsg, "lastTime", timestamp));
+        chatConversations.put(to + "|" + from, Map.of("partner", from, "lastMsg", lastMsg, "lastTime", timestamp));
+
+        return ResponseEntity.ok(Map.of("success", true));
+    }
+
+    @GetMapping("/msg/list")
+    public ResponseEntity<List<Map<String, Object>>> getMsgList(@RequestParam String user) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        chatConversations.forEach((k, v) -> {
+            if (k.startsWith(user + "|")) list.add(v);
+        });
+        list.sort((a, b) -> Long.compare(
+            (Long) b.getOrDefault("lastTime", 0L),
+            (Long) a.getOrDefault("lastTime", 0L)
+        ));
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/msg/history")
+    public ResponseEntity<List<Map<String, Object>>> getMsgHistory(
+            @RequestParam String user, @RequestParam String partner) {
+
+        String key = user.compareTo(partner) < 0 ? user + "|" + partner : partner + "|" + user;
+        List<Map<String, Object>> allMsgs = chatMessages.getOrDefault(key, new ArrayList<>());
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map<String, Object> msg : allMsgs) {
+            Map<String, Object> formatted = new HashMap<>();
+            formatted.put("from", msg.get("sender").equals(user) ? "me" : "them");
+            formatted.put("text", msg.get("text"));
+            formatted.put("image", msg.get("image"));
+            formatted.put("timestamp", msg.get("timestamp"));
+            result.add(formatted);
+        }
+        return ResponseEntity.ok(result);
     }
 }

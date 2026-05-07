@@ -1,39 +1,39 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的点赞 - AzureTrade</title>
+    <title>My Likes - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800">
 
     <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
         <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
-            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+            <span>Trade</span><span class="text-purple-700">AzureTrade</span>
         </div>
         <div class="ml-auto flex items-center space-x-4">
-            <a href="profile.html" class="text-sm text-gray-500 hover:text-purple-600">← 返回主页</a>
+            <a href="profile.html" class="text-sm text-gray-500 hover:text-purple-600">&larr; Back to Profile</a>
         </div>
     </nav>
 
     <div class="max-w-4xl mx-auto pt-6 px-4 pb-10">
 
         <div class="mb-6">
-            <h1 class="text-xl font-black text-gray-900">👍 我的点赞</h1>
-            <p class="text-xs text-gray-400 mt-1">你点赞过的文章、动态和地图标记</p>
+            <h1 class="text-xl font-black text-gray-900">My Likes</h1>
+            <p class="text-xs text-gray-400 mt-1">Articles, moments, and map markers you have liked</p>
         </div>
 
-        <!-- Tab 切换 -->
+        <!-- Tab Switch -->
         <div class="flex gap-2 mb-5 border-b border-gray-200 pb-0">
             <button class="like-tab px-5 py-2.5 text-sm font-bold text-purple-600 border-b-2 border-purple-600 transition" data-tab="articles">
-                文章 <span id="like-article-num" class="text-gray-400 font-normal ml-0.5"></span>
+                Articles <span id="like-article-num" class="text-gray-400 font-normal ml-0.5"></span>
             </button>
             <button class="like-tab px-5 py-2.5 text-sm text-gray-500 hover:text-purple-600 border-b-2 border-transparent transition" data-tab="moments">
-                动态 <span id="like-moment-num" class="text-gray-400 font-normal ml-0.5"></span>
+                Moments <span id="like-moment-num" class="text-gray-400 font-normal ml-0.5"></span>
             </button>
             <button class="like-tab px-5 py-2.5 text-sm text-gray-500 hover:text-purple-600 border-b-2 border-transparent transition" data-tab="maps">
-                地图 <span id="like-map-num" class="text-gray-400 font-normal ml-0.5"></span>
+                Maps <span id="like-map-num" class="text-gray-400 font-normal ml-0.5"></span>
             </button>
         </div>
 
@@ -43,36 +43,36 @@
 
         <div id="empty-state" class="hidden text-center py-20">
             <div class="text-5xl mb-4">👍</div>
-            <p class="text-gray-400 text-sm">这里还没有内容</p>
-            <p class="text-gray-300 text-xs mt-1">去发现更多有趣的内容吧~</p>
+            <p class="text-gray-400 text-sm">No content here yet</p>
+            <p class="text-gray-300 text-xs mt-1">Go discover more interesting content</p>
         </div>
     </div>
 
 <script>
-// 示例数据
+// Sample data
 var likedArticles = JSON.parse(localStorage.getItem('likedArticles') || '[]');
 var likedMoments = JSON.parse(localStorage.getItem('likedMoments') || '[]');
 var likedMaps = JSON.parse(localStorage.getItem('likedMaps') || '[]');
 
 if (likedArticles.length === 0) {
     likedArticles = [
-        { id: 'la1', title: '大学生必备！10个超实用的学习网站', author: '学霸日记', category: '学习分享', likes: 156, time: '2026-04-23 09:30' },
-        { id: 'la2', title: '二手交易防骗指南：如何避免被坑', author: '安全小卫士', category: '交易攻略', likes: 89, time: '2026-04-20 14:15' },
-        { id: 'la3', title: '毕业季清仓攻略：如何快速出掉闲置物品', author: '毕业生老王', category: '交易攻略', likes: 67, time: '2026-04-18 16:40' }
+        { id: 'la1', title: '10 Super Useful Study Websites Every Student Needs', author: 'Study Diary', category: 'Study Tips', likes: 156, time: '2026-04-23 09:30' },
+        { id: 'la2', title: 'Anti-Scam Guide for Second-Hand Trading', author: 'Safety Guard', category: 'Trading Guide', likes: 89, time: '2026-04-20 14:15' },
+        { id: 'la3', title: 'Graduation Clearance: How to Quickly Sell Your Items', author: 'Graduate Wang', category: 'Trading Guide', likes: 67, time: '2026-04-18 16:40' }
     ];
     localStorage.setItem('likedArticles', JSON.stringify(likedArticles));
 }
 if (likedMoments.length === 0) {
     likedMoments = [
-        { id: 'lm1', author: '快乐同学', avatar: 'K', text: '刚在AzureTrade上淘到一个超划算的蓝牙耳机，音质巨好！推荐大家去看看', likes: 34, time: '2026-04-24 11:20' },
-        { id: 'lm2', author: '数码达人', avatar: 'S', text: '出一台iPad Air 4，128G WiFi版，成色95新，学生党友好价，有意私聊～', likes: 28, time: '2026-04-22 19:45' }
+        { id: 'lm1', author: 'Happy Student', avatar: 'H', text: 'Just got an amazing deal on Bluetooth earbuds on AzureTrade, the sound quality is incredible! Highly recommend checking it out', likes: 34, time: '2026-04-24 11:20' },
+        { id: 'lm2', author: 'Tech Enthusiast', avatar: 'T', text: 'Selling an iPad Air 4, 128G WiFi version, 95% new condition, student-friendly price, DM if interested', likes: 28, time: '2026-04-22 19:45' }
     ];
     localStorage.setItem('likedMoments', JSON.stringify(likedMoments));
 }
 if (likedMaps.length === 0) {
     likedMaps = [
-        { id: 'lp1', name: '东门快递驿站', author: '校园达人', category: '快递', stars: 5, desc: '取件速度最快，推荐！', likes: 45, time: '2026-04-21 10:00' },
-        { id: 'lp2', name: '食堂三楼奶茶店旁', author: '面交达人', category: '面交点', stars: 4, desc: '适合验货面交，有桌椅', likes: 18, time: '2026-04-19 15:30' }
+        { id: 'lp1', name: 'East Gate Pickup Station', author: 'Campus Expert', category: 'Delivery', stars: 5, desc: 'Fastest pickup speed, highly recommended!', likes: 45, time: '2026-04-21 10:00' },
+        { id: 'lp2', name: 'Cafeteria 3F Near Bubble Tea Shop', author: 'Meetup Pro', category: 'Meetup Spot', stars: 4, desc: 'Great for in-person trades, has tables and chairs', likes: 18, time: '2026-04-19 15:30' }
     ];
     localStorage.setItem('likedMaps', JSON.stringify(likedMaps));
 }
@@ -87,7 +87,7 @@ function renderLikedArticles() {
     if (likedArticles.length === 0) { emptyState.classList.remove('hidden'); return; }
     emptyState.classList.add('hidden');
 
-    var categoryColors = { '学习分享': 'bg-green-50 text-green-600', '交易攻略': 'bg-orange-50 text-orange-600', '校园生活': 'bg-blue-50 text-blue-600', '二手评测': 'bg-purple-50 text-purple-600' };
+    var categoryColors = { 'Study Tips': 'bg-green-50 text-green-600', 'Trading Guide': 'bg-orange-50 text-orange-600', 'Campus Life': 'bg-blue-50 text-blue-600', 'Product Reviews': 'bg-purple-50 text-purple-600' };
 
     likedArticles.forEach(function(a, idx) {
         var catClass = categoryColors[a.category] || 'bg-gray-50 text-gray-600';
@@ -101,12 +101,12 @@ function renderLikedArticles() {
                     '</div>' +
                     '<h3 class="text-sm font-bold text-gray-900 mb-1 line-clamp-1">' + a.title + '</h3>' +
                     '<div class="flex items-center gap-3 text-xs text-gray-400 mt-2">' +
-                        '<span>✍️ ' + a.author + '</span>' +
-                        '<span>❤️ ' + a.likes + '</span>' +
+                        '<span>' + a.author + '</span>' +
+                        '<span>' + a.likes + ' Likes</span>' +
                         '<span>' + a.time + '</span>' +
                     '</div>' +
                 '</div>' +
-                '<button class="unlike-article-btn px-3 py-1.5 text-red-400 hover:text-red-600 text-xs transition shrink-0" data-idx="' + idx + '">取消赞</button>' +
+                '<button class="unlike-article-btn px-3 py-1.5 text-red-400 hover:text-red-600 text-xs transition shrink-0" data-idx="' + idx + '">Unlike</button>' +
             '</div>';
         articlePanel.appendChild(div);
     });
@@ -138,8 +138,8 @@ function renderLikedMoments() {
                     '</div>' +
                     '<p class="text-sm text-gray-700 leading-relaxed mb-2">' + m.text + '</p>' +
                     '<div class="flex items-center gap-4 text-xs text-gray-400">' +
-                        '<span>❤️ ' + m.likes + '</span>' +
-                        '<button class="unlike-moment-btn text-red-400 hover:text-red-600 transition ml-auto" data-idx="' + idx + '">取消赞</button>' +
+                        '<span>' + m.likes + ' Likes</span>' +
+                        '<button class="unlike-moment-btn text-red-400 hover:text-red-600 transition ml-auto" data-idx="' + idx + '">Unlike</button>' +
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -157,7 +157,7 @@ function renderLikedMoments() {
 
 function renderStars(count) {
     var s = '';
-    for (var i = 0; i < 5; i++) s += '<span class="' + (i < count ? 'text-yellow-400' : 'text-gray-300') + '">★</span>';
+    for (var i = 0; i < 5; i++) s += '<span class="' + (i < count ? 'text-yellow-400' : 'text-gray-300') + '">&#9733;</span>';
     return s;
 }
 
@@ -166,8 +166,8 @@ function renderLikedMaps() {
     if (likedMaps.length === 0) { emptyState.classList.remove('hidden'); return; }
     emptyState.classList.add('hidden');
 
-    var categoryEmojis = { '面交点': '🤝', '美食': '🍜', '学习': '📖', '休闲': '☕', '快递': '📦', '其他': '📍' };
-    var categoryColors = { '面交点': 'bg-blue-50 text-blue-600', '美食': 'bg-orange-50 text-orange-600', '学习': 'bg-green-50 text-green-600', '休闲': 'bg-purple-50 text-purple-600', '快递': 'bg-amber-50 text-amber-600' };
+    var categoryEmojis = { 'Meetup Spot': '🤝', 'Food': '🍜', 'Study': '📖', 'Leisure': '☕', 'Delivery': '📦', 'Other': '📍' };
+    var categoryColors = { 'Meetup Spot': 'bg-blue-50 text-blue-600', 'Food': 'bg-orange-50 text-orange-600', 'Study': 'bg-green-50 text-green-600', 'Leisure': 'bg-purple-50 text-purple-600', 'Delivery': 'bg-amber-50 text-amber-600' };
 
     likedMaps.forEach(function(m, idx) {
         var emoji = categoryEmojis[m.category] || '📍';
@@ -185,9 +185,9 @@ function renderLikedMaps() {
                     '<div class="text-xs mb-1">' + renderStars(m.stars) + '</div>' +
                     '<p class="text-xs text-gray-500 mb-2">' + m.desc + '</p>' +
                     '<div class="flex items-center gap-3 text-xs text-gray-400">' +
-                        '<span>✍️ ' + m.author + '</span>' +
-                        '<span>❤️ ' + m.likes + '</span>' +
-                        '<button class="unlike-map-btn text-red-400 hover:text-red-600 transition ml-auto" data-idx="' + idx + '">取消赞</button>' +
+                        '<span>' + m.author + '</span>' +
+                        '<span>' + m.likes + ' Likes</span>' +
+                        '<button class="unlike-map-btn text-red-400 hover:text-red-600 transition ml-auto" data-idx="' + idx + '">Unlike</button>' +
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -209,7 +209,7 @@ function updateCounts() {
     document.getElementById('like-map-num').textContent = likedMaps.length;
 }
 
-// Tab 切换
+// Tab switch
 var currentTab = 'articles';
 document.querySelectorAll('.like-tab').forEach(function(tab) {
     tab.addEventListener('click', function() {
@@ -232,7 +232,7 @@ document.querySelectorAll('.like-tab').forEach(function(tab) {
     });
 });
 
-// 初始化
+// Initialize
 updateCounts();
 renderLikedArticles();
 </script>

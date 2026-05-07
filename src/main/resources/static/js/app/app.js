@@ -20,18 +20,18 @@ const card = document.querySelector('.splash-logo');
 //     }, 1000);
 // });
 
-themeToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    document.body.classList.toggle('dark-mode');
-    document.body.classList.toggle('light-mode');
-    if (document.body.classList.contains('dark-mode')) {
-        themeIcon.className = 'fas fa-sun';
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
-    } else {
-        themeIcon.className = 'fas fa-moon';
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
-    }
-});
+// themeToggle.addEventListener('click', (e) => {
+//     e.stopPropagation();
+//     document.body.classList.toggle('dark-mode');
+//     document.body.classList.toggle('light-mode');
+//     if (document.body.classList.contains('dark-mode')) {
+//         themeIcon.className = 'fas fa-sun';
+//         themeToggle.innerHTML = '<i class="fas fa-sun"></i> 白天模式';
+//     } else {
+//         themeIcon.className = 'fas fa-moon';
+//         themeToggle.innerHTML = '<i class="fas fa-moon"></i> 夜间模式';
+//     }
+// });
 
 // 数字时钟功能
 function updateClock() {

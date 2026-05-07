@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>卖家主页 - AzureTrade</title>
+    <title>Seller Profile - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -14,10 +14,10 @@
 
     <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
         <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
-            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+            <span>Trade</span><span class="text-purple-700">AzureTrade</span>
         </div>
         <div class="ml-auto flex items-center space-x-4">
-            <a href="trade.html" class="text-sm text-gray-500 hover:text-purple-600">返回交易</a>
+            <a href="trade.html" class="text-sm text-gray-500 hover:text-purple-600">Back to Market</a>
         </div>
     </nav>
 
@@ -38,31 +38,31 @@
 
                     <div class="mb-2">
                         <div class="flex items-center gap-2 flex-wrap mb-1">
-                            <h2 id="seller-username" class="text-xl font-black text-gray-900">票务小铺</h2>
-                            <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">卖家信用极好</span>
+                            <h2 id="seller-username" class="text-xl font-black text-gray-900">TicketShop</h2>
+                            <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Excellent Credit</span>
                         </div>
-                        <p id="seller-bio" class="text-xs text-gray-400">专业票务，诚信经营</p>
+                        <p id="seller-bio" class="text-xs text-gray-400">Professional tickets, trusted seller</p>
                     </div>
 
                     <div class="flex items-center gap-6 text-sm mt-4 mb-2">
                         <a href="#" id="followers-link" class="flex items-baseline gap-1 hover:text-purple-600 transition">
                             <span id="seller-followers" class="font-black text-gray-900 text-lg">83</span>
-                            <span class="text-gray-500">粉丝</span>
+                            <span class="text-gray-500">Followers</span>
                         </a>
                         <a href="#" class="flex items-baseline gap-1 hover:text-purple-600 transition">
                             <span id="seller-following" class="font-black text-gray-900 text-lg">32</span>
-                            <span class="text-gray-500">关注</span>
+                            <span class="text-gray-500">Following</span>
                         </a>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-8 px-6 h-12 border-t border-b border-gray-100 sticky top-14 bg-white z-40">
                     <div class="seller-tab relative h-full flex items-center cursor-pointer text-sm font-bold text-purple-600 transition-all" data-tab="items">
-                        <span>宝贝 <span class="text-gray-400 font-normal ml-0.5" id="items-count">51</span></span>
+                        <span>Items <span class="text-gray-400 font-normal ml-0.5" id="items-count">51</span></span>
                         <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-100 scale-100"></div>
                     </div>
                     <div class="seller-tab relative h-full flex items-center cursor-pointer text-sm text-gray-500 hover:text-purple-600 transition-all" data-tab="reviews">
-                        <span>信用及评价 <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">29</span></span>
+                        <span>Credit & Reviews <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">29</span></span>
                         <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-0 scale-0"></div>
                     </div>
                 </div>
@@ -77,13 +77,13 @@
                             <label class="cursor-pointer">
                                 <input type="radio" name="review_filter" value="all" class="peer hidden" checked>
                                 <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
-                                    全部 <span id="count-all" class="ml-0.5 opacity-80"></span>
+                                    All <span id="count-all" class="ml-0.5 opacity-80"></span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="review_filter" value="good" class="peer hidden">
                                 <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
-                                    好评 <span id="count-good" class="ml-0.5 opacity-80"></span>
+                                    Positive <span id="count-good" class="ml-0.5 opacity-80"></span>
                                 </div>
                             </label>
                         </div>
@@ -96,19 +96,19 @@
         </main>
     </div>
 
-    <!-- 粉丝列表弹窗 -->
+    <!-- Followers List Modal -->
     <div id="followers-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
-                <h2 class="text-lg font-black text-gray-900">全部粉丝 (<span id="followers-total">83</span>)</h2>
+                <h2 class="text-lg font-black text-gray-900">All Followers (<span id="followers-total">83</span>)</h2>
                 <button id="followers-close-btn" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
             <div class="px-6 py-2 border-b border-gray-100 shrink-0">
                 <div class="flex items-center justify-between text-xs text-gray-500">
-                    <span>排序方式：当前排序条件每天更新一次，排序结果仅供参考。</span>
+                    <span>Sort: Sorting criteria updated daily, results are for reference only.</span>
                     <select id="followers-sort" class="border border-gray-200 rounded px-2 py-1 text-xs">
-                        <option value="time">粉丝数倒序</option>
-                        <option value="time-asc" selected>关注时间倒序</option>
+                        <option value="time">Followers (descending)</option>
+                        <option value="time-asc" selected>Follow time (newest first)</option>
                     </select>
                 </div>
             </div>
@@ -116,29 +116,31 @@
         </div>
     </div>
 
+<script src="api-config.js"></script>
 <script>
+var API = window.API_BASE || '';
 var sellerItems = [
-    { title: '包邮【全部包出】纸飞机折纸套装十款精选', price: 280, wants: 11, emoji: '✈️', bg: 'from-sky-200 to-blue-300' },
-    { title: '包邮【出闪器】可甜蜜 全新未拆', price: 1100, wants: 3, emoji: '📷', bg: 'from-amber-200 to-orange-300' },
-    { title: '包邮【闪】在马来西亚的铁路旅行时间60分钟/路径', price: 200, wants: 1, emoji: '🚂', bg: 'from-green-200 to-emerald-300' },
-    { title: '【出】出几瓶xvvip 时间60甜蜜/路径', price: 358, wants: 0, emoji: '🧴', bg: 'from-pink-200 to-rose-300' },
-    { title: '【出】耳机苹果原装门口129的5折 手机壳出', price: 230, wants: 0, emoji: '🎧', bg: 'from-violet-200 to-purple-300' },
-    { title: '机械键盘 Cherry红轴 九成新 带灯', price: 180, wants: 5, emoji: '⌨️', bg: 'from-red-200 to-rose-300' }
+    { title: 'Free Shipping - Paper Airplane Origami Kit 10 Designs', price: 280, wants: 11, emoji: '✈️', bg: 'from-sky-200 to-blue-300' },
+    { title: 'Free Shipping - Instant Camera Brand New Sealed', price: 1100, wants: 3, emoji: '📷', bg: 'from-amber-200 to-orange-300' },
+    { title: 'Free Shipping - Malaysia Railway Travel Pass 60min', price: 200, wants: 1, emoji: '🚂', bg: 'from-green-200 to-emerald-300' },
+    { title: 'Perfume Collection XVVIP 60ml Bottles', price: 358, wants: 0, emoji: '🧴', bg: 'from-pink-200 to-rose-300' },
+    { title: 'Apple Original Earbuds 50% Off + Phone Case Bundle', price: 230, wants: 0, emoji: '🎧', bg: 'from-violet-200 to-purple-300' },
+    { title: 'Mechanical Keyboard Cherry Red Switch 90% New w/ RGB', price: 180, wants: 5, emoji: '⌨️', bg: 'from-red-200 to-rose-300' }
 ];
 
 var reviews = [
-    { name: '快乐同学', avatar: 'K', text: '发货很快，东西和描述一致，沟通非常愉快！而且卖家非常细心包装得很严实，下次还会再来的！', time: '2026-04-08 14:30', rating: 'good', type: 'buyer' },
-    { name: '学霸小铺', avatar: 'X', text: '包装很好，没有损坏，非常满意。', time: '2026-04-06 09:15', rating: 'good', type: 'buyer' },
-    { name: '佛系卖家', avatar: 'F', text: '同学人很好，面交很准时。', time: '2026-04-04 18:45', rating: 'good', type: 'buyer' },
-    { name: '挑剔的鱼', avatar: 'T', text: '有点小瑕疵，但考虑到是二手价格整体还行吧。', time: '2026-03-28 11:20', rating: 'medium', type: 'buyer' }
+    { name: 'HappyStudent', avatar: 'H', text: 'Shipped fast, item matches the description, great communication! Seller packed it really carefully too. Will buy again!', time: '2026-04-08 14:30', rating: 'good', type: 'buyer' },
+    { name: 'StudyProShop', avatar: 'S', text: 'Well packaged, no damage, very satisfied.', time: '2026-04-06 09:15', rating: 'good', type: 'buyer' },
+    { name: 'ChillSeller', avatar: 'C', text: 'Nice person, showed up on time for the meetup.', time: '2026-04-04 18:45', rating: 'good', type: 'buyer' },
+    { name: 'PickyFish', avatar: 'P', text: 'Minor flaw, but considering the secondhand price it\'s acceptable overall.', time: '2026-03-28 11:20', rating: 'medium', type: 'buyer' }
 ];
 
 var followers = [
-    { name: 'PQQDJT', avatar: 'P', bio: '娱乐博主', fans: 14400, followTime: '2026-04-20 10:30', isFollowing: false },
-    { name: '炸了个鸡翅', avatar: '炸', bio: '娱乐博主 超话小主持人（橙子酱超话）', fans: 1580, followTime: '2026-04-18 15:20', isFollowing: true },
+    { name: 'PQQDJT', avatar: 'P', bio: 'Entertainment blogger', fans: 14400, followTime: '2026-04-20 10:30', isFollowing: false },
+    { name: 'FriedChickenWing', avatar: 'F', bio: 'Entertainment blogger, fan community host', fans: 1580, followTime: '2026-04-18 15:20', isFollowing: true },
     { name: 'znziaoedsbakise87172', avatar: 'Z', bio: '', fans: 1065, followTime: '2026-04-15 09:10', isFollowing: false },
-    { name: '不爱吃鱼_0527', avatar: '不', bio: '账号多人使用/小包/全包/没回请➕ Buaichiyu_0527（请备注来意不然不...', fans: 406, followTime: '2026-04-10 18:45', isFollowing: true },
-    { name: 'Ttthua0318', avatar: 'T', bio: '只发自己想发的 不看统道❌', fans: 342, followTime: '2026-04-05 12:30', isFollowing: false }
+    { name: 'NoFish_0527', avatar: 'N', bio: 'Shared account / DM for inquiries / please state your purpose', fans: 406, followTime: '2026-04-10 18:45', isFollowing: true },
+    { name: 'Ttthua0318', avatar: 'T', bio: 'Posts what I want, no unsolicited DMs', fans: 342, followTime: '2026-04-05 12:30', isFollowing: false }
 ];
 
 var grid = document.getElementById('seller-grid');
@@ -164,8 +166,8 @@ function renderItems() {
             '<div class="p-3">' +
                 '<p class="text-sm text-gray-800 leading-snug line-clamp-2">' + item.title + '</p>' +
                 '<div class="flex items-center justify-between mt-2">' +
-                    '<span class="text-purple-600 font-black">¥' + item.price + '</span>' +
-                    '<span class="text-xs text-gray-400">' + item.wants + '人想要</span>' +
+                    '<span class="text-purple-600 font-black">$' + item.price + '</span>' +
+                    '<span class="text-xs text-gray-400">' + item.wants + ' want this</span>' +
                 '</div>' +
             '</div>';
         card.addEventListener('click', function() {
@@ -186,27 +188,27 @@ function renderReviews(dataToRender) {
     reviewsList.innerHTML = '';
 
     if (dataToRender.length === 0) {
-        reviewsList.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">暂无符合条件的评价</div>';
+        reviewsList.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No reviews matching the criteria</div>';
         return;
     }
 
     dataToRender.forEach(function(r) {
-        // 评价标签
+        // Rating tag
         var ratingTag = '';
         var ratingIcon = '';
         if (r.rating === 'good') {
-            ratingTag = '<span class="inline-block bg-orange-50 text-orange-500 px-2 py-1 rounded text-xs font-medium">👍 好评</span>';
+            ratingTag = '<span class="inline-block bg-orange-50 text-orange-500 px-2 py-1 rounded text-xs font-medium">👍 Positive</span>';
             ratingIcon = '👍';
         } else if (r.rating === 'medium') {
-            ratingTag = '<span class="inline-block bg-blue-50 text-blue-500 px-2 py-1 rounded text-xs font-medium">😐 中评</span>';
+            ratingTag = '<span class="inline-block bg-blue-50 text-blue-500 px-2 py-1 rounded text-xs font-medium">😐 Neutral</span>';
             ratingIcon = '😐';
         } else if (r.rating === 'bad') {
-            ratingTag = '<span class="inline-block bg-red-50 text-red-500 px-2 py-1 rounded text-xs font-medium">👎 差评</span>';
+            ratingTag = '<span class="inline-block bg-red-50 text-red-500 px-2 py-1 rounded text-xs font-medium">👎 Negative</span>';
             ratingIcon = '👎';
         }
 
-        // 判断是买家还是卖家
-        var userType = r.type === 'buyer' ? '买家' : '卖家';
+        // Determine if buyer or seller
+        var userType = r.type === 'buyer' ? 'Buyer' : 'Seller';
 
         var div = document.createElement('div');
         div.className = 'bg-white rounded-xl p-4 shadow-sm border border-gray-100';
@@ -229,7 +231,7 @@ function renderReviews(dataToRender) {
     });
 }
 
-// 筛选逻辑
+// Filter logic
 var filterRadios = document.querySelectorAll('input[name="review_filter"]');
 filterRadios.forEach(function(radio) {
     radio.addEventListener('change', function(e) {
@@ -244,7 +246,7 @@ filterRadios.forEach(function(radio) {
     });
 });
 
-// Tab 切换逻辑
+// Tab switching logic
 tabs.forEach(function(tab) {
     tab.addEventListener('click', function() {
         tabs.forEach(function(t) {
@@ -275,7 +277,7 @@ tabs.forEach(function(tab) {
     });
 });
 
-// 粉丝列表弹窗
+// Followers list modal
 var followersModal = document.getElementById('followers-modal');
 var followersLink = document.getElementById('followers-link');
 var followersCloseBtn = document.getElementById('followers-close-btn');
@@ -288,8 +290,8 @@ function renderFollowers(data) {
         var div = document.createElement('div');
         div.className = 'flex items-start justify-between';
 
-        // 判断按钮文字
-        var buttonText = f.isFollowing ? '互相关注' : '回关';
+        // Determine button text
+        var buttonText = f.isFollowing ? 'Mutual Follow' : 'Follow Back';
         var buttonClass = f.isFollowing ? 'px-4 py-1.5 bg-purple-50 text-purple-600 rounded-full text-xs font-medium hover:bg-purple-100 transition shrink-0' : 'px-4 py-1.5 bg-purple-600 text-white rounded-full text-xs font-medium hover:bg-purple-700 transition shrink-0';
 
         div.innerHTML =
@@ -298,7 +300,7 @@ function renderFollowers(data) {
                 '<div class="flex flex-col">' +
                     '<span class="text-sm font-bold text-gray-800">' + f.name + '</span>' +
                     (f.bio ? '<p class="text-xs text-gray-500 mt-0.5 line-clamp-1">' + f.bio + '</p>' : '') +
-                    '<span class="text-[11px] text-gray-400 mt-1">粉丝 ' + f.fans + '</span>' +
+                    '<span class="text-[11px] text-gray-400 mt-1">Followers ' + f.fans + '</span>' +
                 '</div>' +
             '</div>' +
             '<button class="' + buttonClass + '">' + buttonText + '</button>';
@@ -343,30 +345,30 @@ followersSort.addEventListener('change', function(e) {
     renderFollowers(sortFollowers(e.target.value));
 });
 
-// 初始化
+// Initialize
 renderItems();
 updateFilterCounts();
 renderReviews(reviews);
 
-// 从URL获取卖家信息
+// Get seller info from URL
 var params = new URLSearchParams(window.location.search);
 var sellerName = params.get('seller');
 var sellerId = params.get('id') || params.get('sellerId');
 
-// 从API加载卖家信息和商品
+// Load seller info and items from API
 (async function() {
-    // 如果有sellerId，使用API加载
+    // If sellerId exists, load from API
     if (sellerId) {
         try {
-            var userResponse = await fetch('/api/user/' + sellerId, {
+            var userResponse = await fetch(API + '/api/users/' + sellerId, {
                 method: 'GET',
                 credentials: 'include'
             });
 
             if (userResponse.ok) {
                 var seller = await userResponse.json();
-                document.getElementById('seller-username').textContent = seller.username || seller.nickname || '卖家';
-                document.getElementById('seller-bio').textContent = seller.bio || '这个人很懒，什么都没写~';
+                document.getElementById('seller-username').textContent = seller.username || seller.nickname || 'Seller';
+                document.getElementById('seller-bio').textContent = seller.bio || 'This user hasn\'t written anything yet~';
                 document.getElementById('seller-followers').textContent = seller.followersCount || 0;
                 document.getElementById('seller-following').textContent = seller.followingCount || 0;
 
@@ -377,7 +379,7 @@ var sellerId = params.get('id') || params.get('sellerId');
                 }
             }
 
-            var itemsResponse = await fetch('/api/market/users/' + sellerId + '/items', {
+            var itemsResponse = await fetch(API + '/api/market/users/' + sellerId + '/items', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -401,7 +403,7 @@ var sellerId = params.get('id') || params.get('sellerId');
                 }
             }
         } catch (err) {
-            console.error('获取卖家信息失败:', err);
+            console.error('Failed to load seller info:', err);
         }
     } else if (sellerName) {
         document.getElementById('seller-username').textContent = sellerName;

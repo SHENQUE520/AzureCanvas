@@ -1,12 +1,72 @@
 # AzureCanvas
 AzureCanvas is a modern, playful, exquisite idea sharing forum website, which is built with native CSS, HTML and Javascript.
+<p align="center">
+   <img src="assets/logo2.jpg" height="350" alt="">
+   
+    
+</p>
+<div align="center">
+✨ AzureCanvas is a modern, playful, exquisite idea sharing forum website, which is built with native CSS, HTML and Javascript. ✨
+    <br>
+    <a href="https://www.oracle.com/java/technologies/downloads/">
+        <img src="https://forthebadge.com/badges/made-with-javascript.svg" alt="javascript"/>
+    </a>
+    <a href="">
+      <img src="https://forthebadge.com/badges/uses-html.svg" alt="USES HTML">
+    </a>
+    <a href="">
+      <img src="https://forthebadge.com/badges/validated-html5.svg" alt="HTML5">
+    </a>
+    <a href="">
+      <img src="https://forthebadge.com/badges/uses-css.svg" alt="HTML5">
+    </a>
+<a href="">
+      <img src="https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=develop+with&secondaryLabel=tailwind.css&primaryBGColor=%234ccdca&primaryTextColor=%23FFFFFF&secondaryBGColor=%2383cdfb&secondaryTextColor=%23ffffff&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&secondaryIcon=tailwindcss&secondaryIconColor=%23FFFFFF&secondaryIconSize=24&secondaryIconPosition=left" alt="Tailwind.css">
+    </a>
+  <a href="">
+      <img src="https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=3d+powered+by&secondaryLabel=three.js&primaryBGColor=%237ae2f0&primaryTextColor=%23FFFFFF&secondaryBGColor=%23389AD5&secondaryTextColor=%23FFFFFF&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&secondaryIcon=threedotjs&secondaryIconColor=%23FFFFFF&secondaryIconSize=24&secondaryIconPosition=left" alt="HTML5">
+    </a>
+    <a href="">
+      <img src="https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=Three.js+powered&secondaryLabel=animations&primaryBGColor=%23e27af0&primaryTextColor=%23FFFFFF&secondaryBGColor=%23389AD5&secondaryTextColor=%23FFFFFF&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&primaryIcon=threedotjs&primaryIconColor=%23FFFFFF&primaryIconSize=16&primaryIconPosition=left" alt="HTML5">
+    </a>
+    <a href="">
+      <img src="https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=with+Javascript&secondaryLabel=animations&primaryBGColor=%23f3d230&primaryTextColor=%23FFFFFF&secondaryBGColor=%23389AD5&secondaryTextColor=%23FFFFFF&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&primaryIcon=javascript&primaryIconColor=%23FFFFFF&primaryIconSize=16&primaryIconPosition=left" alt="HTML5">
+    </a>
+    <a href="">
+        <img src="https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=MADE+WITH&secondaryLabel=%E2%9D%A4%EF%B8%8E&primaryBGColor=%23ff7f7f&secondaryBGColor=%23ff6b6b&primaryTextColor=%23FFFFFF&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryTextColor=%23FFFFFF&secondaryFontSize=16&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase" alt="MADE WITH LOVE">
+    </a>
+    <a href="">
+        <img src="https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=BUILT&secondaryLabel=WITH+HEART%21&primaryBGColor=%23ae3eb6&secondaryBGColor=%23d99cdd&primaryTextColor=%23FFFFFF&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryTextColor=%23000000&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&primaryIcon=uber&primaryIconColor=%23000000&primaryIconSize=16&primaryIconPosition=left" alt="BUILT WITH HEARTS">
+    </a>
+    <br>
+    <img src="https://img.shields.io/github/license/NeonAngelThreads/AzureCanvas?style=for-the-badge" alt="license">
+</div>
+
+
 
 ## Features
 **Implemented Features:**
 - `Aero Effect`
+- `Immersive 3D UI/UX`
+- `Tailwind.css Styles`
+- `Glass-Mophor & Liquid Glass Effect`
+- `GSAP & Three.js`
+- `GLSL Shader Empowered`
+- `3D Interactions`
+- `Interactive Designs`
 - `Native CSS Scroll Animation`
 - `JavaScript Animation`
 - `Canvas Rendered Vision Effect`.
+
+## Functionality
+* `Azure 3D Skyland Landscape`
+* `Azure 3D Futuristic Cube`
+* `Azure 3D Login Tunnel`
+* `Treehole`
+  * `Treehole Pet`
+* `Azure Story Map`
+* `Azure Trade Marketplace`
+* `AzureCanvas About Page`
 
 
 ## APIs
@@ -123,6 +183,7 @@ AND status = 'PUBLISHED'
 AND likes_count > 100;
 ```
 **预期输出 (验证索引生效):**
+
 | id | select_type | table | partitions | type | possible_keys | key | key_len | ref | rows | filtered | Extra |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | 1 | SIMPLE | story_map_combined | NULL | range | idx_location_code_status_likes | idx_location_code_status_likes | 288 | NULL | 10 | 100.00 | Using index condition |
@@ -130,6 +191,9 @@ AND likes_count > 100;
 ### 3. 性能验证
 合并后单表查询减少了多表 JOIN 开销，在 10k QPS 压力测试下，95th 延迟降低约 15%，符合性能要求。
 
+
+| HTTP Method | Route | Description | Request Body (Example) | Response Body (Example) |
+|:-----------:|------:|------------:|----------------------:|------------------------:|
 | `GET` | `/api/storymaps/search` | 搜索故事地图（Elasticsearch） | `?keyword=校园` | `[ { "storyMapId": "uuid", "title": "高亮标题...", "description": "高亮描述...", ... }, ... ]` |
 | `GET` | `/api/storymaps/update` | 同步数据到Elasticsearch | N/A | `"数据更新成功"` 或 `"数据更新失败: ..."` |
 | `GET` | `/api/storymaps/users/me/storymaps` | 获取当前用户的故事地图 | `?page=1&limit=10` | `[ { "storyMapId": "uuid", "title": "...", ... }, ... ]` |
@@ -180,7 +244,17 @@ First, clone the project with git. Run following command in terminal:
 ```bash
 git clone https://github.com/NeonAngelThreads/AzureCanvas.git
 ```
-Directly open `index.html` inside the `\src\ ` folder.
+Open the Terminal, Run:
+```bash
+mvm app start
+```
+Or Alternately,
+Download the latest version build of AzureCanvas JAR on Release:
+
+Run:
+```bash
+java -jar AzureCanvas-Backend-[VERSION].jar
+```
 
 ## Community
 - Encountered a bug? issues and suggestions are welcome!  

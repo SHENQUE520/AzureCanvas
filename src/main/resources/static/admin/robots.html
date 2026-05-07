@@ -1,440 +1,424 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>机器人管理 - MUST星河论坛</title>
+    <title>Robot Management - AZURECANVAS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../css/color_scheme/colors.dark_mode.css">
-    <link rel="stylesheet" href="../css/color_scheme/colors.primary.css">
-    <link rel="stylesheet" href="../css/app.major.css">
-    <link rel="stylesheet" href="../css/attributes.texts.css">
-    <link rel="stylesheet" href="../css/botpage/page.bots.major.css">
+    <link rel="stylesheet" href="../css/robots.css">
 </head>
 
-<body class="light-mode">
-    <div class="admin-container">
-        <nav class="breadcrumb">
-            <a href="../index.html">首页</a>
-            <span class="separator">></span>
-            <span>机器人管理</span>
-        </nav>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-cube"></i> AZURECANVAS</h2>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Management</div>
+            <a class="nav-item active" href="#" onclick="showPage('robots')">
+                <i class="fas fa-robot"></i> Robots
+                <span class="badge" id="robotCount">5</span>
+            </a>
+            <a class="nav-item" href="#" onclick="showPage('dashboard')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a class="nav-item" href="#" onclick="showPage('logs')">
+                <i class="fas fa-history"></i> Activity Logs
+            </a>
+            <a class="nav-item" href="event.html">
+                <i class="fas fa-calendar-alt"></i> Events
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Modules</div>
+            <a class="nav-item" href="../treehole/index.html">
+                <i class="fas fa-comment"></i> Tree Hole
+            </a>
+            <a class="nav-item" href="../azure_trade/trade.html">
+                <i class="fas fa-store"></i> Trade
+            </a>
+            <a class="nav-item" href="../storymap/index.html">
+                <i class="fas fa-map"></i> Story Map
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">System</div>
+            <a class="nav-item" href="../index.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a class="nav-item" href="#" id="logoutNav">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
 
-        <div class="header">
-            <h1><i class="fas fa-robot"></i> 机器人管理</h1>
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i> 退出登录
+    <!-- Robots Page -->
+    <div class="main-content" id="page-robots">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total"><i class="fas fa-robot"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalRobots">5</h3>
+                    <p>Total Robots</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon active"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="activeRobots">4</h3>
+                    <p>Active Robots</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon posts"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalPosts">1,234</h3>
+                    <p>Total Posts</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon replies"><i class="fas fa-reply"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalReplies">3,567</h3>
+                    <p>Total Replies</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search robots...">
+            </div>
+            <select class="filter-select" id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+            <button class="btn btn-refresh" id="refreshBtn" onclick="loadRobots()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="btn btn-batch" id="batchDeleteBtn" onclick="batchDelete()" disabled>
+                <i class="fas fa-trash"></i> Delete Selected (<span id="selectedCount">0</span>)
             </button>
         </div>
 
-        <button class="add-robot-btn" id="addRobotBtn">
-            <i class="fas fa-plus"></i> 添加机器人
-        </button>
-
-        <button class="floating-add-btn" id="floatingAddRobotBtn">
-            <i class="fas fa-plus"></i>
-        </button>
-
-        <div class="message message-success" id="successMessage"></div>
-        <div class="message message-error" id="errorMessage"></div>
+        <div class="message" id="message"></div>
 
         <div class="robot-list" id="robotList">
+            <div class="loading-state">
+                <i class="fas fa-spinner loading-spinner"></i>
+                <p>Loading robots...</p>
+            </div>
+        </div>
+
+        <div class="logs-section">
+            <h3><i class="fas fa-history"></i> Recent Activity</h3>
+            <div class="logs-list" id="logsList">
+                <div class="log-item">
+                    <span class="log-time">--:--</span>
+                    <span class="log-robot">System</span>
+                    <span class="log-action">No recent activity</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div class="main-content page-hidden" id="page-dashboard">
+        <h1 class="page-title"><i class="fas fa-chart-line"></i> Dashboard</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total"><i class="fas fa-robot"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalRobots">5</h3>
+                    <p>Total Robots</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon active"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="activeRobots">4</h3>
+                    <p>Active Robots</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon posts"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalPosts">1,234</h3>
+                    <p>Total Posts</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon replies"><i class="fas fa-reply"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalReplies">3,567</h3>
+                    <p>Total Replies</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h2>Robot Activity (Last 7 Days)</h2>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-bar"></i>
+                    <p>Activity Chart</p>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <span class="activity-date">May 01</span>
+                        <div class="activity-bar" style="width: 70%"></div>
+                        <span class="activity-count">87 posts</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-date">May 02</span>
+                        <div class="activity-bar" style="width: 45%"></div>
+                        <span class="activity-count">56 posts</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-date">May 03</span>
+                        <div class="activity-bar" style="width: 90%"></div>
+                        <span class="activity-count">112 posts</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-date">May 04</span>
+                        <div class="activity-bar" style="width: 60%"></div>
+                        <span class="activity-count">75 posts</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-date">May 05</span>
+                        <div class="activity-bar" style="width: 80%"></div>
+                        <span class="activity-count">99 posts</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-date">May 06</span>
+                        <div class="activity-bar" style="width: 50%"></div>
+                        <span class="activity-count">62 posts</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-date">May 07</span>
+                        <div class="activity-bar" style="width: 75%"></div>
+                        <span class="activity-count">93 posts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Top Performing Robots</h2>
+                <div class="robot-rank-list">
+                    <div class="robot-rank-item">
+                        <span class="rank">#1</span>
+                        <div class="robot-rank-avatar">A</div>
+                        <div class="robot-rank-info">
+                            <div class="robot-rank-name">Alice</div>
+                            <div class="robot-rank-stats">456 posts • 1,234 replies</div>
+                        </div>
+                        <span class="robot-rank-score">98%</span>
+                    </div>
+                    <div class="robot-rank-item">
+                        <span class="rank">#2</span>
+                        <div class="robot-rank-avatar">B</div>
+                        <div class="robot-rank-info">
+                            <div class="robot-rank-name">Bob</div>
+                            <div class="robot-rank-stats">389 posts • 987 replies</div>
+                        </div>
+                        <span class="robot-rank-score">92%</span>
+                    </div>
+                    <div class="robot-rank-item">
+                        <span class="rank">#3</span>
+                        <div class="robot-rank-avatar">C</div>
+                        <div class="robot-rank-info">
+                            <div class="robot-rank-name">Charlie</div>
+                            <div class="robot-rank-stats">298 posts • 845 replies</div>
+                        </div>
+                        <span class="robot-rank-score">88%</span>
+                    </div>
+                    <div class="robot-rank-item">
+                        <span class="rank">#4</span>
+                        <div class="robot-rank-avatar">D</div>
+                        <div class="robot-rank-info">
+                            <div class="robot-rank-name">Diana</div>
+                            <div class="robot-rank-stats">198 posts • 498 replies</div>
+                        </div>
+                        <span class="robot-rank-score">81%</span>
+                    </div>
+                    <div class="robot-rank-item">
+                        <span class="rank">#5</span>
+                        <div class="robot-rank-avatar">E</div>
+                        <div class="robot-rank-info">
+                            <div class="robot-rank-name">Edward</div>
+                            <div class="robot-rank-stats">123 posts • 345 replies</div>
+                        </div>
+                        <span class="robot-rank-score">75%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h2>System Health</h2>
+                <div class="health-grid">
+                    <div class="health-item">
+                        <i class="fas fa-server"></i>
+                        <div class="health-label">Server Status</div>
+                        <div class="health-value healthy">Healthy</div>
+                    </div>
+                    <div class="health-item">
+                        <i class="fas fa-database"></i>
+                        <div class="health-label">Database</div>
+                        <div class="health-value healthy">Connected</div>
+                    </div>
+                    <div class="health-item">
+                        <i class="fas fa-memory"></i>
+                        <div class="health-label">Memory</div>
+                        <div class="health-value warning">68% used</div>
+                    </div>
+                    <div class="health-item">
+                        <i class="fas fa-cpu"></i>
+                        <div class="health-label">CPU</div>
+                        <div class="health-value healthy">45% used</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="showPage('robots'); openModal();">
+                        <i class="fas fa-plus-circle"></i>
+                        Add New Robot
+                    </button>
+                    <button class="quick-action-btn" onclick="generateRandomPost()">
+                        <i class="fas fa-random"></i>
+                        Generate Random Post
+                    </button>
+                    <button class="quick-action-btn" onclick="toggleAllRobots()">
+                        <i class="fas fa-power-off"></i>
+                        Toggle All Robots
+                    </button>
+                    <button class="quick-action-btn" onclick="refreshAllData()">
+                        <i class="fas fa-sync"></i>
+                        Refresh All Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Logs Page -->
+    <div class="main-content page-hidden" id="page-logs">
+        <h1 class="page-title"><i class="fas fa-history"></i> Activity Logs</h1>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="logSearchInput" placeholder="Search logs...">
+            </div>
+            <select class="filter-select" id="logTypeFilter">
+                <option value="all">All Types</option>
+                <option value="post">Posts</option>
+                <option value="reply">Replies</option>
+                <option value="robot">Robot Actions</option>
+            </select>
+            <button class="btn btn-refresh" onclick="loadLogs()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+
+        <div class="logs-full-section">
+            <div class="logs-header">
+                <h2>Recent Activities</h2>
+                <span class="logs-count">Showing 25 of 250 logs</span>
+            </div>
+            <div class="logs-full-list" id="logsFullList"></div>
+        </div>
+    </div>
+
+    <!-- Admin Welcome Notice Modal -->
+    <div class="modal" id="welcomeModal">
+        <div class="modal-content welcome-modal">
+            <div class="welcome-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h2>Welcome to Admin Dashboard</h2>
+            <p class="welcome-text">You have successfully entered the AzureCanvas admin background. Manage your robots
+                and monitor system activities.</p>
+            <div class="welcome-time">
+                <i class="far fa-clock"></i>
+                <span id="currentTime"></span>
+            </div>
+            <button class="btn btn-submit" onclick="closeWelcomeModal()">
+                <i class="fas fa-check"></i> Got it
+            </button>
         </div>
     </div>
 
     <div class="modal" id="robotModal">
         <div class="modal-content">
-            <h2 id="modalTitle"><i class="fas fa-robot"></i> 添加机器人</h2>
+            <h2 id="modalTitle"><i class="fas fa-robot"></i> Add Robot</h2>
             <form id="robotForm">
                 <input type="hidden" id="robotId">
 
                 <div class="form-group">
-                    <label class="form-label" for="robotName">机器人名称</label>
-                    <input type="text" class="form-input" id="robotName" placeholder="输入机器人名称" required>
+                    <label for="robotName">Robot Name *</label>
+                    <input type="text" id="robotName" placeholder="Enter robot name" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="robotAvatar">头像URL</label>
-                    <input type="text" class="form-input" id="robotAvatar" placeholder="输入头像URL（可选）">
+                    <label for="robotAvatar">Avatar URL</label>
+                    <input type="text" id="robotAvatar" placeholder="https://example.com/avatar.png"
+                        oninput="previewAvatar()">
+                    <div class="avatar-preview">
+                        <div class="preview-img" id="avatarPreview">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span>Preview</span>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="activeTimeStart">活跃开始时间</label>
-                    <input type="time" class="form-input" id="activeTimeStart">
+                    <label for="activeTimeStart">Active Start Time</label>
+                    <input type="time" id="activeTimeStart" value="08:00">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="activeTimeEnd">活跃结束时间</label>
-                    <input type="time" class="form-input" id="activeTimeEnd">
+                    <label for="activeTimeEnd">Active End Time</label>
+                    <input type="time" id="activeTimeEnd" value="22:00">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="postFrequency">发帖频率（分钟）</label>
-                    <input type="number" class="form-input" id="postFrequency" min="1" placeholder="60">
+                    <label for="postFrequency">Post Frequency (minutes)</label>
+                    <input type="number" id="postFrequency" value="60" min="1">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="replyFrequency">回复频率（分钟）</label>
-                    <input type="number" class="form-input" id="replyFrequency" min="1" placeholder="30">
+                    <label for="replyFrequency">Reply Frequency (minutes)</label>
+                    <input type="number" id="replyFrequency" value="30" min="1">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="interests">感兴趣的话题（逗号分隔）</label>
-                    <input type="text" class="form-input" id="interests" placeholder="校园生活,学习交流,兴趣爱好">
+                    <label for="interests">Interested Topics (comma separated)</label>
+                    <input type="text" id="interests" placeholder="Campus Life,Study,Technology">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <input type="checkbox" id="enabled"> 启用机器人
-                    </label>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="enabled" checked>
+                    <label for="enabled">Enable Robot</label>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" id="cancelBtn">取消</button>
-                    <button type="submit" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-submit">Save</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        // API 基础地址配置
-        // 开发环境指向后端服务器
-        const API_BASE_URL = 'https://api.szsummer.com/api/robots';
-        let token = null;
-
-        function checkLogin() {
-            try {
-                token = localStorage.getItem('token');
-            } catch (e) {
-                console.warn('localStorage 不可用:', e);
-            }
-            if (!token) {
-                window.location.href = '../login/index.html';
-                return false;
-            }
-            return true;
-        }
-
-        async function apiRequest(url, options = {}) {
-            const defaultOptions = {
-                method: 'GET', // 默认使用 GET 方法
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            // 只有当 token 存在时才添加认证头
-            if (token) {
-                defaultOptions.headers['Authorization'] = `Bearer ${token}`;
-            }
-            const mergedOptions = { ...defaultOptions, ...options };
-            const response = await fetch(url, mergedOptions);
-            if (response.status === 401) {
-                window.location.href = '../login/index.html';
-                return null;
-            }
-            return response;
-        }
-
-        function showLoadingState() {
-            const robotList = document.getElementById('robotList');
-            robotList.innerHTML = `
-                <div class="loading-state">
-                    <i class="fas fa-spinner loading-spinner"></i>
-                    <p>正在加载机器人数据...</p>
-                </div>
-            `;
-        }
-
-        function showErrorState() {
-            const robotList = document.getElementById('robotList');
-            robotList.innerHTML = `
-                <div class="error-state">
-                    <i class="fas fa-exclamation-triangle error-state-icon"></i>
-                    <h2>加载失败</h2>
-                    <p>无法获取机器人数据，请检查网络连接</p>
-                    <button class="btn btn-primary" onclick="loadRobots()">
-                        <i class="fas fa-redo"></i> 点击重试
-                    </button>
-                </div>
-            `;
-        }
-
-        function showEmptyState() {
-            const robotList = document.getElementById('robotList');
-            robotList.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-robot empty-state-icon"></i>
-                    <h2>还没有添加任何机器人</h2>
-                    <p>机器人可自动发布内容、回复评论，支持自定义配置运行规则。<br>点击「添加机器人」开始创建吧～</p>
-                    <button class="add-robot-btn" onclick="document.getElementById('addRobotBtn').click()">
-                        <i class="fas fa-plus"></i> 添加机器人
-                    </button>
-                    <div class="empty-state-secondary-actions">
-                        <button class="btn-outline" onclick="showInfoTooltip()">
-                            <i class="fas fa-info-circle"></i> 了解更多
-                        </button>
-                        <button class="btn-outline">
-                            <i class="fas fa-file-import"></i> 导入模板
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showInfoTooltip() {
-            alert('机器人功能说明：\n\n• 自动发帖：按照设定的频率发布话题\n• 自动回复：对新帖子进行智能回复\n• 定时运行：在指定时间段内活跃\n• 兴趣匹配：根据设定的话题进行内容创作');
-        }
-
-        async function loadRobots() {
-            showLoadingState();
-            try {
-                const response = await apiRequest(API_BASE_URL);
-                if (!response) return;
-
-                const robots = await response.json();
-                const robotList = document.getElementById('robotList');
-                robotList.innerHTML = '';
-
-                if (robots.length === 0) {
-                    showEmptyState();
-                    return;
-                }
-
-                robots.forEach(robot => {
-                    const robotItem = document.createElement('div');
-                    robotItem.className = 'robot-item';
-                    robotItem.innerHTML = `
-                        <div class="robot-info">
-                            <div class="robot-avatar">
-                                ${robot.name.charAt(0)}
-                            </div>
-                            <div class="robot-details">
-                                <h3>${robot.name}</h3>
-                                <p>活跃时间: ${robot.activeTimeStart || '未设置'} - ${robot.activeTimeEnd || '未设置'}</p>
-                                <p>发帖频率: ${robot.postFrequency || 0}分钟 | 回复频率: ${robot.replyFrequency || 0}分钟</p>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                            <span class="status-badge ${robot.enabled ? 'status-active' : 'status-inactive'}">
-                                ${robot.enabled ? '活跃' : '禁用'}
-                            </span>
-                            <div class="robot-actions">
-                                <button class="btn btn-secondary" onclick="editRobot(${robot.id})">
-                                    <i class="fas fa-edit"></i> 编辑
-                                </button>
-                                <button class="btn ${robot.enabled ? 'btn-danger' : 'btn-primary'}" onclick="toggleRobot(${robot.id})">
-                                    ${robot.enabled ? '<i class="fas fa-ban"></i> 禁用' : '<i class="fas fa-play"></i> 启用'}
-                                </button>
-                                <button class="btn btn-secondary" onclick="generatePost(${robot.id})">
-                                    <i class="fas fa-pen"></i> 发帖
-                                </button>
-                                <button class="btn btn-secondary" onclick="generateReply(${robot.id})">
-                                    <i class="fas fa-reply"></i> 回复
-                                </button>
-                                <button class="btn btn-danger" onclick="deleteRobot(${robot.id})">
-                                    <i class="fas fa-trash"></i> 删除
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    robotList.appendChild(robotItem);
-                });
-            } catch (error) {
-                console.error('加载机器人列表失败:', error);
-                showErrorState();
-            }
-        }
-
-        function showSuccess(message) {
-            const successMessage = document.getElementById('successMessage');
-            successMessage.textContent = message;
-            successMessage.style.display = 'block';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000);
-        }
-
-        function showError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 3000);
-        }
-
-        function openModal() {
-            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-robot"></i> 添加机器人';
-            document.getElementById('robotId').value = '';
-            document.getElementById('robotName').value = '';
-            document.getElementById('robotAvatar').value = '';
-            document.getElementById('activeTimeStart').value = '08:00';
-            document.getElementById('activeTimeEnd').value = '22:00';
-            document.getElementById('postFrequency').value = '60';
-            document.getElementById('replyFrequency').value = '30';
-            document.getElementById('interests').value = '校园生活,学习交流,兴趣爱好';
-            document.getElementById('enabled').checked = true;
-            document.getElementById('robotModal').style.display = 'flex';
-        }
-
-        document.getElementById('addRobotBtn').addEventListener('click', openModal);
-        document.getElementById('floatingAddRobotBtn').addEventListener('click', openModal);
-
-        async function editRobot(id) {
-            try {
-                const response = await apiRequest(`${API_BASE_URL}/${id}`);
-                if (!response) return;
-
-                const robot = await response.json();
-                if (robot) {
-                    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> 编辑机器人';
-                    document.getElementById('robotId').value = robot.id;
-                    document.getElementById('robotName').value = robot.name;
-                    document.getElementById('robotAvatar').value = robot.avatar || '';
-                    document.getElementById('activeTimeStart').value = robot.activeTimeStart || '08:00';
-                    document.getElementById('activeTimeEnd').value = robot.activeTimeEnd || '22:00';
-                    document.getElementById('postFrequency').value = robot.postFrequency || 60;
-                    document.getElementById('replyFrequency').value = robot.replyFrequency || 30;
-                    document.getElementById('interests').value = robot.interests || '';
-                    document.getElementById('enabled').checked = robot.enabled;
-                    document.getElementById('robotModal').style.display = 'flex';
-                } else {
-                    showError('机器人不存在');
-                }
-            } catch (error) {
-                console.error('获取机器人信息失败:', error);
-                showError('获取失败，请稍后重试');
-            }
-        }
-
-        document.getElementById('robotForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('robotId').value;
-            const robot = {
-                name: document.getElementById('robotName').value,
-                avatar: document.getElementById('robotAvatar').value,
-                activeTimeStart: document.getElementById('activeTimeStart').value,
-                activeTimeEnd: document.getElementById('activeTimeEnd').value,
-                postFrequency: parseInt(document.getElementById('postFrequency').value),
-                replyFrequency: parseInt(document.getElementById('replyFrequency').value),
-                interests: document.getElementById('interests').value,
-                enabled: document.getElementById('enabled').checked
-            };
-
-            try {
-                let response;
-                if (id) {
-                    response = await apiRequest(`${API_BASE_URL}/${id}`, {
-                        method: 'PUT',
-                        body: JSON.stringify(robot)
-                    });
-                } else {
-                    response = await apiRequest(API_BASE_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(robot)
-                    });
-                }
-
-                if (response && response.ok) {
-                    document.getElementById('robotModal').style.display = 'none';
-                    loadRobots();
-                    showSuccess(id ? '机器人更新成功' : '机器人添加成功');
-                } else {
-                    showError('保存失败，请稍后重试');
-                }
-            } catch (error) {
-                console.error('保存机器人失败:', error);
-                showError('保存失败，请稍后重试');
-            }
-        });
-
-        document.getElementById('cancelBtn').addEventListener('click', () => {
-            document.getElementById('robotModal').style.display = 'none';
-        });
-
-        async function toggleRobot(id) {
-            try {
-                const response = await apiRequest(`${API_BASE_URL}/${id}/toggle`, {
-                    method: 'PUT'
-                });
-                if (response && response.ok) {
-                    loadRobots();
-                    showSuccess('状态更新成功');
-                } else {
-                    showError('操作失败，请稍后重试');
-                }
-            } catch (error) {
-                console.error('切换状态失败:', error);
-                showError('操作失败，请稍后重试');
-            }
-        }
-
-        async function generatePost(id) {
-            try {
-                const response = await apiRequest(`${API_BASE_URL}/${id}/generate-post`, {
-                    method: 'POST'
-                });
-                if (response && response.ok) {
-                    showSuccess('帖子生成成功');
-                } else {
-                    showError('生成失败，请稍后重试');
-                }
-            } catch (error) {
-                console.error('生成帖子失败:', error);
-                showError('生成失败，请稍后重试');
-            }
-        }
-
-        async function generateReply(id) {
-            try {
-                const response = await apiRequest(`${API_BASE_URL}/${id}/generate-reply`, {
-                    method: 'POST'
-                });
-                if (response && response.ok) {
-                    showSuccess('回复生成成功');
-                } else {
-                    showError('生成失败，请稍后重试');
-                }
-            } catch (error) {
-                console.error('生成回复失败:', error);
-                showError('生成失败，请稍后重试');
-            }
-        }
-
-        async function deleteRobot(id) {
-            if (confirm('确定要删除这个机器人吗？')) {
-                try {
-                    const response = await apiRequest(`${API_BASE_URL}/${id}`, {
-                        method: 'DELETE'
-                    });
-                    if (response && response.ok) {
-                        loadRobots();
-                        showSuccess('机器人删除成功');
-                    } else {
-                        showError('删除失败，请稍后重试');
-                    }
-                } catch (error) {
-                    console.error('删除机器人失败:', error);
-                    showError('删除失败，请稍后重试');
-                }
-            }
-        }
-
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('token');
-            window.location.href = '../login/index.html';
-        });
-
-        window.onload = function () {
-            if (checkLogin()) {
-                loadRobots();
-            }
-        };
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="../js/effects/mouse-ripple.js"></script>
+    <script src="../js/robots.js"></script>
 </body>
 
 </html>

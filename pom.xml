@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.angellock.impl</groupId>
 	<artifactId>AzureCanvas-Backend</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.2-RELEASE</version>
 	<name>AzureCanvas</name>
 	<description>spring</description>
 	<url/>

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的文章 - AzureTrade</title>
+    <title>My Articles - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800">
 
     <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
         <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
-            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+            <span>Trade</span><span class="text-purple-700">AzureTrade</span>
         </div>
         <div class="ml-auto flex items-center space-x-4">
-            <a href="profile.html" class="text-sm text-gray-500 hover:text-purple-600">← 返回主页</a>
+            <a href="profile.html" class="text-sm text-gray-500 hover:text-purple-600">&larr; Back to Profile</a>
         </div>
     </nav>
 
@@ -21,58 +21,58 @@
 
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h1 class="text-xl font-black text-gray-900">📝 我的文章</h1>
-                <p class="text-xs text-gray-400 mt-1">管理你发布的所有文章投稿</p>
+                <h1 class="text-xl font-black text-gray-900">My Articles</h1>
+                <p class="text-xs text-gray-400 mt-1">Manage all your published articles</p>
             </div>
             <button id="new-article-btn" class="px-5 py-2.5 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition shadow-lg">
-                ✏️ 写文章
+                Write Article
             </button>
         </div>
 
         <div class="flex gap-2 mb-4">
-            <button class="article-filter px-4 py-1.5 bg-purple-100 text-purple-700 border border-purple-200 rounded-full text-xs font-bold transition" data-filter="all">全部</button>
-            <button class="article-filter px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs transition hover:bg-gray-50" data-filter="published">已发布</button>
-            <button class="article-filter px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs transition hover:bg-gray-50" data-filter="draft">草稿</button>
+            <button class="article-filter px-4 py-1.5 bg-purple-100 text-purple-700 border border-purple-200 rounded-full text-xs font-bold transition" data-filter="all">All</button>
+            <button class="article-filter px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs transition hover:bg-gray-50" data-filter="published">Published</button>
+            <button class="article-filter px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs transition hover:bg-gray-50" data-filter="draft">Drafts</button>
         </div>
 
         <div id="article-list" class="space-y-4"></div>
 
         <div id="empty-state" class="hidden text-center py-20">
             <div class="text-5xl mb-4">📝</div>
-            <p class="text-gray-400 text-sm">你还没有投稿文章</p>
-            <p class="text-gray-300 text-xs mt-1">写一篇文章分享你的校园见闻吧~</p>
+            <p class="text-gray-400 text-sm">No articles yet</p>
+            <p class="text-gray-300 text-xs mt-1">Write an article to share your campus experiences</p>
         </div>
     </div>
 
-    <!-- 写文章弹窗 -->
+    <!-- Write Article Modal -->
     <div id="write-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-2xl w-full max-w-2xl mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
-                <h2 class="text-lg font-black text-gray-900">✏️ 写文章</h2>
+                <h2 class="text-lg font-black text-gray-900">Write Article</h2>
                 <button id="write-close-btn" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
             <div class="px-6 py-5 space-y-4 overflow-y-auto flex-1">
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">文章标题</label>
-                    <input type="text" id="article-title-input" placeholder="输入标题..." class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
+                    <label class="block text-sm text-gray-600 mb-1.5">Article Title</label>
+                    <input type="text" id="article-title-input" placeholder="Enter title..." class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">分类</label>
+                    <label class="block text-sm text-gray-600 mb-1.5">Category</label>
                     <select id="article-category" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
-                        <option value="校园生活">校园生活</option>
-                        <option value="学习分享">学习分享</option>
-                        <option value="交易攻略">交易攻略</option>
-                        <option value="二手评测">二手评测</option>
-                        <option value="其他">其他</option>
+                        <option value="Campus Life">Campus Life</option>
+                        <option value="Study Tips">Study Tips</option>
+                        <option value="Trading Guide">Trading Guide</option>
+                        <option value="Product Reviews">Product Reviews</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">正文内容</label>
-                    <textarea id="article-content-input" rows="10" placeholder="写下你想分享的内容..." class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none resize-none transition"></textarea>
+                    <label class="block text-sm text-gray-600 mb-1.5">Content</label>
+                    <textarea id="article-content-input" rows="10" placeholder="Write what you want to share..." class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none resize-none transition"></textarea>
                 </div>
                 <div class="flex gap-3 pt-2">
-                    <button id="save-draft-btn" class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-200 transition">存为草稿</button>
-                    <button id="publish-article-btn" class="flex-1 py-3 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition shadow-lg">发布文章</button>
+                    <button id="save-draft-btn" class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-200 transition">Save as Draft</button>
+                    <button id="publish-article-btn" class="flex-1 py-3 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition shadow-lg">Publish Article</button>
                 </div>
             </div>
         </div>
@@ -81,24 +81,24 @@
 <script>
 var articles = JSON.parse(localStorage.getItem('myArticles') || '[]');
 
-// 示例数据（首次访问）
+// Sample data (first visit)
 if (articles.length === 0) {
     articles = [
         {
-            id: 'a1', title: '校园二手交易避坑指南：这5个技巧一定要知道',
-            category: '交易攻略', content: '作为一个在校园里交易了两年多的老手，总结了以下几点经验：第一，一定要当面验货；第二，价格过低的要小心；第三，优先选择信用分高的卖家...',
+            id: 'a1', title: 'Campus Second-Hand Trading Tips: 5 Things You Must Know',
+            category: 'Trading Guide', content: 'As a veteran campus trader for over two years, here are my key takeaways: First, always inspect items in person; Second, be cautious of prices that are too low; Third, prioritize sellers with high credit scores...',
             status: 'published', likes: 28, views: 356, comments: 12,
             createdAt: '2026-04-20 14:30'
         },
         {
-            id: 'a2', title: '期末复习神器推荐：这些教辅资料真的有用',
-            category: '学习分享', content: '期末将至，推荐几本我觉得非常好用的教辅资料，尤其是高数和线代方面的...',
+            id: 'a2', title: 'Final Exam Study Resources: These Materials Really Help',
+            category: 'Study Tips', content: 'Finals are approaching, here are some study materials I found extremely useful, especially for calculus and linear algebra...',
             status: 'published', likes: 15, views: 198, comments: 6,
             createdAt: '2026-04-15 10:00'
         },
         {
-            id: 'a3', title: '宿舍好物分享（未完成）',
-            category: '校园生活', content: '整理了一些宿舍里非常实用的小物件...',
+            id: 'a3', title: 'Dorm Essentials (Unfinished)',
+            category: 'Campus Life', content: 'A collection of very practical items for dorm life...',
             status: 'draft', likes: 0, views: 0, comments: 0,
             createdAt: '2026-04-22 18:15'
         }
@@ -126,15 +126,15 @@ function renderArticles(filter) {
 
     filtered.forEach(function(a) {
         var statusBadge = a.status === 'published'
-            ? '<span class="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-bold">已发布</span>'
-            : '<span class="text-[10px] bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded-full font-bold">草稿</span>';
+            ? '<span class="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-bold">Published</span>'
+            : '<span class="text-[10px] bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded-full font-bold">Draft</span>';
 
         var categoryColors = {
-            '校园生活': 'bg-blue-50 text-blue-600',
-            '学习分享': 'bg-green-50 text-green-600',
-            '交易攻略': 'bg-orange-50 text-orange-600',
-            '二手评测': 'bg-purple-50 text-purple-600',
-            '其他': 'bg-gray-50 text-gray-600'
+            'Campus Life': 'bg-blue-50 text-blue-600',
+            'Study Tips': 'bg-green-50 text-green-600',
+            'Trading Guide': 'bg-orange-50 text-orange-600',
+            'Product Reviews': 'bg-purple-50 text-purple-600',
+            'Other': 'bg-gray-50 text-gray-600'
         };
         var catClass = categoryColors[a.category] || 'bg-gray-50 text-gray-600';
 
@@ -150,23 +150,23 @@ function renderArticles(filter) {
                     '<h3 class="text-sm font-bold text-gray-900 mb-1.5 line-clamp-1">' + a.title + '</h3>' +
                     '<p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">' + a.content + '</p>' +
                     '<div class="flex items-center gap-4 mt-3 text-xs text-gray-400">' +
-                        '<span>📅 ' + a.createdAt + '</span>' +
-                        (a.status === 'published' ? '<span>👁 ' + a.views + ' 浏览</span><span>❤️ ' + a.likes + ' 赞</span><span>💬 ' + a.comments + ' 评论</span>' : '') +
+                        '<span>' + a.createdAt + '</span>' +
+                        (a.status === 'published' ? '<span>' + a.views + ' Views</span><span>' + a.likes + ' Likes</span><span>' + a.comments + ' Comments</span>' : '') +
                     '</div>' +
                 '</div>' +
                 '<div class="flex flex-col gap-2 shrink-0">' +
-                    '<button class="edit-article-btn px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-medium hover:bg-purple-100 transition" data-id="' + a.id + '">编辑</button>' +
-                    '<button class="delete-article-btn px-3 py-1.5 bg-red-50 text-red-500 rounded-lg text-xs font-medium hover:bg-red-100 transition" data-id="' + a.id + '">删除</button>' +
+                    '<button class="edit-article-btn px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-medium hover:bg-purple-100 transition" data-id="' + a.id + '">Edit</button>' +
+                    '<button class="delete-article-btn px-3 py-1.5 bg-red-50 text-red-500 rounded-lg text-xs font-medium hover:bg-red-100 transition" data-id="' + a.id + '">Delete</button>' +
                 '</div>' +
             '</div>';
         articleList.appendChild(div);
     });
 
-    // 绑定删除事件
+    // Bind delete events
     document.querySelectorAll('.delete-article-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var id = btn.dataset.id;
-            if (confirm('确定要删除这篇文章吗？')) {
+            if (confirm('Are you sure you want to delete this article?')) {
                 articles = articles.filter(a => a.id !== id);
                 localStorage.setItem('myArticles', JSON.stringify(articles));
                 renderArticles(currentFilter);
@@ -175,7 +175,7 @@ function renderArticles(filter) {
     });
 }
 
-// 筛选按钮
+// Filter buttons
 document.querySelectorAll('.article-filter').forEach(function(btn) {
     btn.addEventListener('click', function() {
         currentFilter = btn.dataset.filter;
@@ -187,7 +187,7 @@ document.querySelectorAll('.article-filter').forEach(function(btn) {
     });
 });
 
-// 写文章弹窗
+// Write article modal
 var writeModal = document.getElementById('write-modal');
 document.getElementById('new-article-btn').addEventListener('click', function() {
     writeModal.classList.remove('hidden');
@@ -207,8 +207,8 @@ function saveArticle(status) {
     var title = document.getElementById('article-title-input').value.trim();
     var content = document.getElementById('article-content-input').value.trim();
     var category = document.getElementById('article-category').value;
-    if (!title) { alert('请输入文章标题'); return; }
-    if (!content) { alert('请输入文章内容'); return; }
+    if (!title) { alert('Please enter an article title'); return; }
+    if (!content) { alert('Please enter article content'); return; }
     var now = new Date();
     var timeStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     articles.unshift({
@@ -226,7 +226,7 @@ document.getElementById('publish-article-btn').addEventListener('click', functio
 
 renderArticles('all');
 
-// 更新侧边栏计数
+// Update sidebar count
 var articleCount = articles.filter(a => a.status === 'published').length;
 try { localStorage.setItem('myArticleCount', articleCount); } catch(e) {}
 </script>

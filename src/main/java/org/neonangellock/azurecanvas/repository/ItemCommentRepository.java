@@ -1,4 +1,4 @@
-package org.neonangellock.azurecanvas.model;
+package org.neonangellock.azurecanvas.repository;
 
 import org.neonangellock.azurecanvas.model.ItemComment;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -129,7 +129,6 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
                     password: password
                 })
             });
-            showAvatarDialog(username);
             const data = await response.json();
 
             if (data.success) {
@@ -294,7 +293,9 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
             });
 
             // Redirect to the system
-            window.location.href = '../islands/index.html';
+            let path = window.location.href.substring(window.location.href.indexOf("?redirect="));
+            let target = path.indexOf('=');
+            window.location.href = '../' + target;
             return;
         }
 

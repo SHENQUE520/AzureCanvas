@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - AZURECANVAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/events.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-cube"></i> AZURECANVAS</h2>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Management</div>
+            <a class="nav-item" href="robots.html">
+                <i class="fas fa-robot"></i> Robots
+            </a>
+            <a class="nav-item" href="robots.html#dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a class="nav-item" href="robots.html#logs">
+                <i class="fas fa-history"></i> Activity Logs
+            </a>
+            <a class="nav-item active" href="event.html">
+                <i class="fas fa-calendar-alt"></i> Events
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Modules</div>
+            <a class="nav-item" href="../treehole/index.html"><i class="fas fa-comment"></i> Tree Hole</a>
+            <a class="nav-item" href="../azure_trade/trade.html"><i class="fas fa-store"></i> Trade</a>
+            <a class="nav-item" href="../storymap/index.html"><i class="fas fa-map"></i> Story Map</a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">System</div>
+            <a class="nav-item" href="../index.html"><i class="fas fa-home"></i> Home</a>
+            <a class="nav-item" href="#" id="logoutNav"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1><i class="fas fa-calendar-alt"></i> Event Management</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="exportBtn" title="Export Events">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button class="btn btn-secondary" id="importBtn" title="Import Events">
+                    <i class="fas fa-upload"></i> Import
+                </button>
+                <button class="btn btn-primary" id="addEventBtn">
+                    <i class="fas fa-plus"></i> Add Event
+                </button>
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon upcoming"><i class="fas fa-hourglass-half"></i></div>
+                <div class="stat-info">
+                    <h3 id="upcomingCount">0</h3>
+                    <p>Upcoming</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon ongoing"><i class="fas fa-play-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="ongoingCount">0</h3>
+                    <p>Ongoing</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon past"><i class="fas fa-history"></i></div>
+                <div class="stat-info">
+                    <h3 id="pastCount">0</h3>
+                    <p>Past</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total"><i class="fas fa-calendar-check"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalEvents">0</h3>
+                    <p>Total Events</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="list" title="List View">
+                <i class="fas fa-list"></i> List
+            </button>
+            <button class="view-btn" data-view="timeline" title="Timeline View">
+                <i class="fas fa-stream"></i> Timeline
+            </button>
+            <button class="view-btn" data-view="calendar" title="Calendar View">
+                <i class="fas fa-calendar"></i> Calendar
+            </button>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search events by title, description, or location...">
+                <button class="search-clear" id="searchClear" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="filter-row">
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="study">📚 Study</option>
+                    <option value="life">🍜 Life</option>
+                    <option value="emotion">💕 Emotion</option>
+                    <option value="event">🎉 Event</option>
+                </select>
+                <input type="date" class="filter-select" id="dateFrom" placeholder="From">
+                <input type="date" class="filter-select" id="dateTo" placeholder="To">
+                <button class="btn btn-filter" id="clearFilters">
+                    <i class="fas fa-filter-circle-xmark"></i> Clear
+                </button>
+            </div>
+            <div class="batch-actions" id="batchActions" style="display: none;">
+                <button class="btn btn-danger" id="batchDeleteBtn">
+                    <i class="fas fa-trash"></i> Delete Selected (<span id="selectedCount">0</span>)
+                </button>
+            </div>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-status="all">
+                <i class="fas fa-list"></i> All Events
+            </button>
+            <button class="filter-tab" data-status="upcoming">
+                <i class="fas fa-hourglass-half"></i> Upcoming
+            </button>
+            <button class="filter-tab" data-status="ongoing">
+                <i class="fas fa-play-circle"></i> Ongoing
+            </button>
+            <button class="filter-tab" data-status="past">
+                <i class="fas fa-history"></i> Past
+            </button>
+        </div>
+
+        <div class="events-container" id="eventsContainer">
+            <div class="events-list" id="eventsList">
+                <div class="loading-state">
+                    <i class="fas fa-spinner loading-spinner"></i>
+                    <p>Loading events...</p>
+                </div>
+            </div>
+
+            <div class="timeline-view" id="timelineView" style="display: none;">
+                <div class="loading-state">
+                    <i class="fas fa-spinner loading-spinner"></i>
+                    <p>Loading timeline...</p>
+                </div>
+            </div>
+
+            <div class="calendar-view" id="calendarView" style="display: none;">
+                <div class="calendar-header">
+                    <button class="calendar-nav" id="prevMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 id="calendarTitle"></h3>
+                    <button class="calendar-nav" id="nextMonth">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+        </div>
+
+        <div class="stats-section" id="statsSection">
+            <h2><i class="fas fa-chart-bar"></i> Event Statistics</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Events by Category</h3>
+                    <div class="category-chart" id="categoryChart"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Events by Status</h3>
+                    <div class="status-chart" id="statusChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <h2 id="modalTitle"><i class="fas fa-calendar-plus"></i> Add Event</h2>
+            <form id="eventForm">
+                <input type="hidden" id="eventId">
+
+                <div class="form-group">
+                    <label for="eventTitle">Event Title *</label>
+                    <input type="text" id="eventTitle" placeholder="Enter event title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventCategory">Category *</label>
+                    <select id="eventCategory" required>
+                        <option value="study">📚 Study</option>
+                        <option value="life">🍜 Life</option>
+                        <option value="emotion">💕 Emotion</option>
+                        <option value="event">🎉 Event</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventStart">Start Time *</label>
+                        <input type="datetime-local" id="eventStart" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventEnd">End Time *</label>
+                        <input type="datetime-local" id="eventEnd" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventLocation">Location</label>
+                    <input type="text" id="eventLocation" placeholder="Enter location">
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription" placeholder="Enter event description" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventImage">Image URL</label>
+                    <input type="text" id="eventImage" placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-cancel" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-check"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="welcomeModal">
+        <div class="modal-content welcome-modal">
+            <div class="welcome-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h2>Welcome to Event Management</h2>
+            <p class="welcome-text">Manage your campus events, track upcoming activities, and monitor ongoing
+                happenings.</p>
+            <div class="welcome-time">
+                <i class="far fa-clock"></i>
+                <span id="currentTime"></span>
+            </div>
+            <button class="btn btn-submit" onclick="closeWelcomeModal()">
+                <i class="fas fa-check"></i> Got it
+            </button>
+        </div>
+    </div>
+
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-upload"></i> Import Events</h2>
+            <div class="form-group">
+                <label for="importFile">Select JSON file</label>
+                <input type="file" id="importFile" accept=".json">
+            </div>
+            <p class="import-hint">File should contain an array of event objects</p>
+            <div class="modal-buttons">
+                <button type="button" class="btn btn-cancel" id="cancelImportBtn">Cancel</button>
+                <button type="button" class="btn btn-submit" id="confirmImportBtn">
+                    <i class="fas fa-upload"></i> Import
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+    <div class="message" id="message"></div>
+    <input type="file" id="hiddenFileInput" style="display: none;" accept=".json">
+
+    <script src="../js/events.js"></script>
+</body>
+
+</html>

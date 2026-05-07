@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details - AzureTrade</title>
+    <title>订单详情 - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -19,15 +19,15 @@
                 <a href="purchases.html" class="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded-full transition cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
-                <span class="font-bold text-lg">Order Details</span>
+                <span class="font-bold text-lg">订单详情</span>
                 <div class="w-8 h-8"></div>
             </div>
 
             <div class="text-white px-2 mt-2">
-                <h1 class="text-2xl font-black mb-1">Awaiting Buyer Payment</h1>
+                <h1 class="text-2xl font-black mb-1">等待买家付款</h1>
                 <p class="text-sm opacity-90 flex items-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span id="countdown-timer" class="font-mono font-bold tracking-wider">23h 55m 00s</span> until auto-close
+                    剩 <span id="countdown-timer" class="font-mono font-bold tracking-wider">23小时 55分 00秒</span> 自动关闭
                 </p>
             </div>
         </div>
@@ -39,10 +39,10 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="font-bold text-gray-800 text-base">John Smith</span>
+                        <span class="font-bold text-gray-800 text-base">张三</span>
                         <span class="text-gray-500 text-sm">138****8888</span>
                     </div>
-                    <p class="text-sm text-gray-600 leading-snug">West Campus, University of Science and Technology, Building XX, Room XXX</p>
+                    <p class="text-sm text-gray-600 leading-snug">安徽省 合肥市 蜀山区 中国科学技术大学西校区 XX号楼 XXX宿舍</p>
                 </div>
                 <div class="text-gray-400 self-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -52,7 +52,7 @@
             <div class="bg-white rounded-2xl p-4 shadow-sm">
                 <div class="flex items-center gap-2 text-sm font-bold text-gray-800 mb-4 pb-3 border-b border-gray-50 cursor-pointer hover:text-orange-500 transition">
                     <span>🏠</span>
-                    <span>SakuraDigital</span>
+                    <span>樱花数码铺</span>
                     <span class="text-gray-400 font-normal">›</span>
                 </div>
 
@@ -62,26 +62,26 @@
                     </div>
                     <div class="flex-1 flex flex-col justify-between py-0.5">
                         <div class="flex justify-between items-start gap-2">
-                            <h3 class="text-sm text-gray-800 leading-snug line-clamp-2">Sony WH-1000XM4 Noise Canceling Headphones Silver 90% New w/ Original Box</h3>
+                            <h3 class="text-sm text-gray-800 leading-snug line-clamp-2">索尼 WH-1000XM4 降噪耳机 银色 九成新 带原包装</h3>
                             <div class="text-right flex-shrink-0">
-                                <p class="text-sm font-bold text-gray-800">$850.00</p>
+                                <p class="text-sm font-bold text-gray-800">¥850.00</p>
                                 <p class="text-xs text-gray-400 mt-1">x1</p>
                             </div>
                         </div>
                         <div class="mt-1">
-                            <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-1.5 py-0.5 rounded">Silver; Free Shipping</span>
+                            <span class="inline-block bg-gray-50 text-gray-500 text-[11px] px-1.5 py-0.5 rounded">银色; 顺丰包邮</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-2 mt-4 text-sm">
                     <div class="flex justify-between text-gray-500">
-                        <span>Item Total</span>
-                        <span>$850.00</span>
+                        <span>商品总价</span>
+                        <span>¥850.00</span>
                     </div>
                     <div class="flex justify-between font-bold text-gray-800 pt-3 border-t border-gray-50 mt-3">
-                        <span>Amount Due</span>
-                        <span class="text-orange-500 text-lg">$850.00</span>
+                        <span>需付款</span>
+                        <span class="text-orange-500 text-lg">¥850.00</span>
                     </div>
                 </div>
             </div>
@@ -89,14 +89,14 @@
             <div class="bg-white rounded-2xl p-4 shadow-sm mb-4">
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-500">Order Number</span>
+                        <span class="text-gray-500">订单编号</span>
                         <div class="flex items-center gap-2">
                             <span class="text-gray-800 font-mono">18273645509876543</span>
-                            <span class="text-[10px] text-gray-500 border border-gray-200 px-1.5 py-0.5 rounded cursor-pointer hover:bg-gray-50">Copy</span>
+                            <span class="text-[10px] text-gray-500 border border-gray-200 px-1.5 py-0.5 rounded cursor-pointer hover:bg-gray-50">复制</span>
                         </div>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-500">Created</span>
+                        <span class="text-gray-500">创建时间</span>
                         <span class="text-gray-800">2026-04-11 14:30:22</span>
                     </div>
                 </div>
@@ -107,12 +107,12 @@
 
         <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 z-40">
             <div class="max-w-2xl mx-auto flex items-center justify-between px-4 h-14">
-                <span class="text-gray-400 text-sm cursor-pointer hover:text-gray-600">More</span>
-
+                <span class="text-gray-400 text-sm cursor-pointer hover:text-gray-600">更多</span>
+                
                 <div class="flex gap-2">
-                    <button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-50 transition">Contact Seller</button>
-                    <button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-50 transition">Cancel Order</button>
-                    <button onclick="openPaymentModal()" class="px-6 py-1.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white rounded-full text-sm font-bold hover:shadow-md transition">Pay Now</button>
+                    <button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-50 transition">联系卖家</button>
+                    <button class="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-50 transition">取消订单</button>
+                    <button onclick="openPaymentModal()" class="px-6 py-1.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white rounded-full text-sm font-bold hover:shadow-md transition">付款</button>
                 </div>
             </div>
         </div>
@@ -123,27 +123,27 @@
             <div id="payment-sheet" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white rounded-t-2xl p-6 transition-transform duration-300 transform translate-y-full">
                 
                 <div class="flex justify-between items-center mb-6 relative">
-                    <div class="w-6 h-6"></div> <h2 class="text-lg font-bold text-gray-800">Confirm Payment</h2>
+                    <div class="w-6 h-6"></div> <h2 class="text-lg font-bold text-gray-800">确认付款</h2>
                     <button onclick="closePaymentModal()" class="w-6 h-6 text-gray-400 hover:text-gray-600 transition">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 <div class="text-center mb-8">
-                    <span class="text-orange-500 font-bold text-xl">$</span>
+                    <span class="text-orange-500 font-bold text-xl">¥</span>
                     <span class="text-5xl font-black text-orange-500 tracking-tight">850.00</span>
                 </div>
 
                 <div class="flex justify-between items-center py-4 border-t border-b border-gray-100 mb-8 cursor-pointer hover:bg-gray-50 transition">
-                    <span class="text-gray-500 text-sm">Payment Method</span>
+                    <span class="text-gray-500 text-sm">付款方式</span>
                     <div class="flex items-center gap-2">
-                        <span class="text-gray-800 text-sm font-medium">PayPal</span>
+                        <span class="text-gray-800 text-sm font-medium">支付宝</span>
                         <span class="text-gray-400 text-lg leading-none mt-[-2px]">›</span>
                     </div>
                 </div>
 
                 <button onclick="confirmPayment()" class="w-full py-3.5 bg-orange-500 text-white rounded-full font-bold text-[17px] hover:bg-orange-600 transition shadow-sm mb-2">
-                    Confirm Payment
+                    确认付款
                 </button>
             </div>
         </div>
@@ -151,12 +151,13 @@
     </div>
 
 <script>
-    let timeRemaining = 86100;
+    // --- 1. 倒计时跳动逻辑 ---
+    let timeRemaining = 86100; // 23小时 55分钟
     const timerElement = document.getElementById('countdown-timer');
 
     function updateCountdown() {
         if (timeRemaining <= 0) {
-            timerElement.textContent = “00h 00m 00s”;
+            timerElement.textContent = "00小时 00分 00秒";
             return;
         }
 
@@ -168,37 +169,43 @@
         let formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
         let formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
 
-        timerElement.textContent = `${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`;
+        timerElement.textContent = `${formattedHours}小时 ${formattedMinutes}分 ${formattedSeconds}秒`;
         timeRemaining--;
     }
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
+    // --- 2. 支付弹窗交互逻辑 ---
     const modal = document.getElementById('payment-modal');
     const backdrop = document.getElementById('payment-backdrop');
     const sheet = document.getElementById('payment-sheet');
 
+    // 打开弹窗：运用了先显示DOM，再执行CSS动画的丝滑技巧
     function openPaymentModal() {
         modal.classList.remove('hidden');
-        void modal.offsetWidth;
-
+        // 强制浏览器重绘，确保动画生效
+        void modal.offsetWidth; 
+        
         backdrop.classList.remove('opacity-0');
         sheet.classList.remove('translate-y-full');
     }
 
+    // 关闭弹窗：先执行动画，动画结束后再隐藏DOM
     function closePaymentModal() {
         backdrop.classList.add('opacity-0');
         sheet.classList.add('translate-y-full');
-
+        
         setTimeout(() => {
             modal.classList.add('hidden');
-        }, 300);
+        }, 300); // 300ms 与 CSS 的 duration-300 对齐
     }
 
+    // 点击确认付款的逻辑
     function confirmPayment() {
-        alert(“Payment successful! The seller will ship your item soon.”);
-        window.location.href = “purchases.html”;
+        alert("🎉 支付成功！卖家将尽快为您发货。");
+        // 这里可以直接跳转到之前的“我买到的”页面
+        window.location.href = "purchases.html";
     }
 </script>
 

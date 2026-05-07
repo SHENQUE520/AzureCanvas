@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的空间 - AzureTrade</title>
+    <title>My Profile - AzureTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/js/notifications.js" type="module"></script>
     <style>
@@ -22,7 +22,7 @@
 
     <nav class="bg-white shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
         <div class="flex items-center space-x-2 text-purple-600 font-black text-xl">
-            <span>闲置</span><span class="text-purple-700">AzureTrade</span>
+            <span>Trade</span><span class="text-purple-700">AzureTrade</span>
         </div>
     </nav>
 
@@ -32,52 +32,52 @@
             <div class="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
                 <nav class="space-y-0.5 text-sm">
                     <a href="profile.html" class="flex items-center space-x-3 px-4 py-2.5 bg-purple-50 text-purple-600 font-bold rounded-lg">
-                        <span>🏠</span><span>我的空间</span>
+                        <span>🏠</span><span>My Profile</span>
                     </a>
 
                     <div>
                         <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="trade-toggle">
-                            <div class="flex items-center space-x-3"><span>📋</span><span>我的交易</span></div>
+                            <div class="flex items-center space-x-3"><span>📋</span><span>My Trades</span></div>
                             <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="trade-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </div>
                         <div id="trade-sub" class="ml-6 space-y-0.5">
                             <a href="mypublish.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
-                                <span>我发布的</span>
+                                <span>My Listings</span>
                                 <span id="sidebar-publish-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                             </a>
                             <a href="sales.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
-                                <span>我卖出的</span>
+                                <span>My Sales</span>
                                 <span id="sidebar-sell-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                             </a>
                             <a href="purchases.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
-                                <span>我买到的</span>
+                                <span>My Purchases</span>
                                 <span id="sidebar-buy-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                             </a>
                         </div>
                     </div>
 
                     <a href="favorites.html" class="flex items-center justify-between px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg transition">
-                        <div class="flex items-center space-x-3"><span>⭐</span><span>我的收藏</span></div>
+                        <div class="flex items-center space-x-3"><span>⭐</span><span>My Favorites</span></div>
                         <span id="sidebar-fav-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                     </a>
 
-                    <!-- 我的投稿 -->
+                    <!-- My Posts -->
                     <div>
                         <div class="flex items-center justify-between px-4 py-2.5 text-gray-800 font-bold cursor-pointer hover:bg-gray-50 rounded-lg transition" id="contribution-toggle">
-                            <div class="flex items-center space-x-3"><span>📝</span><span>我的投稿</span></div>
+                            <div class="flex items-center space-x-3"><span>📝</span><span>My Posts</span></div>
                             <svg class="w-3.5 h-3.5 text-gray-400 transition-transform rotate-180" id="contribution-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </div>
                         <div id="contribution-sub" class="ml-6 space-y-0.5">
                             <a href="/treehole/index.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
-                                <span>我的文章</span>
+                                <span>My Articles</span>
                                 <span id="sidebar-article-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                             </a>
                             <a href="/storymap/index.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
-                                <span>我的地图</span>
+                                <span>My Maps</span>
                                 <span id="sidebar-map-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">1</span>
                             </a>
                             <a href="my-moments.html" class="flex items-center justify-between px-4 py-2 text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg transition">
-                                <span>我的动态</span>
+                                <span>My Moments</span>
                                 <span id="sidebar-moment-count" class="text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">0</span>
                             </a>
                         </div>
@@ -87,11 +87,11 @@
                 <div class="mt-6 pt-4 border-t border-gray-100 space-y-2">
                     <a href="trade.html" class="flex items-center justify-center space-x-2 px-4 py-2.5 bg-gray-50 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition font-medium text-sm">
                         <span>&larr;</span>
-                        <span>返回大厅</span>
+                        <span>Back to Market</span>
                     </a>
                     <button id="logout-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-2.5 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-xl transition font-medium text-sm">
                         <span>🚪</span>
-                        <span>退出登录</span>
+                        <span>Log Out</span>
                     </button>
                 </div>
             </div>
@@ -100,13 +100,13 @@
         <main class="flex-1 max-w-4xl">
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden min-h-[80vh]">
                 
-                <div id="profile-banner" class="h-48 bg-gradient-to-r from-purple-400 via-pink-300 to-yellow-300 relative cursor-pointer group" title="点击更换背景">
+                <div id="profile-banner" class="h-48 bg-gradient-to-r from-purple-400 via-pink-300 to-yellow-300 relative cursor-pointer group" title="Click to change background">
                     <input type="file" id="banner-input" accept="image/*" class="hidden">
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center">
-                        <span class="text-white text-sm bg-black/30 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition backdrop-blur-sm">点击更换背景</span>
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center pointer-events-none">
+                        <span class="text-white text-sm bg-black/30 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition backdrop-blur-sm">Click to change background</span>
                     </div>
                     <button id="edit-profile-btn" class="absolute top-4 right-4 bg-black/20 text-white px-4 py-1.5 rounded-full text-sm backdrop-blur-sm hover:bg-black/30 transition z-10">
-                        编辑主页
+                        Edit Profile
                     </button>
                 </div>
 
@@ -119,43 +119,43 @@
 
                     <div class="mb-2">
                         <div class="flex items-center gap-2 flex-wrap mb-1">
-                            <h2 id="profile-username" class="text-xl font-black text-gray-900">Azure同学</h2>
+                            <h2 id="profile-username" class="text-xl font-black text-gray-900">Azure User</h2>
                             <span id="gender-icon" class="text-base hidden"></span>
-                            <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">买家信用极好</span>
-                            <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">卖家信用极好</span>
+                            <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Excellent Buyer Credit</span>
+                            <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Excellent Seller Credit</span>
                         </div>
-                        <p id="profile-bio" class="text-xs text-gray-400">这个人很懒，什么都没写~</p>
+                        <p id="profile-bio" class="text-xs text-gray-400">No bio yet~</p>
                         <p id="profile-email" class="text-xs text-gray-400 mt-1 hidden">📧 <span></span></p>
-                        <p id="profile-join-date" class="text-xs text-gray-400 mt-1">📅 注册时间：<span></span></p>
+                        <p id="profile-join-date" class="text-xs text-gray-400 mt-1">📅 Joined: <span></span></p>
                     </div>
 
                     <div class="flex items-center gap-6 text-sm mt-4 mb-2">
                         <a href="#" id="followers-link" class="flex items-baseline gap-1 hover:text-purple-600 transition">
                             <span id="profile-followers" class="font-black text-gray-900 text-lg">0</span>
-                            <span class="text-gray-500">粉丝</span>
+                            <span class="text-gray-500">Followers</span>
                         </a>
-                        <a href="following.html" class="flex items-baseline gap-1 hover:text-purple-600 transition">
+                        <a href="#" id="following-link" class="flex items-baseline gap-1 hover:text-purple-600 transition">
                             <span id="profile-following" class="font-black text-gray-900 text-lg">0</span>
-                            <span class="text-gray-500">关注</span>
+                            <span class="text-gray-500">Following</span>
                         </a>
                         <a href="sales.html" class="flex items-baseline gap-1 hover:text-purple-600 transition">
                             <span id="profile-sell" class="font-black text-gray-900 text-lg">0</span>
-                            <span class="text-gray-500">卖出</span>
+                            <span class="text-gray-500">Sold</span>
                         </a>
                         <a href="purchases.html" class="flex items-baseline gap-1 hover:text-purple-600 transition">
                             <span id="profile-buy" class="font-black text-gray-900 text-lg">0</span>
-                            <span class="text-gray-500">买到</span>
+                            <span class="text-gray-500">Bought</span>
                         </a>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-8 px-6 h-12 border-t border-b border-gray-100 sticky top-14 bg-white z-40">
                     <div class="seller-tab relative h-full flex items-center cursor-pointer text-sm font-bold text-purple-600 transition-all" data-tab="items">
-                        <span>宝贝 <span class="text-gray-400 font-normal ml-0.5" id="items-count">0</span></span>
+                        <span>Items <span class="text-gray-400 font-normal ml-0.5" id="items-count">0</span></span>
                         <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-100 scale-100"></div>
                     </div>
                     <div class="seller-tab relative h-full flex items-center cursor-pointer text-sm text-gray-500 hover:text-purple-600 transition-all" data-tab="reviews">
-                        <span>信用及评价 <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">0</span></span>
+                        <span>Credit & Reviews <span class="text-gray-400 font-normal ml-0.5" id="reviews-count-tab">0</span></span>
                         <div class="tab-bar absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-purple-600 rounded-full transition-all duration-300 opacity-0 scale-0"></div>
                     </div>
                 </div>
@@ -170,25 +170,25 @@
                             <label class="cursor-pointer">
                                 <input type="radio" name="review_filter" value="all" class="peer hidden" checked>
                                 <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
-                                    全部 <span id="count-all" class="ml-0.5 opacity-80"></span>
+                                    All <span id="count-all" class="ml-0.5 opacity-80"></span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="review_filter" value="good" class="peer hidden">
                                 <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
-                                    好评 <span id="count-good" class="ml-0.5 opacity-80"></span>
+                                    Positive <span id="count-good" class="ml-0.5 opacity-80"></span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="review_filter" value="buyer" class="peer hidden">
                                 <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
-                                    来自买家 <span id="count-buyer" class="ml-0.5 opacity-80"></span>
+                                    From Buyers <span id="count-buyer" class="ml-0.5 opacity-80"></span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="review_filter" value="seller" class="peer hidden">
                                 <div class="px-4 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition shadow-sm">
-                                    来自卖家 <span id="count-seller" class="ml-0.5 opacity-80"></span>
+                                    From Sellers <span id="count-seller" class="ml-0.5 opacity-80"></span>
                                 </div>
                             </label>
                         </div>
@@ -205,135 +205,139 @@
         </main>
     </div>
 
-    <!-- ===== 编辑主页弹窗 ===== -->
+    <!-- ===== Edit Profile Modal ===== -->
     <div id="edit-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
-                <h2 class="text-lg font-black text-gray-900">编辑主页</h2>
+                <h2 class="text-lg font-black text-gray-900">Edit Profile</h2>
                 <button id="edit-close-btn" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
             <form id="edit-profile-form" class="px-6 py-5 space-y-5 overflow-y-auto flex-1">
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">昵称</label>
-                    <input type="text" name="username" placeholder="请输入昵称"
+                    <label class="block text-sm text-gray-600 mb-1.5">Nickname</label>
+                    <input type="text" name="username" placeholder="Enter nickname"
                         class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">头像</label>
+                    <label class="block text-sm text-gray-600 mb-1.5">Avatar</label>
                     <div class="flex items-center gap-4">
                         <div id="edit-avatar-preview" class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold shadow-md overflow-hidden">A</div>
                         <label class="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-medium cursor-pointer hover:bg-purple-100 transition">
-                            更换头像
+                            Change Avatar
                             <input type="file" name="avatar" accept="image/*" class="hidden" id="edit-avatar-input">
                         </label>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">简介</label>
-                    <textarea name="bio" rows="3" placeholder="介绍一下自己吧..."
+                    <label class="block text-sm text-gray-600 mb-1.5">Bio</label>
+                    <textarea name="bio" rows="3" placeholder="Tell us about yourself..."
                         class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none resize-none transition"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">个人关联邮箱</label>
-                    <input type="email" name="email" placeholder="请输入邮箱"
+                    <label class="block text-sm text-gray-600 mb-1.5">Email</label>
+                    <input type="email" name="email" placeholder="Enter email"
                         class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">性别</label>
+                    <label class="block text-sm text-gray-600 mb-1.5">Gender</label>
                     <div class="flex gap-3">
                         <label class="cursor-pointer">
                             <input type="radio" name="gender" value="male" class="peer hidden">
-                            <div class="px-5 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">男</div>
+                            <div class="px-5 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Male</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="gender" value="female" class="peer hidden">
-                            <div class="px-5 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">女</div>
+                            <div class="px-5 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Female</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="gender" value="secret" class="peer hidden" checked>
-                            <div class="px-5 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">保密</div>
+                            <div class="px-5 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Private</div>
                         </label>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">生日</label>
+                    <label class="block text-sm text-gray-600 mb-1.5">Birthday</label>
                     <input type="date" name="birthday"
                         class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1.5">喜欢的</label>
+                    <label class="block text-sm text-gray-600 mb-1.5">Interests</label>
                     <div id="interest-tags" class="flex flex-wrap gap-2 mb-3">
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="摄影" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">摄影</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="音乐" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">音乐</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="编程" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">编程</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="旅行" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">旅行</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="绿植" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">绿植</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="宠物" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">宠物</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="美食" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">美食</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="运动" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">运动</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="阅读" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">阅读</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="游戏" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">游戏</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="手工" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">手工</div></label>
-                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="追剧" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">追剧</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Photography" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Photography</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Music" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Music</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Programming" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Programming</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Travel" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Travel</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Plants" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Plants</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Pets" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Pets</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Food" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Food</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Sports" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Sports</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Reading" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Reading</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Gaming" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Gaming</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="Crafts" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">Crafts</div></label>
+                        <label class="cursor-pointer"><input type="checkbox" name="interest_tag" value="TV Shows" class="peer hidden"><div class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs peer-checked:bg-purple-100 peer-checked:text-purple-700 peer-checked:border-purple-200 peer-checked:font-bold transition">TV Shows</div></label>
                     </div>
                     <div class="flex gap-2">
-                        <input type="text" id="custom-interest-input" placeholder="自定义兴趣，回车添加"
+                        <input type="text" id="custom-interest-input" placeholder="Custom interest, press Enter to add"
                             class="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-purple-400 outline-none transition">
-                        <button type="button" id="add-interest-btn" class="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-100 transition">添加</button>
+                        <button type="button" id="add-interest-btn" class="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-100 transition">Add</button>
                     </div>
                     <div id="custom-interests" class="flex flex-wrap gap-2 mt-2"></div>
                 </div>
 
                 <div class="pt-2 pb-1">
                     <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition shadow-lg transform active:scale-[0.98]">
-                        保存
+                        Save
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- 粉丝列表弹窗 -->
+    <!-- Followers Modal -->
     <div id="followers-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
-                <h2 class="text-lg font-black text-gray-900">全部粉丝 (<span id="followers-total">0</span>)</h2>
+                <h2 class="text-lg font-black text-gray-900">All Followers (<span id="followers-total">0</span>)</h2>
                 <button id="followers-close-btn" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
-            </div>
-            <div class="px-6 py-2 border-b border-gray-100 shrink-0">
-                <div class="flex items-center justify-between text-xs text-gray-500">
-                    <span>排序方式：当前排序条件每天更新一次，排序结果仅供参考。</span>
-                    <select id="followers-sort" class="border border-gray-200 rounded px-2 py-1 text-xs">
-                        <option value="time">粉丝数倒序</option>
-                        <option value="time-asc" selected>关注时间倒序</option>
-                    </select>
-                </div>
             </div>
             <div id="followers-list" class="px-6 py-4 overflow-y-auto flex-1 space-y-3"></div>
         </div>
     </div>
 
+    <!-- Following Modal -->
+    <div id="following-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+                <h2 class="text-lg font-black text-gray-900">All Following (<span id="following-total">0</span>)</h2>
+                <button id="following-close-btn" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+            <div id="following-list" class="px-6 py-4 overflow-y-auto flex-1 space-y-3"></div>
+        </div>
+    </div>
+
+<script src="api-config.js"></script>
 <script>
+var API = window.API_BASE || '';
 var myItems = [
-    { title: '包邮【全部包出】纸飞机折纸套装十款精选', price: 280, wants: 11, emoji: '✈️', bg: 'from-sky-200 to-blue-300' },
-    { title: '包邮【出闪器】可甜蜜 全新未拆', price: 1100, wants: 3, emoji: '📷', bg: 'from-amber-200 to-orange-300' },
-    { title: '包邮【闪】在马来西亚的铁路旅行时间60分钟/路径', price: 200, wants: 1, emoji: '🚂', bg: 'from-green-200 to-emerald-300' },
-    { title: '【出】出几瓶xvvip 时间60甜蜜/路径', price: 358, wants: 0, emoji: '🧴', bg: 'from-pink-200 to-rose-300' },
-    { title: '【出】耳机苹果原装门口129的5折 手机壳出', price: 230, wants: 0, emoji: '🎧', bg: 'from-violet-200 to-purple-300' },
-    { title: '机械键盘 Cherry红轴 九成新 带灯', price: 180, wants: 5, emoji: '⌨️', bg: 'from-red-200 to-rose-300' }
+    { title: 'Paper Airplane Origami Set - 10 Premium Designs (Free Shipping)', price: 280, wants: 11, emoji: '✈️', bg: 'from-sky-200 to-blue-300' },
+    { title: 'Instant Camera - Brand New Sealed (Free Shipping)', price: 1100, wants: 3, emoji: '📷', bg: 'from-amber-200 to-orange-300' },
+    { title: 'Malaysia Railway Travel Pass - 60 Min Route (Free Shipping)', price: 200, wants: 1, emoji: '🚂', bg: 'from-green-200 to-emerald-300' },
+    { title: 'Premium Perfume Collection - 60ml Bottles', price: 358, wants: 0, emoji: '🧴', bg: 'from-pink-200 to-rose-300' },
+    { title: 'Apple Original Earphones - 50% Off Retail + Phone Case', price: 230, wants: 0, emoji: '🎧', bg: 'from-violet-200 to-purple-300' },
+    { title: 'Mechanical Keyboard Cherry Red - 90% New with RGB', price: 180, wants: 5, emoji: '⌨️', bg: 'from-red-200 to-rose-300' }
 ];
 
 var demoReviews = [
-    { name: '快乐同学', avatar: 'K', text: '发货很快，东西和描述一致，沟通非常愉快！而且卖家非常细心包装得很严实，下次还会再来的！', time: '2026-04-08 14:30', rating: 'good', role: 'buyer' },
-    { name: '学霸小铺', avatar: 'X', text: '包装很好，没有损坏，非常满意。', time: '2026-04-06 09:15', rating: 'good', role: 'buyer' },
-    { name: '佛系卖家', avatar: 'F', text: '同学人很好，面交很准时。', time: '2026-04-04 18:45', rating: 'good', role: 'seller' },
-    { name: '挑剔的鱼', avatar: 'T', text: '有点小瑕疵，但考虑到是二手价格整体还行吧。', time: '2026-03-28 11:20', rating: 'medium', role: 'buyer' }
+    { name: 'HappyStudent', avatar: 'H', text: 'Fast shipping, item matches the description perfectly. Great communication! The seller packed it really well. Will buy again!', time: '2026-04-08 14:30', rating: 'good', role: 'buyer' },
+    { name: 'StudyShop', avatar: 'S', text: 'Well packaged, no damage. Very satisfied.', time: '2026-04-06 09:15', rating: 'good', role: 'buyer' },
+    { name: 'ChillSeller', avatar: 'C', text: 'Nice buyer, showed up on time for meetup.', time: '2026-04-04 18:45', rating: 'good', role: 'seller' },
+    { name: 'PickyFish', avatar: 'P', text: 'Minor flaw, but considering the second-hand price it is acceptable overall.', time: '2026-03-28 11:20', rating: 'medium', role: 'buyer' }
 ];
 
 var reviews = [];
@@ -343,26 +347,26 @@ var reviewsPanel = document.getElementById('reviews-panel');
 var reviewsList = document.getElementById('reviews-list');
 var tabs = document.querySelectorAll('.seller-tab');
 
-// 从API加载评价数据，API为空时使用demo数据
+// Load reviews from API, fallback to demo data
 async function loadReviews(filter) {
     try {
-        var response = await fetch('https://api.szsummer.com/api/users/me', { credentials: 'include' });
+        var response = await fetch(API + '/api/users/me', { credentials: API ? 'omit' : 'include' });
         if (!response.ok) { useDemoReviews(filter); return; }
         var user = await response.json();
         var userId = user.userId;
 
-        var url = 'https://api.szsummer.com/api/market/users/' + userId + '/reviews';
+        var url = '/api/market/users/' + userId + '/reviews';
         if (filter && filter !== 'all') url += '?filter=' + filter;
 
-        var reviewRes = await fetch(url, { credentials: 'include' });
+        var reviewRes = await fetch(url, { credentials: API ? 'omit' : 'include' });
         if (reviewRes.ok) {
             var data = await reviewRes.json();
             var apiReviews = (data.reviews || []).map(function(r) {
                 return {
-                    name: r.reviewerName || '匿名',
-                    avatar: r.reviewerAvatar ? '<img src="https://api.szsummer.com/resources/' + r.reviewerAvatar + '" class="w-12 h-12 rounded-full object-cover">' : (r.reviewerName || 'A').charAt(0).toUpperCase(),
+                    name: r.reviewerName || 'Anonymous',
+                    avatar: r.reviewerAvatar ? '<img src="/resources/' + r.reviewerAvatar + '" class="w-12 h-12 rounded-full object-cover">' : (r.reviewerName || 'A').charAt(0).toUpperCase(),
                     text: r.content || '',
-                    time: r.createdAt ? new Date(r.createdAt).toLocaleString('zh-CN') : '',
+                    time: r.createdAt ? new Date(r.createdAt).toLocaleString('en-US') : '',
                     rating: r.rating || 'good',
                     role: r.role || 'buyer'
                 };
@@ -382,7 +386,7 @@ async function loadReviews(filter) {
             useDemoReviews(filter);
         }
     } catch (err) {
-        console.error('加载评价失败:', err);
+        console.error('Failed to load reviews:', err);
         useDemoReviews(filter);
     }
 }
@@ -427,8 +431,8 @@ function renderItems() {
             '<div class="p-3">' +
                 '<p class="text-sm text-gray-800 leading-snug line-clamp-2">' + item.title + '</p>' +
                 '<div class="flex items-center justify-between mt-2">' +
-                    '<span class="text-purple-600 font-black">¥' + item.price + '</span>' +
-                    '<span class="text-xs text-gray-400">' + (item.wants || 0) + '人想要</span>' +
+                    '<span class="text-purple-600 font-black">$' + item.price + '</span>' +
+                    '<span class="text-xs text-gray-400">' + (item.wants || 0) + ' wants</span>' +
                 '</div>' +
             '</div>';
 
@@ -460,21 +464,21 @@ function renderReviews(dataToRender) {
     reviewsList.innerHTML = '';
 
     if (dataToRender.length === 0) {
-        reviewsList.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">暂无符合条件的评价</div>';
+        reviewsList.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No reviews matching this filter</div>';
         return;
     }
 
     dataToRender.forEach(function(r) {
         var ratingTag = '';
         if (r.rating === 'good') {
-            ratingTag = '<span class="inline-block bg-orange-50 text-orange-500 px-2 py-1 rounded text-xs font-medium">👍 好评</span>';
+            ratingTag = '<span class="inline-block bg-orange-50 text-orange-500 px-2 py-1 rounded text-xs font-medium">👍 Positive</span>';
         } else if (r.rating === 'medium') {
-            ratingTag = '<span class="inline-block bg-blue-50 text-blue-500 px-2 py-1 rounded text-xs font-medium">😐 中评</span>';
+            ratingTag = '<span class="inline-block bg-blue-50 text-blue-500 px-2 py-1 rounded text-xs font-medium">😐 Neutral</span>';
         } else if (r.rating === 'bad') {
-            ratingTag = '<span class="inline-block bg-red-50 text-red-500 px-2 py-1 rounded text-xs font-medium">👎 差评</span>';
+            ratingTag = '<span class="inline-block bg-red-50 text-red-500 px-2 py-1 rounded text-xs font-medium">👎 Negative</span>';
         }
 
-        var userType = r.role === 'buyer' ? '买家' : '卖家';
+        var userType = r.role === 'buyer' ? 'Buyer' : 'Seller';
 
         var div = document.createElement('div');
         div.className = 'bg-white rounded-xl p-4 shadow-sm border border-gray-100';
@@ -497,7 +501,7 @@ function renderReviews(dataToRender) {
     });
 }
 
-// 筛选逻辑
+// Filter logic
 var filterRadios = document.querySelectorAll('input[name="review_filter"]');
 filterRadios.forEach(function(radio) {
     radio.addEventListener('change', function(e) {
@@ -505,7 +509,7 @@ filterRadios.forEach(function(radio) {
     });
 });
 
-// Tab 切换逻辑
+// Tab switch logic
 tabs.forEach(function(tab) {
     tab.addEventListener('click', function() {
         tabs.forEach(function(t) {
@@ -536,7 +540,7 @@ tabs.forEach(function(tab) {
     });
 });
 
-// 左侧菜单折叠逻辑
+// Sidebar menu toggle
 var toggle = document.getElementById('trade-toggle');
 var sub = document.getElementById('trade-sub');
 var arrow = document.getElementById('trade-arrow');
@@ -548,7 +552,7 @@ if(toggle && sub && arrow) {
     });
 }
 
-// 我的投稿折叠逻辑
+// Contributions toggle
 var contributionToggle = document.getElementById('contribution-toggle');
 var contributionSub = document.getElementById('contribution-sub');
 var contributionArrow = document.getElementById('contribution-arrow');
@@ -561,57 +565,48 @@ if(contributionToggle && contributionSub && contributionArrow) {
 }
 
 
-// 初始化执行
+// Initialize
 renderItems();
 loadReviews('all');
 
-// 粉丝列表数据
+// Followers list data
 var followers = [
-    { name: 'PQQDJT', avatar: 'P', bio: '娱乐博主', fans: 14400, followTime: '2026-04-20 10:30' },
-    { name: '炸了个鸡翅', avatar: '炸', bio: '娱乐博主 超话小主持人（橙子酱超话）', fans: 1580, followTime: '2026-04-18 15:20' },
-    { name: 'znziaoedsbakise87172', avatar: 'Z', bio: '', fans: 1065, followTime: '2026-04-15 09:10' },
-    { name: '不爱吃鱼_0527', avatar: '不', bio: '账号多人使用/小包/全包/没回请➕ Buaichiyu_0527（请备注来意不然不...', fans: 406, followTime: '2026-04-10 18:45' },
-    { name: 'Ttthua0318', avatar: 'T', bio: '只发自己想发的 不看统道❌', fans: 342, followTime: '2026-04-05 12:30' }
+    { name: 'PQQDJT', avatar: 'P', fans: 14400 },
+    { name: 'CrispyWings', avatar: 'C', fans: 1580 },
+    { name: 'znziaoedsbakise87172', avatar: 'Z', fans: 1065 },
+    { name: 'NoFish_0527', avatar: 'N', fans: 406 },
+    { name: 'Ttthua0318', avatar: 'T', fans: 342 }
 ];
 
-// 粉丝列表弹窗
+// Following list data
+var followingList = [
+    { name: 'DormShop', avatar: 'D', fans: 2300 },
+    { name: 'CampusDigital', avatar: 'C', fans: 890 },
+    { name: 'StudyShop', avatar: 'S', fans: 560 }
+];
+
+// Followers modal
 var followersModal = document.getElementById('followers-modal');
 var followersLink = document.getElementById('followers-link');
 var followersCloseBtn = document.getElementById('followers-close-btn');
 var followersList = document.getElementById('followers-list');
-var followersSort = document.getElementById('followers-sort');
 
-function renderFollowers(data) {
-    followersList.innerHTML = '';
+function renderUserList(container, data) {
+    container.innerHTML = '';
     data.forEach(function(f) {
         var div = document.createElement('div');
-        div.className = 'flex items-start justify-between';
+        div.className = 'flex items-center gap-3 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -mx-2 transition';
         div.innerHTML =
-            '<div class="flex items-center gap-3">' +
-                '<div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-sm text-purple-600 font-bold flex-shrink-0">' + f.avatar + '</div>' +
-                '<div class="flex flex-col">' +
-                    '<span class="text-sm font-bold text-gray-800">' + f.name + '</span>' +
-                    (f.bio ? '<p class="text-xs text-gray-500 mt-0.5 line-clamp-1">' + f.bio + '</p>' : '') +
-                    '<span class="text-[11px] text-gray-400 mt-1">粉丝 ' + f.fans + '</span>' +
-                '</div>' +
-            '</div>' +
-            '<button class="px-4 py-1.5 bg-purple-50 text-purple-600 rounded-full text-xs font-medium hover:bg-purple-100 transition shrink-0">互相关注</button>';
-        followersList.appendChild(div);
+            '<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm text-purple-600 font-bold flex-shrink-0">' + f.avatar + '</div>' +
+            '<div class="flex flex-col">' +
+                '<span class="text-sm font-bold text-gray-800">' + f.name + '</span>' +
+                '<span class="text-[11px] text-gray-400">Followers: ' + f.fans + '</span>' +
+            '</div>';
+        div.addEventListener('click', function() {
+            window.location.href = 'seller-profile.html?seller=' + encodeURIComponent(f.name);
+        });
+        container.appendChild(div);
     });
-}
-
-function sortFollowers(type) {
-    var sorted = followers.slice();
-    if (type === 'time-asc') {
-        sorted.sort(function(a, b) {
-            return new Date(b.followTime) - new Date(a.followTime);
-        });
-    } else if (type === 'time') {
-        sorted.sort(function(a, b) {
-            return b.fans - a.fans;
-        });
-    }
-    return sorted;
 }
 
 if (followersLink) {
@@ -620,7 +615,7 @@ if (followersLink) {
         followersModal.classList.remove('hidden');
         followersModal.classList.add('flex');
         document.getElementById('followers-total').textContent = followers.length;
-        renderFollowers(sortFollowers('time-asc'));
+        renderUserList(followersList, followers);
     });
 }
 
@@ -640,13 +635,39 @@ if (followersModal) {
     });
 }
 
-if (followersSort) {
-    followersSort.addEventListener('change', function(e) {
-        renderFollowers(sortFollowers(e.target.value));
+// Following modal
+var followingModal = document.getElementById('following-modal');
+var followingLink = document.getElementById('following-link');
+var followingCloseBtn = document.getElementById('following-close-btn');
+var followingListEl = document.getElementById('following-list');
+
+if (followingLink) {
+    followingLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        followingModal.classList.remove('hidden');
+        followingModal.classList.add('flex');
+        document.getElementById('following-total').textContent = followingList.length;
+        renderUserList(followingListEl, followingList);
     });
 }
 
-// ========== localStorage 持久化 + API 调用 ==========
+if (followingCloseBtn) {
+    followingCloseBtn.addEventListener('click', function() {
+        followingModal.classList.add('hidden');
+        followingModal.classList.remove('flex');
+    });
+}
+
+if (followingModal) {
+    followingModal.addEventListener('click', function(e) {
+        if (e.target === followingModal) {
+            followingModal.classList.add('hidden');
+            followingModal.classList.remove('flex');
+        }
+    });
+}
+
+// localStorage persistence + API calls
 function loadProfileFromStorage() {
     var saved = localStorage.getItem('userProfile');
     if (!saved) return null;
@@ -670,7 +691,7 @@ function applyProfileToPage(data) {
 
     if (profileUsername && data.username) profileUsername.textContent = data.username;
 
-    // 显示性别图标
+    // Display gender icon
     var genderIcon = document.getElementById('gender-icon');
     if (genderIcon && data.gender) {
         if (data.gender === 'MALE') {
@@ -687,7 +708,7 @@ function applyProfileToPage(data) {
     }
 
     if (profileAvatar) {
-        // 统一处理头像显示逻辑
+        // Unified avatar display logic
         const defaultClasses = 'w-20 h-20 rounded-full border-4 border-white bg-gradient-to-br from-purple-400 to-pink-400 shadow-md flex items-center justify-center text-white font-bold text-3xl z-10 relative';
         const imgClasses = 'w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden z-10 relative';
 
@@ -701,7 +722,7 @@ function applyProfileToPage(data) {
         }
     }
 
-    if (profileBio) profileBio.textContent = data.bio || '这个人很懒，什么都没写~';
+    if (profileBio) profileBio.textContent = data.bio || 'This user hasn\'t written a bio yet.';
 
     var profileEmail = document.getElementById('profile-email');
     if (profileEmail && data.email) {
@@ -709,22 +730,22 @@ function applyProfileToPage(data) {
         profileEmail.classList.remove('hidden');
     }
 
-    // 显示注册时间
+    // Display join date
     var profileJoinDate = document.getElementById('profile-join-date');
     if (profileJoinDate && data.createdAt) {
         var joinDate = new Date(data.createdAt);
-        var formattedDate = joinDate.getFullYear() + '年' + (joinDate.getMonth() + 1) + '月' + joinDate.getDate() + '日';
+        var formattedDate = (joinDate.getMonth() + 1) + '/' + joinDate.getDate() + '/' + joinDate.getFullYear();
         profileJoinDate.querySelector('span').textContent = formattedDate;
     } else if (profileJoinDate && data.joinedAt) {
         var joinDate = new Date(data.joinedAt);
-        var formattedDate = joinDate.getFullYear() + '年' + (joinDate.getMonth() + 1) + '月' + joinDate.getDate() + '日';
+        var formattedDate = (joinDate.getMonth() + 1) + '/' + joinDate.getDate() + '/' + joinDate.getFullYear();
         profileJoinDate.querySelector('span').textContent = formattedDate;
     }
 
     if (profileFollowers) profileFollowers.textContent = data.followers || 0;
     if (profileFollowing) profileFollowing.textContent = data.followings || data.following || 0;
 
-    // 从 localStorage 统计各项数量
+    // Count items from localStorage
     var publishedItems = JSON.parse(localStorage.getItem('publishedItems') || '[]');
     var soldItems = JSON.parse(localStorage.getItem('soldItems') || '[]');
     var boughtItems = JSON.parse(localStorage.getItem('boughtItems') || '[]');
@@ -743,7 +764,7 @@ function applyProfileToPage(data) {
     if (profileSell) profileSell.textContent = sellCount;
     if (profileBuy) profileBuy.textContent = buyCount;
 
-    // 侧边栏气泡
+    // Sidebar badges
     var sidebarPublish = document.getElementById('sidebar-publish-count');
     var sidebarSell = document.getElementById('sidebar-sell-count');
     var sidebarBuy = document.getElementById('sidebar-buy-count');
@@ -760,17 +781,17 @@ function applyProfileToPage(data) {
     }
 }
 
-// 先从 localStorage 加载（立即显示）
+// Load from localStorage first (instant display)
 var cachedProfile = loadProfileFromStorage();
 if (cachedProfile) applyProfileToPage(cachedProfile);
 
-// 再从 API 获取最新数据
+// Then fetch latest data from API
 (async function () {
     try {
-        var response = await fetch('https://api.szsummer.com/api/users/me', {
+        var response = await fetch(API + '/api/users/me', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
+            credentials: API ? 'omit' : 'include'
         });
 
         if (response.ok) {
@@ -778,9 +799,9 @@ if (cachedProfile) applyProfileToPage(cachedProfile);
             saveProfileToStorage(user);
             applyProfileToPage(user);
 
-            // 加载用户发布的商品
+            // Load user's published items
             try {
-                var itemsRes = await fetch('/api/market/users/me/items', { credentials: 'include' });
+                var itemsRes = await fetch(API + '/api/market/users/me/items', { credentials: API ? 'omit' : 'include' });
                 if (itemsRes.ok) {
                     var items = await itemsRes.json();
                     if (items && items.length > 0) {
@@ -800,35 +821,35 @@ if (cachedProfile) applyProfileToPage(cachedProfile);
                     }
                 }
             } catch (e) {
-                console.error('加载商品失败:', e);
+                console.error('Failed to load items:', e);
             }
         } else if (response.status === 401) {
             window.location.href = '/login?redirect=/azure_trade/trade';
         }
     } catch (err) {
-        console.error('获取用户信息失败:', err);
+        console.error('Failed to load user info:', err);
     }
 })();
 
-// ========== 退出登录 ==========
+// ========== Logout ==========
 var logoutBtn = document.getElementById('logout-btn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async function () {
         try {
-            await fetch('https://api.szsummer.com/api/auth/logout', {
+            await fetch(API + '/api/auth/logout', {
                 method: 'POST',
-                credentials: 'include'
+                credentials: API ? 'omit' : 'include'
             });
         } catch (e) {}
         window.location.href = '/login?redirect=/azure_trade/trade';
     });
 }
 
-// ========== 背景横幅更换 ==========
+// ========== Banner Change ==========
 var banner = document.getElementById('profile-banner');
 var bannerInput = document.getElementById('banner-input');
 
-// 加载已保存的背景
+// Load saved banner
 var savedBanner = localStorage.getItem('profileBanner');
 if (savedBanner && banner) {
     banner.style.backgroundImage = 'url(' + savedBanner + ')';
@@ -859,7 +880,7 @@ if (banner && bannerInput) {
     });
 }
 
-// ========== 编辑主页弹窗 ==========
+// ========== Edit Profile Modal ==========
 var editModal = document.getElementById('edit-modal');
 var editBtn = document.getElementById('edit-profile-btn');
 var editCloseBtn = document.getElementById('edit-close-btn');
@@ -872,9 +893,9 @@ function openEditModal() {
     var usernameEl = document.getElementById('profile-username');
     var bioEl = document.getElementById('profile-bio');
     if (usernameEl) editForm.username.value = usernameEl.textContent;
-    if (bioEl) editForm.bio.value = bioEl.textContent === '这个人很懒，什么都没写~' ? '' : bioEl.textContent;
+    if (bioEl) editForm.bio.value = bioEl.textContent === 'This user hasn\'t written a bio yet.' ? '' : bioEl.textContent;
 
-    // 从 localStorage 回填 email、性别、生日、兴趣
+    // Refill email, gender, birthday, interests from localStorage
     var saved = loadProfileFromStorage() || {};
     if (saved.email) editForm.email.value = saved.email;
     if (saved.gender) {
@@ -920,7 +941,7 @@ editModal.addEventListener('click', function (e) {
     if (e.target === editModal) closeEditModal();
 });
 
-// 头像预览
+// Avatar preview
 if (editAvatarInput) {
     editAvatarInput.addEventListener('change', function () {
         var file = editAvatarInput.files[0];
@@ -933,7 +954,7 @@ if (editAvatarInput) {
     });
 }
 
-// ========== 自定义兴趣标签 ==========
+// ========== Custom Interest Tags ==========
 var customInterestInput = document.getElementById('custom-interest-input');
 var addInterestBtn = document.getElementById('add-interest-btn');
 var customInterestsContainer = document.getElementById('custom-interests');
@@ -975,16 +996,16 @@ if (customInterestInput) {
     });
 }
 
-// ========== 保存编辑 ==========
+// ========== Save Profile ==========
 editForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const submitBtn = editForm.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.textContent;
     
-    // 禁用按钮并显示加载状态
+    // Disable button and show loading state
     submitBtn.disabled = true;
-    submitBtn.textContent = '保存中...';
+    submitBtn.textContent = 'Saving...';
     submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
     try {
@@ -995,14 +1016,14 @@ editForm.addEventListener('submit', async function (e) {
         var gender = formData.get('gender') || 'secret';
         var birthday = formData.get('birthday') || '';
 
-        // 收集兴趣：预设标签 + 自定义
+        // Collect interests: preset tags + custom
         var selectedTags = [];
         document.querySelectorAll('input[name="interest_tag"]:checked').forEach(function (cb) {
             selectedTags.push(cb.value);
         });
         var allInterests = selectedTags.concat(customInterests).join(',');
 
-        // 1. 头像处理：如果有新文件，先上传
+        // 1. Avatar: upload new file if selected
         var avatarFile = editAvatarInput.files[0];
         var avatarUuid = null;
         
@@ -1010,19 +1031,19 @@ editForm.addEventListener('submit', async function (e) {
             const imageData = new FormData();
             imageData.append('files', avatarFile);
             
-            const uploadRes = await fetch('https://api.szsummer.com/api/v1/images/upload', {
+            const uploadRes = await fetch(API + '/api/v1/images/upload', {
                 method: 'POST',
                 body: imageData
             });
 
             if (!uploadRes.ok) {
-                throw new Error('头像上传失败，请稍后重试');
+                throw new Error('Avatar upload failed, please try again');
             }
             const uuids = await uploadRes.json();
             avatarUuid = uuids[0];
         }
 
-        // 2. 组装数据并发送 PUT 请求
+        // 2. Build data and send PUT request
         const updateData = {
             username: username,
             bio: bio,
@@ -1035,10 +1056,10 @@ editForm.addEventListener('submit', async function (e) {
             updateData.avatar = avatarUuid;
         }
 
-        const response = await fetch('https://api.szsummer.com/api/users/me', {
+        const response = await fetch(API + '/api/users/me', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
+            credentials: API ? 'omit' : 'include',
             body: JSON.stringify(updateData)
         });
 
@@ -1046,7 +1067,7 @@ editForm.addEventListener('submit', async function (e) {
             const updatedUser = await response.json();
             saveProfileToStorage(updatedUser);
             applyProfileToPage(updatedUser);
-            window.notify.show('资料更新成功！', 'success');
+            window.notify.show('Profile updated successfully!', 'success');
             closeEditModal();
         } else if (response.status === 422) {
             const error = await response.json();
@@ -1058,18 +1079,18 @@ editForm.addEventListener('submit', async function (e) {
                     window.notify.show(`${error.field} ${error.message}`, 'error');
                 }
             } else {
-                window.notify.show(error.message || '更新失败', 'error');
+                window.notify.show(error.message || 'Update failed', 'error');
             }
         } else {
-            const error = await response.json().catch(() => ({ message: '更新失败' }));
-            window.notify.show(error.message || '更新失败', 'error');
+            const error = await response.json().catch(() => ({ message: 'Update failed' }));
+            window.notify.show(error.message || 'Update failed', 'error');
         }
 
     } catch (err) {
-        console.error('保存资料失败:', err);
-        window.notify.show(err.message || '保存资料失败', 'error');
+        console.error('Failed to save profile:', err);
+        window.notify.show(err.message || 'Failed to save profile', 'error');
     } finally {
-        // 恢复按钮状态
+        // Restore button state
         submitBtn.disabled = false;
         submitBtn.textContent = originalBtnText;
         submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
